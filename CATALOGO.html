@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Oficial - S3D</title>
+    
+    <!-- Fuentes: Inter para alta legibilidad, Montserrat para títulos de impacto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        title: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            900: '#002244', /* Azul marino muy oscuro (Logo) */
+                            800: '#003366', /* Azul marino medio */
+                            accent: '#0066cc', /* Azul brillante para CTA y botones */
+                            light: '#e6f0fa' /* Fondo azul muy suave */
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,51,102,0.08)',
+                        'float': '0 20px 40px -10px rgba(0,102,204,0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        .print-only, .print-only-flex { display: none; }
+
+        /* Estilos base */
+        body { background-color: #ffffff; }
+        
+        /* Ocultar elementos en tarjetas (para cambio dinámico media) */
+        .media-hidden { opacity: 0; pointer-events: none; z-index: 0; }
+        .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
+        .media-transition { transition: opacity 0.4s ease-in-out; }
+
+        /* Estilos del thumb activo (ahora usando borde transparente para que no encoja la imagen) */
+        .thumb-active { border-color: #0066cc !important; }
+
+        /* Lightbox */
+        #lightbox { display: none; }
+        #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(8px); } }
+        
+        /* Botones de navegación lightbox */
+        .lightbox-nav-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
+
+        /* Ocultar la barra de desplazamiento en los filtros pero permitir arrastrar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- MODO IMPRESIÓN / PDF --- */
+        @media print {
+            @page { size: A4 portrait; margin: 12mm; }
+            body { background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            nav, header, footer, .no-print, .thumbnails-container { display: none !important; }
+            .print-only { display: block !important; }
+            .print-only-flex { display: flex !important; }
+            #productos-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10mm !important; }
+            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+            .print-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; margin-bottom: 0 !important; }
+            .media-viewer { height: 200px !important; background: white !important; }
+            .media-viewer video { display: none !important; }
+            .media-viewer img { opacity: 1 !important; }
+            .print-text-sm { font-size: 10pt !important; line-height: 1.4 !important; }
+            .print-price { font-size: 16pt !important; }
+            .print-card-body { padding: 12px !important; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
+
+    <div class="print-only-flex items-center justify-between border-b-2 border-brand-accent pb-4 mb-6">
+        <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-white p-1">
+                <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain rounded-lg">
+            </div>
+            <div>
+                <h1 class="font-title font-black text-4xl text-brand-900 tracking-tight leading-none">S3D</h1>
+                <p class="text-[11px] text-gray-500 uppercase tracking-[0.25em] font-bold mt-1">Imprimimos tu mundo</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <h2 class="font-title font-extrabold text-2xl text-brand-900">Catálogo de Productos</h2>
+            <p class="text-gray-600 font-medium mt-1 text-sm">WhatsApp: +51 955 107 609</p>
+            <p class="text-gray-600 font-medium text-sm">Instagram: @print.s3d</p>
+        </div>
+    </div>
+
+    <nav class="bg-white/90 backdrop-blur-lg sticky top-0 z-40 border-b border-gray-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-12 h-12 rounded-xl overflow-hidden bg-white border border-gray-100 flex items-center justify-center shadow-sm">
+                        <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain p-1">
+                    </div>
+                    <div>
+                        <h1 class="font-title font-black text-2xl tracking-tight text-brand-900 leading-none">S3D</h1>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mt-1">Imprimimos tu mundo</p>
+                    </div>
+                </div>
+                <!-- Contacto Nav -->
+                <div class="hidden sm:flex items-center gap-6 no-print">
+                    <div class="flex items-center gap-4">
+                        <!-- Instagram SVG con color original en hover -->
+                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition-colors" title="Instagram">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <!-- Facebook SVG con color original en hover -->
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                    </div>
+                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="bg-brand-light text-brand-accent hover:bg-brand-accent hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2">
+                        <i data-lucide="phone" class="w-4 h-4"></i>
+                        Contáctanos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative bg-white overflow-hidden no-print">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light/50 blur-3xl opacity-70 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-blue-50 blur-3xl opacity-70 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Textos Hero -->
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light text-brand-accent font-semibold text-xs tracking-wider uppercase mb-6">
+                        <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
+                        Tecnología 3D
+                    </div>
+                    <h2 class="font-title text-5xl md:text-6xl font-black text-brand-900 mb-6 tracking-tight leading-[1.1]">
+                        Dando vida a tus <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-400">ideas en 3D.</span>
+                    </h2>
+                    <p class="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 font-light">
+                        Descubre nuestro catálogo de figuras, accesorios, holders personalizados y coleccionables. Fabricación digital con acabados artesanales y calidad premium.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white px-8 py-4 rounded-full font-bold shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:shadow-[0_8px_25px_rgba(0,102,204,0.4)] hover:-translate-y-1 transition-all duration-300">
+                            Ver Catálogo
+                        </button>
+                        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="bg-white text-brand-900 border border-gray-200 hover:border-brand-accent hover:text-brand-accent px-8 py-4 rounded-full font-bold shadow-sm transition-all duration-300 flex items-center gap-2">
+                            Pedidos Personalizados
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Video Hero Elegante -->
+                <div class="relative hidden lg:block">
+                    <div class="aspect-square rounded-[3rem] bg-gradient-to-tr from-brand-light to-blue-50/50 flex items-center justify-center p-6 relative overflow-hidden shadow-soft border border-white">
+                        <div class="absolute w-full h-full border-[40px] border-white/40 rounded-full scale-150 -right-1/4 z-0 pointer-events-none"></div>
+                        
+                        <!-- Etiqueta Video Profesional -->
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover rounded-[2.5rem] relative z-10 shadow-2xl border-[6px] border-white/70" poster="assets/S3D.jpeg">
+                            <source src="assets/video-presentacion.mp4" type="video/mp4">
+                            Tu navegador no soporta videos HTML5.
+                        </video>
+                    </div>
+                    
+                    <div class="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-2xl shadow-float border border-gray-100 flex items-center gap-3 z-20">
+                        <span class="font-bold text-brand-900 text-sm">Calidad Garantizada</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
+                        <span class="text-xs text-gray-500 font-medium">Materiales Eco-amigables</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="catalogo" class="bg-gray-50/80 border-y border-gray-100 sticky top-20 z-30 backdrop-blur-md py-4 no-print shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex flex-wrap gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar" id="category-filters">
+                    <!-- JS genera botones -->
+                </div>
+                <div class="relative w-full md:w-80 flex-shrink-0 group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400 group-focus-within:text-brand-accent transition-colors"></i>
+                    </div>
+                    <input type="text" id="search-input" placeholder="Buscar modelo..." class="w-full pl-11 pr-4 py-3 rounded-full border-2 border-gray-200/80 bg-white text-sm font-medium focus:outline-none focus:border-brand-accent focus:ring-4 focus:ring-brand-accent/10 transition-all text-gray-800 placeholder-gray-400 shadow-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="main-content">
+        <!-- Contenido generado dinámicamente -->
+    </main>
+
+    <footer class="bg-brand-900 text-white pt-20 pb-10 border-t-[8px] border-brand-accent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-1">
+                            <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain">
+                        </div>
+                        <div>
+                            <h3 class="font-title text-3xl font-black tracking-tight">S3D</h3>
+                            <p class="text-brand-accent text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Imprimimos tu mundo</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
+                        Especialistas en transformar archivos digitales en piezas físicas de alta calidad. Tu imaginación es el único límite.
+                    </p>
+                </div>
+
+                <div class="md:col-span-4">
+                    <h4 class="font-title text-lg font-bold mb-6 text-white">¿Hablamos?</h4>
+                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="inline-flex items-center gap-4 text-gray-300 hover:text-white transition-colors group bg-white/5 hover:bg-white/10 px-6 py-4 rounded-2xl border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center group-hover:bg-[#25D366] transition-colors shadow-lg">
+                            <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-semibold mb-0.5">Ventas y pedidos</p>
+                            <span class="font-bold text-lg tracking-wide">+51 955 107 609</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="font-title text-lg font-bold mb-6 text-white">Redes Sociales</h4>
+                    <div class="flex space-x-3">
+                        <!-- Instagram Footer con colores originales -->
+                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent transition-all duration-300 shadow-sm group" title="Instagram">
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <!-- Facebook Footer con colores originales -->
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-all duration-300 shadow-sm group" title="Facebook">
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white fill-current transition-colors" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-xs font-medium">
+                <p>&copy; <span id="current-year"></span> S3D. Todos los derechos reservados.</p>
+                <p class="flex items-center gap-1">Diseñado con <i data-lucide="heart" class="w-3 h-3 text-brand-accent"></i> en Perú</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
+        <button class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        
+        <button id="lightbox-prev" class="lightbox-nav-btn absolute left-4 md:left-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(-1, event)">
+            <i data-lucide="arrow-left" class="w-6 h-6"></i>
+        </button>
+
+        <div class="relative w-full max-w-5xl h-full max-h-[85vh] flex flex-col items-center justify-center p-4">
+            <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300 hidden">
+            <video id="lightbox-vid" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl hidden" controls playsinline></video>
+            <div id="lightbox-counter" class="absolute bottom-4 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest backdrop-blur-md">
+                1 / 3
+            </div>
+        </div>
+
+        <button id="lightbox-next" class="lightbox-nav-btn absolute right-4 md:right-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(1, event)">
+            <i data-lucide="arrow-right" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        const productos = [
+            // --- TOY STORY ---
+            { 
+                id: 1, categoria: "Toy Story", nombre: "WOODY", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
+                imagenes: ["assets/ts-woody-1.png"], // SOLO 1 FOTO
+                descripcion: "Figura detallada de Woody impresa en 3D. Excelente calidad de acabados y pintura artesanal." 
+            },
+            { 
+                id: 2, categoria: "Toy Story", nombre: "JESSIE", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 75.00, 
+                imagenes: ["assets/ts-jessie-1.png", "assets/ts-jessie-2.png"], 
+                descripcion: "Figura detallada de Jessie la vaquerita impresa en 3D. Perfecta para coleccionistas." 
+            },
+            { 
+                id: 3, categoria: "Toy Story", nombre: "BUZZ", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
+                imagenes: ["assets/ts-buzz-1.png", "assets/ts-buzz-2.png"], 
+                descripcion: "Figura de Buzz Lightyear impresa en 3D con detalles de alta fidelidad." 
+            },
+
+            // --- HELLO KITTY ---
+            { 
+                id: 4, categoria: "Hello Kitty", nombre: "HELLO KITTY URBANA", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
+                imagenes: ["assets/hk-urbana-1.png", "assets/hk-urbana-2.png"], 
+                descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano impreso en 3D." 
+            },
+            { 
+                id: 5, categoria: "Hello Kitty", nombre: "HELLO KITTY FASHION", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
+                imagenes: ["assets/hk-fashion-1.png"], // SOLO 1 FOTO
+                descripcion: "Modelo de Hello Kitty Fashion, ideal para adornar tu escritorio o habitación." 
+            },
+
+            // --- SNOOPY ---
+            { 
+                id: 6, categoria: "Snoopy", nombre: "SNOOPY SALUDO", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 40.00, 
+                imagenes: ["assets/sn-saludo-1.png", "assets/sn-saludo-2.png"], 
+                descripcion: "Clásica figura de Snoopy saludando, impresa con gran nivel de detalle." 
+            },
+            { 
+                id: 7, categoria: "Snoopy", nombre: "SNOOPY", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 35.00, 
+                imagenes: ["assets/sn-base-1.png", "assets/sn-base-2.png"], 
+                descripcion: "Figura estándar de Snoopy, perfecta para iniciar tu colección." 
+            },
+            { 
+                id: 8, categoria: "Snoopy", nombre: "SNOOPY AVIADOR", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, 
+                imagenes: ["assets/sn-aviador-1.png", "assets/sn-aviador-2.png"], 
+                descripcion: "El icónico Snoopy en su faceta de piloto aviador." 
+            },
+            { 
+                id: 9, categoria: "Snoopy", nombre: "SNOOPY ZZZ", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
+                imagenes: ["assets/sn-zzz-1.png", "assets/sn-zzz-2.png"], 
+                descripcion: "Snoopy durmiendo plácidamente. Una escena clásica inmortalizada en 3D." 
+            },
+            { 
+                id: 10, categoria: "Snoopy", nombre: "SNOOPY PEAKY BLINDERS", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
+                imagenes: ["assets/sn-peaky-1.png", "assets/sn-peaky-2.png"], 
+                video: "assets/sn-peaky-video.mp4", // CON VIDEO
+                descripcion: "Snoopy con un estilo elegante y rebelde inspirado en la famosa serie." 
+            },
+            { 
+                id: 11, categoria: "Snoopy", nombre: "SNOOPY TENISTA", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 50.00, 
+                imagenes: ["assets/sn-tenista-1.png", "assets/sn-tenista-2.png"], 
+                descripcion: "Figura de Snoopy listo para jugar al tenis." 
+            },
+            { 
+                id: 12, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL SET", 
+                material: "PLA Premium", tipo: "Set 3D", precio: 95.00, 
+                imagenes: ["assets/sn-criminal-set-1.png", "assets/sn-criminal-set-2.png"], 
+                video: "assets/sn-criminal-set-video.mp4", // CON VIDEO
+                descripcion: "Set completo de Snoopy estilo Smooth Criminal. Una joya para coleccionistas." 
+            },
+            { 
+                id: 13, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL", 
+                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
+                imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], 
+                descripcion: "Snoopy individual con su traje estilo Smooth Criminal." 
+            },
+
+            // --- HOLDERS ---
+            { 
+                id: 101, categoria: "Holders", nombre: "HOLDER UNIVERSITARIO", 
+                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
+                imagenes: ["assets/U-M1.png", "assets/U-M2.png"], 
+                video: "assets/U-video.webm", // CON VIDEO
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D para verdaderos hinchas de Universitario." 
+            },
+            { 
+                id: 102, categoria: "Holders", nombre: "HOLDER ALIANZA LIMA", 
+                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
+                imagenes: ["assets/AL-M1.jpeg", "assets/AL-M2.jpeg"], 
+                video: "assets/AL-video.webm", // CON VIDEO
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D para verdaderos hinchas de Alianza Lima." 
+            },
+            { 
+                id: 103, categoria: "Holders", nombre: "HOLDER SPORTING CRISTAL", 
+                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
+                imagenes: ["assets/SC-M1.png", "assets/SC-M2.png"], 
+                video: "assets/SC-video.webm", // CON VIDEO
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D para hinchas celestes." 
+            },
+            { 
+                id: 104, categoria: "Holders", nombre: "HOLDER SPORT BOYS", 
+                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
+                imagenes: ["assets/SBA-M1.png", "assets/SBA-M2.png"], 
+                video: "assets/SBA-video.webm", // CON VIDEO
+                descripcion: "Exclusivo organizador de escritorio del puerto." 
+            },
+
+            // --- ACCESORIOS ---
+            { 
+                id: 50, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", 
+                material: "PLA Premium", tipo: "Accesorio 3D", precio: 20.00, 
+                imagenes: ["assets/acc-llavero-1.png", "assets/acc-llavero-2.png"], 
+                video: "assets/acc-llavero-video.mp4", // CON VIDEO
+                descripcion: "Práctico llavero que funciona como soporte para tu celular." 
+            }
+        ];
+
+        // Definir orden de categorías asegurando que Holders vaya penúltimo y Accesorios al final
+        const categoriasBase = ["Todas", ...new Set(productos.map(p => p.categoria))];
+        let categorias = categoriasBase.filter(c => c !== "Holders" && c !== "Accesorios");
+        if (categoriasBase.includes("Holders")) categorias.push("Holders");
+        if (categoriasBase.includes("Accesorios")) categorias.push("Accesorios");
+
+        let categoriaActual = "Todas";
+        let terminoBusqueda = "";
+
+        const filtersContainer = document.getElementById('category-filters');
+        
+        function renderFilters() {
+            filtersContainer.innerHTML = categorias.map(cat => `
+                <button 
+                    onclick="filtrarPorCategoria('${cat}')"
+                    class="px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border whitespace-nowrap
+                    ${categoriaActual === cat 
+                        ? 'border-brand-accent bg-brand-accent text-white shadow-md' 
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-brand-accent hover:text-brand-accent'}"
+                >
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function generarHTMLProducto(producto) {
+            const whatsappText = `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)}`;
+            
+            // Detectar fotos y videos disponibles
+            const img1 = producto.imagenes[0];
+            const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
+            const hasVideo = !!producto.video; 
+
+            // Construcción del HTML de miniaturas condicionalmente
+            let miniaturasHTML = `
+                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${!img2 && !hasVideo ? 'border-brand-accent thumb-active' : 'border-transparent thumb-active'} bg-gray-50 transition-all cursor-pointer hover:scale-105 shadow-sm shrink-0" title="Foto 1">
+                    <img src="${img1}" class="w-full h-full object-cover">
+                </button>
+            `;
+
+            if (img2) {
+                miniaturasHTML += `
+                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-50 transition-all cursor-pointer hover:scale-105 shadow-sm shrink-0" title="Foto 2">
+                    <img src="${img2}" class="w-full h-full object-cover">
+                </button>
+                `;
+            }
+
+            if (hasVideo) {
+                miniaturasHTML += `
+                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-900 transition-all cursor-pointer hover:scale-105 relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
+                    <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
+                    <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
+                        <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
+                    </div>
+                </button>
+                `;
+            }
+
+            return `
+            <div class="print-break-avoid bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-float transition-all duration-500 border border-gray-100 flex flex-col h-full group print-shadow-none">
+                
+                <div class="media-viewer relative w-full h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
+                    <img id="media-img1-${producto.id}" src="${img1}" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Foto+1'">
+                    
+                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Espacio+Foto+2'">` : ''}
+                    
+                    ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
+
+                    <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 shadow-sm z-20 no-print">
+                        <i data-lucide="maximize-2" class="w-5 h-5 text-brand-900"></i>
+                    </div>
+                </div>
+
+                <div class="thumbnails-container flex justify-center gap-3 sm:gap-4 p-4 bg-white border-b border-gray-50 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)]">
+                    ${miniaturasHTML}
+                </div>
+
+                <div class="print-card-body p-6 md:p-8 flex flex-col flex-grow bg-white z-30">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="inline-flex items-center gap-1.5 bg-brand-light text-brand-800 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i> ${producto.material}
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 bg-gray-100 text-gray-600 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                            <i data-lucide="box" class="w-3.5 h-3.5"></i> ${producto.tipo}
+                        </span>
+                    </div>
+
+                    <h3 class="print-title font-title text-xl font-bold text-brand-900 leading-tight mb-3">${producto.nombre}</h3>
+                    <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow">${producto.descripcion}</p>
+                    
+                    <div class="print-mt-auto flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">Precio Unitario</span>
+                            <div class="flex items-start">
+                                <span class="font-title text-sm font-bold text-brand-900 mt-1 mr-1">S/</span>
+                                <span class="print-price font-title text-3xl font-black text-brand-900 tracking-tight">${producto.precio.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        
+                        <a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" class="no-print bg-brand-900 hover:bg-brand-accent text-white w-12 h-12 sm:w-auto sm:px-6 sm:h-12 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2" title="Pedir por WhatsApp">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                            <span class="font-bold text-sm tracking-wide hidden sm:block">Comprar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        window.switchMedia = function(productId, index) {
+            if(event) event.stopPropagation();
+
+            const img1 = document.getElementById(`media-img1-${productId}`);
+            const img2 = document.getElementById(`media-img2-${productId}`);
+            const vid = document.getElementById(`media-vid-${productId}`);
+            
+            const thumb0 = document.getElementById(`thumb-0-${productId}`);
+            const thumb1 = document.getElementById(`thumb-1-${productId}`);
+            const thumb2 = document.getElementById(`thumb-2-${productId}`);
+
+            // Resetear todos
+            img1.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105";
+            if (img2) img2.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
+            if (vid) {
+                vid.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
+                vid.pause();
+            }
+
+            if (thumb0) { thumb0.classList.remove('thumb-active'); thumb0.classList.add('border-transparent'); }
+            if (thumb1) { thumb1.classList.remove('thumb-active'); thumb1.classList.add('border-transparent'); }
+            if (thumb2) { thumb2.classList.remove('thumb-active'); thumb2.classList.add('border-transparent'); }
+
+            // Activar seleccionado
+            if(index === 0) {
+                img1.classList.remove('media-hidden');
+                img1.classList.add('media-active');
+                if (thumb0) { thumb0.classList.remove('border-transparent'); thumb0.classList.add('thumb-active'); }
+            } else if (index === 1 && img2) {
+                img2.classList.remove('media-hidden');
+                img2.classList.add('media-active');
+                if (thumb1) { thumb1.classList.remove('border-transparent'); thumb1.classList.add('thumb-active'); }
+            } else if (index === 2 && vid) {
+                vid.classList.remove('media-hidden');
+                vid.classList.add('media-active');
+                if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('thumb-active'); }
+                vid.play();
+            }
+        };
+
+        const mainContainer = document.getElementById('main-content');
+        
+        function renderizarProductos() {
+            renderFilters();
+            
+            const productosFiltrados = productos.filter(p => {
+                const cumpleCategoria = categoriaActual === "Todas" || p.categoria === categoriaActual;
+                const cumpleBusqueda = terminoBusqueda === "" || 
+                    p.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()) || 
+                    p.descripcion.toLowerCase().includes(terminoBusqueda.toLowerCase());
+                
+                return cumpleCategoria && cumpleBusqueda;
+            });
+
+            // Ordenar categorías: Holders penúltimo, Accesorios al final
+            let categoriasPresentes = [...new Set(productosFiltrados.map(p => p.categoria))];
+            let catsFiltered = categoriasPresentes.filter(c => c !== "Holders" && c !== "Accesorios");
+            if (categoriasPresentes.includes("Holders")) catsFiltered.push("Holders");
+            if (categoriasPresentes.includes("Accesorios")) catsFiltered.push("Accesorios");
+            categoriasPresentes = catsFiltered;
+
+            let htmlCompleto = '';
+
+            for (const categoria of categoriasPresentes) {
+                const items = productosFiltrados.filter(p => p.categoria === categoria);
+                if(items.length === 0) continue;
+
+                let extraHeaderNote = '';
+                if (categoria === "Holders") {
+                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">✨ Exclusivos organizadores de escritorio impresos en 3D. Personalizables de tu equipo de fútbol peruano o internacional de preferencia.</p>`;
+                } else if (categoria === "Accesorios") {
+                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">✨ Personaliza el color y el nombre inscrito en él a tu gusto.</p>`;
+                }
+
+                htmlCompleto += `
+                    <div class="mb-16 first:mt-0 mt-8 print-break-avoid">
+                        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+                            <div>
+                                <h2 class="font-title text-3xl font-black text-brand-900">${categoria}</h2>
+                                <div class="w-12 h-1 bg-brand-accent mt-3 rounded-full"></div>
+                                ${extraHeaderNote}
+                            </div>
+                            <span class="text-sm font-semibold text-gray-500 bg-gray-100 px-4 py-1.5 rounded-full w-fit shadow-sm border border-gray-200">${items.length} modelos</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-10">
+                            ${items.map(producto => generarHTMLProducto(producto)).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            mainContainer.innerHTML = htmlCompleto || `
+                <div class="text-center py-20 px-4 bg-white rounded-3xl border border-gray-100 shadow-sm mt-8">
+                    <div class="w-20 h-20 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-6 text-brand-accent">
+                        <i data-lucide="search-x" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="font-title text-2xl font-bold text-gray-900 mb-3">No encontramos resultados</h3>
+                    <p class="text-gray-500 text-lg">Intenta buscar con otros términos o cambia de categoría.</p>
+                </div>
+            `;
+            
+            lucide.createIcons();
+        }
+
+        window.filtrarPorCategoria = function(categoria) {
+            categoriaActual = categoria;
+            renderizarProductos();
+        };
+
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            terminoBusqueda = e.target.value;
+            renderizarProductos();
+        });
+
+        renderizarProductos();
+
+        let currentLightboxMediaArray = [];
+        let currentLightboxIndex = 0;
+
+        function abrirModal(productoId) {
+            const prod = productos.find(p => p.id === productoId);
+            if(!prod) return;
+
+            // Construir arreglo de media solo con lo que existe
+            currentLightboxMediaArray = [
+                { type: 'img', src: prod.imagenes[0] }
+            ];
+            
+            if (prod.imagenes.length > 1) {
+                currentLightboxMediaArray.push({ type: 'img', src: prod.imagenes[1] });
+            }
+            if (prod.video) {
+                currentLightboxMediaArray.push({ type: 'vid', src: prod.video });
+            }
+
+            // Encontrar índice actual
+            const img2 = document.getElementById(`media-img2-${productoId}`);
+            const vid = document.getElementById(`media-vid-${productoId}`);
+            
+            if (vid && vid.classList.contains('media-active')) currentLightboxIndex = currentLightboxMediaArray.findIndex(m => m.type === 'vid');
+            else if (img2 && img2.classList.contains('media-active')) currentLightboxIndex = 1;
+            else currentLightboxIndex = 0;
+
+            actualizarLightbox();
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal(event, forceClose = false) {
+            if (forceClose || event.target.id === 'lightbox') {
+                document.getElementById('lightbox').classList.remove('active');
+                document.body.style.overflow = 'auto';
+                document.getElementById('lightbox-vid').pause();
+            }
+        }
+
+        function cambiarImagenLightbox(direccion, event) {
+            if(event) event.stopPropagation(); 
+
+            const total = currentLightboxMediaArray.length;
+            if(total <= 1) return; // Si solo hay 1 foto, no hacer nada
+
+            currentLightboxIndex += direccion;
+            if (currentLightboxIndex >= total) currentLightboxIndex = 0;
+            if (currentLightboxIndex < 0) currentLightboxIndex = total - 1;
+
+            actualizarLightbox();
+        }
+
+        function actualizarLightbox() {
+            const imgEl = document.getElementById('lightbox-img');
+            const vidEl = document.getElementById('lightbox-vid');
+            const counterEl = document.getElementById('lightbox-counter');
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            
+            const currentMedia = currentLightboxMediaArray[currentLightboxIndex];
+
+            imgEl.classList.add('hidden');
+            vidEl.classList.add('hidden');
+            vidEl.pause();
+
+            if(currentMedia.type === 'img') {
+                imgEl.src = currentMedia.src;
+                imgEl.classList.remove('hidden');
+            } else if (currentMedia.type === 'vid') {
+                vidEl.src = currentMedia.src;
+                vidEl.classList.remove('hidden');
+                vidEl.play();
+            }
+
+            // Manejar controles y contador
+            const total = currentLightboxMediaArray.length;
+            counterEl.textContent = `${currentLightboxIndex + 1} / ${total}`;
+            
+            if (total <= 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+                counterEl.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+                counterEl.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (event.key === 'Escape') cerrarModal(event, true);
+            if (event.key === 'ArrowRight') cambiarImagenLightbox(1);
+            if (event.key === 'ArrowLeft') cambiarImagenLightbox(-1);
+        });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
