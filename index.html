@@ -52,7 +52,7 @@
         .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
         .media-transition { transition: opacity 0.4s ease-in-out; }
 
-        /* Estilos del thumb activo (ahora usando borde transparente para que no encoja la imagen) */
+        /* Estilos del thumb activo usando border-color estático (evita que la imagen se encoja) */
         .thumb-active { border-color: #0066cc !important; }
 
         /* Lightbox */
@@ -363,7 +363,7 @@
             },
             { 
                 id: 12, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL SET", 
-                material: "PLA Premium", tipo: "Set 3D", precio: 95.00, 
+                material: "PLA Premium", tipo: "Set 3D", precio: 95.00, // PRECIO ACTUALIZADO
                 imagenes: ["assets/sn-criminal-set-1.png", "assets/sn-criminal-set-2.png"], 
                 video: "assets/sn-criminal-set-video.mp4", // CON VIDEO
                 descripcion: "Set completo de Snoopy estilo Smooth Criminal. Una joya para coleccionistas." 
@@ -371,51 +371,142 @@
             { 
                 id: 13, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL", 
                 material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
-                imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], 
+                imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], // SIN VIDEO
                 descripcion: "Snoopy individual con su traje estilo Smooth Criminal." 
             },
 
-            // --- HOLDERS ---
+            // --- ADORNOS (Colección Día de la Madre y Decoración) ---
+            { 
+                id: 201, categoria: "Adornos", nombre: "MADRE E HIJO", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 35.00, 
+                imagenes: ["assets/MADRE E HIJO.jpeg"], 
+                descripcion: "Hermosa figura impresa en 3D que representa el amor maternal.\nMedida: 14,6 CM" 
+            },
+            { 
+                id: 202, categoria: "Adornos", nombre: "CORAZÓN EN CORAZÓN", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 30.00, 
+                imagenes: ["assets/CORAZON EN CORAZON.jpeg"], 
+                descripcion: "Elegante pieza decorativa con diseño de corazones entrelazados.\nMedida: 15,0 CM" 
+            },
+            { 
+                id: 203, categoria: "Adornos", nombre: "CORAZÓN CON ROSA", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 21.00, 
+                imagenes: ["assets/CORAZON CON ROSA.jpeg"], 
+                descripcion: "Detalle romántico y único, perfecto para regalar.\nMedida: 12,3 CM / 20,0 CM" 
+            },
+            { 
+                id: 204, categoria: "Adornos", nombre: "OSO CORAZÓN", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 28.00, 
+                imagenes: ["assets/OSO CON CORAZON.jpeg"], 
+                descripcion: "Tierno oso impreso en 3D sosteniendo un corazón. Ideal para regalo.\nMedida: 15,6 CM" 
+            },
+            { 
+                id: 205, categoria: "Adornos", nombre: "JARRÓN CHINO", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 24.00, 
+                imagenes: ["assets/JARRON CHINO.jpeg", "assets/JARRON CHINO2.jpeg"], 
+                descripcion: "Jarrón con un diseño clásico inspirado en la porcelana china.\nMedida: 25,0 CM" 
+            },
+            { 
+                id: 206, categoria: "Adornos", nombre: "TULIPÁN", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 32.00, 
+                imagenes: ["assets/TULIPAN.jpeg"], 
+                descripcion: "Flor de tulipán impresa en 3D, un toque de naturaleza.\nMedida: 24,2 CM" 
+            },
+            { 
+                id: 207, categoria: "Adornos", nombre: "JARRÓN ESPIRAL BASE", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 34.00, 
+                imagenes: ["assets/JARRON ESPIRAL BASE.jpeg"], 
+                descripcion: "Moderno jarrón espiral que aporta dinamismo a cualquier espacio.\nMedida: 19,00 CM" 
+            },
+            { 
+                id: 208, categoria: "Adornos", nombre: "JARRÓN LUNA", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 25.00, 
+                imagenes: ["assets/JARRON LUNA.jpeg"], 
+                descripcion: "Elegante jarrón con forma de luna creciente, pieza única.\nMedida: 17,2 CM" 
+            },
+            { 
+                id: 209, categoria: "Adornos", nombre: "JARRÓN TWISTING ELEG", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 34.00, 
+                imagenes: ["assets/JARRON TWISTING.jpeg"], 
+                descripcion: "Sofisticado jarrón con un diseño de torsión elegante y fluido.\nMedida: 25 CM" 
+            },
+            { 
+                id: 210, categoria: "Adornos", nombre: "JARRÓN TEXTURIZADO", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 31.00, 
+                imagenes: ["assets/JARRON TEZTURIZADO.jpeg"], // Manteniendo el typo original en tu imagen
+                descripcion: "Jarrón con una textura geométrica única y elegante.\nMedida: 25 CM" 
+            },
+            { 
+                id: 211, categoria: "Adornos", nombre: "JARRÓN ESPIRAL G", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 36.00, 
+                imagenes: ["assets/JARRON ESPIRAL G.jpeg"], 
+                descripcion: "Jarrón alto en espiral, ideal para arreglos grandes.\nMedida: 25 CM" 
+            },
+            { 
+                id: 212, categoria: "Adornos", nombre: "JARRÓN ESPIRAL B", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 29.00, 
+                imagenes: ["assets/JARRON ESPIRAL B.jpeg"], 
+                descripcion: "Versión mediana de nuestro clásico jarrón espiral.\nMedida: 20 CM" 
+            },
+            { 
+                id: 213, categoria: "Adornos", nombre: "JARRÓN ESPIRAL D", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 25.00, 
+                imagenes: ["assets/JARRON ESPIRAL D.jpeg"], 
+                descripcion: "Pequeño y decorativo jarrón con giro cerrado.\nMedida: 18 CM" 
+            },
+            { 
+                id: 214, categoria: "Adornos", nombre: "ELEFANTITO", 
+                material: "PLA Premium", tipo: "Adorno 3D", precio: 28.00, 
+                imagenes: ["assets/ELEFANTITO.jpeg"], 
+                descripcion: "Tierno elefantito impreso en 3D, perfecto para decorar cualquier espacio o regalar.\nMedida: 15 CM" 
+            },
+
+            // --- HOLDERS (Penúltimo) ---
             { 
                 id: 101, categoria: "Holders", nombre: "HOLDER UNIVERSITARIO", 
                 material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
                 imagenes: ["assets/U-M1.png", "assets/U-M2.png"], 
-                video: "assets/U-video.webm", // CON VIDEO
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D para verdaderos hinchas de Universitario." 
+                video: "assets/U-video.webm", 
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
             },
             { 
                 id: 102, categoria: "Holders", nombre: "HOLDER ALIANZA LIMA", 
                 material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
                 imagenes: ["assets/AL-M1.jpeg", "assets/AL-M2.jpeg"], 
-                video: "assets/AL-video.webm", // CON VIDEO
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D para verdaderos hinchas de Alianza Lima." 
+                video: "assets/AL-video.webm", 
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
             },
             { 
                 id: 103, categoria: "Holders", nombre: "HOLDER SPORTING CRISTAL", 
                 material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
                 imagenes: ["assets/SC-M1.png", "assets/SC-M2.png"], 
-                video: "assets/SC-video.webm", // CON VIDEO
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D para hinchas celestes." 
+                video: "assets/SC-video.webm", 
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
             },
             { 
                 id: 104, categoria: "Holders", nombre: "HOLDER SPORT BOYS", 
                 material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
                 imagenes: ["assets/SBA-M1.png", "assets/SBA-M2.png"], 
-                video: "assets/SBA-video.webm", // CON VIDEO
-                descripcion: "Exclusivo organizador de escritorio del puerto." 
+                video: "assets/SBA-video.webm", 
+                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
             },
 
-            // --- ACCESORIOS ---
+            // --- ACCESORIOS (Último) ---
             { 
-                id: 50, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", 
+                id: 50, categoria: "Accesorios", nombre: "ORGANIZADOR CORAZÓN", 
+                material: "PLA Premium", tipo: "Accesorio 3D", precio: 29.00, 
+                imagenes: ["assets/ORGANIZADOR CORAZON.jpeg"], 
+                descripcion: "Práctico organizador con forma de corazón para accesorios.\nMedida: 13 CM ALT x 14 CM LARG x 11 CM ANCHO" 
+            },
+            { 
+                id: 51, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", 
                 material: "PLA Premium", tipo: "Accesorio 3D", precio: 20.00, 
                 imagenes: ["assets/acc-llavero-1.png", "assets/acc-llavero-2.png"], 
-                video: "assets/acc-llavero-video.mp4", // CON VIDEO
+                video: "assets/acc-llavero-video.mp4", 
                 descripcion: "Práctico llavero que funciona como soporte para tu celular." 
             }
         ];
 
-        // Definir orden de categorías asegurando que Holders vaya penúltimo y Accesorios al final
         const categoriasBase = ["Todas", ...new Set(productos.map(p => p.categoria))];
         let categorias = categoriasBase.filter(c => c !== "Holders" && c !== "Accesorios");
         if (categoriasBase.includes("Holders")) categorias.push("Holders");
@@ -443,21 +534,21 @@
         function generarHTMLProducto(producto) {
             const whatsappText = `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)}`;
             
-            // Detectar fotos y videos disponibles
+            // Detectar fotos y videos disponibles de manera inteligente
             const img1 = producto.imagenes[0];
             const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
             const hasVideo = !!producto.video; 
 
-            // Construcción del HTML de miniaturas condicionalmente
+            // Construcción dinámica de miniaturas
             let miniaturasHTML = `
-                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${!img2 && !hasVideo ? 'border-brand-accent thumb-active' : 'border-transparent thumb-active'} bg-gray-50 transition-all cursor-pointer hover:scale-105 shadow-sm shrink-0" title="Foto 1">
+                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${!img2 && !hasVideo ? 'border-brand-accent thumb-active' : 'border-transparent thumb-active'} bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
                     <img src="${img1}" class="w-full h-full object-cover">
                 </button>
             `;
 
             if (img2) {
                 miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-50 transition-all cursor-pointer hover:scale-105 shadow-sm shrink-0" title="Foto 2">
+                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
                     <img src="${img2}" class="w-full h-full object-cover">
                 </button>
                 `;
@@ -465,7 +556,7 @@
 
             if (hasVideo) {
                 miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-900 transition-all cursor-pointer hover:scale-105 relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
+                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
                     <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
                     <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
                         <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
@@ -504,7 +595,7 @@
                     </div>
 
                     <h3 class="print-title font-title text-xl font-bold text-brand-900 leading-tight mb-3">${producto.nombre}</h3>
-                    <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow">${producto.descripcion}</p>
+                    <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow whitespace-pre-line">${producto.descripcion}</p>
                     
                     <div class="print-mt-auto flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
                         <div class="flex flex-col">
@@ -537,7 +628,7 @@
             const thumb2 = document.getElementById(`thumb-2-${productId}`);
 
             // Resetear todos
-            img1.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105";
+            if (img1) img1.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105";
             if (img2) img2.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
             if (vid) {
                 vid.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
@@ -549,7 +640,7 @@
             if (thumb2) { thumb2.classList.remove('thumb-active'); thumb2.classList.add('border-transparent'); }
 
             // Activar seleccionado
-            if(index === 0) {
+            if(index === 0 && img1) {
                 img1.classList.remove('media-hidden');
                 img1.classList.add('media-active');
                 if (thumb0) { thumb0.classList.remove('border-transparent'); thumb0.classList.add('thumb-active'); }
