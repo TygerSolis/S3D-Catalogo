@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Oficial - S3D</title>
     
-    <!-- Fuentes: Inter para alta legibilidad, Montserrat para títulos de impacto -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
@@ -23,10 +21,10 @@
                     },
                     colors: {
                         brand: {
-                            900: '#002244', /* Azul marino muy oscuro (Logo) */
-                            800: '#003366', /* Azul marino medio */
-                            accent: '#0066cc', /* Azul brillante para CTA y botones */
-                            light: '#e6f0fa' /* Fondo azul muy suave */
+                            900: '#002244',
+                            800: '#003366',
+                            accent: '#0066cc',
+                            light: '#e6f0fa'
                         }
                     },
                     boxShadow: {
@@ -38,37 +36,26 @@
         }
     </script>
     
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
         .print-only, .print-only-flex { display: none; }
-
-        /* Estilos base */
         body { background-color: #ffffff; }
         
-        /* Ocultar elementos en tarjetas (para cambio dinámico media) */
         .media-hidden { opacity: 0; pointer-events: none; z-index: 0; }
         .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
         .media-transition { transition: opacity 0.4s ease-in-out; }
 
-        /* Estilos del thumb activo usando border-color estático (evita que la imagen se encoja) */
-        .thumb-active { border-color: #0066cc !important; }
-
-        /* Lightbox */
         #lightbox { display: none; }
         #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(8px); } }
         
-        /* Botones de navegación lightbox */
         .lightbox-nav-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
         .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
-
-        /* Ocultar la barra de desplazamiento en los filtros pero permitir arrastrar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- MODO IMPRESIÓN / PDF --- */
+        /* Reglas de Impresión */
         @media print {
             @page { size: A4 portrait; margin: 12mm; }
             body { background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -91,8 +78,8 @@
 
     <div class="print-only-flex items-center justify-between border-b-2 border-brand-accent pb-4 mb-6">
         <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-gray-200 bg-white p-1">
-                <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain rounded-lg">
+            <div class="w-16 h-16 rounded-xl overflow-hidden shadow-sm flex items-center justify-center shrink-0">
+                <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
             </div>
             <div>
                 <h1 class="font-title font-black text-4xl text-brand-900 tracking-tight leading-none">S3D</h1>
@@ -109,26 +96,22 @@
     <nav class="bg-white/90 backdrop-blur-lg sticky top-0 z-40 border-b border-gray-100 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <!-- Logo -->
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <div class="w-12 h-12 rounded-xl overflow-hidden bg-white border border-gray-100 flex items-center justify-center shadow-sm">
-                        <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain p-1">
+                    <div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-sm shrink-0">
+                        <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
                     </div>
                     <div>
                         <h1 class="font-title font-black text-2xl tracking-tight text-brand-900 leading-none">S3D</h1>
                         <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mt-1">Imprimimos tu mundo</p>
                     </div>
                 </div>
-                <!-- Contacto Nav -->
                 <div class="hidden sm:flex items-center gap-6 no-print">
                     <div class="flex items-center gap-4">
-                        <!-- Instagram SVG con color original en hover -->
-                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition-colors" title="Instagram">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition-colors group" title="Instagram">
+                            <svg class="w-5 h-5 group-hover:text-[#E1306C] transition-colors" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12.8 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
-                        <!-- Facebook SVG con color original en hover -->
-                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="text-gray-400 hover:text-[#1877F2] transition-colors" title="Facebook">
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="text-gray-400 hover:text-[#1877F2] transition-colors group" title="Facebook">
+                            <svg class="w-5 h-5 fill-current group-hover:text-[#1877F2] transition-colors" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
                         </a>
                     </div>
                     <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="bg-brand-light text-brand-accent hover:bg-brand-accent hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2">
@@ -146,7 +129,6 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Textos Hero -->
                 <div class="max-w-2xl">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light text-brand-accent font-semibold text-xs tracking-wider uppercase mb-6">
                         <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
@@ -156,7 +138,7 @@
                         Dando vida a tus <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-400">ideas en 3D.</span>
                     </h2>
                     <p class="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 font-light">
-                        Descubre nuestro catálogo de figuras, accesorios, holders personalizados y coleccionables. Fabricación digital con acabados artesanales y calidad premium.
+                        Descubre nuestro catálogo actualizado. Fabricación digital con acabados artesanales, calidad premium y personalización total.
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white px-8 py-4 rounded-full font-bold shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:shadow-[0_8px_25px_rgba(0,102,204,0.4)] hover:-translate-y-1 transition-all duration-300">
@@ -168,22 +150,18 @@
                     </div>
                 </div>
                 
-                <!-- Video Hero Elegante -->
                 <div class="relative hidden lg:block">
                     <div class="aspect-square rounded-[3rem] bg-gradient-to-tr from-brand-light to-blue-50/50 flex items-center justify-center p-6 relative overflow-hidden shadow-soft border border-white">
                         <div class="absolute w-full h-full border-[40px] border-white/40 rounded-full scale-150 -right-1/4 z-0 pointer-events-none"></div>
-                        
-                        <!-- Etiqueta Video Profesional -->
                         <video autoplay loop muted playsinline class="w-full h-full object-cover rounded-[2.5rem] relative z-10 shadow-2xl border-[6px] border-white/70" poster="assets/S3D.jpeg">
                             <source src="assets/video-presentacion.mp4" type="video/mp4">
-                            Tu navegador no soporta videos HTML5.
                         </video>
                     </div>
                     
                     <div class="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-2xl shadow-float border border-gray-100 flex items-center gap-3 z-20">
                         <span class="font-bold text-brand-900 text-sm">Calidad Garantizada</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
-                        <span class="text-xs text-gray-500 font-medium">Materiales Eco-amigables</span>
+                        <span class="text-xs text-gray-500 font-medium">Materiales Premium</span>
                     </div>
                 </div>
             </div>
@@ -207,7 +185,7 @@
     </div>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="main-content">
-        <!-- Contenido generado dinámicamente -->
+        <!-- Contenido generado dinámicamente por JS -->
     </main>
 
     <footer class="bg-brand-900 text-white pt-20 pb-10 border-t-[8px] border-brand-accent">
@@ -215,8 +193,8 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
                 <div class="md:col-span-5">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center overflow-hidden p-1">
-                            <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-contain">
+                        <div class="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden shrink-0 shadow-lg">
+                            <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
                         </div>
                         <div>
                             <h3 class="font-title text-3xl font-black tracking-tight">S3D</h3>
@@ -244,13 +222,11 @@
                 <div class="md:col-span-3">
                     <h4 class="font-title text-lg font-bold mb-6 text-white">Redes Sociales</h4>
                     <div class="flex space-x-3">
-                        <!-- Instagram Footer con colores originales -->
                         <a href="https://www.instagram.com/print.s3d" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent transition-all duration-300 shadow-sm group" title="Instagram">
-                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12.8 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
-                        <!-- Facebook Footer con colores originales -->
-                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-all duration-300 shadow-sm group" title="Facebook">
-                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white fill-current transition-colors" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 shadow-sm group" title="Facebook">
+                            <svg class="w-5 h-5 text-gray-300 group-hover:text-white fill-current transition-colors" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -276,7 +252,7 @@
             <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300 hidden">
             <video id="lightbox-vid" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl hidden" controls playsinline></video>
             <div id="lightbox-counter" class="absolute bottom-4 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest backdrop-blur-md">
-                1 / 3
+                1 / 1
             </div>
         </div>
 
@@ -289,232 +265,144 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         const productos = [
-            // --- TOY STORY ---
-            { 
-                id: 1, categoria: "Toy Story", nombre: "WOODY", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
-                imagenes: ["assets/ts-woody-1.png"], // SOLO 1 FOTO
-                descripcion: "Figura detallada de Woody impresa en 3D. Excelente calidad de acabados y pintura artesanal." 
-            },
-            { 
-                id: 2, categoria: "Toy Story", nombre: "JESSIE", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 75.00, 
-                imagenes: ["assets/ts-jessie-1.png", "assets/ts-jessie-2.png"], 
-                descripcion: "Figura detallada de Jessie la vaquerita impresa en 3D. Perfecta para coleccionistas." 
-            },
-            { 
-                id: 3, categoria: "Toy Story", nombre: "BUZZ", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
-                imagenes: ["assets/ts-buzz-1.png", "assets/ts-buzz-2.png"], 
-                descripcion: "Figura de Buzz Lightyear impresa en 3D con detalles de alta fidelidad." 
-            },
+            // --- MUÑECOS COLECCIONABLES (Fusión de Toy Story, Hello Kitty y Snoopy) ---
+            { id: 1, categoria: "Muñecos Coleccionables", nombre: "WOODY", medida: "33 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 99.00, imagenes: ["assets/ts-woody-1.png"], descripcion: "Figura detallada de Woody impresa en 3D." },
+            { id: 2, categoria: "Muñecos Coleccionables", nombre: "JESSIE", medida: "24 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 75.00, imagenes: ["assets/ts-jessie-1.png", "assets/ts-jessie-2.png"], descripcion: "Figura detallada de Jessie la vaquerita impresa en 3D." },
+            { id: 3, categoria: "Muñecos Coleccionables", nombre: "BUZZ", medida: "22 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, imagenes: ["assets/ts-buzz-1.png", "assets/ts-buzz-2.png"], descripcion: "Figura de Buzz Lightyear impresa en 3D." },
+            { id: 4, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY URBANA", medida: "28 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-urbana-1.png", "assets/hk-urbana-2.png"], descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano." },
+            { id: 5, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY FASHION", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, imagenes: ["assets/hk-fashion-1.png"], descripcion: "Modelo de Hello Kitty Fashion impreso en 3D." },
+            { id: 6, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SALUDOS", medida: "14 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 40.00, imagenes: ["assets/sn-saludo-1.png", "assets/sn-saludo-2.png"], descripcion: "Figura de Snoopy saludando." },
+            { id: 7, categoria: "Muñecos Coleccionables", nombre: "SNOOPY", medida: "12 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 30.00, imagenes: ["assets/sn-base-1.png", "assets/sn-base-2.png"], descripcion: "Figura estándar de Snoopy." },
+            { id: 8, categoria: "Muñecos Coleccionables", nombre: "SNOOPY AVIADOR", medida: "17 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, imagenes: ["assets/sn-aviador-1.png", "assets/sn-aviador-2.png"], descripcion: "El icónico Snoopy en su faceta de piloto aviador." },
+            { id: 9, categoria: "Muñecos Coleccionables", nombre: "SNOOPY ZZZ", medida: "22 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-zzz-1.png", "assets/sn-zzz-2.png"], descripcion: "Snoopy durmiendo plácidamente." },
+            { id: 10, categoria: "Muñecos Coleccionables", nombre: "SNOOPY PEAKY BLINDERS", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-peaky-1.png", "assets/sn-peaky-2.png"], video: "assets/sn-peaky-video.mp4", descripcion: "Snoopy con un estilo inspirado en la serie Peaky Blinders." },
+            { id: 11, categoria: "Muñecos Coleccionables", nombre: "SNOOPY TENISTA", medida: "13 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 50.00, imagenes: ["assets/sn-tenista-1.png", "assets/sn-tenista-2.png"], descripcion: "Figura de Snoopy listo para jugar al tenis." },
+            { id: 12, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SMOOTH CRIMINAL SET", medida: "22 CM", material: "PLA Premium", tipo: "Set 3D", precio: 95.00, imagenes: ["assets/sn-criminal-set-1.png", "assets/sn-criminal-set-2.png"], video: "assets/sn-criminal-set-video.mp4", descripcion: "Set completo de Snoopy estilo Smooth Criminal." },
+            { id: 13, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SMOOTH CRIMINAL", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], descripcion: "Snoopy estilo Smooth Criminal versión individual." },
 
-            // --- HELLO KITTY ---
-            { 
-                id: 4, categoria: "Hello Kitty", nombre: "HELLO KITTY URBANA", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
-                imagenes: ["assets/hk-urbana-1.png", "assets/hk-urbana-2.png"], 
-                descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano impreso en 3D." 
-            },
-            { 
-                id: 5, categoria: "Hello Kitty", nombre: "HELLO KITTY FASHION", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, 
-                imagenes: ["assets/hk-fashion-1.png"], // SOLO 1 FOTO
-                descripcion: "Modelo de Hello Kitty Fashion, ideal para adornar tu escritorio o habitación." 
-            },
+            // --- ADORNOS Y DECORACIÓN (Solo 1 imagen cada uno) ---
+            { id: 201, categoria: "Adornos y Decoración", nombre: "MADRE E HIJO", medida: "14.6 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/MADRE E HIJO.jpeg"], descripcion: "Hermosa figura que representa el amor maternal." },
+            { id: 202, categoria: "Adornos y Decoración", nombre: "CORAZÓN EN CORAZÓN", medida: "15 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/CORAZON EN CORAZON.jpeg"], descripcion: "Pieza decorativa con diseño de corazones entrelazados." },
+            { id: 203, categoria: "Adornos y Decoración", nombre: "CORAZÓN CON ROSA", medida: "12.3 / 20 CM", material: "PLA Premium", tipo: "Adorno", precio: 25.00, imagenes: ["assets/CORAZON CON ROSA.jpeg"], descripcion: "Detalle romántico y único, perfecto para regalar." },
+            { id: 204, categoria: "Adornos y Decoración", nombre: "OSO CON CORAZÓN", medida: "15.6 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/OSO CON CORAZON.jpeg"], descripcion: "Tierno oso impreso en 3D sosteniendo un corazón." },
+            { id: 205, categoria: "Adornos y Decoración", nombre: "TULIPÁN", medida: "24.2 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/TULIPAN.jpeg"], descripcion: "Flor de tulipán impresa en 3D, un toque de naturaleza." },
+            { id: 206, categoria: "Adornos y Decoración", nombre: "JARRÓN LUNA", medida: "24.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON LUNA.jpeg"], descripcion: "Elegante jarrón con forma de luna creciente, pieza única." },
+            { id: 207, categoria: "Adornos y Decoración", nombre: "JARRÓN TWISTING ELEG", medida: "25 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON TWISTING.jpeg"], descripcion: "Sofisticado jarrón con un diseño de torsión elegante y fluido." },
+            { id: 208, categoria: "Adornos y Decoración", nombre: "JARRÓN TEXTURIZADO", medida: "25 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON TEZTURIZADO.jpeg"], descripcion: "Jarrón con una textura geométrica única y elegante." },
+            { id: 209, categoria: "Adornos y Decoración", nombre: "JARRÓN ESPIRAL G", medida: "28.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON ESPIRAL G.jpeg"], descripcion: "Jarrón alto en espiral, ideal para arreglos grandes." },
+            { id: 210, categoria: "Adornos y Decoración", nombre: "JARRÓN ESPIRAL D", medida: "24.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON ESPIRAL D.jpeg"], descripcion: "Jarrón decorativo con diseño de giro en espiral." },
+            { id: 211, categoria: "Adornos y Decoración", nombre: "ELEFANTITO", medida: "15 CM", material: "PLA Premium", tipo: "Adorno", precio: 35.00, imagenes: ["assets/ELEFANTITO.jpeg"], descripcion: "Tierno elefantito impreso en 3D." },
 
-            // --- SNOOPY ---
-            { 
-                id: 6, categoria: "Snoopy", nombre: "SNOOPY SALUDO", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 40.00, 
-                imagenes: ["assets/sn-saludo-1.png", "assets/sn-saludo-2.png"], 
-                descripcion: "Clásica figura de Snoopy saludando, impresa con gran nivel de detalle." 
-            },
-            { 
-                id: 7, categoria: "Snoopy", nombre: "SNOOPY", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 35.00, 
-                imagenes: ["assets/sn-base-1.png", "assets/sn-base-2.png"], 
-                descripcion: "Figura estándar de Snoopy, perfecta para iniciar tu colección." 
-            },
-            { 
-                id: 8, categoria: "Snoopy", nombre: "SNOOPY AVIADOR", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, 
-                imagenes: ["assets/sn-aviador-1.png", "assets/sn-aviador-2.png"], 
-                descripcion: "El icónico Snoopy en su faceta de piloto aviador." 
-            },
-            { 
-                id: 9, categoria: "Snoopy", nombre: "SNOOPY ZZZ", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
-                imagenes: ["assets/sn-zzz-1.png", "assets/sn-zzz-2.png"], 
-                descripcion: "Snoopy durmiendo plácidamente. Una escena clásica inmortalizada en 3D." 
-            },
-            { 
-                id: 10, categoria: "Snoopy", nombre: "SNOOPY PEAKY BLINDERS", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
-                imagenes: ["assets/sn-peaky-1.png", "assets/sn-peaky-2.png"], 
-                video: "assets/sn-peaky-video.mp4", // CON VIDEO
-                descripcion: "Snoopy con un estilo elegante y rebelde inspirado en la famosa serie." 
-            },
-            { 
-                id: 11, categoria: "Snoopy", nombre: "SNOOPY TENISTA", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 50.00, 
-                imagenes: ["assets/sn-tenista-1.png", "assets/sn-tenista-2.png"], 
-                descripcion: "Figura de Snoopy listo para jugar al tenis." 
-            },
-            { 
-                id: 12, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL SET", 
-                material: "PLA Premium", tipo: "Set 3D", precio: 95.00, // PRECIO ACTUALIZADO
-                imagenes: ["assets/sn-criminal-set-1.png", "assets/sn-criminal-set-2.png"], 
-                video: "assets/sn-criminal-set-video.mp4", // CON VIDEO
-                descripcion: "Set completo de Snoopy estilo Smooth Criminal. Una joya para coleccionistas." 
-            },
-            { 
-                id: 13, categoria: "Snoopy", nombre: "SNOOPY SMOOTH CRIMINAL", 
-                material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, 
-                imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], // SIN VIDEO
-                descripcion: "Snoopy individual con su traje estilo Smooth Criminal." 
-            },
+            // --- BARBERIA (2 espacios) ---
+            { id: 301, categoria: "Barbería", nombre: "ROTULO BARBERÍA", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/barber-rotulo-1.jpeg", "assets/barber-rotulo-2.jpeg"], descripcion: "Rótulo decorativo en 3D para barbería." },
+            { id: 302, categoria: "Barbería", nombre: "FRAME LUZ BARBERÍA 3D", medida: "25X20 CM", material: "PLA / LED", tipo: "Iluminación", precio: 70.00, imagenes: ["assets/barber-frame3d-1.jpeg", "assets/barber-frame3d-2.jpeg"], descripcion: "Cuadro en 3D iluminado con temática de barbería." },
+            { id: 303, categoria: "Barbería", nombre: "FRAME LUZ S3D", medida: "15X15 CM", material: "PLA / LED", tipo: "Iluminación", precio: 70.00, imagenes: ["assets/barber-frames3d-1.jpeg", "assets/barber-frames3d-2.jpeg"], descripcion: "Cuadro en 3D S3D iluminado." },
+            { id: 304, categoria: "Barbería", nombre: "BARBER LAMP S3D", medida: "28X14 CM", material: "PLA / LED", tipo: "Iluminación", precio: 110.00, imagenes: ["assets/barber-lamp-1.jpeg", "assets/barber-lamp-2.jpeg"], descripcion: "Lámpara decorativa LED exclusiva para barberías." },
+            { id: 305, categoria: "Barbería", nombre: "LINE ART S3D", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/barber-lineart-1.jpeg", "assets/barber-lineart-2.jpeg"], descripcion: "Arte lineal en 3D decorativo." },
+            { id: 306, categoria: "Barbería", nombre: "SCISSORS CARD S3D", medida: "13X12 CM", material: "PLA Premium", tipo: "Organizador", precio: 30.00, imagenes: ["assets/barber-scissors-1.jpeg", "assets/barber-scissors-2.jpeg"], descripcion: "Organizador especializado para tijeras de barbería." },
+            { id: 307, categoria: "Barbería", nombre: "PORTA GUÍAS 3D", medida: "23X7X6 CM", material: "PLA Premium", tipo: "Organizador", precio: 90.00, imagenes: ["assets/barber-porta-1.jpeg", "assets/barber-porta-2.jpeg"], descripcion: "Práctico organizador de guías de corte para máquinas." },
 
-            // --- ADORNOS (Colección Día de la Madre y Decoración) ---
-            { 
-                id: 201, categoria: "Adornos", nombre: "MADRE E HIJO", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 35.00, 
-                imagenes: ["assets/MADRE E HIJO.jpeg"], 
-                descripcion: "Hermosa figura impresa en 3D que representa el amor maternal.\nMedida: 14,6 CM" 
-            },
-            { 
-                id: 202, categoria: "Adornos", nombre: "CORAZÓN EN CORAZÓN", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 30.00, 
-                imagenes: ["assets/CORAZON EN CORAZON.jpeg"], 
-                descripcion: "Elegante pieza decorativa con diseño de corazones entrelazados.\nMedida: 15,0 CM" 
-            },
-            { 
-                id: 203, categoria: "Adornos", nombre: "CORAZÓN CON ROSA", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 21.00, 
-                imagenes: ["assets/CORAZON CON ROSA.jpeg"], 
-                descripcion: "Detalle romántico y único, perfecto para regalar.\nMedida: 12,3 CM / 20,0 CM" 
-            },
-            { 
-                id: 204, categoria: "Adornos", nombre: "OSO CORAZÓN", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 28.00, 
-                imagenes: ["assets/OSO CON CORAZON.jpeg"], 
-                descripcion: "Tierno oso impreso en 3D sosteniendo un corazón. Ideal para regalo.\nMedida: 15,6 CM" 
-            },
-            { 
-                id: 205, categoria: "Adornos", nombre: "JARRÓN CHINO", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 24.00, 
-                imagenes: ["assets/JARRON CHINO.jpeg", "assets/JARRON CHINO2.jpeg"], 
-                descripcion: "Jarrón con un diseño clásico inspirado en la porcelana china.\nMedida: 25,0 CM" 
-            },
-            { 
-                id: 206, categoria: "Adornos", nombre: "TULIPÁN", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 32.00, 
-                imagenes: ["assets/TULIPAN.jpeg"], 
-                descripcion: "Flor de tulipán impresa en 3D, un toque de naturaleza.\nMedida: 24,2 CM" 
-            },
-            { 
-                id: 207, categoria: "Adornos", nombre: "JARRÓN ESPIRAL BASE", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 34.00, 
-                imagenes: ["assets/JARRON ESPIRAL BASE.jpeg"], 
-                descripcion: "Moderno jarrón espiral que aporta dinamismo a cualquier espacio.\nMedida: 19,00 CM" 
-            },
-            { 
-                id: 208, categoria: "Adornos", nombre: "JARRÓN LUNA", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 25.00, 
-                imagenes: ["assets/JARRON LUNA.jpeg"], 
-                descripcion: "Elegante jarrón con forma de luna creciente, pieza única.\nMedida: 17,2 CM" 
-            },
-            { 
-                id: 209, categoria: "Adornos", nombre: "JARRÓN TWISTING ELEG", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 34.00, 
-                imagenes: ["assets/JARRON TWISTING.jpeg"], 
-                descripcion: "Sofisticado jarrón con un diseño de torsión elegante y fluido.\nMedida: 25 CM" 
-            },
-            { 
-                id: 210, categoria: "Adornos", nombre: "JARRÓN TEXTURIZADO", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 31.00, 
-                imagenes: ["assets/JARRON TEZTURIZADO.jpeg"], // Manteniendo el typo original en tu imagen
-                descripcion: "Jarrón con una textura geométrica única y elegante.\nMedida: 25 CM" 
-            },
-            { 
-                id: 211, categoria: "Adornos", nombre: "JARRÓN ESPIRAL G", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 36.00, 
-                imagenes: ["assets/JARRON ESPIRAL G.jpeg"], 
-                descripcion: "Jarrón alto en espiral, ideal para arreglos grandes.\nMedida: 25 CM" 
-            },
-            { 
-                id: 212, categoria: "Adornos", nombre: "JARRÓN ESPIRAL B", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 29.00, 
-                imagenes: ["assets/JARRON ESPIRAL B.jpeg"], 
-                descripcion: "Versión mediana de nuestro clásico jarrón espiral.\nMedida: 20 CM" 
-            },
-            { 
-                id: 213, categoria: "Adornos", nombre: "JARRÓN ESPIRAL D", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 25.00, 
-                imagenes: ["assets/JARRON ESPIRAL D.jpeg"], 
-                descripcion: "Pequeño y decorativo jarrón con giro cerrado.\nMedida: 18 CM" 
-            },
-            { 
-                id: 214, categoria: "Adornos", nombre: "ELEFANTITO", 
-                material: "PLA Premium", tipo: "Adorno 3D", precio: 28.00, 
-                imagenes: ["assets/ELEFANTITO.jpeg"], 
-                descripcion: "Tierno elefantito impreso en 3D, perfecto para decorar cualquier espacio o regalar.\nMedida: 15 CM" 
-            },
+            // --- MASCOTA (2 espacios) ---
+            { id: 401, categoria: "Mascota", nombre: "HUESO M NARANJA", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-n-1.jpeg", "assets/pet-hueso-n-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 402, categoria: "Mascota", nombre: "HUESO M LILA", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-l-1.jpeg", "assets/pet-hueso-l-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 403, categoria: "Mascota", nombre: "HUESO M CELESTE", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-c-1.jpeg", "assets/pet-hueso-c-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 404, categoria: "Mascota", nombre: "HUESO M BLANCO", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-b-1.jpeg", "assets/pet-hueso-b-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 405, categoria: "Mascota", nombre: "HUESO M VERDE", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-v-1.jpeg", "assets/pet-hueso-v-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 406, categoria: "Mascota", nombre: "HUELLA XL NARANJA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xln-1.jpeg", "assets/pet-huella-xln-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 407, categoria: "Mascota", nombre: "HUELLA XL LILA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xll-1.jpeg", "assets/pet-huella-xll-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 408, categoria: "Mascota", nombre: "HUELLA XL CELESTE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlc-1.jpeg", "assets/pet-huella-xlc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 409, categoria: "Mascota", nombre: "HUELLA XL BLANCO", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlb-1.jpeg", "assets/pet-huella-xlb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 410, categoria: "Mascota", nombre: "HUELLA XL VERDE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlv-1.jpeg", "assets/pet-huella-xlv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 411, categoria: "Mascota", nombre: "HUELLA XS NARANJA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsn-1.jpeg", "assets/pet-huella-xsn-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 412, categoria: "Mascota", nombre: "HUELLA XS LILA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsl-1.jpeg", "assets/pet-huella-xsl-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 413, categoria: "Mascota", nombre: "HUELLA XS CELESTE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsc-1.jpeg", "assets/pet-huella-xsc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 414, categoria: "Mascota", nombre: "HUELLA XS BLANCO", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsb-1.jpeg", "assets/pet-huella-xsb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 415, categoria: "Mascota", nombre: "HUELLA XS VERDE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsv-1.jpeg", "assets/pet-huella-xsv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
 
-            // --- HOLDERS (Penúltimo) ---
-            { 
-                id: 101, categoria: "Holders", nombre: "HOLDER UNIVERSITARIO", 
-                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
-                imagenes: ["assets/U-M1.png", "assets/U-M2.png"], 
-                video: "assets/U-video.webm", 
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
-            },
-            { 
-                id: 102, categoria: "Holders", nombre: "HOLDER ALIANZA LIMA", 
-                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
-                imagenes: ["assets/AL-M1.jpeg", "assets/AL-M2.jpeg"], 
-                video: "assets/AL-video.webm", 
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
-            },
-            { 
-                id: 103, categoria: "Holders", nombre: "HOLDER SPORTING CRISTAL", 
-                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
-                imagenes: ["assets/SC-M1.png", "assets/SC-M2.png"], 
-                video: "assets/SC-video.webm", 
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
-            },
-            { 
-                id: 104, categoria: "Holders", nombre: "HOLDER SPORT BOYS", 
-                material: "PLA Premium", tipo: "Organizador / Holder", precio: 40.00, 
-                imagenes: ["assets/SBA-M1.png", "assets/SBA-M2.png"], 
-                video: "assets/SBA-video.webm", 
-                descripcion: "Exclusivo organizador de escritorio impreso en 3D." 
-            },
+            // --- LLAVEROS (2 espacios) ---
+            { id: 501, categoria: "Llaveros", nombre: "ANTISOCIAL", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-antisocial-1.jpeg", "assets/ll-antisocial-2.jpeg"], descripcion: "Llavero impreso en 3D con diseño moderno." },
+            { id: 502, categoria: "Llaveros", nombre: "TAXI", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-taxi-1.jpeg", "assets/ll-taxi-2.jpeg"], descripcion: "Llavero temático impreso en 3D." },
+            { id: 503, categoria: "Llaveros", nombre: "DEBI TIRAR MÁS FOTOS", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-debi-1.jpeg", "assets/ll-debi-2.jpeg"], descripcion: "Llavero impreso en 3D." },
+            { id: 504, categoria: "Llaveros", nombre: "OFF WHITE", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-offwhite-1.jpeg", "assets/ll-offwhite-2.jpeg"], descripcion: "Llavero con diseño urbano impreso en 3D." },
+            { id: 505, categoria: "Llaveros", nombre: "JORDAN", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-jordan-1.jpeg", "assets/ll-jordan-2.jpeg"], descripcion: "Llavero clásico impreso en 3D." },
+            { id: 506, categoria: "Llaveros", nombre: "COCHERAS ALIEN", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-alien-1.jpeg", "assets/ll-alien-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 507, categoria: "Llaveros", nombre: "COCHERAS PORSH", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-porsh-1.jpeg", "assets/ll-porsh-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 508, categoria: "Llaveros", nombre: "COCHERAS LEXUS", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-lexus-1.jpeg", "assets/ll-lexus-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 509, categoria: "Llaveros", nombre: "COCHERAS HYUNDAI", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-hyundai-1.jpeg", "assets/ll-hyundai-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 510, categoria: "Llaveros", nombre: "COCHERAS TOYOTA", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-toyota-1.jpeg", "assets/ll-toyota-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 511, categoria: "Llaveros", nombre: "COCHERAS CERATO", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-cerato-1.jpeg", "assets/ll-cerato-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 512, categoria: "Llaveros", nombre: "TEST RED BULL", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-redbull-1.jpeg", "assets/ll-redbull-2.jpeg"], descripcion: "Llavero temático deportivo." },
+            { id: 513, categoria: "Llaveros", nombre: "COCHERAS KIA", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-kia-1.jpeg", "assets/ll-kia-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 514, categoria: "Llaveros", nombre: "COCHERAS GLORY", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-glory-1.jpeg", "assets/ll-glory-2.jpeg"], descripcion: "Llavero temático automotriz." },
 
-            // --- ACCESORIOS (Último) ---
-            { 
-                id: 50, categoria: "Accesorios", nombre: "ORGANIZADOR CORAZÓN", 
-                material: "PLA Premium", tipo: "Accesorio 3D", precio: 29.00, 
-                imagenes: ["assets/ORGANIZADOR CORAZON.jpeg"], 
-                descripcion: "Práctico organizador con forma de corazón para accesorios.\nMedida: 13 CM ALT x 14 CM LARG x 11 CM ANCHO" 
-            },
-            { 
-                id: 51, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", 
-                material: "PLA Premium", tipo: "Accesorio 3D", precio: 20.00, 
-                imagenes: ["assets/acc-llavero-1.png", "assets/acc-llavero-2.png"], 
-                video: "assets/acc-llavero-video.mp4", 
-                descripcion: "Práctico llavero que funciona como soporte para tu celular." 
-            }
+            // --- LINE ART (2 espacios) ---
+            { id: 601, categoria: "Line Art", nombre: "BIG THREE", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-bigthree-1.jpeg", "assets/la-bigthree-2.jpeg"], descripcion: "Decoración en arte lineal 3D de alta definición." },
+            { id: 602, categoria: "Line Art", nombre: "HERMANAS W", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-hermanas-1.jpeg", "assets/la-hermanas-2.jpeg"], descripcion: "Decoración en arte lineal 3D." },
+            { id: 603, categoria: "Line Art", nombre: "RAYO MC QUEEN", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-rayo-1.jpeg", "assets/la-rayo-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
+            { id: 604, categoria: "Line Art", nombre: "DOC HUDSON", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-doc-1.jpeg", "assets/la-doc-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
+            { id: 605, categoria: "Line Art", nombre: "MATE", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-mate-1.jpeg", "assets/la-mate-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
+
+            // --- ESPEJO INFINITO Y LED (2 espacios) ---
+            { id: 701, categoria: "Espejo Infinito", nombre: "ESPEJO INFINITO", medida: "20 CM", material: "PLA / LED", tipo: "Iluminación", precio: 90.00, imagenes: ["assets/ei-espejo-1.jpeg", "assets/ei-espejo-2.jpeg"], descripcion: "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación." },
+            { id: 801, categoria: "Iluminación LED 3D", nombre: "LETRERO LED", medida: "30 CM", material: "PLA / LED", tipo: "Letrero", precio: 100.00, imagenes: ["assets/led-letrero-1.jpeg", "assets/led-letrero-2.jpeg"], descripcion: "Letrero luminoso personalizado. Diseño fotográfico." },
+            { id: 802, categoria: "Iluminación LED 3D", nombre: "LÁMPARA LED CARS PERSONALIZADA", medida: "25 CM", material: "PLA / LED", tipo: "Lámpara", precio: 120.00, imagenes: ["assets/led-cars-1.jpeg", "assets/led-cars-2.jpeg"], descripcion: "Lámpara temática con nombre personalizable." },
+            { id: 803, categoria: "Iluminación LED 3D", nombre: "LIGHT BOX RAYO", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 80.00, imagenes: ["assets/led-boxrayo-1.jpeg", "assets/led-boxrayo-2.jpeg"], descripcion: "Caja de luz decorativa." },
+            { id: 804, categoria: "Iluminación LED 3D", nombre: "LÁMPARA LED GR", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 95.00, imagenes: ["assets/led-gr-1.jpeg", "assets/led-gr-2.jpeg"], descripcion: "Lámpara decorativa LED de diseño." },
+            { id: 805, categoria: "Iluminación LED 3D", nombre: "BOX LIGHT 1", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 85.00, imagenes: ["assets/led-box1-1.jpeg", "assets/led-box1-2.jpeg"], descripcion: "Caja de luz iluminada." },
+            { id: 806, categoria: "Iluminación LED 3D", nombre: "BOX LIGHT 2", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 85.00, imagenes: ["assets/led-box2-1.jpeg", "assets/led-box2-2.jpeg"], descripcion: "Caja de luz iluminada." },
+            { id: 807, categoria: "Iluminación LED 3D", nombre: "LUNA LED", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 75.00, imagenes: ["assets/led-luna-1.jpeg", "assets/led-luna-2.jpeg"], descripcion: "Hermosa lámpara iluminada en forma de luna." },
+            { id: 808, categoria: "Iluminación LED 3D", nombre: "SEARCHLIGHT", medida: "Variable", material: "PLA / LED", tipo: "Iluminación", precio: 150.00, imagenes: ["assets/led-searchlight-1.jpeg", "assets/led-searchlight-2.jpeg"], descripcion: "Proyector de iluminación con pantallas frontales intercambiables." },
+
+            // --- DUMMY (2 espacios) ---
+            { id: 901, categoria: "Dummy", nombre: "SKUMMY MOJITO", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-skummy-1.jpeg", "assets/du-skummy-2.jpeg"], descripcion: "Figura totalmente articulada de colección." },
+            { id: 902, categoria: "Dummy", nombre: "DUMMY", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-dummy1-1.jpeg", "assets/du-dummy1-2.jpeg"], descripcion: "Figura articulada base." },
+            { id: 903, categoria: "Dummy", nombre: "CLABY", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-claby-1.jpeg", "assets/du-claby-2.jpeg"], descripcion: "Figura articulada de colección." },
+            { id: 904, categoria: "Dummy", nombre: "DUMMY V2", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-dummy2-1.jpeg", "assets/du-dummy2-2.jpeg"], descripcion: "Segunda versión de la figura articulada Dummy." },
+            { id: 905, categoria: "Dummy", nombre: "MOCHILA DUMMY PERSONALIZADA", medida: "Accesorio", material: "PLA Premium", tipo: "Accesorio", precio: 20.00, imagenes: ["assets/du-mochila-1.jpeg", "assets/du-mochila-2.jpeg"], descripcion: "Mochila a medida para personalizar a tu figura Dummy." },
+
+            // --- HOLDERS ---
+            // Primeros 4: 3 fotos, SIN video
+            { id: 1001, categoria: "Holders", nombre: "HOLDER UNIVERSITARIO", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/U-M1.png", "assets/U-M2.png", "assets/U-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1002, categoria: "Holders", nombre: "HOLDER ALIANZA LIMA", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/AL-M1.png", "assets/AL-M2.png", "assets/AL-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1003, categoria: "Holders", nombre: "HOLDER SPORTING CRISTAL", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/SC-M1.png", "assets/SC-M2.png", "assets/SC-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1004, categoria: "Holders", nombre: "HOLDER SPORT BOYS", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/SBA-M1.png", "assets/SBA-M2.png", "assets/SBA-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            // Siguientes 4: 2 fotos, SIN video
+            { id: 1005, categoria: "Holders", nombre: "HOLDER CIENCIANO", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/CIE-M1.png", "assets/CIE-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1006, categoria: "Holders", nombre: "HOLDER REAL MADRID", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/RM-M1.png", "assets/RM-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1009, categoria: "Holders", nombre: "HOLDER KNICKS BASQUETBOL", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/KNI-M1.png", "assets/KNI-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1010, categoria: "Holders", nombre: "HOLDER JIU JITSU", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/JIU-M1.png", "assets/JIU-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            // Últimos 2: 1 foto, SIN video
+            { id: 1007, categoria: "Holders", nombre: "HOLDER BARCELONA", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/BAR-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1008, categoria: "Holders", nombre: "HOLDER PSG", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/PSG-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+
+            // --- ACCESORIOS (Con video) ---
+            { id: 2001, categoria: "Accesorios", nombre: "ORGANIZADOR CORAZÓN", medida: "13x14x11 CM", material: "PLA Premium", tipo: "Accesorio 3D", precio: 29.00, imagenes: ["assets/ORGANIZADOR CORAZON.jpeg"], video: "assets/org-corazon-video.webm", descripcion: "Práctico organizador con forma de corazón para accesorios." },
+            { id: 2002, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", medida: "Llavero", material: "PLA Premium", tipo: "Accesorio 3D", precio: 20.00, imagenes: ["assets/acc-llavero-1.png", "assets/acc-llavero-2.png"], video: "assets/acc-llavero-video.mp4", descripcion: "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables." }
         ];
 
-        const categoriasBase = ["Todas", ...new Set(productos.map(p => p.categoria))];
-        let categorias = categoriasBase.filter(c => c !== "Holders" && c !== "Accesorios");
-        if (categoriasBase.includes("Holders")) categorias.push("Holders");
-        if (categoriasBase.includes("Accesorios")) categorias.push("Accesorios");
+        const ordenDeseado = [
+            "Muñecos Coleccionables", 
+            "Adornos y Decoración", 
+            "Barbería", 
+            "Mascota", 
+            "Llaveros", 
+            "Line Art", 
+            "Espejo Infinito", 
+            "Iluminación LED 3D", 
+            "Dummy", 
+            "Holders", 
+            "Accesorios"
+        ];
+        
+        let categoriasPresentes = [...new Set(productos.map(p => p.categoria))];
+        let categorias = ["Todas"];
+        
+        ordenDeseado.forEach(cat => {
+            if (categoriasPresentes.includes(cat)) categorias.push(cat);
+        });
 
         let categoriaActual = "Todas";
         let terminoBusqueda = "";
-
         const filtersContainer = document.getElementById('category-filters');
         
         function renderFilters() {
@@ -533,46 +421,49 @@
 
         function generarHTMLProducto(producto) {
             const whatsappText = `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)}`;
-            
-            // Detectar fotos y videos disponibles de manera inteligente
             const img1 = producto.imagenes[0];
             const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
+            const img3 = producto.imagenes.length > 2 ? producto.imagenes[2] : null;
             const hasVideo = !!producto.video; 
+            
+            let miniaturasHTML = ``;
 
-            // Construcción dinámica de miniaturas
-            let miniaturasHTML = `
-                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 ${!img2 && !hasVideo ? 'border-brand-accent thumb-active' : 'border-transparent thumb-active'} bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
+            if (img1) {
+                miniaturasHTML += `
+                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
                     <img src="${img1}" class="w-full h-full object-cover">
-                </button>
-            `;
-
+                </button>`;
+            }
             if (img2) {
                 miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
+                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
                     <img src="${img2}" class="w-full h-full object-cover">
-                </button>
-                `;
+                </button>`;
             }
-
+            if (img3) {
+                miniaturasHTML += `
+                <button onclick="switchMedia(${producto.id}, 3)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
+                    <img src="${img3}" class="w-full h-full object-cover">
+                </button>`;
+            }
             if (hasVideo) {
                 miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
+                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
                     <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
                     <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
                         <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
                     </div>
-                </button>
-                `;
+                </button>`;
             }
 
             return `
             <div class="print-break-avoid bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-float transition-all duration-500 border border-gray-100 flex flex-col h-full group print-shadow-none">
                 
                 <div class="media-viewer relative w-full h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
-                    <img id="media-img1-${producto.id}" src="${img1}" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Foto+1'">
+                    <img id="media-img1-${producto.id}" src="${img1}" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Sin+Foto'">
                     
-                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Espacio+Foto+2'">` : ''}
-                    
+                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
+                    ${img3 ? `<img id="media-img3-${producto.id}" src="${img3}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
                     ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
 
                     <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 shadow-sm z-20 no-print">
@@ -580,17 +471,17 @@
                     </div>
                 </div>
 
-                <div class="thumbnails-container flex justify-center gap-3 sm:gap-4 p-4 bg-white border-b border-gray-50 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)]">
+                <div class="thumbnails-container flex justify-center gap-3 sm:gap-4 p-4 bg-white border-b border-gray-50 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)] min-h-[5.5rem]">
                     ${miniaturasHTML}
                 </div>
 
                 <div class="print-card-body p-6 md:p-8 flex flex-col flex-grow bg-white z-30">
                     <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="inline-flex items-center gap-1.5 bg-gray-100 text-gray-700 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                            <i data-lucide="ruler" class="w-3.5 h-3.5"></i> ${producto.medida}
+                        </span>
                         <span class="inline-flex items-center gap-1.5 bg-brand-light text-brand-800 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
                             <i data-lucide="layers" class="w-3.5 h-3.5"></i> ${producto.material}
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 bg-gray-100 text-gray-600 text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
-                            <i data-lucide="box" class="w-3.5 h-3.5"></i> ${producto.tipo}
                         </span>
                     </div>
 
@@ -621,37 +512,43 @@
 
             const img1 = document.getElementById(`media-img1-${productId}`);
             const img2 = document.getElementById(`media-img2-${productId}`);
+            const img3 = document.getElementById(`media-img3-${productId}`);
             const vid = document.getElementById(`media-vid-${productId}`);
             
             const thumb0 = document.getElementById(`thumb-0-${productId}`);
             const thumb1 = document.getElementById(`thumb-1-${productId}`);
             const thumb2 = document.getElementById(`thumb-2-${productId}`);
+            const thumb3 = document.getElementById(`thumb-3-${productId}`);
 
-            // Resetear todos
             if (img1) img1.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105";
             if (img2) img2.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
+            if (img3) img3.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
             if (vid) {
                 vid.className = "media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition";
                 vid.pause();
             }
 
-            if (thumb0) { thumb0.classList.remove('thumb-active'); thumb0.classList.add('border-transparent'); }
-            if (thumb1) { thumb1.classList.remove('thumb-active'); thumb1.classList.add('border-transparent'); }
-            if (thumb2) { thumb2.classList.remove('thumb-active'); thumb2.classList.add('border-transparent'); }
+            if (thumb0) { thumb0.classList.remove('border-brand-accent'); thumb0.classList.add('border-transparent'); }
+            if (thumb1) { thumb1.classList.remove('border-brand-accent'); thumb1.classList.add('border-transparent'); }
+            if (thumb2) { thumb2.classList.remove('border-brand-accent'); thumb2.classList.add('border-transparent'); }
+            if (thumb3) { thumb3.classList.remove('border-brand-accent'); thumb3.classList.add('border-transparent'); }
 
-            // Activar seleccionado
             if(index === 0 && img1) {
                 img1.classList.remove('media-hidden');
                 img1.classList.add('media-active');
-                if (thumb0) { thumb0.classList.remove('border-transparent'); thumb0.classList.add('thumb-active'); }
+                if (thumb0) { thumb0.classList.remove('border-transparent'); thumb0.classList.add('border-brand-accent'); }
             } else if (index === 1 && img2) {
                 img2.classList.remove('media-hidden');
                 img2.classList.add('media-active');
-                if (thumb1) { thumb1.classList.remove('border-transparent'); thumb1.classList.add('thumb-active'); }
+                if (thumb1) { thumb1.classList.remove('border-transparent'); thumb1.classList.add('border-brand-accent'); }
+            } else if (index === 3 && img3) {
+                img3.classList.remove('media-hidden');
+                img3.classList.add('media-active');
+                if (thumb3) { thumb3.classList.remove('border-transparent'); thumb3.classList.add('border-brand-accent'); }
             } else if (index === 2 && vid) {
                 vid.classList.remove('media-hidden');
                 vid.classList.add('media-active');
-                if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('thumb-active'); }
+                if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('border-brand-accent'); }
                 vid.play();
             }
         };
@@ -670,24 +567,28 @@
                 return cumpleCategoria && cumpleBusqueda;
             });
 
-            // Ordenar categorías: Holders penúltimo, Accesorios al final
-            let categoriasPresentes = [...new Set(productosFiltrados.map(p => p.categoria))];
-            let catsFiltered = categoriasPresentes.filter(c => c !== "Holders" && c !== "Accesorios");
-            if (categoriasPresentes.includes("Holders")) catsFiltered.push("Holders");
-            if (categoriasPresentes.includes("Accesorios")) catsFiltered.push("Accesorios");
-            categoriasPresentes = catsFiltered;
+            let categoriasA_Renderizar = [];
+            ordenDeseado.forEach(cat => {
+                if (productosFiltrados.some(p => p.categoria === cat)) {
+                    categoriasA_Renderizar.push(cat);
+                }
+            });
 
             let htmlCompleto = '';
 
-            for (const categoria of categoriasPresentes) {
+            for (const categoria of categoriasA_Renderizar) {
                 const items = productosFiltrados.filter(p => p.categoria === categoria);
                 if(items.length === 0) continue;
 
                 let extraHeaderNote = '';
                 if (categoria === "Holders") {
-                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">✨ Exclusivos organizadores de escritorio impresos en 3D. Personalizables de tu equipo de fútbol peruano o internacional de preferencia.</p>`;
+                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">✨ Exclusivos organizadores de escritorio impresos en 3D. Personalizables de tu equipo de preferencia. (Incluye caja de presentación especial LIGA 1).</p>`;
                 } else if (categoria === "Accesorios") {
                     extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">✨ Personaliza el color y el nombre inscrito en él a tu gusto.</p>`;
+                } else if (categoria === "Mascota") {
+                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">🐾 Placas de identificación. Disponibles en hermosos colores por modelo.</p>`;
+                } else if (categoria === "Iluminación LED 3D") {
+                    extraHeaderNote = `<p class="text-sm text-brand-accent font-semibold mt-2">💡 Diseños únicos iluminados para resaltar cualquier espacio.</p>`;
                 }
 
                 htmlCompleto += `
@@ -739,7 +640,6 @@
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
 
-            // Construir arreglo de media solo con lo que existe
             currentLightboxMediaArray = [
                 { type: 'img', src: prod.imagenes[0] }
             ];
@@ -747,15 +647,19 @@
             if (prod.imagenes.length > 1) {
                 currentLightboxMediaArray.push({ type: 'img', src: prod.imagenes[1] });
             }
+            if (prod.imagenes.length > 2) {
+                currentLightboxMediaArray.push({ type: 'img', src: prod.imagenes[2] });
+            }
             if (prod.video) {
                 currentLightboxMediaArray.push({ type: 'vid', src: prod.video });
             }
 
-            // Encontrar índice actual
             const img2 = document.getElementById(`media-img2-${productoId}`);
+            const img3 = document.getElementById(`media-img3-${productoId}`);
             const vid = document.getElementById(`media-vid-${productoId}`);
             
             if (vid && vid.classList.contains('media-active')) currentLightboxIndex = currentLightboxMediaArray.findIndex(m => m.type === 'vid');
+            else if (img3 && img3.classList.contains('media-active')) currentLightboxIndex = 2;
             else if (img2 && img2.classList.contains('media-active')) currentLightboxIndex = 1;
             else currentLightboxIndex = 0;
 
@@ -776,7 +680,7 @@
             if(event) event.stopPropagation(); 
 
             const total = currentLightboxMediaArray.length;
-            if(total <= 1) return; // Si solo hay 1 foto, no hacer nada
+            if(total <= 1) return;
 
             currentLightboxIndex += direccion;
             if (currentLightboxIndex >= total) currentLightboxIndex = 0;
@@ -807,7 +711,6 @@
                 vidEl.play();
             }
 
-            // Manejar controles y contador
             const total = currentLightboxMediaArray.length;
             counterEl.textContent = `${currentLightboxIndex + 1} / ${total}`;
             
