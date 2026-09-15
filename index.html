@@ -78,7 +78,7 @@
 
     <div class="print-only-flex items-center justify-between border-b-2 border-brand-accent pb-4 mb-6">
         <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-xl overflow-hidden shadow-sm flex items-center justify-center shrink-0">
+            <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
                 <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
             </div>
             <div>
@@ -97,7 +97,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-sm shrink-0">
+                    <div class="w-12 h-12 rounded-xl overflow-hidden shrink-0 flex items-center justify-center">
                         <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
                     </div>
                     <div>
@@ -193,7 +193,7 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
                 <div class="md:col-span-5">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-16 h-16 rounded-xl flex items-center justify-center overflow-hidden shrink-0 shadow-lg">
+                        <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 flex items-center justify-center shadow-lg">
                             <img src="assets/S3D.jpeg" alt="Logo S3D" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
                         </div>
                         <div>
@@ -265,14 +265,14 @@
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         const productos = [
-            // --- MUÑECOS COLECCIONABLES (Fusión de Toy Story, Hello Kitty y Snoopy) ---
-            { id: 1, categoria: "Muñecos Coleccionables", nombre: "WOODY", medida: "33 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 99.00, imagenes: ["assets/ts-woody-1.png"], descripcion: "Figura detallada de Woody impresa en 3D." },
+            // --- MUÑECOS COLECCIONABLES (Toy Story, Hello Kitty y Snoopy agrupados) ---
+            { id: 1, categoria: "Muñecos Coleccionables", nombre: "WOODY", medida: "23 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/ts-woody-1.png"], descripcion: "Figura detallada de Woody impresa en 3D." },
             { id: 2, categoria: "Muñecos Coleccionables", nombre: "JESSIE", medida: "24 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 75.00, imagenes: ["assets/ts-jessie-1.png", "assets/ts-jessie-2.png"], descripcion: "Figura detallada de Jessie la vaquerita impresa en 3D." },
             { id: 3, categoria: "Muñecos Coleccionables", nombre: "BUZZ", medida: "22 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, imagenes: ["assets/ts-buzz-1.png", "assets/ts-buzz-2.png"], descripcion: "Figura de Buzz Lightyear impresa en 3D." },
-            { id: 4, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY URBANA", medida: "28 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-urbana-1.png", "assets/hk-urbana-2.png"], descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano." },
-            { id: 5, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY FASHION", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, imagenes: ["assets/hk-fashion-1.png"], descripcion: "Modelo de Hello Kitty Fashion impreso en 3D." },
-            { id: 6, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SALUDOS", medida: "14 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 40.00, imagenes: ["assets/sn-saludo-1.png", "assets/sn-saludo-2.png"], descripcion: "Figura de Snoopy saludando." },
-            { id: 7, categoria: "Muñecos Coleccionables", nombre: "SNOOPY", medida: "12 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 30.00, imagenes: ["assets/sn-base-1.png", "assets/sn-base-2.png"], descripcion: "Figura estándar de Snoopy." },
+            { id: 4, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY URBANA", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-urbana-1.png", "assets/hk-urbana-2.png"], descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano." },
+            { id: 5, categoria: "Muñecos Coleccionables", nombre: "HELLO KITTY FASHION", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-fashion-1.png"], descripcion: "Modelo de Hello Kitty Fashion impreso en 3D." },
+            { id: 6, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SALUDOS", medida: "18 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 40.00, imagenes: ["assets/sn-saludo-1.png", "assets/sn-saludo-2.png"], descripcion: "Figura de Snoopy saludando." },
+            { id: 7, categoria: "Muñecos Coleccionables", nombre: "SNOOPY", medida: "12 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 35.00, imagenes: ["assets/sn-base-1.png", "assets/sn-base-2.png"], descripcion: "Figura estándar de Snoopy." },
             { id: 8, categoria: "Muñecos Coleccionables", nombre: "SNOOPY AVIADOR", medida: "17 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 60.00, imagenes: ["assets/sn-aviador-1.png", "assets/sn-aviador-2.png"], descripcion: "El icónico Snoopy en su faceta de piloto aviador." },
             { id: 9, categoria: "Muñecos Coleccionables", nombre: "SNOOPY ZZZ", medida: "22 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-zzz-1.png", "assets/sn-zzz-2.png"], descripcion: "Snoopy durmiendo plácidamente." },
             { id: 10, categoria: "Muñecos Coleccionables", nombre: "SNOOPY PEAKY BLINDERS", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-peaky-1.png", "assets/sn-peaky-2.png"], video: "assets/sn-peaky-video.mp4", descripcion: "Snoopy con un estilo inspirado en la serie Peaky Blinders." },
@@ -280,20 +280,20 @@
             { id: 12, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SMOOTH CRIMINAL SET", medida: "22 CM", material: "PLA Premium", tipo: "Set 3D", precio: 95.00, imagenes: ["assets/sn-criminal-set-1.png", "assets/sn-criminal-set-2.png"], video: "assets/sn-criminal-set-video.mp4", descripcion: "Set completo de Snoopy estilo Smooth Criminal." },
             { id: 13, categoria: "Muñecos Coleccionables", nombre: "SNOOPY SMOOTH CRIMINAL", medida: "20 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/sn-criminal-ind-1.png", "assets/sn-criminal-ind-2.png"], descripcion: "Snoopy estilo Smooth Criminal versión individual." },
 
-            // --- ADORNOS Y DECORACIÓN (Solo 1 imagen cada uno) ---
+            // --- ADORNOS Y DECORACIÓN (Actualizado con precios y medidas exactas - Solo 1 imagen) ---
             { id: 201, categoria: "Adornos y Decoración", nombre: "MADRE E HIJO", medida: "14.6 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/MADRE E HIJO.jpeg"], descripcion: "Hermosa figura que representa el amor maternal." },
             { id: 202, categoria: "Adornos y Decoración", nombre: "CORAZÓN EN CORAZÓN", medida: "15 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/CORAZON EN CORAZON.jpeg"], descripcion: "Pieza decorativa con diseño de corazones entrelazados." },
-            { id: 203, categoria: "Adornos y Decoración", nombre: "CORAZÓN CON ROSA", medida: "12.3 / 20 CM", material: "PLA Premium", tipo: "Adorno", precio: 25.00, imagenes: ["assets/CORAZON CON ROSA.jpeg"], descripcion: "Detalle romántico y único, perfecto para regalar." },
+            { id: 203, categoria: "Adornos y Decoración", nombre: "CORAZÓN CON ROSA", medida: "12.3 / 20 CM", material: "PLA Premium", tipo: "Adorno", precio: 35.00, imagenes: ["assets/CORAZON CON ROSA.jpeg"], descripcion: "Detalle romántico y único, perfecto para regalar." },
             { id: 204, categoria: "Adornos y Decoración", nombre: "OSO CON CORAZÓN", medida: "15.6 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/OSO CON CORAZON.jpeg"], descripcion: "Tierno oso impreso en 3D sosteniendo un corazón." },
             { id: 205, categoria: "Adornos y Decoración", nombre: "TULIPÁN", medida: "24.2 CM", material: "PLA Premium", tipo: "Adorno", precio: 40.00, imagenes: ["assets/TULIPAN.jpeg"], descripcion: "Flor de tulipán impresa en 3D, un toque de naturaleza." },
             { id: 206, categoria: "Adornos y Decoración", nombre: "JARRÓN LUNA", medida: "24.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON LUNA.jpeg"], descripcion: "Elegante jarrón con forma de luna creciente, pieza única." },
             { id: 207, categoria: "Adornos y Decoración", nombre: "JARRÓN TWISTING ELEG", medida: "25 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON TWISTING.jpeg"], descripcion: "Sofisticado jarrón con un diseño de torsión elegante y fluido." },
-            { id: 208, categoria: "Adornos y Decoración", nombre: "JARRÓN TEXTURIZADO", medida: "25 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON TEZTURIZADO.jpeg"], descripcion: "Jarrón con una textura geométrica única y elegante." },
+            { id: 208, categoria: "Adornos y Decoración", nombre: "JARRÓN TEXTURIZADOS", medida: "25 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON TEZTURIZADO.jpeg"], descripcion: "Jarrón con una textura geométrica única y elegante." },
             { id: 209, categoria: "Adornos y Decoración", nombre: "JARRÓN ESPIRAL G", medida: "28.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON ESPIRAL G.jpeg"], descripcion: "Jarrón alto en espiral, ideal para arreglos grandes." },
             { id: 210, categoria: "Adornos y Decoración", nombre: "JARRÓN ESPIRAL D", medida: "24.5 CM", material: "PLA Premium", tipo: "Adorno", precio: 45.00, imagenes: ["assets/JARRON ESPIRAL D.jpeg"], descripcion: "Jarrón decorativo con diseño de giro en espiral." },
             { id: 211, categoria: "Adornos y Decoración", nombre: "ELEFANTITO", medida: "15 CM", material: "PLA Premium", tipo: "Adorno", precio: 35.00, imagenes: ["assets/ELEFANTITO.jpeg"], descripcion: "Tierno elefantito impreso en 3D." },
 
-            // --- BARBERIA (2 espacios) ---
+            // --- BARBERIA (2 espacios para fotos) ---
             { id: 301, categoria: "Barbería", nombre: "ROTULO BARBERÍA", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/barber-rotulo-1.jpeg", "assets/barber-rotulo-2.jpeg"], descripcion: "Rótulo decorativo en 3D para barbería." },
             { id: 302, categoria: "Barbería", nombre: "FRAME LUZ BARBERÍA 3D", medida: "25X20 CM", material: "PLA / LED", tipo: "Iluminación", precio: 70.00, imagenes: ["assets/barber-frame3d-1.jpeg", "assets/barber-frame3d-2.jpeg"], descripcion: "Cuadro en 3D iluminado con temática de barbería." },
             { id: 303, categoria: "Barbería", nombre: "FRAME LUZ S3D", medida: "15X15 CM", material: "PLA / LED", tipo: "Iluminación", precio: 70.00, imagenes: ["assets/barber-frames3d-1.jpeg", "assets/barber-frames3d-2.jpeg"], descripcion: "Cuadro en 3D S3D iluminado." },
@@ -302,24 +302,23 @@
             { id: 306, categoria: "Barbería", nombre: "SCISSORS CARD S3D", medida: "13X12 CM", material: "PLA Premium", tipo: "Organizador", precio: 30.00, imagenes: ["assets/barber-scissors-1.jpeg", "assets/barber-scissors-2.jpeg"], descripcion: "Organizador especializado para tijeras de barbería." },
             { id: 307, categoria: "Barbería", nombre: "PORTA GUÍAS 3D", medida: "23X7X6 CM", material: "PLA Premium", tipo: "Organizador", precio: 90.00, imagenes: ["assets/barber-porta-1.jpeg", "assets/barber-porta-2.jpeg"], descripcion: "Práctico organizador de guías de corte para máquinas." },
 
-            // --- MASCOTA (2 espacios) ---
-            { id: 401, categoria: "Mascota", nombre: "HUESO M NARANJA", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-n-1.jpeg", "assets/pet-hueso-n-2.jpeg"], descripcion: "Placa de identificación para mascota." },
-            { id: 402, categoria: "Mascota", nombre: "HUESO M LILA", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-l-1.jpeg", "assets/pet-hueso-l-2.jpeg"], descripcion: "Placa de identificación para mascota." },
-            { id: 403, categoria: "Mascota", nombre: "HUESO M CELESTE", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-c-1.jpeg", "assets/pet-hueso-c-2.jpeg"], descripcion: "Placa de identificación para mascota." },
-            { id: 404, categoria: "Mascota", nombre: "HUESO M BLANCO", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-b-1.jpeg", "assets/pet-hueso-b-2.jpeg"], descripcion: "Placa de identificación para mascota." },
-            { id: 405, categoria: "Mascota", nombre: "HUESO M VERDE", medida: "M", material: "PLA Premium", tipo: "Placa", precio: 20.00, imagenes: ["assets/pet-hueso-v-1.jpeg", "assets/pet-hueso-v-2.jpeg"], descripcion: "Placa de identificación para mascota." },
-            { id: 406, categoria: "Mascota", nombre: "HUELLA XL NARANJA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xln-1.jpeg", "assets/pet-huella-xln-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 407, categoria: "Mascota", nombre: "HUELLA XL LILA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xll-1.jpeg", "assets/pet-huella-xll-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 408, categoria: "Mascota", nombre: "HUELLA XL CELESTE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlc-1.jpeg", "assets/pet-huella-xlc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 409, categoria: "Mascota", nombre: "HUELLA XL BLANCO", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlb-1.jpeg", "assets/pet-huella-xlb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 410, categoria: "Mascota", nombre: "HUELLA XL VERDE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlv-1.jpeg", "assets/pet-huella-xlv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 411, categoria: "Mascota", nombre: "HUELLA XS NARANJA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsn-1.jpeg", "assets/pet-huella-xsn-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 412, categoria: "Mascota", nombre: "HUELLA XS LILA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsl-1.jpeg", "assets/pet-huella-xsl-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 413, categoria: "Mascota", nombre: "HUELLA XS CELESTE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsc-1.jpeg", "assets/pet-huella-xsc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 414, categoria: "Mascota", nombre: "HUELLA XS BLANCO", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsb-1.jpeg", "assets/pet-huella-xsb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
-            { id: 415, categoria: "Mascota", nombre: "HUELLA XS VERDE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsv-1.jpeg", "assets/pet-huella-xsv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            // --- MASCOTA (2 espacios para fotos) ---
+            { id: 401, categoria: "Mascota", nombre: "HUESO XL NARANJA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-hueso-n-1.jpeg", "assets/pet-hueso-n-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 402, categoria: "Mascota", nombre: "HUESO XL LILA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-hueso-l-1.jpeg", "assets/pet-hueso-l-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 403, categoria: "Mascota", nombre: "HUESO XL CELESTE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-hueso-c-1.jpeg", "assets/pet-hueso-c-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 404, categoria: "Mascota", nombre: "HUESO XL VERDE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-hueso-v-1.jpeg", "assets/pet-hueso-v-2.jpeg"], descripcion: "Placa de identificación para mascota." },
+            { id: 405, categoria: "Mascota", nombre: "HUELLA XL NARANJA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xln-1.jpeg", "assets/pet-huella-xln-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 406, categoria: "Mascota", nombre: "HUELLA XL LILA", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xll-1.jpeg", "assets/pet-huella-xll-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 407, categoria: "Mascota", nombre: "HUELLA XL CELESTE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlc-1.jpeg", "assets/pet-huella-xlc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 408, categoria: "Mascota", nombre: "HUELLA XL BLANCO", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlb-1.jpeg", "assets/pet-huella-xlb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 409, categoria: "Mascota", nombre: "HUELLA XL VERDE", medida: "XL", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xlv-1.jpeg", "assets/pet-huella-xlv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 410, categoria: "Mascota", nombre: "HUELLA XS NARANJA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsn-1.jpeg", "assets/pet-huella-xsn-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 411, categoria: "Mascota", nombre: "HUELLA XS LILA", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsl-1.jpeg", "assets/pet-huella-xsl-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 412, categoria: "Mascota", nombre: "HUELLA XS CELESTE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsc-1.jpeg", "assets/pet-huella-xsc-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 413, categoria: "Mascota", nombre: "HUELLA XS BLANCO", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsb-1.jpeg", "assets/pet-huella-xsb-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
+            { id: 414, categoria: "Mascota", nombre: "HUELLA XS VERDE", medida: "XS", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-huella-xsv-1.jpeg", "assets/pet-huella-xsv-2.jpeg"], descripcion: "Placa de identificación modelo Huella." },
 
-            // --- LLAVEROS (2 espacios) ---
+            // --- LLAVEROS (2 espacios para fotos) ---
             { id: 501, categoria: "Llaveros", nombre: "ANTISOCIAL", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-antisocial-1.jpeg", "assets/ll-antisocial-2.jpeg"], descripcion: "Llavero impreso en 3D con diseño moderno." },
             { id: 502, categoria: "Llaveros", nombre: "TAXI", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-taxi-1.jpeg", "assets/ll-taxi-2.jpeg"], descripcion: "Llavero temático impreso en 3D." },
             { id: 503, categoria: "Llaveros", nombre: "DEBI TIRAR MÁS FOTOS", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-debi-1.jpeg", "assets/ll-debi-2.jpeg"], descripcion: "Llavero impreso en 3D." },
@@ -335,14 +334,14 @@
             { id: 513, categoria: "Llaveros", nombre: "COCHERAS KIA", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-kia-1.jpeg", "assets/ll-kia-2.jpeg"], descripcion: "Llavero temático automotriz." },
             { id: 514, categoria: "Llaveros", nombre: "COCHERAS GLORY", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 15.00, imagenes: ["assets/ll-glory-1.jpeg", "assets/ll-glory-2.jpeg"], descripcion: "Llavero temático automotriz." },
 
-            // --- LINE ART (2 espacios) ---
+            // --- LINE ART (2 espacios para fotos) ---
             { id: 601, categoria: "Line Art", nombre: "BIG THREE", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-bigthree-1.jpeg", "assets/la-bigthree-2.jpeg"], descripcion: "Decoración en arte lineal 3D de alta definición." },
             { id: 602, categoria: "Line Art", nombre: "HERMANAS W", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-hermanas-1.jpeg", "assets/la-hermanas-2.jpeg"], descripcion: "Decoración en arte lineal 3D." },
             { id: 603, categoria: "Line Art", nombre: "RAYO MC QUEEN", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-rayo-1.jpeg", "assets/la-rayo-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
             { id: 604, categoria: "Line Art", nombre: "DOC HUDSON", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-doc-1.jpeg", "assets/la-doc-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
             { id: 605, categoria: "Line Art", nombre: "MATE", medida: "25 CM", material: "PLA Premium", tipo: "Decoración", precio: 20.00, imagenes: ["assets/la-mate-1.jpeg", "assets/la-mate-2.jpeg"], descripcion: "Arte lineal temático de Cars." },
 
-            // --- ESPEJO INFINITO Y LED (2 espacios) ---
+            // --- ESPEJO INFINITO Y LED (2 espacios para fotos) ---
             { id: 701, categoria: "Espejo Infinito", nombre: "ESPEJO INFINITO", medida: "20 CM", material: "PLA / LED", tipo: "Iluminación", precio: 90.00, imagenes: ["assets/ei-espejo-1.jpeg", "assets/ei-espejo-2.jpeg"], descripcion: "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación." },
             { id: 801, categoria: "Iluminación LED 3D", nombre: "LETRERO LED", medida: "30 CM", material: "PLA / LED", tipo: "Letrero", precio: 100.00, imagenes: ["assets/led-letrero-1.jpeg", "assets/led-letrero-2.jpeg"], descripcion: "Letrero luminoso personalizado. Diseño fotográfico." },
             { id: 802, categoria: "Iluminación LED 3D", nombre: "LÁMPARA LED CARS PERSONALIZADA", medida: "25 CM", material: "PLA / LED", tipo: "Lámpara", precio: 120.00, imagenes: ["assets/led-cars-1.jpeg", "assets/led-cars-2.jpeg"], descripcion: "Lámpara temática con nombre personalizable." },
@@ -353,29 +352,29 @@
             { id: 807, categoria: "Iluminación LED 3D", nombre: "LUNA LED", medida: "20 CM", material: "PLA / LED", tipo: "Lámpara", precio: 75.00, imagenes: ["assets/led-luna-1.jpeg", "assets/led-luna-2.jpeg"], descripcion: "Hermosa lámpara iluminada en forma de luna." },
             { id: 808, categoria: "Iluminación LED 3D", nombre: "SEARCHLIGHT", medida: "Variable", material: "PLA / LED", tipo: "Iluminación", precio: 150.00, imagenes: ["assets/led-searchlight-1.jpeg", "assets/led-searchlight-2.jpeg"], descripcion: "Proyector de iluminación con pantallas frontales intercambiables." },
 
-            // --- DUMMY (2 espacios) ---
+            // --- DUMMY (2 espacios para fotos) ---
             { id: 901, categoria: "Dummy", nombre: "SKUMMY MOJITO", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-skummy-1.jpeg", "assets/du-skummy-2.jpeg"], descripcion: "Figura totalmente articulada de colección." },
             { id: 902, categoria: "Dummy", nombre: "DUMMY", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-dummy1-1.jpeg", "assets/du-dummy1-2.jpeg"], descripcion: "Figura articulada base." },
             { id: 903, categoria: "Dummy", nombre: "CLABY", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-claby-1.jpeg", "assets/du-claby-2.jpeg"], descripcion: "Figura articulada de colección." },
             { id: 904, categoria: "Dummy", nombre: "DUMMY V2", medida: "18 CM", material: "PLA Premium", tipo: "Figura Articulada", precio: 50.00, imagenes: ["assets/du-dummy2-1.jpeg", "assets/du-dummy2-2.jpeg"], descripcion: "Segunda versión de la figura articulada Dummy." },
             { id: 905, categoria: "Dummy", nombre: "MOCHILA DUMMY PERSONALIZADA", medida: "Accesorio", material: "PLA Premium", tipo: "Accesorio", precio: 20.00, imagenes: ["assets/du-mochila-1.jpeg", "assets/du-mochila-2.jpeg"], descripcion: "Mochila a medida para personalizar a tu figura Dummy." },
 
-            // --- HOLDERS ---
-            // Primeros 4: 3 fotos, SIN video
+            // --- HOLDERS (Sin Video) ---
+            // Primeros 4 (3 Fotos)
             { id: 1001, categoria: "Holders", nombre: "HOLDER UNIVERSITARIO", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/U-M1.png", "assets/U-M2.png", "assets/U-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
             { id: 1002, categoria: "Holders", nombre: "HOLDER ALIANZA LIMA", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/AL-M1.png", "assets/AL-M2.png", "assets/AL-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
             { id: 1003, categoria: "Holders", nombre: "HOLDER SPORTING CRISTAL", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/SC-M1.png", "assets/SC-M2.png", "assets/SC-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
             { id: 1004, categoria: "Holders", nombre: "HOLDER SPORT BOYS", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/SBA-M1.png", "assets/SBA-M2.png", "assets/SBA-M3.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            // Siguientes 4: 2 fotos, SIN video
+            // Siguientes (2 Fotos)
             { id: 1005, categoria: "Holders", nombre: "HOLDER CIENCIANO", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/CIE-M1.png", "assets/CIE-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            { id: 1006, categoria: "Holders", nombre: "HOLDER REAL MADRID", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/RM-M1.png", "assets/RM-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            { id: 1009, categoria: "Holders", nombre: "HOLDER KNICKS BASQUETBOL", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/KNI-M1.png", "assets/KNI-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            { id: 1010, categoria: "Holders", nombre: "HOLDER JIU JITSU", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/JIU-M1.png", "assets/JIU-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            // Últimos 2: 1 foto, SIN video
-            { id: 1007, categoria: "Holders", nombre: "HOLDER BARCELONA", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/BAR-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
-            { id: 1008, categoria: "Holders", nombre: "HOLDER PSG", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 40.00, imagenes: ["assets/PSG-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1006, categoria: "Holders", nombre: "HOLDER REAL MADRID", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 45.00, imagenes: ["assets/RM-M1.png", "assets/RM-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1009, categoria: "Holders", nombre: "HOLDER KNICKS BASQUETBOL", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 45.00, imagenes: ["assets/KNI-M1.png", "assets/KNI-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1010, categoria: "Holders", nombre: "HOLDER JIU JITSU", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 50.00, imagenes: ["assets/JIU-M1.png", "assets/JIU-M2.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            // Últimos 2 (1 Foto)
+            { id: 1007, categoria: "Holders", nombre: "HOLDER BARCELONA", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 45.00, imagenes: ["assets/BAR-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
+            { id: 1008, categoria: "Holders", nombre: "HOLDER PSG", medida: "10 CM", material: "PLA Premium", tipo: "Organizador", precio: 45.00, imagenes: ["assets/PSG-M1.png"], descripcion: "Organizador de escritorio impreso en 3D." },
 
-            // --- ACCESORIOS (Con video) ---
+            // --- ACCESORIOS ---
             { id: 2001, categoria: "Accesorios", nombre: "ORGANIZADOR CORAZÓN", medida: "13x14x11 CM", material: "PLA Premium", tipo: "Accesorio 3D", precio: 29.00, imagenes: ["assets/ORGANIZADOR CORAZON.jpeg"], descripcion: "Práctico organizador con forma de corazón para accesorios." },
             { id: 2002, categoria: "Accesorios", nombre: "LLAVERO SOPORTE PARA CELULAR", medida: "Llavero", material: "PLA Premium", tipo: "Accesorio 3D", precio: 20.00, imagenes: ["assets/acc-llavero-1.png", "assets/acc-llavero-2.png"], video: "assets/acc-llavero-video.mp4", descripcion: "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables." }
         ];
