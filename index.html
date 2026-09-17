@@ -286,7 +286,24 @@
             { id: 3, categoria: "Muñecos Coleccionables", coleccion: "Toy Story", nombre: "BUZZ", medida: "22CM", material: "PLA Premium", tipo: "Figura 3D", precio: 80.00, imagenes: ["assets/ts-buzz-1.png", "assets/ts-buzz-2.png"], descripcion: "Figura de Buzz Lightyear impresa en 3D." },
             
             // --- MUÑECOS COLECCIONABLES (Hello Kitty) ---
-            { id: 4, categoria: "Muñecos Coleccionables", coleccion: "Hello Kitty", nombre: "HELLO KITTY URBANA", medida: "20CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-urbana-1.png"], descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano." },
+            { 
+                id: 4, 
+                categoria: "Muñecos Coleccionables", 
+                coleccion: "Hello Kitty", 
+                nombre: "HELLO KITTY URBANA", 
+                medida: "20CM", 
+                material: "PLA Premium", 
+                tipo: "Figura 3D", 
+                precio: 70.00, 
+                imagenes: ["assets/hk-urbana-1.png"], 
+                colores: [
+                    { nombre: "Rosa", hex: "#ff99cc", img: "assets/hk-urbana-1.png" }, 
+                    { nombre: "Gris", hex: "#9ca3af", img: "assets/hk-urbana-gris-1.png" }, 
+                    { nombre: "Negro", hex: "#1f2937", img: "assets/hk-urbana-negro-1.png" }, 
+                    { nombre: "Amarillo", hex: "#facc15", img: "assets/hk-urbana-amarillo-1.png" }
+                ],
+                descripcion: "Modelo exclusivo de Hello Kitty con estilo Urbano." 
+            },
             { id: 5, categoria: "Muñecos Coleccionables", coleccion: "Hello Kitty", nombre: "HELLO KITTY FASHION", medida: "20CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/hk-fashion-1.png"], descripcion: "Modelo de Hello Kitty Fashion impreso en 3D." },
             
             // --- MUÑECOS COLECCIONABLES (Snoopy) ---
@@ -355,8 +372,8 @@
             { id: 503, categoria: "Llaveros", nombre: "DEBI TIRAR MÁS FOTOS", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 8.00, imagenes: ["assets/ll-debi-1.jpeg", "assets/ll-debi-2.jpeg"], descripcion: "Llavero impreso en 3D." },
             { id: 504, categoria: "Llaveros", nombre: "OFF WHITE", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 8.00, imagenes: ["assets/ll-offwhite-1.jpeg"], descripcion: "Llavero con diseño urbano impreso en 3D." },
             { id: 505, categoria: "Llaveros", nombre: "JORDAN", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 8.00, imagenes: ["assets/ll-jordan-1.jpeg", "assets/ll-jordan-2.jpeg"], descripcion: "Llavero clásico impreso en 3D." },
-            { id: 506, categoria: "Llaveros", nombre: "COCHERA AUDI", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 40.00, imagenes: ["assets/ll-audi-1.jpeg", "assets/ll-audi-2.jpeg"], video: "assets/ll-audi-video.mp4", descripcion: "Llavero temático automotriz." },
             { id: 510, categoria: "Llaveros", nombre: "COCHERA TOYOTA", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 40.00, imagenes: ["assets/ll-toyota-1.jpeg", "assets/ll-toyota-2.jpeg"], descripcion: "Llavero temático automotriz." },
+            { id: 512, categoria: "Llaveros", nombre: "COCHERA AUDI", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 40.00, imagenes: ["assets/ll-audi-1.jpeg", "assets/ll-audi-2.jpeg"], video: "assets/ll-audi-video.mp4", descripcion: "Llavero temático automotriz." },
             { id: 515, categoria: "Llaveros", nombre: "NIKE", medida: "Estándar", material: "PLA Premium", tipo: "Llavero", precio: 8.00, imagenes: ["assets/ll-nike-1.jpeg"], descripcion: "Llavero deportivo impreso en 3D." },
 
             // --- LINE ART ---
@@ -427,9 +444,11 @@
         }
 
         function generarHTMLProducto(producto) {
+            let colorActualNombre = producto.colores ? producto.colores[0].nombre : null;
+
             const whatsappText = producto.requiereCotizacion 
                 ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}`
-                : `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)}`;
+                : `Hola, me interesa el modelo 3D: ${producto.nombre}${producto.colores ? ` (Color: ${colorActualNombre})` : ''} - Precio: S/ ${producto.precio.toFixed(2)}`;
                 
             const img1 = producto.imagenes[0];
             const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
@@ -499,6 +518,22 @@
                         </span>
                     </div>
 
+                    ${producto.colores ? `
+                    <div class="mb-4 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 no-print">
+                        <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2.5 block">Color seleccionado: <span id="color-name-${producto.id}" class="text-brand-900 ml-1">${producto.colores[0].nombre}</span></span>
+                        <div class="flex gap-3">
+                            ${producto.colores.map((color, idx) => `
+                                <button onclick="cambiarColor(${producto.id}, '${color.img}', '${color.nombre}', event)"
+                                        class="w-8 h-8 rounded-full shadow-sm transition-all duration-300 hover:scale-110 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-brand-accent/30 ${idx === 0 ? 'ring-2 ring-offset-2 ring-brand-accent scale-110' : 'border border-gray-200'}"
+                                        style="background-color: ${color.hex};"
+                                        title="${color.nombre}"
+                                        id="color-btn-${producto.id}-${idx}">
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
                     <h3 class="print-title font-title text-xl font-bold text-brand-900 leading-tight mb-3">${producto.nombre}</h3>
                     <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow whitespace-pre-line">${producto.descripcion}</p>
                     
@@ -514,7 +549,7 @@
                             </div>
                         </div>
                         
-                        <a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" class="no-print bg-brand-900 hover:bg-brand-accent text-white w-12 h-12 sm:w-auto sm:px-6 sm:h-12 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2" title="Pedir por WhatsApp">
+                        <a id="ws-btn-${producto.id}" href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" class="no-print bg-brand-900 hover:bg-brand-accent text-white w-12 h-12 sm:w-auto sm:px-6 sm:h-12 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2" title="Pedir por WhatsApp">
                             <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                             <span class="font-bold text-sm tracking-wide hidden sm:block">${producto.requiereCotizacion ? 'Cotizar' : 'Comprar'}</span>
                         </a>
@@ -567,6 +602,35 @@
                 vid.classList.add('media-active');
                 if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('border-brand-accent'); }
                 vid.play();
+            }
+        };
+
+        window.cambiarColor = function(productId, imgSrc, colorName, event) {
+            if(event) event.stopPropagation();
+            
+            // 1. Cambiar la imagen principal
+            const img1 = document.getElementById(`media-img1-${productId}`);
+            if(img1) img1.src = imgSrc;
+
+            // 2. Cambiar el texto del color
+            const nameSpan = document.getElementById(`color-name-${productId}`);
+            if(nameSpan) nameSpan.textContent = colorName;
+
+            // 3. Actualizar bordes en los botones de color
+            const btns = document.querySelectorAll(`button[id^="color-btn-${productId}-"]`);
+            btns.forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-brand-accent', 'scale-110');
+                btn.classList.add('border', 'border-gray-200');
+            });
+            event.currentTarget.classList.remove('border', 'border-gray-200');
+            event.currentTarget.classList.add('ring-2', 'ring-offset-2', 'ring-brand-accent', 'scale-110');
+
+            // 4. Actualizar el link de WhatsApp dinámicamente con el color
+            const wsBtn = document.getElementById(`ws-btn-${productId}`);
+            if(wsBtn) {
+                const prod = productos.find(p => p.id === productId);
+                const text = `Hola, me interesa el modelo 3D: ${prod.nombre} (Color: ${colorName}) - Precio: S/ ${prod.precio.toFixed(2)}`;
+                wsBtn.href = `https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(text)}`;
             }
         };
 
@@ -691,8 +755,12 @@
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
 
+            // Obtener la imagen actual (por si se cambió con la paleta de colores)
+            const imgEl = document.getElementById(`media-img1-${productoId}`);
+            const currentImgSrc = imgEl ? imgEl.getAttribute('src') : prod.imagenes[0];
+
             currentLightboxMediaArray = [
-                { type: 'img', src: prod.imagenes[0] }
+                { type: 'img', src: currentImgSrc }
             ];
             
             if (prod.imagenes.length > 1) {
