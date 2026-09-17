@@ -169,7 +169,7 @@
         </div>
     </header>
 
-    <!-- NUEVO DISEÑO DE CATEGORÍAS (Elegante y sin sticky) -->
+    <!-- DISEÑO DE CATEGORÍAS (Elegante y sin sticky) -->
     <div id="catalogo" class="bg-white border-y border-gray-100 py-10 no-print shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] relative z-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col gap-8">
@@ -455,34 +455,61 @@
             const img3 = producto.imagenes.length > 2 ? producto.imagenes[2] : null;
             const hasVideo = !!producto.video; 
             
-            let miniaturasHTML = ``;
+            let midSectionHTML = '';
 
-            if (img1) {
-                miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
-                    <img src="${img1}" class="w-full h-full object-cover">
-                </button>`;
-            }
-            if (img2) {
-                miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
-                    <img src="${img2}" class="w-full h-full object-cover">
-                </button>`;
-            }
-            if (img3) {
-                miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 3)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
-                    <img src="${img3}" class="w-full h-full object-cover">
-                </button>`;
-            }
-            if (hasVideo) {
-                miniaturasHTML += `
-                <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
-                    <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
-                    <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
-                        <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
+            // Si el producto tiene colores, mostramos la paleta en lugar de las miniaturas
+            if (producto.colores) {
+                midSectionHTML = `
+                <div class="flex flex-col items-center justify-center p-3.5 bg-gray-50/80 border-b border-gray-100 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)] min-h-[5.5rem] no-print">
+                    <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 block text-center">Color seleccionado: <span id="color-name-${producto.id}" class="text-brand-900 ml-1">${producto.colores[0].nombre}</span></span>
+                    <div class="flex justify-center gap-3">
+                        ${producto.colores.map((color, idx) => `
+                            <button onclick="cambiarColor(${producto.id}, '${color.img}', '${color.nombre}', event)"
+                                    class="w-8 h-8 rounded-full shadow-sm transition-all duration-300 hover:scale-110 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-brand-accent/30 ${idx === 0 ? 'ring-2 ring-offset-2 ring-brand-accent scale-110' : 'border border-gray-200'}"
+                                    style="background-color: ${color.hex};"
+                                    title="${color.nombre}"
+                                    id="color-btn-${producto.id}-${idx}">
+                            </button>
+                        `).join('')}
                     </div>
-                </button>`;
+                </div>
+                `;
+            } else {
+                // Si no tiene colores, mostramos las miniaturas tradicionales
+                let miniaturasHTML = ``;
+                if (img1) {
+                    miniaturasHTML += `
+                    <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
+                        <img src="${img1}" class="w-full h-full object-cover">
+                    </button>`;
+                }
+                if (img2) {
+                    miniaturasHTML += `
+                    <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
+                        <img src="${img2}" class="w-full h-full object-cover">
+                    </button>`;
+                }
+                if (img3) {
+                    miniaturasHTML += `
+                    <button onclick="switchMedia(${producto.id}, 3)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
+                        <img src="${img3}" class="w-full h-full object-cover">
+                    </button>`;
+                }
+                if (hasVideo) {
+                    miniaturasHTML += `
+                    <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
+                        <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
+                        <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
+                            <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
+                        </div>
+                    </button>`;
+                }
+
+                midSectionHTML = `
+                <div class="thumbnails-container flex justify-center gap-3 sm:gap-4 p-4 bg-white border-b border-gray-50 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)] min-h-[5.5rem]">
+                    ${miniaturasHTML}
+                </div>
+                `;
             }
 
             return `
@@ -500,9 +527,7 @@
                     </div>
                 </div>
 
-                <div class="thumbnails-container flex justify-center gap-3 sm:gap-4 p-4 bg-white border-b border-gray-50 z-30 relative shadow-[0_-5px_15px_-10px_rgba(0,0,0,0.05)] min-h-[5.5rem]">
-                    ${miniaturasHTML}
-                </div>
+                ${midSectionHTML}
 
                 <div class="print-card-body p-6 md:p-8 flex flex-col flex-grow bg-white z-30">
                     <div class="flex flex-wrap gap-2 mb-3">
@@ -517,22 +542,6 @@
                             <i data-lucide="layers" class="w-3.5 h-3.5"></i> ${producto.material}
                         </span>
                     </div>
-
-                    ${producto.colores ? `
-                    <div class="mb-4 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 no-print">
-                        <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2.5 block">Color seleccionado: <span id="color-name-${producto.id}" class="text-brand-900 ml-1">${producto.colores[0].nombre}</span></span>
-                        <div class="flex gap-3">
-                            ${producto.colores.map((color, idx) => `
-                                <button onclick="cambiarColor(${producto.id}, '${color.img}', '${color.nombre}', event)"
-                                        class="w-8 h-8 rounded-full shadow-sm transition-all duration-300 hover:scale-110 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-brand-accent/30 ${idx === 0 ? 'ring-2 ring-offset-2 ring-brand-accent scale-110' : 'border border-gray-200'}"
-                                        style="background-color: ${color.hex};"
-                                        title="${color.nombre}"
-                                        id="color-btn-${producto.id}-${idx}">
-                                </button>
-                            `).join('')}
-                        </div>
-                    </div>
-                    ` : ''}
 
                     <h3 class="print-title font-title text-xl font-bold text-brand-900 leading-tight mb-3">${producto.nombre}</h3>
                     <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow whitespace-pre-line">${producto.descripcion}</p>
