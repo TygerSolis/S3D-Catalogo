@@ -47,12 +47,12 @@
         .minimal-select { appearance: auto; }
         .catalog-carousel-shell {
             min-width: 0;
-            padding: 0 3.2rem;
+            padding: 0 2rem;
             position: relative;
         }
         .catalog-carousel-track {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             overflow-x: auto;
             overscroll-behavior-inline: contain;
             scroll-behavior: smooth;
@@ -61,7 +61,7 @@
         }
         .catalog-carousel-track::-webkit-scrollbar { display: none; }
         .catalog-carousel-card {
-            flex: 0 0 calc((100% - 3rem) / 3);
+            flex: 0 0 calc((100% - 2rem) / 3);
             min-width: 0;
             scroll-snap-align: start;
         }
