@@ -213,11 +213,11 @@
                 : `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
 
             const miniaturasHTML = producto.imagenes.map((imagen, index) => `
-                <button type="button" data-lightbox-product="${producto.id}" data-lightbox-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Ver imagen ${index + 1} de ${producto.nombre}">
+                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${producto.nombre}">
                     <img src="${imagen}" loading="lazy" decoding="async" alt="">
                 </button>
             `).join('') + (producto.video ? `
-                <button type="button" data-lightbox-product="${producto.id}" data-lightbox-index="${producto.imagenes.length}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
+                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
                     <span aria-hidden="true">▶</span>
                 </button>
             ` : '');
@@ -227,8 +227,8 @@
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
                     <picture>
-                        <source srcset="${rutaAvif}" type="image/avif">
-                        <img src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
+                        <source data-carousel-main-source srcset="${rutaAvif}" type="image/avif">
+                        <img data-carousel-main-image src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
                 </div>
@@ -426,7 +426,26 @@
                 </div>
             `;
 
-            mainContainer.querySelectorAll('[data-lightbox-product]').forEach(viewer => {
+            mainContainer.querySelectorAll('.catalog-carousel-thumbnail').forEach(thumbnail => {
+                thumbnail.addEventListener('click', event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const card = thumbnail.closest('.catalog-carousel-card');
+                    const index = Number(thumbnail.dataset.carouselIndex);
+                    const product = productos.find(item => item.id === Number(thumbnail.dataset.carouselThumbnail));
+                    const mainImage = card?.querySelector('[data-carousel-main-image]');
+                    const mainSource = card?.querySelector('[data-carousel-main-source]');
+                    if (!product || !mainImage || !Number.isInteger(index) || !product.imagenes[index]) return;
+                    const image = product.imagenes[index];
+                    mainImage.src = image;
+                    if (mainSource) mainSource.srcset = image.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                    card.querySelectorAll('.catalog-carousel-thumbnail').forEach(item => item.classList.remove('is-active'));
+                    thumbnail.classList.add('is-active');
+                    card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
+                });
+            });
+
+            mainContainer.querySelectorAll('.catalog-carousel-image, .media-viewer').forEach(viewer => {
                 const openLightbox = () => window.abrirModal(Number(viewer.dataset.lightboxProduct), Number(viewer.dataset.lightboxIndex || 0));
                 viewer.addEventListener('click', openLightbox);
                 viewer.addEventListener('keydown', event => {
