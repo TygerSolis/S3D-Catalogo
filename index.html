@@ -445,7 +445,7 @@
         <i data-lucide="chevron-up" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
     </button>
 
-    <div id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Galería de imágenes del producto" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
         <button aria-label="Cerrar galería" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
             <i data-lucide="x" class="w-6 h-6"></i>
         </button>
@@ -455,7 +455,6 @@
         </button>
 
         <div class="relative w-full max-w-5xl h-full max-h-[85vh] flex flex-col items-center justify-center p-4">
-            <h2 id="lightbox-title" class="absolute top-4 left-1/2 -translate-x-1/2 max-w-[70%] truncate text-white text-sm sm:text-base font-bold tracking-wide"></h2>
             <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300 hidden">
             <video id="lightbox-vid" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl hidden" controls playsinline></video>
             <div id="lightbox-counter" class="absolute bottom-4 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest backdrop-blur-md">
