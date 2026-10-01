@@ -140,7 +140,7 @@
             return `
             <div class="print-break-avoid bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-float transition-all duration-500 border border-gray-100 flex flex-col h-full group print-shadow-none">
                 
-                <div class="media-viewer relative w-full h-[24rem] sm:h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
+                <div data-lightbox-product="${producto.id}" class="media-viewer relative w-full h-[24rem] sm:h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
                     
                     ${producto.badge ? `
                     <div class="absolute top-4 left-4 z-20 no-print">
@@ -376,6 +376,17 @@
                     <p class="text-gray-500 text-lg">Intenta buscar con otros términos o cambia de categoría.</p>
                 </div>
             `;
+
+            mainContainer.querySelectorAll('[data-lightbox-product]').forEach(viewer => {
+                const openLightbox = () => window.abrirModal(Number(viewer.dataset.lightboxProduct));
+                viewer.addEventListener('click', openLightbox);
+                viewer.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openLightbox();
+                    }
+                });
+            });
             
             lucide.createIcons();
         }
@@ -410,8 +421,6 @@
         window.abrirModal = function(productoId) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
-            document.getElementById('lightbox-title').textContent = prod.nombre;
-
             // Obtener la imagen actual (por si se cambió con la paleta de colores)
             const imgEl = document.getElementById(`media-img1-${productoId}`);
             const currentImgSrc = imgEl ? imgEl.getAttribute('src') : prod.imagenes[0];
