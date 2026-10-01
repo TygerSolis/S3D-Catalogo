@@ -114,6 +114,36 @@
         }
         .catalog-carousel-image:hover .catalog-carousel-expand,
         .catalog-carousel-image:focus-visible .catalog-carousel-expand { opacity: 1; }
+        .catalog-carousel-thumbnails {
+            align-items: center;
+            display: flex;
+            gap: .45rem;
+            justify-content: center;
+            min-height: 3.3rem;
+            padding: .55rem .25rem 0;
+        }
+        .catalog-carousel-thumbnail {
+            background: #f6f9fc;
+            border: 2px solid transparent;
+            border-radius: .55rem;
+            cursor: pointer;
+            height: 2.7rem;
+            overflow: hidden;
+            padding: 0;
+            transition: border-color .2s ease, transform .2s ease;
+            width: 2.7rem;
+        }
+        .catalog-carousel-thumbnail:hover,
+        .catalog-carousel-thumbnail.is-active { border-color: #0066cc; transform: translateY(-1px); }
+        .catalog-carousel-thumbnail img { height: 100%; object-fit: cover; width: 100%; }
+        .catalog-carousel-thumbnail-video {
+            align-items: center;
+            background: #002244;
+            color: #fff;
+            display: flex;
+            font-size: .8rem;
+            justify-content: center;
+        }
         .catalog-carousel-info { padding: 1rem .15rem 0; }
         .catalog-carousel-info h3 {
             color: #002244;

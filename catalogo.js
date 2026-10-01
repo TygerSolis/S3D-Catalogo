@@ -212,8 +212,18 @@
                 ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`
                 : `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
 
+            const miniaturasHTML = producto.imagenes.map((imagen, index) => `
+                <button type="button" data-lightbox-product="${producto.id}" data-lightbox-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Ver imagen ${index + 1} de ${producto.nombre}">
+                    <img src="${imagen}" loading="lazy" decoding="async" alt="">
+                </button>
+            `).join('') + (producto.video ? `
+                <button type="button" data-lightbox-product="${producto.id}" data-lightbox-index="${producto.imagenes.length}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
+                    <span aria-hidden="true">▶</span>
+                </button>
+            ` : '');
+
             return `
-            <article class="catalog-carousel-card">
+            <article id="producto-${producto.id}" class="catalog-carousel-card">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
                     <picture>
@@ -221,6 +231,9 @@
                         <img src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
+                </div>
+                <div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
+                    ${miniaturasHTML}
                 </div>
                 <div class="catalog-carousel-info">
                     <h3>${producto.nombre}</h3>
@@ -414,7 +427,7 @@
             `;
 
             mainContainer.querySelectorAll('[data-lightbox-product]').forEach(viewer => {
-                const openLightbox = () => window.abrirModal(Number(viewer.dataset.lightboxProduct));
+                const openLightbox = () => window.abrirModal(Number(viewer.dataset.lightboxProduct), Number(viewer.dataset.lightboxIndex || 0));
                 viewer.addEventListener('click', openLightbox);
                 viewer.addEventListener('keydown', event => {
                     if (event.key === 'Enter' || event.key === ' ') {
@@ -446,6 +459,24 @@
             renderizarProductos();
         };
 
+        window.mostrarProductoDestacado = function(productoId) {
+            const producto = productos.find(p => p.id === productoId);
+            if (!producto) return;
+            categoriaActual = producto.categoria;
+            renderizarProductos();
+            requestAnimationFrame(() => {
+                const tarjeta = document.getElementById(`producto-${productoId}`);
+                if (tarjeta) tarjeta.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            });
+        };
+
+        document.querySelectorAll('[data-featured-product]').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                window.mostrarProductoDestacado(Number(link.dataset.featuredProduct));
+            });
+        });
+
         document.getElementById('search-input').addEventListener('input', function(e) {
             terminoBusqueda = e.target.value;
             clearTimeout(debounceBusqueda);
@@ -468,7 +499,7 @@
         let currentLightboxMediaArray = [];
         let currentLightboxIndex = 0;
 
-        window.abrirModal = function(productoId) {
+        window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
             // Obtener la imagen actual (por si se cambió con la paleta de colores)
@@ -493,7 +524,8 @@
             const img3 = document.getElementById(`media-img3-${productoId}`);
             const vid = document.getElementById(`media-vid-${productoId}`);
             
-            if (vid && vid.classList.contains('media-active')) currentLightboxIndex = currentLightboxMediaArray.findIndex(m => m.type === 'vid');
+            if (Number.isInteger(initialIndex) && initialIndex >= 0 && initialIndex < currentLightboxMediaArray.length) currentLightboxIndex = initialIndex;
+            else if (vid && vid.classList.contains('media-active')) currentLightboxIndex = currentLightboxMediaArray.findIndex(m => m.type === 'vid');
             else if (img3 && img3.classList.contains('media-active')) currentLightboxIndex = 2;
             else if (img2 && img2.classList.contains('media-active')) currentLightboxIndex = 1;
             else currentLightboxIndex = 0;
