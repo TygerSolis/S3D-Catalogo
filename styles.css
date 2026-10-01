@@ -14,6 +14,20 @@
         .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .category-scroll { scrollbar-width: none; }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .category-filter { position: relative; }
+        .category-filter-active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 1rem;
+            right: 1rem;
+            height: 3px;
+            border-radius: 999px;
+            background: #0066cc;
+        }
+        .minimal-select { appearance: auto; }
         @media (max-width: 640px) {
             .media-viewer { height: 20rem; }
             .hero-content { padding-top: 3rem !important; padding-bottom: 3rem !important; }
