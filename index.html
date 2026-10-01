@@ -3,6 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Metadatos Open Graph para WhatsApp/Facebook/etc. -->
+    <meta property="og:title" content="Catálogo Oficial S3D - Imprimimos tu mundo" />
+    <meta property="og:description" content="Descubre nuestro catálogo actualizado. Fabricación digital con acabados artesanales, calidad premium y personalización total en tecnología 3D." />
+    <!-- Reemplaza esta URL con la ruta completa a tu logo/imagen promocional cuando tu web esté en vivo -->
+    <meta property="og:image" content="https://tusitio.com/assets/S3D.jpeg" />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#002244">
+
     <title>Catálogo Oficial - S3D</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,6 +64,23 @@
         .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Botón Volver Arriba */
+        #btn-volver-arriba {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        #btn-volver-arriba.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
 
         /* Reglas de Impresión */
         @media print {
@@ -254,6 +280,11 @@
         </div>
     </footer>
 
+    <!-- Botón Volver Arriba -->
+    <button id="btn-volver-arriba" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white w-12 h-12 rounded-full shadow-[0_4px_15px_rgba(0,102,204,0.4)] flex items-center justify-center no-print group">
+        <i data-lucide="chevron-up" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
+    </button>
+
     <div id="lightbox" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
         <button class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
             <i data-lucide="x" class="w-6 h-6"></i>
@@ -279,6 +310,16 @@
     <script>
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+        // Control del Botón Volver Arriba
+        window.addEventListener('scroll', function() {
+            const btnArriba = document.getElementById('btn-volver-arriba');
+            if (window.scrollY > 500) {
+                btnArriba.classList.add('visible');
+            } else {
+                btnArriba.classList.remove('visible');
+            }
+        });
+
         const productos = [
             // --- MUÑECOS COLECCIONABLES (Toy Story) ---
             { id: 1, categoria: "Muñecos Coleccionables", coleccion: "Toy Story", nombre: "WOODY", medida: "23CM", material: "PLA Premium", tipo: "Figura 3D", precio: 70.00, imagenes: ["assets/ts-woody-1.png"], descripcion: "Figura detallada de Woody impresa en 3D." },
@@ -289,6 +330,7 @@
             { 
                 id: 4, 
                 categoria: "Muñecos Coleccionables", 
+                badge: "Top Ventas",
                 coleccion: "Hello Kitty", 
                 nombre: "HELLO KITTY URBANA", 
                 medida: "20CM", 
@@ -351,7 +393,7 @@
             { id: 305, categoria: "Barbería", nombre: "LINE ART", medida: "Personalizado", material: "PLA Premium", tipo: "Decoración", precio: 0, requiereCotizacion: true, imagenes: ["assets/barber-lineart-1.jpeg", "assets/barber-lineart-2.jpeg"], descripcion: "Arte lineal en 3D decorativo. Diseño y precio a medida." },
             { id: 306, categoria: "Barbería", nombre: "SCISSORS CARD", medida: "13X17X9CM", material: "PLA Premium", tipo: "Organizador", precio: 35.90, imagenes: ["assets/barber-scissors-1.jpeg", "assets/barber-scissors-2.jpeg"], descripcion: "Organizador especializado en forma de tijeras para tarjetas de presentación." },
             { id: 307, categoria: "Barbería", nombre: "PORTA GUIAS", medida: "23X7,5X6CM", material: "PLA Premium", tipo: "Organizador", precio: 39.90, imagenes: ["assets/barber-porta-1.jpeg"], descripcion: "Práctico organizador de guías de corte para máquinas." },
-            { id: 308, categoria: "Barbería", nombre: "BART BARBERO", medida: "25 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 120.00, imagenes: ["assets/barber-bart-1.png", "assets/barber-bart-1.png"], video: "assets/barber-bart-video.mp4", descripcion: "Figura 3D de Bart Simpson con temática de barbero." },
+            { id: 308, categoria: "Barbería", badge: "Nuevo", nombre: "BART BARBERO", medida: "25 CM", material: "PLA Premium", tipo: "Figura 3D", precio: 120.00, imagenes: ["assets/barber-bart-1.png", "assets/barber-bart-1.png"], video: "assets/barber-bart-video.mp4", descripcion: "Figura 3D de Bart Simpson con temática de barbero." },
 
             // --- MASCOTA ---
             { id: 401, categoria: "Mascota", nombre: "HUESO XA NARANJA", medida: "XA", material: "PLA Premium", tipo: "Placa", precio: 25.00, imagenes: ["assets/pet-hueso-xan-1.jpeg"], descripcion: "Placa de identificación para mascota." },
@@ -388,12 +430,12 @@
 
             // --- ILUMINACIÓN LED 3D ---
             { id: 701, categoria: "Iluminación LED 3D", nombre: "ESPEJO INFINITO", medida: "25CM", material: "PLA / LED", tipo: "Iluminación", precio: 289.90, imagenes: ["assets/ei-espejo-1.jpeg", "assets/ei-espejo-2.jpeg"], descripcion: "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación." },
-            { id: 801, categoria: "Iluminación LED 3D", nombre: "LETRERO LED", medida: "30CM", material: "PLA / LED", tipo: "Letrero", precio: 0, requiereCotizacion: true, imagenes: ["assets/led-letrero-1.jpeg", "assets/led-letrero-2.jpeg"], descripcion: "Letrero luminoso personalizado. Diseño a medida del cliente." },
+            { id: 801, categoria: "Iluminación LED 3D", badge: "Personalizable", nombre: "LETRERO LED", medida: "30CM", material: "PLA / LED", tipo: "Letrero", precio: 0, requiereCotizacion: true, imagenes: ["assets/led-letrero-1.jpeg", "assets/led-letrero-2.jpeg"], descripcion: "Letrero luminoso personalizado. Diseño a medida del cliente." },
             { id: 802, categoria: "Iluminación LED 3D", nombre: "LAMPARA LED CARS PERSONALIZADAS", medida: "50X60X5CM", material: "PLA / LED", tipo: "Lámpara", precio: 220.00, imagenes: ["assets/led-cars-1.jpeg", "assets/led-cars-2.jpeg"], descripcion: "Lámpara temática con nombre personalizable." },
             { id: 803, categoria: "Iluminación LED 3D", nombre: "LIGHT BOX RAYO", medida: "25X18X4CM", material: "PLA / LED", tipo: "Lámpara", precio: 95.00, imagenes: ["assets/led-boxrayo-1.jpeg", "assets/led-boxrayo-2.jpeg"], descripcion: "Caja de luz decorativa." },
             { id: 804, categoria: "Iluminación LED 3D", nombre: "LAMPARA LED QR", medida: "25X23X5CM", material: "PLA / LED", tipo: "Lámpara", precio: 90.00, imagenes: ["assets/led-gr-1.jpeg", "assets/led-gr-2.jpeg"], descripcion: "Lámpara decorativa LED de diseño." },
-            { id: 805, categoria: "Iluminación LED 3D", nombre: "BOX LIGHT GRANDE", medida: "25CM", material: "PLA / LED", tipo: "Lámpara", precio: 95.00, imagenes: ["assets/led-box1-1.jpeg", "assets/led-box1-2.jpeg"], descripcion: "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees." },
-            { id: 806, categoria: "Iluminación LED 3D", nombre: "BOX LIGHT MEDIANO", medida: "15CM", material: "PLA / LED", tipo: "Lámpara", precio: 75.00, imagenes: ["assets/led-box2-1.jpeg", "assets/led-box2-2.jpeg"], descripcion: "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees." },
+            { id: 805, categoria: "Iluminación LED 3D", badge: "Personalizable", nombre: "BOX LIGHT GRANDE", medida: "25CM", material: "PLA / LED", tipo: "Lámpara", precio: 95.00, imagenes: ["assets/led-box1-1.jpeg", "assets/led-box1-2.jpeg"], descripcion: "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees." },
+            { id: 806, categoria: "Iluminación LED 3D", badge: "Personalizable", nombre: "BOX LIGHT MEDIANO", medida: "15CM", material: "PLA / LED", tipo: "Lámpara", precio: 75.00, imagenes: ["assets/led-box2-1.jpeg", "assets/led-box2-2.jpeg"], descripcion: "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees." },
             { id: 807, categoria: "Iluminación LED 3D", nombre: "LUNA LED", medida: "25CM", material: "PLA / LED", tipo: "Lámpara", precio: 80.00, imagenes: ["assets/led-luna-1.jpeg", "assets/led-luna-2.jpeg"], descripcion: "Hermosa lámpara iluminada en forma de luna." },
 
             // --- DUMMY ---
@@ -483,25 +525,25 @@
                 if (img1) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
-                        <img src="${img1}" class="w-full h-full object-cover">
+                        <img src="${img1}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img2) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
-                        <img src="${img2}" class="w-full h-full object-cover">
+                        <img src="${img2}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img3) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 3)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
-                        <img src="${img3}" class="w-full h-full object-cover">
+                        <img src="${img3}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (hasVideo) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
-                        <img src="${img1}" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
+                        <img src="${img1}" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
                         <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
                             <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
                         </div>
@@ -519,10 +561,19 @@
             <div class="print-break-avoid bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-float transition-all duration-500 border border-gray-100 flex flex-col h-full group print-shadow-none">
                 
                 <div class="media-viewer relative w-full h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
-                    <img id="media-img1-${producto.id}" src="${img1}" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Sin+Foto'">
                     
-                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
-                    ${img3 ? `<img id="media-img3-${producto.id}" src="${img3}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
+                    ${producto.badge ? `
+                    <div class="absolute top-4 left-4 z-20 no-print">
+                        <span class="bg-gradient-to-r ${producto.badge === 'Top Ventas' ? 'from-orange-500 to-red-500' : 'from-brand-accent to-blue-500'} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-md backdrop-blur-sm border border-white/20 flex items-center gap-1.5">
+                            ${producto.badge === 'Top Ventas' ? '<i data-lucide="flame" class="w-3 h-3"></i>' : '<i data-lucide="sparkles" class="w-3 h-3"></i>'}
+                            ${producto.badge}
+                        </span>
+                    </div>` : ''}
+
+                    <img id="media-img1-${producto.id}" src="${img1}" loading="lazy" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Sin+Foto'">
+                    
+                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" loading="lazy" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
+                    ${img3 ? `<img id="media-img3-${producto.id}" src="${img3}" loading="lazy" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
                     ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
 
                     <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 shadow-sm z-20 no-print">
