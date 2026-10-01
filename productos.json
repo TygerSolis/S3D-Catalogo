@@ -9,7 +9,7 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/ts-woody-1.png"
+      "assets/ts-woody-1.webp"
     ],
     "descripcion": "Figura detallada de Woody impresa en 3D."
   },
@@ -23,8 +23,8 @@
     "tipo": "Figura 3D",
     "precio": 75,
     "imagenes": [
-      "assets/ts-jessie-1.png",
-      "assets/ts-jessie-2.png"
+      "assets/ts-jessie-1.webp",
+      "assets/ts-jessie-2.webp"
     ],
     "descripcion": "Figura detallada de Jessie la vaquerita impresa en 3D."
   },
@@ -38,8 +38,8 @@
     "tipo": "Figura 3D",
     "precio": 80,
     "imagenes": [
-      "assets/ts-buzz-1.png",
-      "assets/ts-buzz-2.png"
+      "assets/ts-buzz-1.webp",
+      "assets/ts-buzz-2.webp"
     ],
     "descripcion": "Figura de Buzz Lightyear impresa en 3D."
   },
@@ -54,28 +54,28 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/hk-urbana-1.png"
+      "assets/hk-urbana-1.webp"
     ],
     "colores": [
       {
         "nombre": "Rosa",
         "hex": "#ff99cc",
-        "img": "assets/hk-urbana-1.png"
+        "img": "assets/hk-urbana-1.webp"
       },
       {
         "nombre": "Gris",
         "hex": "#9ca3af",
-        "img": "assets/hk-urbana-gris-1.png"
+        "img": "assets/hk-urbana-gris-1.webp"
       },
       {
         "nombre": "Negro",
         "hex": "#1f2937",
-        "img": "assets/hk-urbana-negro-1.png"
+        "img": "assets/hk-urbana-negro-1.webp"
       },
       {
         "nombre": "Amarillo",
         "hex": "#facc15",
-        "img": "assets/hk-urbana-amarillo-1.png"
+        "img": "assets/hk-urbana-amarillo-1.webp"
       }
     ],
     "descripcion": "Modelo exclusivo de Hello Kitty con estilo Urbano."
@@ -90,7 +90,7 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/hk-fashion-1.png"
+      "assets/hk-fashion-1.webp"
     ],
     "descripcion": "Modelo de Hello Kitty Fashion impreso en 3D."
   },
@@ -104,8 +104,8 @@
     "tipo": "Figura 3D",
     "precio": 40,
     "imagenes": [
-      "assets/sn-saludo-1.png",
-      "assets/sn-saludo-2.png"
+      "assets/sn-saludo-1.webp",
+      "assets/sn-saludo-2.webp"
     ],
     "descripcion": "Figura de Snoopy saludando."
   },
@@ -119,7 +119,7 @@
     "tipo": "Figura 3D",
     "precio": 35,
     "imagenes": [
-      "assets/sn-base-1.png"
+      "assets/sn-base-1.webp"
     ],
     "descripcion": "Figura estándar de Snoopy."
   },
@@ -133,8 +133,8 @@
     "tipo": "Figura 3D",
     "precio": 60,
     "imagenes": [
-      "assets/sn-aviador-1.png",
-      "assets/sn-aviador-2.png"
+      "assets/sn-aviador-1.webp",
+      "assets/sn-aviador-2.webp"
     ],
     "descripcion": "El icónico Snoopy en su faceta de piloto aviador."
   },
@@ -148,8 +148,8 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/sn-zzz-1.png",
-      "assets/sn-zzz-2.png"
+      "assets/sn-zzz-1.webp",
+      "assets/sn-zzz-2.webp"
     ],
     "descripcion": "Snoopy durmiendo plácidamente."
   },
@@ -163,8 +163,8 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/sn-peaky-1.png",
-      "assets/sn-peaky-2.png"
+      "assets/sn-peaky-1.webp",
+      "assets/sn-peaky-2.webp"
     ],
     "video": "assets/sn-peaky-video.mp4",
     "descripcion": "Snoopy con un estilo inspirado en la serie Peaky Blinders."
@@ -180,8 +180,8 @@
     "tipo": "Set 3D",
     "precio": 100,
     "imagenes": [
-      "assets/sn-peaky-set-1.png",
-      "assets/sn-peaky-set-2.png"
+      "assets/sn-peaky-set-1.webp",
+      "assets/sn-peaky-set-2.webp"
     ],
     "descripcion": "Set de Snoopy con un estilo inspirado en la serie Peaky Blinders."
   },
@@ -195,8 +195,8 @@
     "tipo": "Figura 3D",
     "precio": 50,
     "imagenes": [
-      "assets/sn-tenista-1.png",
-      "assets/sn-tenista-2.png"
+      "assets/sn-tenista-1.webp",
+      "assets/sn-tenista-2.webp"
     ],
     "descripcion": "Figura de Snoopy listo para jugar al tenis."
   },
@@ -210,8 +210,8 @@
     "tipo": "Set 3D",
     "precio": 100,
     "imagenes": [
-      "assets/sn-criminal-set-1.png",
-      "assets/sn-criminal-set-2.png"
+      "assets/sn-criminal-set-1.webp",
+      "assets/sn-criminal-set-2.webp"
     ],
     "video": "assets/sn-criminal-set-video.mp4",
     "descripcion": "Set completo de Snoopy estilo Smooth Criminal."
@@ -226,8 +226,8 @@
     "tipo": "Figura 3D",
     "precio": 70,
     "imagenes": [
-      "assets/sn-criminal-ind-1.png",
-      "assets/sn-criminal-ind-2.png"
+      "assets/sn-criminal-ind-1.webp",
+      "assets/sn-criminal-ind-2.webp"
     ],
     "descripcion": "Snoopy estilo Smooth Criminal versión individual."
   },
@@ -240,7 +240,7 @@
     "tipo": "Adorno",
     "precio": 40,
     "imagenes": [
-      "assets/MADRE E HIJO.jpeg"
+      "assets/MADRE E HIJO.webp"
     ],
     "descripcion": "Hermosa figura que representa el amor maternal."
   },
@@ -253,7 +253,7 @@
     "tipo": "Adorno",
     "precio": 40,
     "imagenes": [
-      "assets/CORAZON EN CORAZON.jpeg"
+      "assets/CORAZON EN CORAZON.webp"
     ],
     "descripcion": "Pieza decorativa con diseño de corazones entrelazados."
   },
@@ -266,7 +266,7 @@
     "tipo": "Adorno",
     "precio": 35,
     "imagenes": [
-      "assets/CORAZON CON ROSA.jpeg"
+      "assets/CORAZON CON ROSA.webp"
     ],
     "descripcion": "Detalle romántico y único, perfecto para regalar."
   },
@@ -279,7 +279,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/OSO CON CORAZON.jpeg"
+      "assets/OSO CON CORAZON.webp"
     ],
     "descripcion": "Tierno oso impreso en 3D sosteniendo un corazón."
   },
@@ -292,7 +292,7 @@
     "tipo": "Adorno",
     "precio": 40,
     "imagenes": [
-      "assets/TULIPAN.jpeg"
+      "assets/TULIPAN.webp"
     ],
     "descripcion": "Flor de tulipán impresa en 3D, un toque de naturaleza."
   },
@@ -305,7 +305,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/JARRON LUNA.jpeg"
+      "assets/JARRON LUNA.webp"
     ],
     "descripcion": "Elegante jarrón con forma de luna creciente, pieza única."
   },
@@ -318,7 +318,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/JARRON TWISTING.jpeg"
+      "assets/JARRON TWISTING.webp"
     ],
     "descripcion": "Sofisticado jarrón con un diseño de torsión elegante y fluido."
   },
@@ -331,7 +331,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/JARRON TEZTURIZADO.jpeg"
+      "assets/JARRON TEZTURIZADO.webp"
     ],
     "descripcion": "Jarrón con una textura geométrica única y elegante."
   },
@@ -344,7 +344,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/JARRON ESPIRAL B.jpeg"
+      "assets/JARRON ESPIRAL B.webp"
     ],
     "descripcion": "Jarrón decorativo con diseño de giro en espiral base."
   },
@@ -357,7 +357,7 @@
     "tipo": "Adorno",
     "precio": 45,
     "imagenes": [
-      "assets/JARRON ESPIRAL D.jpeg"
+      "assets/JARRON ESPIRAL D.webp"
     ],
     "descripcion": "Jarrón decorativo con diseño de giro en espiral."
   },
@@ -370,7 +370,7 @@
     "tipo": "Adorno",
     "precio": 35,
     "imagenes": [
-      "assets/ELEFANTITO.jpeg"
+      "assets/ELEFANTITO.webp"
     ],
     "descripcion": "Tierno elefantito impreso en 3D."
   },
@@ -384,8 +384,7 @@
     "tipo": "Adorno",
     "precio": 60,
     "imagenes": [
-      "assets/TORRE EIFFEL-1.png",
-      "assets/TORRE EIFFEL-2.png"
+      "assets/TORRE EIFFEL-1.webp"
     ],
     "descripcion": "Elegante adorno de la Torre Eiffel impreso en 3D."
   },
@@ -399,8 +398,8 @@
     "tipo": "Adorno",
     "precio": 60,
     "imagenes": [
-      "assets/CALENDARIO PERPETUO-1.png",
-      "assets/CALENDARIO PERPETUO-2.png"
+      "assets/CALENDARIO PERPETUO-1.webp",
+      "assets/CALENDARIO PERPETUO-2.webp"
     ],
     "descripcion": "Calendario perpetuo decorativo y funcional impreso en 3D."
   },
@@ -413,9 +412,9 @@
     "tipo": "Organizador",
     "precio": 40,
     "imagenes": [
-      "assets/U-M1.png",
-      "assets/U-M2.png",
-      "assets/U-M3.png"
+      "assets/U-M1.webp",
+      "assets/U-M2.webp",
+      "assets/U-M3.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -428,8 +427,8 @@
     "tipo": "Organizador",
     "precio": 40,
     "imagenes": [
-      "assets/AL-M1.png",
-      "assets/AL-M2.png"
+      "assets/AL-M1.webp",
+      "assets/AL-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -442,8 +441,8 @@
     "tipo": "Organizador",
     "precio": 40,
     "imagenes": [
-      "assets/SC-M1.png",
-      "assets/SC-M2.png"
+      "assets/SC-M1.webp",
+      "assets/SC-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -456,8 +455,8 @@
     "tipo": "Organizador",
     "precio": 40,
     "imagenes": [
-      "assets/SBA-M1.png",
-      "assets/SBA-M2.png"
+      "assets/SBA-M1.webp",
+      "assets/SBA-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -470,8 +469,8 @@
     "tipo": "Organizador",
     "precio": 40,
     "imagenes": [
-      "assets/CIE-M1.png",
-      "assets/CIE-M2.png"
+      "assets/CIE-M1.webp",
+      "assets/CIE-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -484,8 +483,8 @@
     "tipo": "Organizador",
     "precio": 45,
     "imagenes": [
-      "assets/RM-M1.png",
-      "assets/RM-M2.png"
+      "assets/RM-M1.webp",
+      "assets/RM-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -498,7 +497,7 @@
     "tipo": "Organizador",
     "precio": 45,
     "imagenes": [
-      "assets/BAR-M1.png"
+      "assets/BAR-M1.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -511,7 +510,7 @@
     "tipo": "Organizador",
     "precio": 45,
     "imagenes": [
-      "assets/PSG-M1.png"
+      "assets/PSG-M1.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -524,8 +523,8 @@
     "tipo": "Organizador",
     "precio": 45,
     "imagenes": [
-      "assets/KNI-M1.png",
-      "assets/KNI-M2.png"
+      "assets/KNI-M1.webp",
+      "assets/KNI-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -538,8 +537,8 @@
     "tipo": "Organizador",
     "precio": 50,
     "imagenes": [
-      "assets/JIU-M1.png",
-      "assets/JIU-M2.png"
+      "assets/JIU-M1.webp",
+      "assets/JIU-M2.webp"
     ],
     "descripcion": "Organizador de escritorio impreso en 3D."
   },
@@ -552,7 +551,7 @@
     "tipo": "Decoración",
     "precio": 289.9,
     "imagenes": [
-      "assets/barber-rotulo-1.jpeg"
+      "assets/barber-rotulo-1.webp"
     ],
     "video": "assets/barber-rotulo-video.mp4",
     "descripcion": "Espejo infinito en 3D con temática de barbería."
@@ -566,8 +565,8 @@
     "tipo": "Iluminación",
     "precio": 74.9,
     "imagenes": [
-      "assets/barber-frames3d-1.jpeg",
-      "assets/barber-frames3d-2.jpeg"
+      "assets/barber-frames3d-1.webp",
+      "assets/barber-frames3d-2.webp"
     ],
     "video": "assets/barber-frames3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería."
@@ -581,8 +580,8 @@
     "tipo": "Iluminación",
     "precio": 129.9,
     "imagenes": [
-      "assets/barber-frame3d-1.jpeg",
-      "assets/barber-frame3d-2.jpeg"
+      "assets/barber-frame3d-1.webp",
+      "assets/barber-frame3d-2.webp"
     ],
     "video": "assets/barber-frame3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería."
@@ -596,8 +595,8 @@
     "tipo": "Iluminación",
     "precio": 114.9,
     "imagenes": [
-      "assets/barber-lamp-1.jpeg",
-      "assets/barber-lamp-2.jpeg"
+      "assets/barber-lamp-1.webp",
+      "assets/barber-lamp-2.webp"
     ],
     "video": "assets/barber-lamp-video.mp4",
     "descripcion": "Lámpara decorativa LED exclusiva para barberías."
@@ -612,8 +611,8 @@
     "precio": 0,
     "requiereCotizacion": true,
     "imagenes": [
-      "assets/barber-lineart-1.jpeg",
-      "assets/barber-lineart-2.jpeg"
+      "assets/barber-lineart-1.webp",
+      "assets/barber-lineart-2.webp"
     ],
     "descripcion": "Arte lineal en 3D decorativo. Diseño y precio a medida."
   },
@@ -626,8 +625,8 @@
     "tipo": "Organizador",
     "precio": 35.9,
     "imagenes": [
-      "assets/barber-scissors-1.jpeg",
-      "assets/barber-scissors-2.jpeg"
+      "assets/barber-scissors-1.webp",
+      "assets/barber-scissors-2.webp"
     ],
     "descripcion": "Organizador especializado en forma de tijeras para tarjetas de presentación."
   },
@@ -640,7 +639,7 @@
     "tipo": "Organizador",
     "precio": 39.9,
     "imagenes": [
-      "assets/barber-porta-1.jpeg"
+      "assets/barber-porta-1.webp"
     ],
     "descripcion": "Práctico organizador de guías de corte para máquinas."
   },
@@ -654,8 +653,8 @@
     "tipo": "Figura 3D",
     "precio": 120,
     "imagenes": [
-      "assets/barber-bart-1.png",
-      "assets/barber-bart-2.png"
+      "assets/barber-bart-1.webp",
+      "assets/barber-bart-2.webp"
     ],
     "video": "assets/barber-bart-video.mp4",
     "descripcion": "Figura 3D de Bart Simpson con temática de barbero."
@@ -669,7 +668,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-hueso-xan-1.jpeg"
+      "assets/pet-hueso-xan-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota."
   },
@@ -682,7 +681,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-hueso-xal-1.jpeg"
+      "assets/pet-hueso-xal-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota."
   },
@@ -695,7 +694,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-hueso-xac-1.jpeg"
+      "assets/pet-hueso-xac-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota."
   },
@@ -708,7 +707,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-hueso-xab-1.jpeg"
+      "assets/pet-hueso-xab-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota."
   },
@@ -721,7 +720,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-hueso-xav-1.jpeg"
+      "assets/pet-hueso-xav-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota."
   },
@@ -734,7 +733,7 @@
     "tipo": "Placa",
     "precio": 23,
     "imagenes": [
-      "assets/pet-huella-xcn-1.jpeg"
+      "assets/pet-huella-xcn-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -747,7 +746,7 @@
     "tipo": "Placa",
     "precio": 23,
     "imagenes": [
-      "assets/pet-huella-xcl-1.jpeg"
+      "assets/pet-huella-xcl-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -760,7 +759,7 @@
     "tipo": "Placa",
     "precio": 23,
     "imagenes": [
-      "assets/pet-huella-xcc-1.jpeg"
+      "assets/pet-huella-xcc-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -773,7 +772,7 @@
     "tipo": "Placa",
     "precio": 23,
     "imagenes": [
-      "assets/pet-huella-xcb-1.jpeg"
+      "assets/pet-huella-xcb-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -786,7 +785,7 @@
     "tipo": "Placa",
     "precio": 23,
     "imagenes": [
-      "assets/pet-huella-xcv-1.jpeg"
+      "assets/pet-huella-xcv-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -799,7 +798,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-huella-xsn-1.jpeg"
+      "assets/pet-huella-xsn-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -812,7 +811,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-huella-xsl-1.jpeg"
+      "assets/pet-huella-xsl-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -825,7 +824,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-huella-xsc-1.jpeg"
+      "assets/pet-huella-xsc-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -838,7 +837,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-huella-xsb-1.jpeg"
+      "assets/pet-huella-xsb-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -851,7 +850,7 @@
     "tipo": "Placa",
     "precio": 25,
     "imagenes": [
-      "assets/pet-huella-xsv-1.jpeg"
+      "assets/pet-huella-xsv-1.webp"
     ],
     "descripcion": "Placa de identificación modelo Huella."
   },
@@ -864,7 +863,7 @@
     "tipo": "Llavero",
     "precio": 8,
     "imagenes": [
-      "assets/ll-antisocial-1.jpeg"
+      "assets/ll-antisocial-1.webp"
     ],
     "descripcion": "Llavero impreso en 3D con diseño moderno."
   },
@@ -877,8 +876,8 @@
     "tipo": "Llavero",
     "precio": 8,
     "imagenes": [
-      "assets/ll-debi-1.jpeg",
-      "assets/ll-debi-2.jpeg"
+      "assets/ll-debi-1.webp",
+      "assets/ll-debi-2.webp"
     ],
     "descripcion": "Llavero impreso en 3D."
   },
@@ -891,7 +890,7 @@
     "tipo": "Llavero",
     "precio": 8,
     "imagenes": [
-      "assets/ll-offwhite-1.jpeg"
+      "assets/ll-offwhite-1.webp"
     ],
     "descripcion": "Llavero con diseño urbano impreso en 3D."
   },
@@ -904,8 +903,8 @@
     "tipo": "Llavero",
     "precio": 8,
     "imagenes": [
-      "assets/ll-jordan-1.jpeg",
-      "assets/ll-jordan-2.jpeg"
+      "assets/ll-jordan-1.webp",
+      "assets/ll-jordan-2.webp"
     ],
     "descripcion": "Llavero clásico impreso en 3D."
   },
@@ -918,8 +917,8 @@
     "tipo": "Llavero",
     "precio": 40,
     "imagenes": [
-      "assets/ll-toyota-1.jpeg",
-      "assets/ll-toyota-2.jpeg"
+      "assets/ll-toyota-1.webp",
+      "assets/ll-toyota-2.webp"
     ],
     "descripcion": "Llavero temático automotriz."
   },
@@ -932,8 +931,8 @@
     "tipo": "Llavero",
     "precio": 40,
     "imagenes": [
-      "assets/ll-audi-1.jpeg",
-      "assets/ll-audi-2.jpeg"
+      "assets/ll-audi-1.webp",
+      "assets/ll-audi-2.webp"
     ],
     "video": "assets/ll-audi-video.mp4",
     "descripcion": "Llavero temático automotriz."
@@ -947,7 +946,7 @@
     "tipo": "Llavero",
     "precio": 8,
     "imagenes": [
-      "assets/ll-nike-1.jpeg"
+      "assets/ll-nike-1.webp"
     ],
     "descripcion": "Llavero deportivo impreso en 3D."
   },
@@ -960,8 +959,8 @@
     "tipo": "Decoración",
     "precio": 35,
     "imagenes": [
-      "assets/la-bigthree-1.jpeg",
-      "assets/la-bigthree-2.jpeg"
+      "assets/la-bigthree-1.webp",
+      "assets/la-bigthree-2.webp"
     ],
     "descripcion": "Decoración en arte lineal 3D de alta definición."
   },
@@ -974,8 +973,8 @@
     "tipo": "Decoración",
     "precio": 25,
     "imagenes": [
-      "assets/la-hermanas-1.jpeg",
-      "assets/la-hermanas-2.jpeg"
+      "assets/la-hermanas-1.webp",
+      "assets/la-hermanas-2.webp"
     ],
     "descripcion": "Decoración en arte lineal 3D."
   },
@@ -988,8 +987,8 @@
     "tipo": "Decoración",
     "precio": 75,
     "imagenes": [
-      "assets/la-rayo-1.jpeg",
-      "assets/la-rayo-2.jpeg"
+      "assets/la-rayo-1.webp",
+      "assets/la-rayo-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars."
   },
@@ -1002,8 +1001,8 @@
     "tipo": "Decoración",
     "precio": 80,
     "imagenes": [
-      "assets/la-doc-1.jpeg",
-      "assets/la-doc-2.jpeg"
+      "assets/la-doc-1.webp",
+      "assets/la-doc-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars."
   },
@@ -1016,8 +1015,8 @@
     "tipo": "Decoración",
     "precio": 65,
     "imagenes": [
-      "assets/la-mate-1.jpeg",
-      "assets/la-mate-2.jpeg"
+      "assets/la-mate-1.webp",
+      "assets/la-mate-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars."
   },
@@ -1030,8 +1029,8 @@
     "tipo": "Iluminación",
     "precio": 289.9,
     "imagenes": [
-      "assets/ei-espejo-1.jpeg",
-      "assets/ei-espejo-2.jpeg"
+      "assets/ei-espejo-1.webp",
+      "assets/ei-espejo-2.webp"
     ],
     "descripcion": "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación."
   },
@@ -1046,8 +1045,8 @@
     "precio": 0,
     "requiereCotizacion": true,
     "imagenes": [
-      "assets/led-letrero-1.jpeg",
-      "assets/led-letrero-2.jpeg"
+      "assets/led-letrero-1.webp",
+      "assets/led-letrero-2.webp"
     ],
     "descripcion": "Letrero luminoso personalizado. Diseño a medida del cliente."
   },
@@ -1060,8 +1059,8 @@
     "tipo": "Lámpara",
     "precio": 220,
     "imagenes": [
-      "assets/led-cars-1.jpeg",
-      "assets/led-cars-2.jpeg"
+      "assets/led-cars-1.webp",
+      "assets/led-cars-2.webp"
     ],
     "descripcion": "Lámpara temática con nombre personalizable."
   },
@@ -1074,8 +1073,8 @@
     "tipo": "Lámpara",
     "precio": 95,
     "imagenes": [
-      "assets/led-boxrayo-1.jpeg",
-      "assets/led-boxrayo-2.jpeg"
+      "assets/led-boxrayo-1.webp",
+      "assets/led-boxrayo-2.webp"
     ],
     "descripcion": "Caja de luz decorativa."
   },
@@ -1088,8 +1087,8 @@
     "tipo": "Lámpara",
     "precio": 90,
     "imagenes": [
-      "assets/led-gr-1.jpeg",
-      "assets/led-gr-2.jpeg"
+      "assets/led-gr-1.webp",
+      "assets/led-gr-2.webp"
     ],
     "descripcion": "Lámpara decorativa LED de diseño."
   },
@@ -1103,8 +1102,8 @@
     "tipo": "Lámpara",
     "precio": 95,
     "imagenes": [
-      "assets/led-box1-1.jpeg",
-      "assets/led-box1-2.jpeg"
+      "assets/led-box1-1.webp",
+      "assets/led-box1-2.webp"
     ],
     "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees."
   },
@@ -1118,8 +1117,8 @@
     "tipo": "Lámpara",
     "precio": 75,
     "imagenes": [
-      "assets/led-box2-1.jpeg",
-      "assets/led-box2-2.jpeg"
+      "assets/led-box2-1.webp",
+      "assets/led-box2-2.webp"
     ],
     "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees."
   },
@@ -1132,8 +1131,8 @@
     "tipo": "Lámpara",
     "precio": 80,
     "imagenes": [
-      "assets/led-luna-1.jpeg",
-      "assets/led-luna-2.jpeg"
+      "assets/led-luna-1.webp",
+      "assets/led-luna-2.webp"
     ],
     "descripcion": "Hermosa lámpara iluminada en forma de luna."
   },
@@ -1146,8 +1145,8 @@
     "tipo": "Figura Articulada",
     "precio": 60,
     "imagenes": [
-      "assets/du-moto-1.jpeg",
-      "assets/du-moto-2.jpeg"
+      "assets/du-moto-1.webp",
+      "assets/du-moto-2.webp"
     ],
     "descripcion": "Figura articulada temática."
   },
@@ -1160,8 +1159,8 @@
     "tipo": "Figura Articulada",
     "precio": 45,
     "imagenes": [
-      "assets/du-dummy25-1.jpeg",
-      "assets/du-dummy25-2.jpeg"
+      "assets/du-dummy25-1.webp",
+      "assets/du-dummy25-2.webp"
     ],
     "descripcion": "Figura articulada base 25cm."
   },
@@ -1174,8 +1173,8 @@
     "tipo": "Figura Articulada",
     "precio": 35,
     "imagenes": [
-      "assets/du-dummy20-1.jpeg",
-      "assets/du-dummy20-2.jpeg"
+      "assets/du-dummy20-1.webp",
+      "assets/du-dummy20-2.webp"
     ],
     "descripcion": "Figura articulada base 20cm."
   },
@@ -1188,8 +1187,8 @@
     "tipo": "Figura Articulada",
     "precio": 20,
     "imagenes": [
-      "assets/du-dummy15-1.jpeg",
-      "assets/du-dummy15-2.jpeg"
+      "assets/du-dummy15-1.webp",
+      "assets/du-dummy15-2.webp"
     ],
     "descripcion": "Figura articulada base 15cm."
   },
@@ -1202,8 +1201,8 @@
     "tipo": "Accesorio",
     "precio": 10,
     "imagenes": [
-      "assets/du-mochila-1.jpeg",
-      "assets/du-mochila-2.jpeg"
+      "assets/du-mochila-1.webp",
+      "assets/du-mochila-2.webp"
     ],
     "descripcion": "Mochila a medida para personalizar a tu figura Dummy."
   },
@@ -1216,7 +1215,7 @@
     "tipo": "Accesorio 3D",
     "precio": 40,
     "imagenes": [
-      "assets/ORGANIZADOR CORAZON.jpeg"
+      "assets/ORGANIZADOR CORAZON.webp"
     ],
     "descripcion": "Práctico organizador con forma de corazón para accesorios."
   },
@@ -1229,8 +1228,8 @@
     "tipo": "Accesorio 3D",
     "precio": 12,
     "imagenes": [
-      "assets/acc-llavero-1.png",
-      "assets/acc-llavero-2.png"
+      "assets/acc-llavero-1.webp",
+      "assets/acc-llavero-2.webp"
     ],
     "video": "assets/acc-llavero-video.mp4",
     "descripcion": "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables."
