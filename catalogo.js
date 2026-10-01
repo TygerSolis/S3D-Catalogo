@@ -217,7 +217,7 @@
                     <img src="${imagen}" loading="lazy" decoding="async" alt="">
                 </button>
             `).join('') + (producto.video ? `
-                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
+                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" data-carousel-video="${producto.video}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
                     <span aria-hidden="true">▶</span>
                 </button>
             ` : '');
@@ -230,6 +230,7 @@
                         <source data-carousel-main-source srcset="${rutaAvif}" type="image/avif">
                         <img data-carousel-main-image src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
+                    ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="metadata"></video>` : ''}
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
                 </div>
                 <div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
@@ -435,13 +436,26 @@
                     const product = productos.find(item => item.id === Number(thumbnail.dataset.carouselThumbnail));
                     const mainImage = card?.querySelector('[data-carousel-main-image]');
                     const mainSource = card?.querySelector('[data-carousel-main-source]');
-                    if (!product || !mainImage || !Number.isInteger(index) || !product.imagenes[index]) return;
-                    const image = product.imagenes[index];
-                    mainImage.src = image;
-                    if (mainSource) mainSource.srcset = image.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                    const mainVideo = card?.querySelector('[data-carousel-main-video]');
+                    if (!product || !mainImage || !Number.isInteger(index)) return;
+                    if (index === product.imagenes.length && product.video && mainVideo) {
+                        mainImage.classList.add('hidden');
+                        mainSource?.parentElement?.classList.add('hidden');
+                        mainVideo.classList.remove('hidden');
+                        mainVideo.play().catch(() => {});
+                        card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
+                    } else if (product.imagenes[index]) {
+                        const image = product.imagenes[index];
+                        mainVideo?.pause();
+                        mainVideo?.classList.add('hidden');
+                        mainImage.classList.remove('hidden');
+                        mainSource?.parentElement?.classList.remove('hidden');
+                        mainImage.src = image;
+                        if (mainSource) mainSource.srcset = image.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                        card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
+                    } else return;
                     card.querySelectorAll('.catalog-carousel-thumbnail').forEach(item => item.classList.remove('is-active'));
                     thumbnail.classList.add('is-active');
-                    card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
                 });
             });
 
@@ -521,20 +535,7 @@
         window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
-            // Obtener la imagen actual (por si se cambió con la paleta de colores)
-            const imgEl = document.getElementById(`media-img1-${productoId}`);
-            const currentImgSrc = imgEl ? imgEl.getAttribute('src') : prod.imagenes[0];
-
-            currentLightboxMediaArray = [
-                { type: 'img', src: currentImgSrc }
-            ];
-            
-            if (prod.imagenes.length > 1) {
-                currentLightboxMediaArray.push({ type: 'img', src: prod.imagenes[1] });
-            }
-            if (prod.imagenes.length > 2) {
-                currentLightboxMediaArray.push({ type: 'img', src: prod.imagenes[2] });
-            }
+            currentLightboxMediaArray = prod.imagenes.map(src => ({ type: 'img', src }));
             if (prod.video) {
                 currentLightboxMediaArray.push({ type: 'vid', src: prod.video });
             }
