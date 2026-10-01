@@ -436,20 +436,21 @@
                     const product = productos.find(item => item.id === Number(thumbnail.dataset.carouselThumbnail));
                     const mainImage = card?.querySelector('[data-carousel-main-image]');
                     const mainSource = card?.querySelector('[data-carousel-main-source]');
+                    const mainPicture = mainSource?.parentElement;
                     const mainVideo = card?.querySelector('[data-carousel-main-video]');
                     if (!product || !mainImage || !Number.isInteger(index)) return;
                     if (index === product.imagenes.length && product.video && mainVideo) {
-                        mainImage.classList.add('hidden');
-                        mainSource?.parentElement?.classList.add('hidden');
-                        mainVideo.classList.remove('hidden');
+                        if (mainPicture) mainPicture.style.display = 'none';
+                        mainImage.style.display = 'none';
+                        mainVideo.style.display = 'block';
                         mainVideo.play().catch(() => {});
                         card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
                     } else if (product.imagenes[index]) {
                         const image = product.imagenes[index];
                         mainVideo?.pause();
-                        mainVideo?.classList.add('hidden');
-                        mainImage.classList.remove('hidden');
-                        mainSource?.parentElement?.classList.remove('hidden');
+                        if (mainPicture) mainPicture.style.display = 'block';
+                        mainImage.style.display = 'block';
+                        if (mainVideo) mainVideo.style.display = 'none';
                         mainImage.src = image;
                         if (mainSource) mainSource.srcset = image.replace(/\.(webp|png|jpe?g)$/i, '.avif');
                         card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
