@@ -4,6 +4,7 @@
         .media-hidden { opacity: 0; pointer-events: none; z-index: 0; }
         .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
         .media-transition { transition: opacity 0.4s ease-in-out; }
+        .media-viewer picture { display: contents; }
 
         #lightbox { display: none; }
         #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }

@@ -78,6 +78,7 @@
             const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
             const img3 = producto.imagenes.length > 2 ? producto.imagenes[2] : null;
             const hasVideo = !!producto.video; 
+            const rutaAvif = ruta => ruta ? ruta.replace(/\.(webp|png|jpe?g)$/i, '.avif') : '';
             
             let midSectionHTML = '';
 
@@ -104,25 +105,25 @@
                 if (img1) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 0, event)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
-                        <img src="${img1}" loading="lazy" class="w-full h-full object-cover">
+                        <img src="${img1}" loading="lazy" decoding="async" alt="${producto.nombre} - Foto 1" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img2) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 1, event)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
-                        <img src="${img2}" loading="lazy" class="w-full h-full object-cover">
+                        <img src="${img2}" loading="lazy" decoding="async" alt="${producto.nombre} - Foto 2" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img3) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 3, event)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
-                        <img src="${img3}" loading="lazy" class="w-full h-full object-cover">
+                        <img src="${img3}" loading="lazy" decoding="async" alt="${producto.nombre} - Foto 3" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (hasVideo) {
                     miniaturasHTML += `
                     <button onclick="switchMedia(${producto.id}, 2, event)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
-                        <img src="${img1}" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
+                        <img src="${img1}" loading="lazy" decoding="async" alt="${producto.nombre} - Vista previa del video" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
                         <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
                             <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
                         </div>
@@ -149,10 +150,13 @@
                         </span>
                     </div>` : ''}
 
-                    <img id="media-img1-${producto.id}" src="${img1}" loading="lazy" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Sin+Foto'">
+                    <picture class="contents">
+                        <source srcset="${rutaAvif(img1)}" type="image/avif">
+                        <img id="media-img1-${producto.id}" src="${img1}" loading="lazy" decoding="async" alt="${producto.nombre}" class="media-active absolute inset-0 w-full h-full object-contain p-4 media-transition transform group-hover/media:scale-105" onerror="this.src='https://placehold.co/600x600/e6f0fa/003366?text=Sin+Foto'">
+                    </picture>
                     
-                    ${img2 ? `<img id="media-img2-${producto.id}" src="${img2}" loading="lazy" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
-                    ${img3 ? `<img id="media-img3-${producto.id}" src="${img3}" loading="lazy" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'">` : ''}
+                    ${img2 ? `<picture class="contents"><source srcset="${rutaAvif(img2)}" type="image/avif"><img id="media-img2-${producto.id}" src="${img2}" loading="lazy" decoding="async" alt="${producto.nombre}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'"></picture>` : ''}
+                    ${img3 ? `<picture class="contents"><source srcset="${rutaAvif(img3)}" type="image/avif"><img id="media-img3-${producto.id}" src="${img3}" loading="lazy" decoding="async" alt="${producto.nombre}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'"></picture>` : ''}
                     ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
 
                     <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 shadow-sm z-20 no-print">
@@ -335,7 +339,7 @@
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
                             <button onclick="abrirVideoGeneral('assets/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video">
-                                <img src="assets/pet-video-poster.jpeg" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
+                                <img src="assets/pet-video-poster.webp" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
                                     <i data-lucide="play" class="w-6 h-6 text-white ml-1 fill-white"></i>
                                 </div>
