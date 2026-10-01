@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta name="description" content="Catálogo oficial de S3D: figuras 3D, adornos, holders, iluminación y productos personalizados. Elaboramos a pedido y realizamos envíos a todo el Perú." />
+    <meta name="description" content="S3D crea figuras, adornos, accesorios y productos personalizados mediante impresión 3D y postproducción en nuestro propio local. Pedidos a todo el Perú." />
     <link rel="canonical" href="https://tygersolis.github.io/S3D-Catalogo/" />
 
     <!-- Metadatos Open Graph para WhatsApp/Facebook/etc. -->
-    <meta property="og:title" content="Catálogo Oficial S3D - Imprimimos tu mundo" />
-    <meta property="og:description" content="Figuras 3D, adornos, holders, iluminación y productos personalizados. Elaboramos a pedido y realizamos envíos a todo el Perú." />
+    <meta property="og:title" content="S3D | Más que impresión: piezas con personalidad" />
+    <meta property="og:description" content="Impresión 3D, postproducción y piezas personalizadas elaboradas a pedido en nuestro propio local." />
     <meta property="og:url" content="https://tygersolis.github.io/S3D-Catalogo/" />
     <meta property="og:image" content="https://tygersolis.github.io/S3D-Catalogo/assets/S3D.webp" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_PE" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Catálogo Oficial S3D - Imprimimos tu mundo" />
-    <meta name="twitter:description" content="Figuras 3D, adornos, holders, iluminación y productos personalizados. Elaboramos a pedido y realizamos envíos a todo el Perú." />
+    <meta name="twitter:title" content="S3D | Más que impresión: piezas con personalidad" />
+    <meta name="twitter:description" content="Impresión 3D, postproducción y piezas personalizadas elaboradas a pedido en nuestro propio local." />
     <meta name="twitter:image" content="https://tygersolis.github.io/S3D-Catalogo/assets/S3D.webp" />
     <meta name="theme-color" content="#002244">
 
@@ -29,12 +29,14 @@
             "name": "S3D",
             "url": "https://tygersolis.github.io/S3D-Catalogo/",
             "logo": "https://tygersolis.github.io/S3D-Catalogo/assets/S3D.webp",
-            "description": "Catálogo de productos impresos en 3D y personalizados.",
+            "description": "Taller de impresión 3D y postproducción. Creamos piezas con personalidad bajo pedido.",
+            "slogan": "Más que impresión: piezas con personalidad.",
             "sameAs": [
                 "https://www.instagram.com/print.s3d",
                 "https://www.facebook.com/profile.php?id=61583189266399"
             ],
             "areaServed": "PE",
+            "hasMap": "https://www.google.com/maps/place/S3D/@-12.0797586,-77.1041774,17z",
             "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+51 955 107 609",
@@ -99,18 +101,30 @@
         </div>
     </div>
 
-    <nav class="bg-white/90 backdrop-blur-lg sticky top-0 z-40 border-b border-gray-100 transition-all duration-300">
+    <div class="announcement-bar no-print">
+        <span>Pedidos a todo el Perú</span>
+        <span aria-hidden="true">·</span>
+        <span>Todos los productos se elaboran a pedido</span>
+        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer">Consultar ahora</a>
+    </div>
+
+    <nav class="site-nav bg-white/95 backdrop-blur-lg sticky top-0 z-40 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            <div class="site-nav-inner flex justify-between min-h-20 items-center gap-6">
+                <div class="hidden lg:flex items-center gap-5 text-sm font-semibold text-gray-600 no-print">
+                    <a href="#catalogo" class="hover:text-brand-accent transition-colors">Shop</a>
+                    <a href="#categorias" class="hover:text-brand-accent transition-colors">Colecciones</a>
+                    <a href="#personalizados" class="hover:text-brand-accent transition-colors">Personalizados</a>
+                </div>
+                <a href="#inicio" class="site-logo flex items-center gap-3 cursor-pointer shrink-0">
                     <div class="w-12 h-12 shrink-0 flex items-center justify-center">
                         <img src="assets/S3D.webp" alt="Logo S3D" class="w-full h-full object-cover rounded-xl" onerror="this.src='https://placehold.co/100x100/003366/ffffff?text=S3D'">
                     </div>
                     <div>
                         <h1 class="font-title font-black text-2xl tracking-tight text-brand-900 leading-none">S3D</h1>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mt-1">Imprimimos tu mundo</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mt-1">Piezas con personalidad</p>
                     </div>
-                </div>
+                </a>
                 <div class="hidden sm:flex items-center gap-6 no-print">
                     <div class="flex items-center gap-4">
                         <a href="https://www.instagram.com/print.s3d" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#E1306C] transition-colors group" title="Instagram">
@@ -125,39 +139,40 @@
                         Contáctanos
                     </a>
                 </div>
+                <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="lg:hidden bg-brand-accent text-white px-4 py-2.5 rounded-full text-xs font-bold no-print">WhatsApp</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative bg-white overflow-hidden no-print">
+    <header id="inicio" class="reference-hero relative overflow-hidden no-print">
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light/50 blur-3xl opacity-70 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-blue-50 blur-3xl opacity-70 pointer-events-none"></div>
 
-        <div class="hero-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10">
+        <div class="hero-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="max-w-2xl">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light text-brand-accent font-semibold text-xs tracking-wider uppercase mb-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-blue-100 font-semibold text-xs tracking-wider uppercase mb-6">
                         <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse"></span>
                         Tecnología 3D
                     </div>
-                    <h2 class="font-title text-5xl md:text-6xl font-black text-brand-900 mb-6 tracking-tight leading-[1.1]">
-                        Dando vida a tus <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-400">ideas en 3D.</span>
+                    <h2 class="font-title text-5xl md:text-6xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+                        Más que impresión: <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-400">piezas con personalidad.</span>
                     </h2>
-                    <p class="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 font-light">
-                        Descubre nuestro catálogo actualizado. Fabricación digital con acabados artesanales, calidad premium y personalización total.
+                    <p class="text-blue-100 text-lg md:text-xl leading-relaxed mb-8 font-light">
+                        Somos S3D, un taller de impresión 3D y postproducción que convierte ideas, personajes y diseños en piezas únicas, elaboradas a pedido.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white px-8 py-4 rounded-full font-bold shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:shadow-[0_8px_25px_rgba(0,102,204,0.4)] hover:-translate-y-1 transition-all duration-300">
+                        <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="bg-white hover:bg-blue-50 text-brand-900 px-8 py-4 rounded-full font-bold shadow-lg hover:-translate-y-1 transition-all duration-300">
                             Ver Catálogo
                         </button>
-                        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="bg-white text-brand-900 border border-gray-200 hover:border-brand-accent hover:text-brand-accent px-8 py-4 rounded-full font-bold shadow-sm transition-all duration-300 flex items-center gap-2">
-                            Pedidos Personalizados
+                        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="bg-transparent text-white border border-white/50 hover:bg-white/10 px-8 py-4 rounded-full font-bold transition-all duration-300 flex items-center gap-2">
+                            Solicitar diseño personalizado
                         </a>
                     </div>
                 </div>
                 
                 <div class="relative hidden lg:block">
-                    <div class="aspect-square rounded-[3rem] bg-gradient-to-tr from-brand-light to-blue-50/50 flex items-center justify-center p-6 relative overflow-hidden shadow-soft border border-white">
+                    <div class="hero-media aspect-square rounded-[3rem] flex items-center justify-center p-6 relative overflow-hidden shadow-soft border border-white/20">
                         <div class="absolute w-full h-full border-[40px] border-white/40 rounded-full scale-150 -right-1/4 z-0 pointer-events-none"></div>
                         <video autoplay loop muted playsinline class="w-full h-full object-cover rounded-[2.5rem] relative z-10 shadow-2xl border-[6px] border-white/70" poster="assets/S3D.webp">
                             <source src="assets/video-presentacion.mp4" type="video/mp4">
@@ -165,14 +180,70 @@
                     </div>
                     
                     <div class="absolute -bottom-6 -left-6 bg-white px-6 py-4 rounded-2xl shadow-float border border-gray-100 flex items-center gap-3 z-20">
-                        <span class="font-bold text-brand-900 text-sm">Calidad Garantizada</span>
+                        <span class="font-bold text-brand-900 text-sm">Fabricación local</span>
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
-                        <span class="text-xs text-gray-500 font-medium">Materiales Premium</span>
+                        <span class="text-xs text-gray-500 font-medium">Impresión y acabado</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+
+    <section id="categorias" class="bg-[#f7faff] py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mb-10">
+                <span class="section-kicker">Explora S3D</span>
+                <h2 class="section-title">Encuentra algo hecho para ti</h2>
+                <p class="section-copy">Desde coleccionables hasta piezas funcionales: descubre nuestras colecciones y encuentra tu próxima pieza favorita.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <button onclick="filtrarPorCategoria('Muñecos Coleccionables'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="smile" class="category-card-icon"></i><span>Muñecos</span><small>Coleccionables</small></button>
+                <button onclick="filtrarPorCategoria('Adornos'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="flower-2" class="category-card-icon"></i><span>Adornos</span><small>Para tus espacios</small></button>
+                <button onclick="filtrarPorCategoria('Holders'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="layout-grid" class="category-card-icon"></i><span>Holders</span><small>Orden y estilo</small></button>
+                <button onclick="filtrarPorCategoria('Iluminación LED 3D'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="lightbulb" class="category-card-icon"></i><span>Iluminación</span><small>Diseños que brillan</small></button>
+                <button onclick="filtrarPorCategoria('Mascota'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="paw-print" class="category-card-icon"></i><span>Mascotas</span><small>Detalles únicos</small></button>
+                <button onclick="filtrarPorCategoria('Llaveros'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="key-round" class="category-card-icon"></i><span>Llaveros</span><small>Lleva tu estilo</small></button>
+                <button onclick="filtrarPorCategoria('Barbería'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="scissors" class="category-card-icon"></i><span>Barbería</span><small>Identidad visual</small></button>
+                <button onclick="filtrarPorCategoria('Line Art'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="pen-tool" class="category-card-icon"></i><span>Line Art</span><small>Arte personalizado</small></button>
+                <button onclick="filtrarPorCategoria('Dummy'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="box" class="category-card-icon"></i><span>Dummy</span><small>Objetos a escala</small></button>
+                <button onclick="filtrarPorCategoria('Accesorios'); document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})" class="category-card"><i data-lucide="sparkles" class="category-card-icon"></i><span>Accesorios</span><small>Pequeños detalles</small></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="destacados" class="bg-white py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10">
+                <div>
+                    <span class="section-kicker">Favoritos de la comunidad</span>
+                    <h2 class="section-title">Nuestros más vendidos</h2>
+                </div>
+                <a href="#catalogo" class="text-brand-accent font-bold text-sm hover:underline">Ver catálogo completo <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <article class="featured-card">
+                    <img src="assets/sn-peaky-set-1.webp" alt="SNOOPY PEAKY BLINDERS SET" loading="lazy" decoding="async">
+                    <div class="featured-card-content">
+                        <span class="featured-badge">Top Ventas</span>
+                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">Muñecos coleccionables</p>
+                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">SNOOPY PEAKY BLINDERS SET</h3>
+                        <p class="text-gray-500 mt-3">Un set con carácter, elaborado a pedido y listo para convertirse en el centro de tu colección.</p>
+                        <a href="#catalogo" onclick="filtrarPorCategoria('Muñecos Coleccionables')" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
+                    </div>
+                </article>
+                <article class="featured-card">
+                    <img src="assets/hk-urbana-1.webp" alt="HELLO KITTY URBANA" loading="lazy" decoding="async">
+                    <div class="featured-card-content">
+                        <span class="featured-badge">Top Ventas</span>
+                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">Muñecos coleccionables</p>
+                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">HELLO KITTY URBANA</h3>
+                        <p class="text-gray-500 mt-3">Diseño urbano, personalidad y opciones de color para darle un toque especial a tus espacios.</p>
+                        <a href="#catalogo" onclick="filtrarPorCategoria('Muñecos Coleccionables')" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
 
     <!-- DISEÑO DE CATEGORÍAS (Elegante y sin sticky) -->
     <div id="catalogo" class="bg-white border-y border-gray-100 py-10 no-print shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] relative z-20">
@@ -223,7 +294,69 @@
         <!-- Contenido generado dinámicamente por JS -->
     </main>
 
-    <footer class="bg-brand-900 text-white pt-20 pb-10 border-t-[8px] border-brand-accent">
+    <section id="personalizados" class="bg-brand-900 text-white py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="section-kicker section-kicker-dark">Diseños a tu medida</span>
+                <h2 class="font-title text-3xl md:text-5xl font-black tracking-tight mt-3">¿Tienes una idea?</h2>
+                <p class="text-brand-light/80 text-lg leading-relaxed mt-5 max-w-xl">La convertimos en una pieza real. Cuéntanos qué necesitas, comparte una referencia y evaluaremos contigo la mejor forma de fabricarlo.</p>
+                <a href="https://api.whatsapp.com/send?phone=51955107609&text=Hola%2C%20quiero%20consultar%20por%20un%20dise%C3%B1o%20personalizado%20en%203D." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-brand-accent hover:bg-blue-500 text-white px-6 py-3.5 rounded-full font-bold mt-8 transition-colors"><i data-lucide="message-circle" class="w-5 h-5"></i> Solicitar cotización</a>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="process-step"><span>01</span><h3>Cuéntanos tu idea</h3><p>Recibimos tu referencia, medidas o necesidad.</p></div>
+                <div class="process-step"><span>02</span><h3>Evaluamos el diseño</h3><p>Revisamos viabilidad, materiales y acabados.</p></div>
+                <div class="process-step"><span>03</span><h3>Fabricamos en el taller</h3><p>Imprimimos y realizamos el post procesado.</p></div>
+                <div class="process-step"><span>04</span><h3>Coordinamos la entrega</h3><p>Enviamos a todo el Perú o coordinamos contigo.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="como-comprar" class="bg-[#f7faff] py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl mb-10">
+                <span class="section-kicker">Así trabajamos</span>
+                <h2 class="section-title">Comprar en S3D es sencillo</h2>
+                <p class="section-copy">Todos nuestros productos se elaboran a pedido para cuidar cada detalle de tu pieza.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5">
+                <div class="info-card"><span class="info-card-number">1</span><h3>Elige tu producto</h3><p>Explora el catálogo, revisa sus medidas, colores y precio publicado.</p></div>
+                <div class="info-card"><span class="info-card-number">2</span><h3>Escríbenos por WhatsApp</h3><p>Confirmamos detalles, tiempo de elaboración y el costo de envío según tu ubicación.</p></div>
+                <div class="info-card"><span class="info-card-number">3</span><h3>Recibe tu pedido</h3><p>Fabricamos la pieza y coordinamos la entrega en Lima o el envío a tu provincia.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="nosotros" class="bg-white py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="section-kicker">Conoce S3D</span>
+                <h2 class="section-title">Más que impresión: piezas con personalidad.</h2>
+                <p class="section-copy mt-5">S3D es un taller especializado en impresión 3D y fabricación de productos personalizados. Creamos figuras coleccionables, adornos, accesorios, piezas funcionales y diseños decorativos, combinando fabricación digital con postproducción realizada cuidadosamente en nuestro propio local.</p>
+                <p class="section-copy mt-4">Trabajamos bajo pedido para prestar atención a los detalles, acabados y características de cada pieza. Nuestra misión es transformar ideas, personajes y diseños en objetos físicos únicos, funcionales y visualmente atractivos.</p>
+            </div>
+            <div class="about-panel">
+                <div><i data-lucide="printer" class="w-7 h-7 text-brand-accent"></i><strong>Impresión 3D</strong><span>Fabricación de productos y proyectos en general.</span></div>
+                <div><i data-lucide="wand-sparkles" class="w-7 h-7 text-brand-accent"></i><strong>Postproducción</strong><span>Acabados realizados en nuestro propio taller.</span></div>
+                <div><i data-lucide="package-check" class="w-7 h-7 text-brand-accent"></i><strong>Pedidos a todo el Perú</strong><span>Coordinamos envíos según tu distrito o provincia.</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ubicacion" class="bg-[#f7faff] py-20 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
+            <div class="rounded-3xl overflow-hidden shadow-soft border border-gray-200 bg-white h-80">
+                <iframe title="Ubicación del taller S3D" src="https://www.google.com/maps?q=-12.0797586,-77.1041774&z=17&output=embed" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div>
+                <span class="section-kicker">Nuestro taller</span>
+                <h2 class="section-title">Fabricamos cada pieza localmente</h2>
+                <p class="section-copy mt-5">Contamos con un local físico donde se imprimen y se realiza el post procesado de todos nuestros productos. Si deseas conocer la ubicación exacta o cómo llegar, consulta el mapa.</p>
+                <a href="https://www.google.com/maps/place/S3D/@-12.0797586,-77.1041774,17z" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-brand-accent font-bold mt-6 hover:underline"><i data-lucide="map-pin" class="w-5 h-5"></i> Abrir ubicación en Google Maps</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto" class="bg-brand-900 text-white pt-20 pb-10 border-t-[8px] border-brand-accent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 mb-16">
                 <div class="md:col-span-5">
@@ -233,11 +366,11 @@
                         </div>
                         <div>
                             <h3 class="font-title text-3xl font-black tracking-tight">S3D</h3>
-                            <p class="text-brand-accent text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Imprimimos tu mundo</p>
+                            <p class="text-brand-accent text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Piezas con personalidad</p>
                         </div>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
-                        Especialistas en transformar archivos digitales en piezas físicas de alta calidad. Tu imaginación es el único límite.
+                        Taller de impresión 3D y postproducción. Creamos figuras, adornos, accesorios y diseños personalizados bajo pedido.
                     </p>
                 </div>
 
@@ -255,7 +388,16 @@
                 </div>
 
                 <div class="md:col-span-3">
-                    <h4 class="font-title text-lg font-bold mb-6 text-white">Redes Sociales</h4>
+                    <h4 class="font-title text-lg font-bold mb-6 text-white">Enlaces rápidos</h4>
+                    <div class="grid grid-cols-2 gap-y-3 text-sm text-gray-400 mb-6">
+                        <a href="#categorias" class="hover:text-white transition-colors">Categorías</a>
+                        <a href="#destacados" class="hover:text-white transition-colors">Destacados</a>
+                        <a href="#personalizados" class="hover:text-white transition-colors">Personalizados</a>
+                        <a href="#como-comprar" class="hover:text-white transition-colors">Cómo comprar</a>
+                        <a href="#nosotros" class="hover:text-white transition-colors">Nosotros</a>
+                        <a href="#ubicacion" class="hover:text-white transition-colors">Ubicación</a>
+                    </div>
+                    <h4 class="font-title text-sm font-bold mb-3 text-white">Síguenos</h4>
                     <div class="flex space-x-3">
                         <a href="https://www.instagram.com/print.s3d" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent transition-all duration-300 shadow-sm group" title="Instagram">
                             <svg class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12.8 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>

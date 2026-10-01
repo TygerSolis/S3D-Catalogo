@@ -28,10 +28,126 @@
             background: #0066cc;
         }
         .minimal-select { appearance: auto; }
+        .announcement-bar {
+            align-items: center;
+            background: #002244;
+            color: #dbeafe;
+            display: flex;
+            font-size: .7rem;
+            font-weight: 700;
+            gap: .7rem;
+            justify-content: center;
+            letter-spacing: .08em;
+            min-height: 2.5rem;
+            padding: .55rem 1rem;
+            text-transform: uppercase;
+        }
+        .announcement-bar a {
+            color: #fff;
+            margin-left: .5rem;
+            text-decoration: underline;
+            text-underline-offset: .2rem;
+        }
+        .site-nav { border-bottom: 1px solid #e2e8f0; }
+        .site-nav-inner { position: relative; }
+        .site-logo { left: 50%; position: absolute; transform: translateX(-50%); }
+        .reference-hero {
+            background: #002244;
+            color: #fff;
+            min-height: 42rem;
+        }
+        .reference-hero > .absolute {
+            opacity: .3;
+        }
+        .reference-hero .hero-content { padding-bottom: 6rem; padding-top: 6rem; }
+        .hero-media {
+            background: #003b70;
+            border-color: rgba(255,255,255,.2);
+        }
+        .hero-media video { filter: saturate(.9) contrast(1.05); }
+        .section-kicker {
+            display: inline-block;
+            color: #0066cc;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            line-height: 1.2;
+            text-transform: uppercase;
+        }
+        .section-kicker-dark { color: #6eb6ff; }
+        .section-title {
+            color: #002244;
+            font-family: Montserrat, sans-serif;
+            font-size: clamp(1.9rem, 3vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: -.03em;
+            line-height: 1.1;
+            margin-top: .7rem;
+        }
+        .section-copy {
+            color: #64748b;
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+        .category-card {
+            align-items: flex-start;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 9.5rem;
+            padding: 1.25rem;
+            text-align: left;
+            transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+        }
+        .category-card:hover {
+            border-color: #7ab8ed;
+            box-shadow: 0 14px 30px -18px rgba(0, 102, 204, .55);
+            transform: translateY(-4px);
+        }
+        .category-card-icon { color: #0066cc; height: 1.65rem; margin-bottom: 1.4rem; width: 1.65rem; }
+        .category-card span { color: #002244; font-family: Montserrat, sans-serif; font-size: .95rem; font-weight: 800; }
+        .category-card small { color: #94a3b8; font-size: .75rem; margin-top: .35rem; }
+        .featured-card {
+            background: #f7faff;
+            border: 1px solid #e2e8f0;
+            border-radius: 1.75rem;
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+            overflow: hidden;
+        }
+        .featured-card > img { background: #eef6ff; height: 100%; min-height: 22rem; object-fit: contain; padding: 1rem; width: 100%; }
+        .featured-card-content { padding: 2rem; }
+        .featured-badge { background: #fff0e8; border: 1px solid #fed7aa; border-radius: 999px; color: #c2410c; display: inline-block; font-size: .68rem; font-weight: 800; letter-spacing: .1em; padding: .45rem .8rem; text-transform: uppercase; }
+        .process-step, .info-card {
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .13);
+            border-radius: 1.25rem;
+            padding: 1.4rem;
+        }
+        .process-step span { color: #6eb6ff; font-family: Montserrat, sans-serif; font-size: .75rem; font-weight: 900; letter-spacing: .12em; }
+        .process-step h3 { font-family: Montserrat, sans-serif; font-size: 1rem; font-weight: 800; margin-top: .7rem; }
+        .process-step p { color: #bfdbfe; font-size: .82rem; line-height: 1.55; margin-top: .4rem; }
+        .info-card { background: #fff; border-color: #e2e8f0; }
+        .info-card-number { align-items: center; background: #e6f0fa; border-radius: 999px; color: #0066cc; display: flex; font-family: Montserrat, sans-serif; font-weight: 900; height: 2.25rem; justify-content: center; width: 2.25rem; }
+        .info-card h3 { color: #002244; font-family: Montserrat, sans-serif; font-size: 1.1rem; font-weight: 800; margin-top: 1.2rem; }
+        .info-card p { color: #64748b; font-size: .9rem; line-height: 1.65; margin-top: .5rem; }
+        .about-panel { background: #f7faff; border: 1px solid #e2e8f0; border-radius: 1.75rem; padding: 1.5rem; }
+        .about-panel > div { align-items: flex-start; border-bottom: 1px solid #dbeafe; display: grid; gap: .9rem; grid-template-columns: 2rem 1fr; padding: 1.2rem .5rem; }
+        .about-panel > div:last-child { border-bottom: 0; }
+        .about-panel strong { color: #002244; font-family: Montserrat, sans-serif; font-size: 1rem; grid-column: 2; margin-bottom: -1rem; }
+        .about-panel span { color: #64748b; font-size: .88rem; grid-column: 2; line-height: 1.5; }
         @media (max-width: 640px) {
+            .announcement-bar { font-size: .59rem; gap: .4rem; letter-spacing: .04em; }
+            .announcement-bar a { display: none; }
+            .site-logo { position: static; transform: none; }
             .media-viewer { height: 20rem; }
-            .hero-content { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+            .reference-hero .hero-content { padding-top: 4rem !important; padding-bottom: 4rem !important; }
             .hero-content h2 { font-size: 2.75rem; }
+            .featured-card { display: block; }
+            .featured-card > img { height: 16rem; min-height: 0; }
+            .featured-card-content { padding: 1.5rem; }
         }
 
         /* Botón Volver Arriba */
