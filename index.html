@@ -177,16 +177,20 @@
     <!-- DISEÑO DE CATEGORÍAS (Elegante y sin sticky) -->
     <div id="catalogo" class="bg-white border-y border-gray-100 py-10 no-print shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] relative z-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-5">
                 
                 <!-- Fila Superior: Título y Buscador -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
                     <div>
-                        <h3 class="font-title text-2xl font-black text-brand-900 tracking-tight">Explorar Colección</h3>
+                        <div class="flex items-center gap-3">
+                            <h3 class="font-title text-2xl font-black text-brand-900 tracking-tight">Explorar Colección</h3>
+                            <span class="hidden sm:inline-flex w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
+                            <span class="hidden sm:inline text-xs font-bold uppercase tracking-wider text-gray-400">Modelos 3D</span>
+                        </div>
                         <p class="text-sm text-gray-500 mt-1 font-medium">Encuentra el modelo 3D perfecto para ti</p>
                     </div>
                     
-                    <div class="relative w-full md:w-96 flex-shrink-0 group">
+                    <div class="relative w-full lg:w-[26rem] flex-shrink-0 group">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i data-lucide="search" class="w-4 h-4 text-gray-400 group-focus-within:text-brand-accent transition-colors"></i>
                         </div>
@@ -194,17 +198,15 @@
                     </div>
                 </div>
 
-                <!-- Fila Inferior: Filtros de Categorías -->
-                <!-- md:flex-wrap permite que en PC salten a la siguiente línea, flex-nowrap en móvil permite deslizarlos -->
-                <div class="flex flex-nowrap md:flex-wrap gap-2.5 md:gap-3.5 w-full overflow-x-auto hide-scrollbar md:overflow-x-visible pb-2 pt-1" id="category-filters" style="-webkit-overflow-scrolling: touch;">
+                <div class="category-scroll flex flex-nowrap gap-1 w-full overflow-x-auto hide-scrollbar pb-1 border-b border-gray-100" id="category-filters" style="-webkit-overflow-scrolling: touch;">
                     <!-- JS genera botones aquí -->
                 </div>
 
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <span id="results-count" class="text-sm font-medium text-gray-500"></span>
-                    <label class="flex items-center gap-2 text-sm font-semibold text-gray-600">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                    <span id="results-count" class="text-sm font-semibold text-gray-500"></span>
+                    <label class="flex items-center gap-2 text-sm font-semibold text-gray-500">
                         Ordenar por
-                        <select id="sort-select" class="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:border-brand-accent focus:ring-4 focus:ring-brand-accent/10">
+                        <select id="sort-select" class="minimal-select rounded-lg border-0 bg-transparent px-1 py-1 text-sm font-bold text-brand-900 focus:outline-none focus:ring-2 focus:ring-brand-accent/20">
                             <option value="default">Relevancia</option>
                             <option value="price-asc">Precio: menor a mayor</option>
                             <option value="price-desc">Precio: mayor a menor</option>
