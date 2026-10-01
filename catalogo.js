@@ -57,10 +57,10 @@
             filtersContainer.innerHTML = categorias.map(cat => `
                 <button 
                     onclick="filtrarPorCategoria('${cat}')"
-                    class="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 border whitespace-nowrap shrink-0 
+                    class="category-filter px-4 py-2 text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0
                     ${categoriaActual === cat 
-                        ? 'border-brand-accent bg-brand-accent text-white shadow-md shadow-brand-accent/20' 
-                        : 'border-gray-200 bg-white text-gray-600 hover:border-brand-accent hover:text-brand-accent hover:bg-brand-50'}"
+                        ? 'category-filter-active text-brand-accent'
+                        : 'text-gray-500 hover:text-brand-accent'}"
                 >
                     ${cat}
                 </button>
