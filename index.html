@@ -225,6 +225,30 @@
                 <div class="flex flex-nowrap md:flex-wrap gap-2.5 md:gap-3.5 w-full overflow-x-auto hide-scrollbar md:overflow-x-visible pb-2 pt-1" id="category-filters" style="-webkit-overflow-scrolling: touch;">
                     <!-- JS genera botones aquí -->
                 </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t border-gray-100 pt-6">
+                    <div class="flex items-start gap-3 rounded-2xl bg-brand-50 px-4 py-3">
+                        <i data-lucide="printer" class="w-5 h-5 text-brand-accent shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wide text-brand-900">A pedido</p>
+                            <p class="text-xs text-gray-600 mt-0.5">Entrega habitual de un día para otro, según la impresión y postproducción.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 rounded-2xl bg-brand-50 px-4 py-3">
+                        <i data-lucide="truck" class="w-5 h-5 text-brand-accent shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wide text-brand-900">Envíos a todo el Perú</p>
+                            <p class="text-xs text-gray-600 mt-0.5">El costo se cotiza según distrito o provincia.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 rounded-2xl bg-brand-50 px-4 py-3">
+                        <i data-lucide="badge-check" class="w-5 h-5 text-brand-accent shrink-0 mt-0.5"></i>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wide text-brand-900">Precios transparentes</p>
+                            <p class="text-xs text-gray-600 mt-0.5">Todos los precios publicados incluyen IGV.</p>
+                        </div>
+                    </div>
+                </div>
                 
             </div>
         </div>
@@ -249,6 +273,9 @@
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
                         Especialistas en transformar archivos digitales en piezas físicas de alta calidad. Tu imaginación es el único límite.
+                    </p>
+                    <p class="text-gray-500 text-xs leading-relaxed max-w-sm mt-4">
+                        Todos nuestros productos se elaboran a pedido. El tiempo habitual es de un día para otro, sujeto al trabajo de impresión y postproducción.
                     </p>
                 </div>
 
@@ -275,6 +302,7 @@
                             <svg class="w-5 h-5 text-gray-300 group-hover:text-white fill-current transition-colors" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
                         </a>
                     </div>
+                    <p class="text-gray-500 text-xs leading-relaxed mt-5">Envíos a todo el Perú. Costo a cotizar según distrito o provincia. Precios incluyen IGV.</p>
                 </div>
             </div>
 
@@ -499,8 +527,8 @@
             let colorActualNombre = producto.colores ? producto.colores[0].nombre : null;
 
             const whatsappText = producto.requiereCotizacion 
-                ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}`
-                : `Hola, me interesa el modelo 3D: ${producto.nombre}${producto.colores ? ` (Color: ${colorActualNombre})` : ''} - Precio: S/ ${producto.precio.toFixed(2)}`;
+                ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`
+                : `Hola, me interesa el modelo 3D: ${producto.nombre}${producto.colores ? ` (Color: ${colorActualNombre})` : ''} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
                 
             const img1 = producto.imagenes[0];
             const img2 = producto.imagenes.length > 1 ? producto.imagenes[1] : null;
@@ -609,7 +637,7 @@
                     
                     <div class="print-mt-auto flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
                         <div class="flex flex-col">
-                            <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">${producto.requiereCotizacion ? 'Precio' : 'Precio Unitario'}</span>
+                            <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">${producto.requiereCotizacion ? 'Precio' : 'Precio incluye IGV'}</span>
                             <div class="flex items-start">
                                 ${producto.requiereCotizacion 
                                     ? `<span class="print-price font-title text-2xl font-black text-brand-900 tracking-tight mt-1">Cotizar</span>`
@@ -699,7 +727,7 @@
             const wsBtn = document.getElementById(`ws-btn-${productId}`);
             if(wsBtn) {
                 const prod = productos.find(p => p.id === productId);
-                const text = `Hola, me interesa el modelo 3D: ${prod.nombre} (Color: ${colorName}) - Precio: S/ ${prod.precio.toFixed(2)}`;
+                const text = `Hola, me interesa el modelo 3D: ${prod.nombre} (Color: ${colorName}) - Precio: S/ ${prod.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
                 wsBtn.href = `https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(text)}`;
             }
         };
