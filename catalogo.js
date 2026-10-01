@@ -407,7 +407,7 @@
         let currentLightboxMediaArray = [];
         let currentLightboxIndex = 0;
 
-        function abrirModal(productoId) {
+        window.abrirModal = function(productoId) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
             document.getElementById('lightbox-title').textContent = prod.nombre;
@@ -444,7 +444,7 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function cerrarModal(event, forceClose = false) {
+        window.cerrarModal = function(event, forceClose = false) {
             if (forceClose || event.target.id === 'lightbox') {
                 document.getElementById('lightbox').classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -452,7 +452,7 @@
             }
         }
 
-        function cambiarImagenLightbox(direccion, event) {
+        window.cambiarImagenLightbox = function(direccion, event) {
             if(event) event.stopPropagation(); 
 
             const total = currentLightboxMediaArray.length;
