@@ -421,8 +421,6 @@
         window.abrirModal = function(productoId) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
-            document.getElementById('lightbox-title').textContent = prod.nombre;
-
             // Obtener la imagen actual (por si se cambió con la paleta de colores)
             const imgEl = document.getElementById(`media-img1-${productoId}`);
             const currentImgSrc = imgEl ? imgEl.getAttribute('src') : prod.imagenes[0];
