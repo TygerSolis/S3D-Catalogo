@@ -1,0 +1,56 @@
+.print-only, .print-only-flex { display: none; }
+        body { background-color: #ffffff; }
+        
+        .media-hidden { opacity: 0; pointer-events: none; z-index: 0; }
+        .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
+        .media-transition { transition: opacity 0.4s ease-in-out; }
+
+        #lightbox { display: none; }
+        #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(8px); } }
+        
+        .lightbox-nav-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @media (max-width: 640px) {
+            .media-viewer { height: 20rem; }
+            .hero-content { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+            .hero-content h2 { font-size: 2.75rem; }
+        }
+
+        /* Botón Volver Arriba */
+        #btn-volver-arriba {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 90;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        #btn-volver-arriba.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* Reglas de Impresión */
+        @media print {
+            @page { size: A4 portrait; margin: 12mm; }
+            body { background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            nav, header, footer, .no-print, .thumbnails-container { display: none !important; }
+            .print-only { display: block !important; }
+            .print-only-flex { display: flex !important; }
+            #productos-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10mm !important; }
+            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
+            .print-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; margin-bottom: 0 !important; }
+            .media-viewer { height: 200px !important; background: white !important; }
+            .media-viewer video { display: none !important; }
+            .media-viewer img { opacity: 1 !important; }
+            .print-text-sm { font-size: 10pt !important; line-height: 1.4 !important; }
+            .print-price { font-size: 16pt !important; }
+            .print-card-body { padding: 12px !important; }
+        }
+    
