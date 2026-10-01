@@ -205,6 +205,34 @@
             `;
         }
 
+        function generarHTMLProductoCarrusel(producto) {
+            const img = producto.imagenes[0];
+            const rutaAvif = img ? img.replace(/\.(webp|png|jpe?g)$/i, '.avif') : '';
+            const whatsappText = producto.requiereCotizacion
+                ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`
+                : `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
+
+            return `
+            <article class="catalog-carousel-card">
+                <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
+                    ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
+                    <picture>
+                        <source srcset="${rutaAvif}" type="image/avif">
+                        <img src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
+                    </picture>
+                    <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
+                </div>
+                <div class="catalog-carousel-info">
+                    <h3>${producto.nombre}</h3>
+                    <div class="catalog-carousel-meta">
+                        <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
+                        <span>${producto.medida || ''}</span>
+                    </div>
+                    <a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                </div>
+            </article>`;
+        }
+
         window.switchMedia = function(productId, index, event) {
             if(event) event.stopPropagation();
 
@@ -360,8 +388,16 @@
                             <span class="text-sm font-semibold text-gray-500 bg-white px-4 py-1.5 rounded-full w-fit shadow-sm border border-gray-200">${items.length} modelos</span>
                         </div>
                         ${categoryBanner}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-10">
-                            ${items.map(producto => generarHTMLProducto(producto)).join('')}
+                        <div class="catalog-carousel-shell">
+                            <button class="catalog-carousel-arrow catalog-carousel-prev" type="button" aria-label="Productos anteriores" data-carousel-direction="-1">
+                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                            </button>
+                            <div class="catalog-carousel-track" data-carousel-track>
+                                ${items.map(producto => generarHTMLProductoCarrusel(producto)).join('')}
+                            </div>
+                            <button class="catalog-carousel-arrow catalog-carousel-next" type="button" aria-label="Siguientes productos" data-carousel-direction="1">
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -385,6 +421,20 @@
                         event.preventDefault();
                         openLightbox();
                     }
+                });
+            });
+
+            mainContainer.querySelectorAll('.catalog-carousel-shell').forEach(shell => {
+                const track = shell.querySelector('[data-carousel-track]');
+                const cards = shell.querySelectorAll('.catalog-carousel-card');
+                const step = () => {
+                    const card = cards[0];
+                    return card ? card.getBoundingClientRect().width + 24 : track.clientWidth;
+                };
+                shell.querySelectorAll('[data-carousel-direction]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        track.scrollBy({ left: Number(button.dataset.carouselDirection) * step() * 2, behavior: 'smooth' });
+                    });
                 });
             });
             
