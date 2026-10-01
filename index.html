@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Metadatos Open Graph para WhatsApp/Facebook/etc. -->
     <meta property="og:title" content="Catálogo Oficial S3D - Imprimimos tu mundo" />
@@ -64,6 +64,11 @@
         .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @media (max-width: 640px) {
+            .media-viewer { height: 20rem; }
+            .hero-content { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+            .hero-content h2 { font-size: 2.75rem; }
+        }
 
         /* Botón Volver Arriba */
         #btn-volver-arriba {
@@ -134,14 +139,14 @@
                 </div>
                 <div class="hidden sm:flex items-center gap-6 no-print">
                     <div class="flex items-center gap-4">
-                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="text-gray-400 hover:text-[#E1306C] transition-colors group" title="Instagram">
+                        <a href="https://www.instagram.com/print.s3d" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#E1306C] transition-colors group" title="Instagram">
                             <svg class="w-5 h-5 group-hover:text-[#E1306C] transition-colors" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12.8 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
-                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="text-gray-400 hover:text-[#1877F2] transition-colors group" title="Facebook">
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-[#1877F2] transition-colors group" title="Facebook">
                             <svg class="w-5 h-5 fill-current group-hover:text-[#1877F2] transition-colors" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
                         </a>
                     </div>
-                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="bg-brand-light text-brand-accent hover:bg-brand-accent hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2">
+                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="bg-brand-light text-brand-accent hover:bg-brand-accent hover:text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2">
                         <i data-lucide="phone" class="w-4 h-4"></i>
                         Contáctanos
                     </a>
@@ -154,7 +159,7 @@
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-brand-light/50 blur-3xl opacity-70 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-blue-50 blur-3xl opacity-70 pointer-events-none"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10">
+        <div class="hero-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div class="max-w-2xl">
                     <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-light text-brand-accent font-semibold text-xs tracking-wider uppercase mb-6">
@@ -171,7 +176,7 @@
                         <button onclick="document.getElementById('catalogo').scrollIntoView({behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white px-8 py-4 rounded-full font-bold shadow-[0_8px_20px_rgba(0,102,204,0.3)] hover:shadow-[0_8px_25px_rgba(0,102,204,0.4)] hover:-translate-y-1 transition-all duration-300">
                             Ver Catálogo
                         </button>
-                        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="bg-white text-brand-900 border border-gray-200 hover:border-brand-accent hover:text-brand-accent px-8 py-4 rounded-full font-bold shadow-sm transition-all duration-300 flex items-center gap-2">
+                        <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="bg-white text-brand-900 border border-gray-200 hover:border-brand-accent hover:text-brand-accent px-8 py-4 rounded-full font-bold shadow-sm transition-all duration-300 flex items-center gap-2">
                             Pedidos Personalizados
                         </a>
                     </div>
@@ -249,7 +254,7 @@
 
                 <div class="md:col-span-4">
                     <h4 class="font-title text-lg font-bold mb-6 text-white">¿Hablamos?</h4>
-                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" class="inline-flex items-center gap-4 text-gray-300 hover:text-white transition-colors group bg-white/5 hover:bg-white/10 px-6 py-4 rounded-2xl border border-white/10">
+                    <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-4 text-gray-300 hover:text-white transition-colors group bg-white/5 hover:bg-white/10 px-6 py-4 rounded-2xl border border-white/10">
                         <div class="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center group-hover:bg-[#25D366] transition-colors shadow-lg">
                             <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
                         </div>
@@ -263,10 +268,10 @@
                 <div class="md:col-span-3">
                     <h4 class="font-title text-lg font-bold mb-6 text-white">Redes Sociales</h4>
                     <div class="flex space-x-3">
-                        <a href="https://www.instagram.com/print.s3d" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent transition-all duration-300 shadow-sm group" title="Instagram">
+                        <a href="https://www.instagram.com/print.s3d" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent transition-all duration-300 shadow-sm group" title="Instagram">
                             <svg class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12.8 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
-                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 shadow-sm group" title="Facebook">
+                        <a href="https://www.facebook.com/profile.php?id=61583189266399" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-transparent transition-all duration-300 shadow-sm group" title="Facebook">
                             <svg class="w-5 h-5 text-gray-300 group-hover:text-white fill-current transition-colors" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
                         </a>
                     </div>
@@ -285,16 +290,17 @@
         <i data-lucide="chevron-up" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
     </button>
 
-    <div id="lightbox" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
-        <button class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
+    <div id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
+        <button aria-label="Cerrar galería" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
             <i data-lucide="x" class="w-6 h-6"></i>
         </button>
         
-        <button id="lightbox-prev" class="lightbox-nav-btn absolute left-4 md:left-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(-1, event)">
+        <button id="lightbox-prev" aria-label="Imagen anterior" class="lightbox-nav-btn absolute left-4 md:left-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(-1, event)">
             <i data-lucide="arrow-left" class="w-6 h-6"></i>
         </button>
 
         <div class="relative w-full max-w-5xl h-full max-h-[85vh] flex flex-col items-center justify-center p-4">
+            <h2 id="lightbox-title" class="absolute top-4 left-1/2 -translate-x-1/2 max-w-[70%] truncate text-white text-sm sm:text-base font-bold tracking-wide"></h2>
             <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300 hidden">
             <video id="lightbox-vid" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl hidden" controls playsinline></video>
             <div id="lightbox-counter" class="absolute bottom-4 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest backdrop-blur-md">
@@ -302,7 +308,7 @@
             </div>
         </div>
 
-        <button id="lightbox-next" class="lightbox-nav-btn absolute right-4 md:right-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(1, event)">
+        <button id="lightbox-next" aria-label="Siguiente imagen" class="lightbox-nav-btn absolute right-4 md:right-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(1, event)">
             <i data-lucide="arrow-right" class="w-6 h-6"></i>
         </button>
     </div>
@@ -525,25 +531,25 @@
                 let miniaturasHTML = ``;
                 if (img1) {
                     miniaturasHTML += `
-                    <button onclick="switchMedia(${producto.id}, 0)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
+                    <button onclick="switchMedia(${producto.id}, 0, event)" id="thumb-0-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 1">
                         <img src="${img1}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img2) {
                     miniaturasHTML += `
-                    <button onclick="switchMedia(${producto.id}, 1)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
+                    <button onclick="switchMedia(${producto.id}, 1, event)" id="thumb-1-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 2">
                         <img src="${img2}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (img3) {
                     miniaturasHTML += `
-                    <button onclick="switchMedia(${producto.id}, 3)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
+                    <button onclick="switchMedia(${producto.id}, 3, event)" id="thumb-3-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-50 transition-all cursor-pointer shadow-sm shrink-0" title="Foto 3">
                         <img src="${img3}" loading="lazy" class="w-full h-full object-cover">
                     </button>`;
                 }
                 if (hasVideo) {
                     miniaturasHTML += `
-                    <button onclick="switchMedia(${producto.id}, 2)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
+                    <button onclick="switchMedia(${producto.id}, 2, event)" id="thumb-2-${producto.id}" class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-brand-accent bg-gray-900 transition-all cursor-pointer relative flex items-center justify-center group/vid shadow-sm shrink-0" title="Ver Video">
                         <img src="${img1}" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-60 blur-[3px] group-hover/vid:opacity-40 transition-opacity duration-300">
                         <div class="relative z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/40 group-hover/vid:bg-brand-accent group-hover/vid:border-brand-accent transition-all duration-300 shadow-lg">
                             <i data-lucide="play" class="w-4 h-4 text-white ml-0.5 group-hover/vid:scale-110 transition-transform"></i>
@@ -561,7 +567,7 @@
             return `
             <div class="print-break-avoid bg-white rounded-3xl overflow-hidden shadow-soft hover:shadow-float transition-all duration-500 border border-gray-100 flex flex-col h-full group print-shadow-none">
                 
-                <div class="media-viewer relative w-full h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
+                <div class="media-viewer relative w-full h-[24rem] sm:h-[26rem] bg-[#f8fafc] border-b border-gray-50 flex items-center justify-center p-0 cursor-pointer overflow-hidden group/media" onclick="abrirModal(${producto.id})">
                     
                     ${producto.badge ? `
                     <div class="absolute top-4 left-4 z-20 no-print">
@@ -613,9 +619,9 @@
                             </div>
                         </div>
                         
-                        <a id="ws-btn-${producto.id}" href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" class="no-print bg-brand-900 hover:bg-brand-accent text-white w-12 h-12 sm:w-auto sm:px-6 sm:h-12 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2" title="Pedir por WhatsApp">
+                        <a id="ws-btn-${producto.id}" href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" rel="noopener noreferrer" class="no-print bg-brand-900 hover:bg-brand-accent text-white w-auto px-4 sm:px-6 h-12 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2" title="Pedir por WhatsApp">
                             <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                            <span class="font-bold text-sm tracking-wide hidden sm:block">${producto.requiereCotizacion ? 'Cotizar' : 'Comprar'}</span>
+                            <span class="font-bold text-xs sm:text-sm tracking-wide">${producto.requiereCotizacion ? 'Cotizar' : 'Comprar'}</span>
                         </a>
                     </div>
                 </div>
@@ -623,7 +629,7 @@
             `;
         }
 
-        window.switchMedia = function(productId, index) {
+        window.switchMedia = function(productId, index, event) {
             if(event) event.stopPropagation();
 
             const img1 = document.getElementById(`media-img1-${productId}`);
@@ -818,6 +824,7 @@
         function abrirModal(productoId) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
+            document.getElementById('lightbox-title').textContent = prod.nombre;
 
             // Obtener la imagen actual (por si se cambió con la paleta de colores)
             const imgEl = document.getElementById(`media-img1-${productoId}`);
