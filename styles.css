@@ -147,7 +147,7 @@
         .catalog-carousel-info { padding: 1rem .15rem 0; }
         .catalog-carousel-info h3 {
             color: #002244;
-            font-family: Karla, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.15rem;
             font-weight: 700;
             line-height: 1.25;
@@ -247,7 +247,7 @@
         .section-kicker-dark { color: #6eb6ff; }
         .section-title {
             color: #002244;
-            font-family: Karla, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(1.9rem, 3vw, 2.8rem);
             font-weight: 900;
             letter-spacing: -.03em;
@@ -277,7 +277,7 @@
             transform: translateY(-4px);
         }
         .category-card-icon { color: #0066cc; height: 1.65rem; margin-bottom: 1.4rem; width: 1.65rem; }
-        .category-card span { color: #002244; font-family: Karla, sans-serif; font-size: .95rem; font-weight: 800; }
+        .category-card span { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: .95rem; font-weight: 700; }
         .category-card small { color: #94a3b8; font-size: .75rem; margin-top: .35rem; }
         .featured-card {
             background: #f7faff;
@@ -296,17 +296,17 @@
             border-radius: 1.25rem;
             padding: 1.4rem;
         }
-        .process-step span { color: #6eb6ff; font-family: Karla, sans-serif; font-size: .75rem; font-weight: 900; letter-spacing: .12em; }
-        .process-step h3 { font-family: Karla, sans-serif; font-size: 1rem; font-weight: 800; margin-top: .7rem; }
+        .process-step span { color: #6eb6ff; font-family: 'Space Grotesk', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .12em; }
+        .process-step h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; margin-top: .7rem; }
         .process-step p { color: #bfdbfe; font-size: .82rem; line-height: 1.55; margin-top: .4rem; }
         .info-card { background: #fff; border-color: #e2e8f0; }
-        .info-card-number { align-items: center; background: #e6f0fa; border-radius: 999px; color: #0066cc; display: flex; font-family: Karla, sans-serif; font-weight: 900; height: 2.25rem; justify-content: center; width: 2.25rem; }
-        .info-card h3 { color: #002244; font-family: Karla, sans-serif; font-size: 1.1rem; font-weight: 800; margin-top: 1.2rem; }
+        .info-card-number { align-items: center; background: #e6f0fa; border-radius: 999px; color: #0066cc; display: flex; font-family: 'Space Grotesk', sans-serif; font-weight: 700; height: 2.25rem; justify-content: center; width: 2.25rem; }
+        .info-card h3 { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; margin-top: 1.2rem; }
         .info-card p { color: #64748b; font-size: .9rem; line-height: 1.65; margin-top: .5rem; }
         .about-panel { background: #f7faff; border: 1px solid #e2e8f0; border-radius: 1.75rem; padding: 1.5rem; }
         .about-panel > div { align-items: flex-start; border-bottom: 1px solid #dbeafe; display: grid; gap: .9rem; grid-template-columns: 2rem 1fr; padding: 1.2rem .5rem; }
         .about-panel > div:last-child { border-bottom: 0; }
-        .about-panel strong { color: #002244; font-family: Karla, sans-serif; font-size: 1rem; grid-column: 2; margin-bottom: -1rem; }
+        .about-panel strong { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; grid-column: 2; margin-bottom: -1rem; }
         .about-panel span { color: #64748b; font-size: .88rem; grid-column: 2; line-height: 1.5; }
         @media (max-width: 640px) {
             .announcement-bar { font-size: .59rem; gap: .4rem; letter-spacing: .04em; }
