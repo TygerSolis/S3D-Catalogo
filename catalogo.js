@@ -77,7 +77,7 @@
                     <div class="featured-card-content">
                         <span class="featured-badge">Top Ventas</span>
                         <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">${producto.categoria}</p>
-                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">${producto.nombre}</h3>
+                        <h3 class="font-title text-2xl font-bold text-brand-900 mt-2">${producto.nombre}</h3>
                         <p class="text-gray-500 mt-3">${producto.descripcion || 'Una pieza elaborada a pedido para tu colección.'}</p>
                         <a href="#producto-${producto.id}" data-featured-product="${producto.id}" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
                     </div>
@@ -394,7 +394,7 @@
                             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm backdrop-blur-sm">
                                 <i data-lucide="info" class="w-3.5 h-3.5"></i> Video Explicativo
                             </div>
-                            <h3 class="font-title text-2xl md:text-3xl font-black mb-3 tracking-tight">¿Cómo funcionan nuestras placas?</h3>
+                            <h3 class="font-title text-2xl md:text-3xl font-bold mb-3 tracking-tight">¿Cómo funcionan nuestras placas?</h3>
                             <p class="text-brand-light text-sm md:text-base leading-relaxed opacity-90">Mira esta breve presentación donde detallamos las funcionalidades, los materiales y por qué son la opción ideal para mantener seguro a tu engreído.</p>
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
@@ -413,7 +413,7 @@
                     <div class="mb-16 first:mt-0 mt-8 print-break-avoid">
                         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                             <div>
-                                <h2 class="font-title text-3xl font-black text-brand-900">${categoria}</h2>
+                                <h2 class="font-title text-3xl font-bold text-brand-900">${categoria}</h2>
                                 <div class="w-12 h-1 bg-brand-accent mt-3 rounded-full"></div>
                                 ${extraHeaderNote}
                             </div>
