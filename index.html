@@ -84,7 +84,7 @@
     
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <link rel="stylesheet" href="styles.css?v=header-1">
+    <link rel="stylesheet" href="styles.css?v=header-3">
 </head>
 <body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
 
@@ -230,28 +230,7 @@
                 </div>
                 <a href="#catalogo" class="text-brand-accent font-bold text-sm hover:underline">Ver catálogo completo <span aria-hidden="true">→</span></a>
             </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <article class="featured-card">
-                    <img src="assets/sn-peaky-set-1.webp" alt="SNOOPY PEAKY BLINDERS SET" loading="lazy" decoding="async">
-                    <div class="featured-card-content">
-                        <span class="featured-badge">Top Ventas</span>
-                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">Muñecos coleccionables</p>
-                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">SNOOPY PEAKY BLINDERS SET</h3>
-                        <p class="text-gray-500 mt-3">Un set con carácter, elaborado a pedido y listo para convertirse en el centro de tu colección.</p>
-                        <a href="#producto-14" data-featured-product="14" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
-                    </div>
-                </article>
-                <article class="featured-card">
-                    <img src="assets/hk-urbana-1.webp" alt="HELLO KITTY URBANA" loading="lazy" decoding="async">
-                    <div class="featured-card-content">
-                        <span class="featured-badge">Top Ventas</span>
-                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">Muñecos coleccionables</p>
-                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">HELLO KITTY URBANA</h3>
-                        <p class="text-gray-500 mt-3">Diseño urbano, personalidad y opciones de color para darle un toque especial a tus espacios.</p>
-                        <a href="#producto-4" data-featured-product="4" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
-                    </div>
-                </article>
-            </div>
+            <div id="featured-products" class="grid md:grid-cols-2 gap-6"></div>
         </div>
     </section>
 
@@ -529,6 +508,6 @@
         </button>
     </div>
 
-    <script src="catalogo.js?v=lightbox-2" defer></script>
+    <script src="catalogo.js?v=featured-2" defer></script>
 </body>
 </html>

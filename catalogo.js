@@ -67,6 +67,24 @@
             `).join('');
         }
 
+        function renderFeaturedProducts() {
+            const container = document.getElementById('featured-products');
+            if (!container) return;
+            const destacados = productos.filter(producto => producto.badge === 'Top Ventas');
+            container.innerHTML = destacados.map(producto => `
+                <article class="featured-card">
+                    <img src="${producto.imagenes[0]}" alt="${producto.nombre}" loading="lazy" decoding="async">
+                    <div class="featured-card-content">
+                        <span class="featured-badge">Top Ventas</span>
+                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">${producto.categoria}</p>
+                        <h3 class="font-title text-2xl font-black text-brand-900 mt-2">${producto.nombre}</h3>
+                        <p class="text-gray-500 mt-3">${producto.descripcion || 'Una pieza elaborada a pedido para tu colección.'}</p>
+                        <a href="#producto-${producto.id}" data-featured-product="${producto.id}" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
         function generarHTMLProducto(producto) {
             let colorActualNombre = producto.colores ? producto.colores[0].nombre : null;
 
@@ -504,11 +522,11 @@
             });
         };
 
-        document.querySelectorAll('[data-featured-product]').forEach(link => {
-            link.addEventListener('click', event => {
-                event.preventDefault();
-                window.mostrarProductoDestacado(Number(link.dataset.featuredProduct));
-            });
+        document.addEventListener('click', event => {
+            const link = event.target.closest('[data-featured-product]');
+            if (!link) return;
+            event.preventDefault();
+            window.mostrarProductoDestacado(Number(link.dataset.featuredProduct));
         });
 
         document.getElementById('search-input').addEventListener('input', function(e) {
@@ -624,7 +642,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json');
+            const response = await fetch('productos.json?v=featured-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
@@ -647,6 +665,7 @@
             ordenActual = ["price-asc", "price-desc", "name"].includes(params.get("orden")) ? params.get("orden") : "default";
             document.getElementById("search-input").value = terminoBusqueda;
             sortSelect.value = ordenActual;
+            renderFeaturedProducts();
             renderizarProductos();
         } catch (error) {
             console.error('No se pudo cargar el catalogo:', error);
