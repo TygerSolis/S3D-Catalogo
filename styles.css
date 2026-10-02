@@ -215,14 +215,12 @@
             text-underline-offset: .2rem;
         }
         .site-nav { border-bottom: 1px solid #e2e8f0; }
-        .site-nav-inner { position: relative; }
+        .site-nav-inner { display: grid !important; grid-template-columns: auto minmax(0, 1fr) auto; position: relative; }
         .site-logo { align-items: center; gap: .55rem; grid-column: 1; position: static; }
         .site-logo > div:first-child { height: 2.35rem; width: 2.35rem; }
-        .site-logo h1 { font-size: 1.25rem; }
         .site-nav-inner > div:first-child { grid-column: 2; }
         .site-nav-inner > div:last-child { grid-column: 3; }
-        .site-nav-inner { display: grid !important; grid-template-columns: 9rem minmax(0, 1fr) auto; }
-        .site-nav-inner > div:first-child { gap: 1.15rem; justify-content: flex-start; }
+        .site-nav-inner > div:first-child { gap: clamp(.55rem, 1.4vw, 1.15rem); justify-content: center; min-width: 0; white-space: nowrap; }
         .site-nav-inner > div:first-child a { text-transform: uppercase; }
         .reference-hero {
             background: #002244;
@@ -317,7 +315,6 @@
             .site-nav-inner { display: flex !important; }
             .site-logo { gap: .4rem; }
             .site-logo > div:first-child { height: 2.1rem; width: 2.1rem; }
-            .site-logo h1 { font-size: 1.1rem; }
             .media-viewer { height: 20rem; }
             .reference-hero .hero-content { padding-top: 4rem !important; padding-bottom: 4rem !important; }
             .hero-content h2 { font-size: 2.75rem; }
