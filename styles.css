@@ -215,12 +215,10 @@
             text-underline-offset: .2rem;
         }
         .site-nav { border-bottom: 1px solid #e2e8f0; }
-        .site-nav-inner { display: grid !important; grid-template-columns: auto minmax(0, 1fr) auto; position: relative; }
-        .site-logo { align-items: center; gap: .55rem; grid-column: 1; position: static; }
-        .site-logo > div:first-child { height: 2.35rem; width: 2.35rem; }
-        .site-nav-inner > div:first-child { grid-column: 2; }
-        .site-nav-inner > div:nth-child(3) { grid-column: 3; grid-row: 1; }
-        .site-nav-inner > a:last-child { display: none; grid-column: 3; grid-row: 1; justify-self: end; }
+        .site-nav-inner { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; position: relative; }
+        .site-nav-inner > div:first-child { grid-column: 1; }
+        .site-nav-inner > div:nth-child(2) { grid-column: 2; grid-row: 1; }
+        .site-nav-inner > a:last-child { display: none; grid-column: 2; grid-row: 1; justify-self: end; }
         .site-nav-inner > div:first-child { gap: clamp(.55rem, 1.4vw, 1.15rem); justify-content: center; min-width: 0; white-space: nowrap; }
         .site-nav-inner > div:first-child a { text-transform: uppercase; }
         .reference-hero {
@@ -315,8 +313,6 @@
             .announcement-bar a { display: none; }
             .site-nav-inner { display: flex !important; }
             .site-nav-inner > a:last-child { display: block; }
-            .site-logo { gap: .4rem; }
-            .site-logo > div:first-child { height: 2.1rem; width: 2.1rem; }
             .media-viewer { height: 20rem; }
             .reference-hero .hero-content { padding-top: 4rem !important; padding-bottom: 4rem !important; }
             .hero-content h2 { font-size: 2.75rem; }
