@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Transcode static MP4 assets to web-friendly H.264 and update references."""
+"""Transcode static MP4 assets for web delivery and repair media references."""
 from pathlib import Path
 import subprocess
 
@@ -8,13 +8,13 @@ ASSETS = ROOT / "assets"
 VIDEO_DIR = ASSETS / "video"
 TEXT_EXTENSIONS = {".html", ".js", ".css", ".json", ".md", ".xml", ".txt"}
 
-def read_text_files():
-    for path in ROOT.rglob("*"):
-        if path.is_file() and ".git" not in path.parts and path.suffix.lower() in TEXT_EXTENSIONS:
-            try:
-                yield path, path.read_text(encoding="utf-8")
-            except UnicodeDecodeError:
-                continue
+def text_paths():
+    return [
+        path for path in ROOT.rglob("*")
+        if path.is_file()
+        and ".git" not in path.parts
+        and path.suffix.lower() in TEXT_EXTENSIONS
+    ]
 
 def transcode(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -29,41 +29,59 @@ def transcode(source: Path, target: Path) -> None:
     ]
     subprocess.run(command, check=True)
 
-def main():
-    sources = sorted(p for p in ASSETS.glob("*.mp4"))
-    if not sources:
-        print("No root-level MP4 assets found.")
-        return
-
-    text_files = list(read_text_files())
-    converted = 0
-
-    for source in sources:
-        rel = source.relative_to(ROOT).as_posix()
-        if not any(rel in content for _, content in text_files):
-            print(f"Keeping unreferenced video: {rel}")
-            continue
-
-        target = VIDEO_DIR / source.name
+def repair_existing_references(files):
+    replacements = {
+        f"assets/{video.name}": f"assets/video/{video.name}"
+        for video in VIDEO_DIR.glob("*.mp4")
+    }
+    changed = 0
+    for path in files:
         try:
-            transcode(source, target)
-        except subprocess.CalledProcessError as exc:
-            print(f"Failed to transcode {rel}: {exc}")
-            if target.exists():
-                target.unlink()
+            content = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
             continue
+        new_content = content
+        for old, new in replacements.items():
+            new_content = new_content.replace(old, new)
+        if new_content != content:
+            path.write_text(new_content, encoding="utf-8")
+            changed += 1
+    return changed
 
-        target_rel = target.relative_to(ROOT).as_posix()
-        for path, content in text_files:
-            updated = content.replace(rel, target_rel)
-            if updated != content:
-                path.write_text(updated, encoding="utf-8")
+def main():
+    VIDEO_DIR.mkdir(parents=True, exist_ok=True)
+    files = text_paths()
+    repaired = repair_existing_references(files)
+
+    converted = 0
+    for source in sorted(ASSETS.glob("*.mp4")):
+        target = VIDEO_DIR / source.name
+        if not target.exists():
+            try:
+                transcode(source, target)
+                converted += 1
+                print(f"Optimized {source.relative_to(ROOT)} -> {target.relative_to(ROOT)}")
+            except subprocess.CalledProcessError as exc:
+                print(f"Failed to transcode {source.relative_to(ROOT)}: {exc}")
+                if target.exists():
+                    target.unlink()
+                continue
+
+        # Always repair all references after a conversion.
+        old = source.relative_to(ROOT).as_posix()
+        new = target.relative_to(ROOT).as_posix()
+        for path in files:
+            try:
+                content = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            new_content = content.replace(old, new)
+            if new_content != content:
+                path.write_text(new_content, encoding="utf-8")
 
         source.unlink()
-        converted += 1
-        print(f"Optimized {rel} -> {target_rel}")
 
-    print(f"Optimized {converted} referenced videos.")
+    print(f"Repaired references in {repaired} text files; converted {converted} source videos.")
 
 if __name__ == "__main__":
     main()
