@@ -411,7 +411,7 @@
                             <p class="text-brand-light text-sm md:text-base leading-relaxed opacity-90">Mira esta breve presentación donde detallamos las funcionalidades, los materiales y por qué son la opción ideal para mantener seguro a tu engreído.</p>
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
-                            <button onclick="abrirVideoGeneral('assets/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video">
+                            <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video">
                                 <img src="assets/pet-video-poster.webp" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
                                     <i data-lucide="play" class="w-6 h-6 text-white ml-1 fill-white"></i>
