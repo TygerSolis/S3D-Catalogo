@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tygersolis.github.io/S3D-Catalogo/sitemap.xml
