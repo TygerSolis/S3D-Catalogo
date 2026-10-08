@@ -214,7 +214,7 @@
       "assets/sn-criminal-set-1.webp",
       "assets/sn-criminal-set-2.webp"
     ],
-    "video": "assets/sn-criminal-set-video.mp4",
+    "video": "assets/video/sn-criminal-set-video.mp4",
     "descripcion": "Set completo de Snoopy estilo Smooth Criminal."
   },
   {
@@ -554,7 +554,7 @@
     "imagenes": [
       "assets/barber-rotulo-1.webp"
     ],
-    "video": "assets/barber-rotulo-video.mp4",
+    "video": "assets/video/barber-rotulo-video.mp4",
     "descripcion": "Espejo infinito en 3D con temática de barbería."
   },
   {
@@ -569,7 +569,7 @@
       "assets/barber-frames3d-1.webp",
       "assets/barber-frames3d-2.webp"
     ],
-    "video": "assets/barber-frames3d-video.mp4",
+    "video": "assets/video/barber-frames3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería."
   },
   {
@@ -584,7 +584,7 @@
       "assets/barber-frame3d-1.webp",
       "assets/barber-frame3d-2.webp"
     ],
-    "video": "assets/barber-frame3d-video.mp4",
+    "video": "assets/video/barber-frame3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería."
   },
   {
@@ -599,7 +599,7 @@
       "assets/barber-lamp-1.webp",
       "assets/barber-lamp-2.webp"
     ],
-    "video": "assets/barber-lamp-video.mp4",
+    "video": "assets/video/barber-lamp-video.mp4",
     "descripcion": "Lámpara decorativa LED exclusiva para barberías."
   },
   {
@@ -657,7 +657,7 @@
       "assets/barber-bart-1.webp",
       "assets/barber-bart-2.webp"
     ],
-    "video": "assets/barber-bart-video.mp4",
+    "video": "assets/video/barber-bart-video.mp4",
     "descripcion": "Figura 3D de Bart Simpson con temática de barbero."
   },
   {
@@ -935,7 +935,7 @@
       "assets/ll-audi-1.webp",
       "assets/ll-audi-2.webp"
     ],
-    "video": "assets/ll-audi-video.mp4",
+    "video": "assets/video/ll-audi-video.mp4",
     "descripcion": "Llavero temático automotriz."
   },
   {
@@ -1232,7 +1232,7 @@
       "assets/acc-llavero-1.webp",
       "assets/acc-llavero-2.webp"
     ],
-    "video": "assets/acc-llavero-video.mp4",
+    "video": "assets/video/acc-llavero-video.mp4",
     "descripcion": "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables."
   }
 ]
