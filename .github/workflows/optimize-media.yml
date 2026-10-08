@@ -1,0 +1,35 @@
+name: Optimize S3D media
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-video:
+    if: ${{ !contains(github.event.head_commit.message, 'chore: optimize S3D media') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Transcode referenced MP4 assets
+        run: python scripts/optimize_videos.py
+
+      - name: Commit optimized media
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No media changes required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets scripts
+          git add -- '*.html' '*.js' '*.css' '*.json' '*.md' '*.xml' '*.txt'
+          git commit -m "chore: optimize S3D media"
+          git push
