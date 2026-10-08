@@ -86,3 +86,13 @@ This project demonstrates how a small business can use a lightweight web applica
 
 ---
 Built by **Itamar Solis**
+
+## Performance tooling
+
+The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script that transcodes referenced MP4 files to H.264 with `faststart`, scales oversized sources to a practical web resolution and updates repository references. Product videos are also configured to load on demand rather than preloading large media for every card.
+
+## Portfolio Focus
+
+**Business problem:** turn a 3D-printing product collection into a digital storefront that combines product discovery, rich media and direct customer contact.
+
+**Engineering focus:** JSON-driven rendering, responsive media galleries, AVIF/WebP images, deferred video loading, SEO, accessibility, print styles and WhatsApp conversion.
