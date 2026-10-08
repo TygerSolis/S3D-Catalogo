@@ -16,6 +16,19 @@
 
         let productos = [];
 
+        const normalizar = value => String(value ?? '')
+            .toLocaleLowerCase('es')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '');
+
+        const escaparHTML = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        }[char]));
+
         const ordenDeseado = [
             "Muñecos Coleccionables",
             "Adornos", 
@@ -77,7 +90,7 @@
                     <div class="featured-card-content">
                         <span class="featured-badge">Top Ventas</span>
                         <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">${producto.categoria}</p>
-                        <h3 class="font-title text-2xl font-bold text-brand-900 mt-2">${producto.nombre}</h3>
+                        <h3 class="font-title text-2xl font-bold text-brand-900 mt-2">${escaparHTML(producto.nombre)}</h3>
                         <p class="text-gray-500 mt-3">${producto.descripcion || 'Una pieza elaborada a pedido para tu colección.'}</p>
                         <a href="#producto-${producto.id}" data-featured-product="${producto.id}" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
                     </div>
@@ -175,7 +188,7 @@
                     
                     ${img2 ? `<picture class="contents"><source srcset="${rutaAvif(img2)}" type="image/avif"><img id="media-img2-${producto.id}" src="${img2}" loading="lazy" decoding="async" alt="${producto.nombre}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'"></picture>` : ''}
                     ${img3 ? `<picture class="contents"><source srcset="${rutaAvif(img3)}" type="image/avif"><img id="media-img3-${producto.id}" src="${img3}" loading="lazy" decoding="async" alt="${producto.nombre}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" onerror="this.src='https://placehold.co/600x600/f8fafc/cbd5e1?text=Sin+Foto'"></picture>` : ''}
-                    ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
+                    ${hasVideo ? `<video id="media-vid-${producto.id}" src="${producto.video}" class="media-hidden absolute inset-0 w-full h-full object-contain p-4 media-transition" muted loop playsinline preload="none" onerror="this.poster='https://placehold.co/600x600/e6f0fa/003366?text=Video'"></video>` : ''}
 
                     <div class="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover/media:opacity-100 transition-opacity duration-300 shadow-sm z-20 no-print">
                         <i data-lucide="maximize-2" class="w-5 h-5 text-brand-900"></i>
@@ -199,7 +212,7 @@
                     </div>
 
                     <h3 class="print-title font-title text-xl font-bold text-brand-900 leading-tight mb-3">${producto.nombre}</h3>
-                    <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow whitespace-pre-line">${producto.descripcion}</p>
+                    <p class="print-text-sm text-gray-500 text-sm leading-relaxed flex-grow whitespace-pre-line">${escaparHTML(producto.descripcion)}</p>
                     
                     <div class="print-mt-auto flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
                         <div class="flex flex-col">
@@ -248,7 +261,7 @@
                         <source data-carousel-main-source srcset="${rutaAvif}" type="image/avif">
                         <img data-carousel-main-image src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
-                    ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="metadata"></video>` : ''}
+                    ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
                 </div>
                 <div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
@@ -299,14 +312,14 @@
                 img2.classList.remove('media-hidden');
                 img2.classList.add('media-active');
                 if (thumb1) { thumb1.classList.remove('border-transparent'); thumb1.classList.add('border-brand-accent'); }
-            } else if (index === 3 && img3) {
+            } else if (index === 2 && img3) {
                 img3.classList.remove('media-hidden');
                 img3.classList.add('media-active');
                 if (thumb3) { thumb3.classList.remove('border-transparent'); thumb3.classList.add('border-brand-accent'); }
-            } else if (index === 2 && vid) {
+            } else if (index === 3 && vid) {
                 vid.classList.remove('media-hidden');
                 vid.classList.add('media-active');
-                if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('border-brand-accent'); }
+                if (thumb3) { thumb3.classList.remove('border-transparent'); thumb3.classList.add('border-brand-accent'); }
                 vid.play();
             }
         };
@@ -348,9 +361,9 @@
             const productosFiltrados = productos.filter(p => {
                 const cumpleCategoria = categoriaActual === "Todas" || p.categoria === categoriaActual;
                 const cumpleBusqueda = terminoBusqueda === "" || 
-                    p.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()) || 
-                    p.descripcion.toLowerCase().includes(terminoBusqueda.toLowerCase()) ||
-                    (p.coleccion && p.coleccion.toLowerCase().includes(terminoBusqueda.toLowerCase()));
+                    normalizar(p.nombre).includes(normalizar(terminoBusqueda)) || 
+                    normalizar(p.descripcion).includes(normalizar(terminoBusqueda)) ||
+                    (p.coleccion && normalizar(p.coleccion).includes(normalizar(terminoBusqueda)));
                 
                 return cumpleCategoria && cumpleBusqueda;
             });
@@ -413,7 +426,7 @@
                     <div class="mb-16 first:mt-0 mt-8 print-break-avoid">
                         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                             <div>
-                                <h2 class="font-title text-3xl font-bold text-brand-900">${categoria}</h2>
+                                <h2 class="font-title text-3xl font-bold text-brand-900">${escaparHTML(categoria)}</h2>
                                 <div class="w-12 h-1 bg-brand-accent mt-3 rounded-full"></div>
                                 ${extraHeaderNote}
                             </div>
@@ -603,6 +616,7 @@
             const nextBtn = document.getElementById('lightbox-next');
             
             const currentMedia = currentLightboxMediaArray[currentLightboxIndex];
+            if (!currentMedia) return;
 
             imgEl.classList.add('hidden');
             vidEl.classList.add('hidden');
@@ -614,7 +628,7 @@
             } else if (currentMedia.type === 'vid') {
                 vidEl.src = currentMedia.src;
                 vidEl.classList.remove('hidden');
-                vidEl.play();
+                vidEl.play().catch(() => {});
             }
 
             const total = currentLightboxMediaArray.length;
