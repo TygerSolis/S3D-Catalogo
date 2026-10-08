@@ -315,12 +315,12 @@
             } else if (index === 2 && img3) {
                 img3.classList.remove('media-hidden');
                 img3.classList.add('media-active');
-                if (thumb3) { thumb3.classList.remove('border-transparent'); thumb3.classList.add('border-brand-accent'); }
+                if (thumb2) { thumb2.classList.remove('border-transparent'); thumb2.classList.add('border-brand-accent'); }
             } else if (index === 3 && vid) {
                 vid.classList.remove('media-hidden');
                 vid.classList.add('media-active');
                 if (thumb3) { thumb3.classList.remove('border-transparent'); thumb3.classList.add('border-brand-accent'); }
-                vid.play();
+                vid.play().catch(() => {});
             }
         };
 
