@@ -100,10 +100,10 @@
                 const imagen = producto.colores?.length ? producto.colores[0].img : producto.imagenes[0];
                 const precio = producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`;
                 return `
-                <button type="button" class="hero-product" data-hero-product="${producto.id}" aria-label="Ver ${escaparHTML(producto.nombre)}">
+                <button type="button" class="hero-product" data-hero-product="${producto.id}">
                     <picture>
                         <source srcset="${imagen.replace(/\.(webp|png|jpe?g)$/i, '.avif')}" type="image/avif">
-                        <img src="${imagen}" alt="${escaparHTML(producto.nombre)}"${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
+                        <img src="${imagen}" alt=""${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                     </picture>
                     ${esNuevo(producto) ? '<span class="hero-product-new">Nuevo</span>' : ''}
                     <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
@@ -164,7 +164,7 @@
 
             return `
             <article id="producto-${producto.id}" class="catalog-carousel-card${esNuevo(producto) ? ' is-new' : ''}">
-                <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
+                <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0">
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
                     <picture>
@@ -172,7 +172,8 @@
                         <img data-carousel-main-image src="${imgSm}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
                     ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
-                    <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
+                    <span class="sr-only">Ver en grande</span>
+                    <span class="catalog-carousel-expand" aria-hidden="true"><svg class="ico w-4 h-4" aria-hidden="true"><use href="#i-maximize-2"/></svg></span>
                 </div>
                 ${tieneColores ? coloresHTML : `<div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
                     ${miniaturasHTML}
@@ -275,16 +276,16 @@
                         <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
                         <div class="max-w-xl relative z-10">
                             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-[10px] font-bold tracking-widest uppercase mb-4 shadow-sm backdrop-blur-sm">
-                                <i data-lucide="info" class="w-3.5 h-3.5"></i> Video Explicativo
+                                <svg class="ico w-3.5 h-3.5" aria-hidden="true"><use href="#i-info"/></svg> Video Explicativo
                             </div>
                             <h3 class="font-title text-2xl md:text-3xl font-bold mb-3 tracking-tight">¿Cómo funcionan nuestras placas?</h3>
                             <p class="text-brand-light text-sm md:text-base leading-relaxed opacity-90">Mira esta breve presentación donde detallamos las funcionalidades, los materiales y por qué son la opción ideal para mantener seguro a tu engreído.</p>
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
-                            <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video">
-                                <img src="assets/pet-video-poster.webp" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
+                            <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video" aria-label="Reproducir video explicativo de las placas">
+                                <img src="assets/pet-video-poster.webp" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
-                                    <i data-lucide="play" class="w-6 h-6 text-white ml-1 fill-white"></i>
+                                    <svg class="ico w-6 h-6 text-white ml-1 fill-white" aria-hidden="true"><use href="#i-play"/></svg>
                                 </div>
                             </button>
                         </div>
@@ -315,7 +316,7 @@
             mainContainer.innerHTML = htmlCompleto || `
                 <div class="text-center py-20 px-4 bg-white rounded-3xl border border-gray-100 shadow-sm mt-8">
                     <div class="w-20 h-20 bg-brand-light rounded-full flex items-center justify-center mx-auto mb-6 text-brand-accent">
-                        <i data-lucide="search-x" class="w-10 h-10"></i>
+                        <svg class="ico w-10 h-10" aria-hidden="true"><use href="#i-search-x"/></svg>
                     </div>
                     <h3 class="font-title text-2xl font-bold text-gray-900 mb-3">No encontramos resultados</h3>
                     <p class="text-gray-500 text-lg">Intenta buscar con otros términos o cambia de categoría.</p>
@@ -391,8 +392,6 @@
                     }
                 });
             });
-
-            lucide.createIcons();
         }
 
         window.filtrarPorCategoria = function(categoria) {
@@ -765,11 +764,9 @@
             }
         });
 
-        lucide.createIcons();
-
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=ficha-3');
+            const response = await fetch('productos.json?v=perf-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

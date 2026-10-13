@@ -40,10 +40,10 @@ The solution separates product content from interface logic:
 - HTML5
 - CSS3
 - JavaScript (ES6+)
-- Tailwind CSS
+- Tailwind CSS (compiled to a static `tailwind.css`)
 - JSON
 - AVIF / WebP / MP4
-- Lucide Icons
+- Inline SVG icon sprite (Lucide icons, ISC license)
 - GitHub Pages
 - WhatsApp deep-link integration
 
@@ -97,6 +97,10 @@ The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script t
 ## Maintenance
 
 - **Product pages and SEO** – after editing `productos.json`, run `python3 scripts/build_product_pages.py`. It regenerates `producto/<slug>/index.html`, `sitemap.xml` and the `ItemList` structured data in `index.html`, and adds a `slug` to new products.
+- **CSS (Tailwind)** – the site no longer loads the Tailwind CDN at runtime. After adding or changing Tailwind classes in `index.html` or `catalogo.js`, rebuild with `npx tailwindcss@3.4.17 -c tailwind.config.js -i tailwind.input.css -o tailwind.css --minify` and bump the `?v=` of `tailwind.css`.
+- **Icons** – all icons are symbols in `scripts/chrome/sprite.html` (written into every page by the build script); use `<svg class="ico"><use href="#i-NAME"/></svg>`. To add one, copy its paths from the Lucide set into that file.
+- **Fonts** – Manrope and Space Grotesk (SIL Open Font License) are self-hosted in `assets/fonts/` (latin subset) and preloaded; `fonts.css` declares them.
+- **Logo** – pages use the small `assets/logo-96.webp`; the full `S3D.webp` is only for structured data.
 - **Shared header and footer** – the announcement bar, navigation and footer come from one source, `scripts/chrome/*.html`, styled by `chrome.css` and driven by `chrome.js`. `python3 scripts/build_product_pages.py` writes them into `index.html` (between the `CHROME-TOP` / `CHROME-FOOTER` markers) and into all product pages, so edit the templates, never the generated copies.
 - **"Nuevo" notice** – every product has a `fechaAlta` (`YYYY-MM-DD`). For 14 days from that date the catalog card, hero tile, lightbox and product page show a "Nuevo" ribbon; it disappears by itself afterwards. Set `fechaAlta` to the day a new product is added (the window is `NUEVO_DIAS` in `catalogo.js` and `producto.js`). Optional `heroOrden` / `heroFoco` control the large hero tile and its crop.
 - **Analytics (Umami Cloud, cookieless)** – `analytics.js` loads Umami using `CONFIG.websiteId` (the site is registered at cloud.umami.is for the domain `tygersolis.github.io`); if that value is emptied, nothing is loaded or sent. Custom events: `producto_visto`, `clic_comprar`, `clic_whatsapp`, `categoria`, `busqueda`, `color_elegido`, `orden`, `ficha_tarjeta`, `ficha_galeria`, `ficha_relacionado`, `ficha_ampliar` (details in the file header; any element with `data-evento` + `data-producto` also reports its click). Open the site once with `?sin-analitica` to exclude your own browser (`?con-analitica` to undo).

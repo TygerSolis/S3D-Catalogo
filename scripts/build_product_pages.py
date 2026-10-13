@@ -254,11 +254,12 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <meta name="twitter:description" content="{esc(desc)}">
     <meta name="twitter:image" content="{esc(og_img)}">
     <meta name="theme-color" content="#002244">
-    <link rel="icon" href="../../assets/S3D.webp" type="image/webp">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../chrome.css?v=2">
+    <link rel="icon" href="../../assets/logo-96.webp" type="image/webp">
+    <link rel="apple-touch-icon" href="../../assets/logo-192.png">
+    <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="../../fonts.css?v=1">
+    <link rel="stylesheet" href="../../chrome.css?v=3">
     <link rel="stylesheet" href="../../producto.css?v=7">
 {json_ld_producto(p, url)}
 </head>
@@ -346,7 +347,7 @@ def actualizar_itemlist(todos: list[dict]) -> None:
     if ITEMLIST_START in contenido:
         contenido = re.sub(re.escape(ITEMLIST_START) + r".*?" + re.escape(ITEMLIST_END), lambda _: bloque, contenido, flags=re.S)
     else:
-        contenido = contenido.replace("    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">", f"    {bloque}\n\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">", 1)
+        contenido = contenido.replace("    <link rel=\"preload\" href=\"assets/fonts/manrope-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>", f"    {bloque}\n\n    <link rel=\"preload\" href=\"assets/fonts/manrope-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>", 1)
     indice.write_text(contenido, encoding="utf-8")
 
 
