@@ -370,6 +370,23 @@
             width: 2.75rem;
         }
         .nav-toggle:hover { background: #e6f0fa; }
+        .catalog-notice {
+            align-items: flex-start;
+            background: #eef6ff;
+            border: 1px solid #cfe3f8;
+            border-radius: 1rem;
+            color: #1e3a5f;
+            display: flex;
+            font-size: .9rem;
+            gap: .75rem;
+            line-height: 1.55;
+            padding: .85rem 1.1rem;
+        }
+        .catalog-notice i, .catalog-notice svg { color: #0066cc; margin-top: .15rem; }
+        .catalog-notice p { margin: 0; }
+        .catalog-notice a { color: #0066cc; font-weight: 800; text-decoration: underline; text-underline-offset: .2rem; }
+        .custom-chips { display: flex; flex-wrap: wrap; gap: .6rem; list-style: none; margin: 1.5rem 0 0; padding: 0; }
+        .custom-chips li { align-items: center; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #fff; display: inline-flex; font-size: .85rem; font-weight: 700; gap: .45rem; padding: .5rem 1rem; }
         .mobile-menu { background: #fff; border-top: 1px solid #e2e8f0; }
         .mobile-menu a { border-bottom: 1px solid #f1f5f9; padding: .9rem .25rem; text-transform: uppercase; letter-spacing: .06em; }
         .mobile-menu a:last-child { border-bottom: 0; }

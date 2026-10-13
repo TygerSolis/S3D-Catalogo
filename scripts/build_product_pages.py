@@ -74,7 +74,7 @@ def descripcion_meta(p: dict) -> str:
     partes = [p["descripcion"].strip().replace("\n", " ")]
     if not p.get("requiereCotizacion"):
         partes.append(f"Precio S/ {p['precio']:.2f} (incluye IGV).")
-    partes.append("Elaborado a pedido en S3D, envíos a todo el Perú.")
+    partes.append("Elaborado a pedido en S3D; medidas y colores personalizables.")
     texto = " ".join(partes)
     return texto if len(texto) <= 300 else texto[:297].rstrip() + "…"
 
@@ -179,14 +179,14 @@ def pagina(p: dict, todos: list[dict]) -> str:
         else ""
     )
 
-    datos = [("Medida", p.get("medida")), ("Material", p.get("material")), ("Tipo", p.get("tipo")), ("Colección", p.get("coleccion"))]
+    datos = [("Medida publicada", p.get("medida")), ("Material", p.get("material")), ("Tipo", p.get("tipo")), ("Colección", p.get("coleccion"))]
     ficha = "\n".join(
         f"                    <div><dt>{k}</dt><dd>{esc(str(v))}</dd></div>" for k, v in datos if v
     )
     precio_html = (
         '<span class="pp-price-main">Cotizar</span>'
         if p.get("requiereCotizacion")
-        else f'<span class="pp-price-main"><small>S/</small> {p["precio"]:.2f}</span><span class="pp-price-note">Incluye IGV · envío por cotizar</span>'
+        else f'<span class="pp-price-main"><small>S/</small> {p["precio"]:.2f}</span><span class="pp-price-note">Incluye IGV · según la medida publicada</span>'
     )
     color0 = p["colores"][0]["nombre"] if tiene_colores else None
     boton = "Cotizar por WhatsApp" if p.get("requiereCotizacion") else "Comprar por WhatsApp"
@@ -228,7 +228,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../producto.css?v=2">
+    <link rel="stylesheet" href="../../producto.css?v=3">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -266,9 +266,10 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 </dl>
                 <a id="pp-buy" class="pp-buy" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
                 <ul class="pp-perks">
-                    <li>Elaborado a pedido en nuestro taller</li>
+                    <li>Todos los productos se elaboran a pedido en nuestro taller</li>
+                    <li>El precio corresponde a la medida publicada; si lo quieres más grande o más pequeño, el costo varía</li>
+                    <li>Personalizable: medidas, colores y detalles. Escríbenos y lo evaluamos</li>
                     <li>Envíos a todo el Perú, costo según tu ubicación</li>
-                    <li>¿Quieres otro color, tamaño o diseño? Escríbenos y lo evaluamos</li>
                 </ul>
             </div>
         </article>
