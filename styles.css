@@ -313,6 +313,26 @@
         }
         .catalog-carousel-buy:hover { background: #003366; transform: translateY(-1px); }
         html { scroll-padding-top: 5rem; }
+        .announcement-bar {
+            align-items: center;
+            background: #002244;
+            color: #dbeafe;
+            display: flex;
+            font-size: .7rem;
+            font-weight: 700;
+            gap: .7rem;
+            justify-content: center;
+            letter-spacing: .08em;
+            min-height: 2.5rem;
+            padding: .55rem 1rem;
+            text-transform: uppercase;
+        }
+        .announcement-bar a {
+            color: #fff;
+            margin-left: .5rem;
+            text-decoration: underline;
+            text-underline-offset: .2rem;
+        }
         .site-nav { border-bottom: 1px solid #e2e8f0; }
         .site-nav-inner { align-items: center; display: flex; gap: 1rem; height: 4rem; justify-content: space-between; }
         .site-brand { align-items: center; display: flex; flex-shrink: 0; gap: .7rem; text-decoration: none; }
@@ -355,57 +375,6 @@
         .mobile-menu a:last-child { border-bottom: 0; }
         .mobile-menu a:hover { color: #0066cc; }
 
-        /* Pie compacto */
-        .site-footer { background: #002244; border-top: 3px solid #0066cc; color: #cbd5e1; padding: 1.4rem 0 1rem; }
-        .site-footer-main { align-items: center; display: grid; gap: 1rem 2rem; grid-template-columns: minmax(0, 1fr); }
-        @media (min-width: 900px) { .site-footer-main { grid-template-columns: auto minmax(0, 1fr) auto; } .site-footer-links { justify-content: center; } }
-        .site-footer .site-brand strong { color: #fff; }
-        .site-footer .site-brand small { color: #7fb2e8; }
-        .site-footer-links { display: flex; flex-wrap: wrap; font-size: .82rem; font-weight: 600; gap: .35rem 1.3rem; }
-        .site-footer-links a { text-decoration: none; }
-        .site-footer-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: .25rem; }
-        .site-footer-contact { align-items: center; display: flex; flex-wrap: wrap; gap: .5rem; }
-        .site-footer-wa {
-            align-items: center;
-            background: rgba(255,255,255,.08);
-            border: 1px solid rgba(255,255,255,.16);
-            border-radius: 999px;
-            color: #fff;
-            display: inline-flex;
-            font-size: .85rem;
-            font-weight: 700;
-            gap: .45rem;
-            margin-right: .25rem;
-            padding: .5rem .95rem;
-            text-decoration: none;
-            transition: background .2s ease;
-        }
-        .site-footer-wa:hover { background: #25a35a; border-color: transparent; }
-        .site-social {
-            align-items: center;
-            background: rgba(255,255,255,.08);
-            border-radius: .6rem;
-            color: #e2e8f0;
-            display: inline-flex;
-            height: 2.5rem;
-            justify-content: center;
-            transition: background .2s ease, color .2s ease;
-            width: 2.5rem;
-        }
-        .site-social:hover { background: #0066cc; color: #fff; }
-        .site-social svg { fill: currentColor; height: 1.1rem; width: 1.1rem; }
-        .site-footer-legal {
-            border-top: 1px solid rgba(255,255,255,.1);
-            color: #94a3b8;
-            display: flex;
-            flex-wrap: wrap;
-            font-size: .72rem;
-            gap: .25rem 1rem;
-            justify-content: space-between;
-            margin-top: 1rem;
-            padding-top: .75rem;
-        }
-        .site-footer-legal p { margin: 0; }
         .reference-hero {
             background: #002244;
             color: #fff;
@@ -510,6 +479,8 @@
         .about-panel strong { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; grid-column: 2; margin-bottom: -1rem; }
         .about-panel span { color: #64748b; font-size: .88rem; grid-column: 2; line-height: 1.5; }
         @media (max-width: 640px) {
+            .announcement-bar { font-size: .62rem; gap: .4rem; letter-spacing: .04em; }
+            .announcement-bar a { display: none; }
             .site-brand small { display: none; }
             .site-cta { padding: .55rem .9rem; }
             .reference-hero .hero-content { padding-top: 4rem !important; padding-bottom: 4rem !important; }
@@ -543,7 +514,7 @@
         @media print {
             @page { size: A4 portrait; margin: 12mm; }
             body { background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            nav, header, footer, section, .no-print, #lightbox, #btn-volver-arriba,
+            nav, header, footer, section, .no-print, .announcement-bar, #lightbox, #btn-volver-arriba,
             .catalog-carousel-thumbnails, .catalog-carousel-swatches, .catalog-carousel-color-name, .catalog-carousel-expand, .catalog-carousel-buy { display: none !important; }
             .print-only { display: block !important; }
             .print-only-flex { display: flex !important; }
