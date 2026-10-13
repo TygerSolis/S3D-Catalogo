@@ -102,8 +102,10 @@
                 return `
                 <button type="button" class="hero-product" data-hero-product="${producto.id}">
                     <picture>
-                        <source srcset="${imagen.replace(/\.(webp|png|jpe?g)$/i, '.avif')}" type="image/avif">
-                        <img src="${imagen}" alt=""${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
+                        ${index === 0 ? `<source media="(min-width: 1024px)" srcset="${rutaAvif(imagen)}" type="image/avif">
+                        <source media="(min-width: 1024px)" srcset="${imagen}" type="image/webp">` : ''}
+                        <source srcset="${rutaAvif(rutaSm(imagen))}" type="image/avif">
+                        <img src="${rutaSm(imagen)}" alt=""${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                     </picture>
                     ${esNuevo(producto) ? '<span class="hero-product-new">Nuevo</span>' : ''}
                     <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
@@ -154,7 +156,7 @@
 
             const miniaturasHTML = tieneColores ? '' : producto.imagenes.map((imagen, index) => `
                 <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${producto.nombre}">
-                    <img src="${rutaSm(imagen)}" loading="lazy" decoding="async" alt="">
+                    <picture><source srcset="${rutaAvif(rutaSm(imagen))}" type="image/avif"><img src="${rutaSm(imagen)}" loading="lazy" decoding="async" alt=""></picture>
                 </button>
             `).join('') + (producto.video ? `
                 <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" data-carousel-video="${producto.video}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
@@ -283,7 +285,7 @@
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
                             <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video" aria-label="Reproducir video explicativo de las placas">
-                                <img src="assets/pet-video-poster.webp" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
+                                <img src="assets/sm/pet-video-poster.webp" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
                                     <svg class="ico w-6 h-6 text-white ml-1 fill-white" aria-hidden="true"><use href="#i-play"/></svg>
                                 </div>
@@ -609,7 +611,7 @@
             thumbs.style.display = total > 1 ? 'flex' : 'none';
             thumbs.innerHTML = total > 1 ? currentLightboxMediaArray.map((item, i) => `
                 <button type="button" class="lightbox-thumb${i === currentLightboxIndex ? ' is-active' : ''}" data-lightbox-thumb="${i}" aria-label="${item.type === 'vid' ? 'Ver video' : `Ver imagen ${i + 1}`}"${i === currentLightboxIndex ? ' aria-current="true"' : ''}>
-                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<img src="${rutaSm(item.src)}" alt="" loading="lazy" decoding="async">`}
+                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<picture><source srcset="${rutaAvif(rutaSm(item.src))}" type="image/avif"><img src="${rutaSm(item.src)}" alt="" loading="lazy" decoding="async"></picture>`}
                 </button>`).join('') : '';
 
             const info = document.getElementById('lightbox-info');
@@ -766,7 +768,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=perf-1');
+            const response = await fetch('productos.json?v=perf-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

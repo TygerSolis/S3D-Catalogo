@@ -192,7 +192,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 </div>"""
     elif len(medios) > 1 or p.get("video"):
         thumbs = "\n".join(
-            f"""                    <button type="button" class="pp-thumb{' is-active' if i == 0 else ''}" data-pp-thumb data-src="{esc(url_ruta(m['src'], '../../'))}" aria-label="Ver {esc(m['etiqueta'].lower())}"{' aria-current="true"' if i == 0 else ''}><img src="{esc(url_ruta(miniatura(m['src']), '../../'))}" alt="" loading="lazy" decoding="async"></button>"""
+            f"""                    <button type="button" class="pp-thumb{' is-active' if i == 0 else ''}" data-pp-thumb data-src="{esc(url_ruta(m['src'], '../../'))}" aria-label="Ver {esc(m['etiqueta'].lower())}"{' aria-current="true"' if i == 0 else ''}><picture><source srcset="{esc(url_ruta(avif(miniatura(m['src'])), '../../'))}" type="image/avif"><img src="{esc(url_ruta(miniatura(m['src']), '../../'))}" alt="" loading="lazy" decoding="async"></picture></button>"""
             for i, m in enumerate(medios)
         )
         if p.get("video"):
@@ -260,7 +260,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
     <link rel="stylesheet" href="../../chrome.css?v=3">
-    <link rel="stylesheet" href="../../producto.css?v=7">
+    <link rel="stylesheet" href="../../producto.css?v=8">
 {json_ld_producto(p, url)}
 </head>
 <body>

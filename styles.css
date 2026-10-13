@@ -323,6 +323,7 @@
         }
         .catalog-carousel-thumbnail:hover,
         .catalog-carousel-thumbnail.is-active { border-color: #0066cc; transform: translateY(-1px); }
+        .catalog-carousel-thumbnail picture, .lightbox-thumb picture { display: contents; }
         .catalog-carousel-thumbnail img { height: 100%; object-fit: cover; width: 100%; }
         .catalog-carousel-thumbnail-video {
             align-items: center;

@@ -50,6 +50,7 @@ img, picture { display: block; max-width: 100%; }
     padding: 0;
     width: 4.25rem;
 }
+.pp-thumb picture { display: contents; }
 .pp-thumb img { height: 100%; object-fit: cover; width: 100%; }
 .pp-thumb.is-active, .pp-thumb:hover { border-color: var(--blue); }
 .pp-thumb-video { background: var(--navy); color: #fff; font-size: 1.1rem; }
