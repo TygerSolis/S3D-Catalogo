@@ -130,6 +130,11 @@
             }).join('');
         }
 
+        // Niveles de calidad: assets/sm (miniatura, tarjetas), assets/ (estándar, galería) y assets/hd (original, al ampliar).
+        const rutaSm = ruta => ruta.replace(/^assets\//, 'assets/sm/');
+        const rutaHd = ruta => ruta.replace(/^assets\//, 'assets/hd/');
+        const rutaAvif = ruta => ruta.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+
         // Un producto es "nuevo" durante NUEVO_DIAS días a partir de su fechaAlta (AAAA-MM-DD).
         const NUEVO_DIAS = 14;
         function esNuevo(producto) {
@@ -156,7 +161,7 @@
         function generarHTMLProductoCarrusel(producto) {
             const tieneColores = Array.isArray(producto.colores) && producto.colores.length > 0;
             const img = tieneColores ? producto.colores[0].img : producto.imagenes[0];
-            const rutaAvif = img ? img.replace(/\.(webp|png|jpe?g)$/i, '.avif') : '';
+            const imgSm = img ? rutaSm(img) : '';
             const colorInicial = tieneColores ? producto.colores[0].nombre : null;
 
             const coloresHTML = tieneColores ? `
@@ -168,7 +173,7 @@
 
             const miniaturasHTML = tieneColores ? '' : producto.imagenes.map((imagen, index) => `
                 <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${producto.nombre}">
-                    <img src="${imagen}" loading="lazy" decoding="async" alt="">
+                    <img src="${rutaSm(imagen)}" loading="lazy" decoding="async" alt="">
                 </button>
             `).join('') + (producto.video ? `
                 <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" data-carousel-video="${producto.video}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
@@ -182,8 +187,8 @@
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
                     <picture>
-                        <source data-carousel-main-source srcset="${rutaAvif}" type="image/avif">
-                        <img data-carousel-main-image src="${img}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
+                        <source data-carousel-main-source srcset="${rutaAvif(imgSm)}" type="image/avif">
+                        <img data-carousel-main-image src="${imgSm}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
                     ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
@@ -346,8 +351,8 @@
                         if (mainPicture) mainPicture.style.display = 'block';
                         mainImage.style.display = 'block';
                         if (mainVideo) mainVideo.style.display = 'none';
-                        mainImage.src = image;
-                        if (mainSource) mainSource.srcset = image.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                        mainImage.src = rutaSm(image);
+                        if (mainSource) mainSource.srcset = rutaAvif(rutaSm(image));
                         card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(index);
                     } else return;
                     card.querySelectorAll('.catalog-carousel-thumbnail').forEach(item => item.classList.remove('is-active'));
@@ -365,8 +370,8 @@
                     const mainImage = card?.querySelector('[data-carousel-main-image]');
                     const mainSource = card?.querySelector('[data-carousel-main-source]');
                     if (!product || !color || !mainImage) return;
-                    mainImage.src = color.img;
-                    if (mainSource) mainSource.srcset = color.img.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                    mainImage.src = rutaSm(color.img);
+                    if (mainSource) mainSource.srcset = rutaAvif(rutaSm(color.img));
                     card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = swatch.dataset.colorIndex;
                     card.querySelectorAll('.catalog-carousel-swatch').forEach(item => {
                         const activo = item === swatch;
@@ -435,7 +440,43 @@
         const imgEl = document.getElementById('lightbox-img');
         const sourceEl = document.getElementById('lightbox-source');
         const vidEl = document.getElementById('lightbox-vid');
-        const avifDe = ruta => ruta.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+        const avifDe = rutaAvif;
+        const hdEtiqueta = document.getElementById('lightbox-hd');
+
+        // Alta resolución: la galería abre al instante con la versión estándar y, si existe el original
+        // (assets/hd), lo carga en segundo plano y lo intercambia sin perder el zoom ni la posición.
+        let hdIndicePromesa = null;
+        const cargarIndiceHd = () => hdIndicePromesa || (hdIndicePromesa = fetch('assets/hd/index.json')
+            .then(respuesta => (respuesta.ok ? respuesta.json() : {}))
+            .catch(() => ({})));
+        const nombreSinRuta = ruta => decodeURIComponent(ruta.replace(/^assets\//, '').replace(/\.(webp|png|jpe?g)$/i, ''));
+        const precargarHd = rutaWebp => new Promise((resolver, rechazar) => {
+            // Un <picture> sin insertar elige AVIF/WebP igual que la página, así se descarga el mismo archivo.
+            const imagen = new Image();
+            const picture = document.createElement('picture');
+            const fuente = document.createElement('source');
+            fuente.type = 'image/avif';
+            fuente.srcset = rutaAvif(rutaWebp);
+            picture.append(fuente, imagen);
+            imagen.onload = () => resolver();
+            imagen.onerror = rechazar;
+            imagen.src = rutaWebp;
+        });
+        async function mejorarAHD(media) {
+            if (hdEtiqueta) hdEtiqueta.hidden = true;
+            // Con "ahorro de datos" activado se mantiene la versión estándar.
+            if (navigator.connection && navigator.connection.saveData) return;
+            const indice = await cargarIndiceHd();
+            const datos = indice[nombreSinRuta(media.src)];
+            if (!datos || media.type !== 'img') return;
+            const rutaWebp = rutaHd(media.src);
+            if (hdEtiqueta) { hdEtiqueta.textContent = 'Cargando alta resolución…'; hdEtiqueta.hidden = false; }
+            try { await precargarHd(rutaWebp); } catch (error) { if (hdEtiqueta) hdEtiqueta.hidden = true; return; }
+            if (currentLightboxMediaArray[currentLightboxIndex] !== media || !lightboxEl.classList.contains('active')) return;
+            sourceEl.srcset = rutaAvif(rutaWebp);
+            imgEl.src = rutaWebp;
+            if (hdEtiqueta) hdEtiqueta.textContent = `Alta resolución · ${datos.w}×${datos.h}`;
+        }
 
         function aplicarZoom() {
             imgEl.style.transform = `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale})`;
@@ -506,6 +547,7 @@
             document.body.style.overflow = 'auto';
             vidEl.pause();
             reiniciarZoom();
+            if (hdEtiqueta) hdEtiqueta.hidden = true;
             if (lightboxReturnFocus && document.contains(lightboxReturnFocus)) lightboxReturnFocus.focus();
             lightboxReturnFocus = null;
         };
@@ -532,11 +574,13 @@
             vidEl.classList.add('hidden');
             vidEl.pause();
             reiniciarZoom();
+            if (hdEtiqueta) hdEtiqueta.hidden = true;
 
             if (media.type === 'img') {
                 sourceEl.srcset = avifDe(media.src);
                 imgEl.src = media.src;
                 imgEl.classList.remove('hidden');
+                mejorarAHD(media);
                 // Precarga las imágenes vecinas para que el cambio sea inmediato.
                 [1, -1].forEach(d => {
                     const vecina = currentLightboxMediaArray[(currentLightboxIndex + d + total) % total];
@@ -558,7 +602,7 @@
             thumbs.style.display = total > 1 ? 'flex' : 'none';
             thumbs.innerHTML = total > 1 ? currentLightboxMediaArray.map((item, i) => `
                 <button type="button" class="lightbox-thumb${i === currentLightboxIndex ? ' is-active' : ''}" data-lightbox-thumb="${i}" aria-label="${item.type === 'vid' ? 'Ver video' : `Ver imagen ${i + 1}`}"${i === currentLightboxIndex ? ' aria-current="true"' : ''}>
-                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
+                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<img src="${rutaSm(item.src)}" alt="" loading="lazy" decoding="async">`}
                 </button>`).join('') : '';
 
             const info = document.getElementById('lightbox-info');
@@ -687,7 +731,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=analitica-1');
+            const response = await fetch('productos.json?v=hd-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

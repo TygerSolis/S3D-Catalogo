@@ -38,6 +38,11 @@ def url_ruta(ruta: str, prefijo: str = "") -> str:
     return prefijo + quote(ruta, safe="/")
 
 
+def miniatura(ruta: str) -> str:
+    """Ruta del nivel pequeño (assets/sm/) para tarjetas y miniaturas."""
+    return re.sub(r"^assets/", "assets/sm/", ruta)
+
+
 def avif(ruta: str) -> str:
     return re.sub(r"\.(webp|png|jpe?g)$", ".avif", ruta, flags=re.I)
 
@@ -121,7 +126,7 @@ def json_ld_producto(p: dict, url: str) -> str:
 def tarjeta_relacionada(p: dict) -> str:
     img = imagen_principal(p)
     return f"""                <a class="pp-related-card" href="../{esc(p['slug'])}/">
-                    <picture><source srcset="{esc(url_ruta(avif(img), '../../'))}" type="image/avif"><img src="{esc(url_ruta(img, '../../'))}" alt="{esc(p['nombre'])}" loading="lazy" decoding="async"></picture>
+                    <picture><source srcset="{esc(url_ruta(avif(miniatura(img)), '../../'))}" type="image/avif"><img src="{esc(url_ruta(miniatura(img), '../../'))}" alt="{esc(p['nombre'])}" loading="lazy" decoding="async"></picture>
                     <strong>{esc(p['nombre'])}</strong>
                     <span>{esc(precio_txt(p))}</span>
                 </a>"""
@@ -163,7 +168,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 </div>"""
     elif len(medios) > 1 or p.get("video"):
         thumbs = "\n".join(
-            f"""                    <button type="button" class="pp-thumb{' is-active' if i == 0 else ''}" data-pp-thumb data-src="{esc(url_ruta(m['src'], '../../'))}" aria-label="Ver {esc(m['etiqueta'].lower())}"{' aria-current="true"' if i == 0 else ''}><img src="{esc(url_ruta(m['src'], '../../'))}" alt="" loading="lazy" decoding="async"></button>"""
+            f"""                    <button type="button" class="pp-thumb{' is-active' if i == 0 else ''}" data-pp-thumb data-src="{esc(url_ruta(m['src'], '../../'))}" aria-label="Ver {esc(m['etiqueta'].lower())}"{' aria-current="true"' if i == 0 else ''}><img src="{esc(url_ruta(miniatura(m['src']), '../../'))}" alt="" loading="lazy" decoding="async"></button>"""
             for i, m in enumerate(medios)
         )
         if p.get("video"):
@@ -229,7 +234,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../producto.css?v=4">
+    <link rel="stylesheet" href="../../producto.css?v=5">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -250,7 +255,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
 
         <article class="pp-product" data-producto="{esc(p['nombre'])}"{fecha_attr}>
             <div class="pp-gallery">
-                <div class="pp-stage">
+                <div class="pp-stage" id="pp-stage" role="button" tabindex="0" aria-label="Ampliar imagen en alta resolución">
                     <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
                     <picture id="pp-picture"><source id="pp-main-src" srcset="{esc(url_ruta(avif(principal), '../../'))}" type="image/avif"><img id="pp-main-img" src="{esc(url_ruta(principal, '../../'))}" alt="{esc(p['nombre'])}" fetchpriority="high" decoding="async"></picture>
 {video}
@@ -286,7 +291,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     </footer>
 
     <script src="../../analytics.js?v=2" defer></script>
-    <script src="../../producto.js?v=3" defer></script>
+    <script src="../../producto.js?v=4" defer></script>
 </body>
 </html>
 """

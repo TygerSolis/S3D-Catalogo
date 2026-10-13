@@ -48,6 +48,23 @@
         .lightbox-stage img { cursor: zoom-in; transform-origin: center center; will-change: transform; }
         .lightbox-stage img.is-zoomed { cursor: grab; }
         .lightbox-stage img.is-dragging { cursor: grabbing; }
+        .lightbox-hd {
+            background: rgba(0,0,0,.55);
+            border-radius: 999px;
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 700;
+            left: 50%;
+            letter-spacing: .06em;
+            padding: .35rem .85rem;
+            pointer-events: none;
+            position: absolute;
+            top: .5rem;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 6;
+        }
+        .lightbox-hd[hidden] { display: none; }
         .lightbox-tools {
             background: rgba(255,255,255,.12);
             border-radius: 999px;
