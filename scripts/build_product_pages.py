@@ -202,6 +202,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
         else ""
     )
     cat_q = quote(p["categoria"])
+    fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -228,7 +229,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../producto.css?v=3">
+    <link rel="stylesheet" href="../../producto.css?v=4">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -247,9 +248,10 @@ def pagina(p: dict, todos: list[dict]) -> str:
             <span aria-current="page">{esc(p['nombre'])}</span>
         </nav>
 
-        <article class="pp-product">
+        <article class="pp-product"{fecha_attr}>
             <div class="pp-gallery">
                 <div class="pp-stage">
+                    <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
                     <picture id="pp-picture"><source id="pp-main-src" srcset="{esc(url_ruta(avif(principal), '../../'))}" type="image/avif"><img id="pp-main-img" src="{esc(url_ruta(principal, '../../'))}" alt="{esc(p['nombre'])}" fetchpriority="high" decoding="async"></picture>
 {video}
                 </div>
@@ -257,6 +259,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
             </div>
 
             <div class="pp-info">
+                <p class="pp-new" data-new hidden>Producto nuevo en S3D</p>
                 <p class="pp-kicker">{esc(p.get('coleccion') or p['categoria'])}</p>
                 <h1>{esc(p['nombre'])}</h1>
                 <div class="pp-price">{precio_html}</div>
@@ -282,7 +285,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
         <p><a href="../../">Ir al catálogo completo</a></p>
     </footer>
 
-    <script src="../../producto.js?v=1" defer></script>
+    <script src="../../producto.js?v=2" defer></script>
 </body>
 </html>
 """

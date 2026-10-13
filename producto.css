@@ -121,3 +121,44 @@ img, picture { display: block; max-width: 100%; }
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: .01ms !important; }
 }
+
+/* Aviso de producto nuevo (se muestra con producto.js durante 14 días desde fechaAlta) */
+.pp-ribbon { height: 8rem; overflow: hidden; pointer-events: none; position: absolute; right: 0; top: 0; width: 8rem; z-index: 3; }
+.pp-ribbon span {
+    background: linear-gradient(90deg, #e8340f, #f06a00);
+    box-shadow: 0 4px 10px -4px rgba(0,0,0,.45);
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+    overflow: hidden;
+    padding: .42rem 0;
+    position: absolute;
+    right: -2.4rem;
+    text-align: center;
+    text-transform: uppercase;
+    top: 1.6rem;
+    transform: rotate(45deg);
+    width: 10.5rem;
+}
+.pp-ribbon span::after {
+    animation: ppShine 3s ease-in-out infinite;
+    background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+    content: "";
+    inset: 0;
+    position: absolute;
+    transform: translateX(-120%);
+}
+@keyframes ppShine { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.pp-new {
+    background: linear-gradient(90deg, #e8340f, #f06a00);
+    border-radius: 999px;
+    color: #fff;
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    margin: 0 0 .75rem;
+    padding: .35rem .9rem;
+    text-transform: uppercase;
+}

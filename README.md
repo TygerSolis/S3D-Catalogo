@@ -97,6 +97,7 @@ The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script t
 ## Maintenance
 
 - **Product pages and SEO** – after editing `productos.json`, run `python3 scripts/build_product_pages.py`. It regenerates `producto/<slug>/index.html`, `sitemap.xml` and the `ItemList` structured data in `index.html`, and adds a `slug` to new products.
+- **"Nuevo" notice** – every product has a `fechaAlta` (`YYYY-MM-DD`). For 14 days from that date the catalog card, hero tile, lightbox and product page show a "Nuevo" ribbon; it disappears by itself afterwards. Set `fechaAlta` to the day a new product is added (the window is `NUEVO_DIAS` in `catalogo.js` and `producto.js`). Optional `heroOrden` / `heroFoco` control the large hero tile and its crop.
 - **Images** – `node scripts/optimize_images.cjs` (requires `npm i sharp`) shrinks any image in `assets/` whose longest side exceeds 1600 px, keeping file names so the JSON does not change. Every image needs a `.webp` and a matching `.avif`.
 
 ## Portfolio Focus

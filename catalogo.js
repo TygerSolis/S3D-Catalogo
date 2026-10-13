@@ -121,9 +121,21 @@
                         <source srcset="${imagen.replace(/\.(webp|png|jpe?g)$/i, '.avif')}" type="image/avif">
                         <img src="${imagen}" alt="${escaparHTML(producto.nombre)}"${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                     </picture>
+                    ${esNuevo(producto) ? '<span class="hero-product-new">Nuevo</span>' : ''}
                     <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
                 </button>`;
             }).join('');
+        }
+
+        // Un producto es "nuevo" durante NUEVO_DIAS días a partir de su fechaAlta (AAAA-MM-DD).
+        const NUEVO_DIAS = 14;
+        function esNuevo(producto) {
+            if (!producto.fechaAlta) return false;
+            const [anio, mes, dia] = producto.fechaAlta.split('-').map(Number);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const dias = Math.round((hoy - new Date(anio, mes - 1, dia)) / 86400000);
+            return dias >= 0 && dias <= NUEVO_DIAS;
         }
 
         function mensajeWhatsApp(producto, colorNombre) {
@@ -162,8 +174,9 @@
             ` : '');
 
             return `
-            <article id="producto-${producto.id}" class="catalog-carousel-card">
+            <article id="producto-${producto.id}" class="catalog-carousel-card${esNuevo(producto) ? ' is-new' : ''}">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0" aria-label="Ver ${producto.nombre} en grande">
+                    ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
                     <picture>
                         <source data-carousel-main-source srcset="${rutaAvif}" type="image/avif">
@@ -537,6 +550,7 @@
             info.classList.toggle('no-product', !prod);
             if (prod) {
                 document.getElementById('lightbox-title').textContent = prod.nombre;
+                document.getElementById('lightbox-new').hidden = !esNuevo(prod);
                 const partes = [prod.requiereCotizacion ? 'Cotizar' : `S/ ${prod.precio.toFixed(2)}`, media.color ? `Color: ${media.color}` : null, prod.medida].filter(Boolean);
                 document.getElementById('lightbox-meta').textContent = partes.join(' · ');
                 const buy = document.getElementById('lightbox-buy');
@@ -656,7 +670,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=hero-3');
+            const response = await fetch('productos.json?v=nuevo-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

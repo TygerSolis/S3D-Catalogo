@@ -12,7 +12,8 @@
       "assets/ts-woody-1.webp"
     ],
     "descripcion": "Figura detallada de Woody impresa en 3D.",
-    "slug": "woody"
+    "slug": "woody",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 2,
@@ -28,7 +29,8 @@
       "assets/ts-jessie-2.webp"
     ],
     "descripcion": "Figura detallada de Jessie la vaquerita impresa en 3D.",
-    "slug": "jessie"
+    "slug": "jessie",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 3,
@@ -44,7 +46,8 @@
       "assets/ts-buzz-2.webp"
     ],
     "descripcion": "Figura de Buzz Lightyear impresa en 3D.",
-    "slug": "buzz"
+    "slug": "buzz",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 4,
@@ -83,7 +86,8 @@
     ],
     "descripcion": "Modelo exclusivo de Hello Kitty con estilo Urbano.",
     "slug": "hello-kitty-urbana",
-    "heroFoco": "center 62%"
+    "heroFoco": "center 62%",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 5,
@@ -98,7 +102,8 @@
       "assets/hk-fashion-1.webp"
     ],
     "descripcion": "Modelo de Hello Kitty Fashion impreso en 3D.",
-    "slug": "hello-kitty-fashion"
+    "slug": "hello-kitty-fashion",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 6,
@@ -114,7 +119,8 @@
       "assets/sn-saludo-2.webp"
     ],
     "descripcion": "Figura de Snoopy saludando.",
-    "slug": "snoopy-saludos"
+    "slug": "snoopy-saludos",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 7,
@@ -129,7 +135,8 @@
       "assets/sn-base-1.webp"
     ],
     "descripcion": "Figura estándar de Snoopy.",
-    "slug": "snoopy"
+    "slug": "snoopy",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 8,
@@ -145,7 +152,8 @@
       "assets/sn-aviador-2.webp"
     ],
     "descripcion": "El icónico Snoopy en su faceta de piloto aviador.",
-    "slug": "snoopy-aviador"
+    "slug": "snoopy-aviador",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 9,
@@ -161,7 +169,8 @@
       "assets/sn-zzz-2.webp"
     ],
     "descripcion": "Snoopy durmiendo plácidamente.",
-    "slug": "snoopy-zzz"
+    "slug": "snoopy-zzz",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 10,
@@ -178,7 +187,8 @@
     ],
     "video": "assets/video/sn-peaky-video.mp4",
     "descripcion": "Snoopy con un estilo inspirado en la serie Peaky Blinders.",
-    "slug": "snoopy-peaky-blinders"
+    "slug": "snoopy-peaky-blinders",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 14,
@@ -195,7 +205,8 @@
       "assets/sn-peaky-set-2.webp"
     ],
     "descripcion": "Set de Snoopy con un estilo inspirado en la serie Peaky Blinders.",
-    "slug": "snoopy-peaky-blinders-set"
+    "slug": "snoopy-peaky-blinders-set",
+    "fechaAlta": "2026-10-01"
   },
   {
     "id": 11,
@@ -211,7 +222,8 @@
       "assets/sn-tenista-2.webp"
     ],
     "descripcion": "Figura de Snoopy listo para jugar al tenis.",
-    "slug": "snoopy-tenista"
+    "slug": "snoopy-tenista",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 12,
@@ -229,7 +241,8 @@
     ],
     "video": "assets/video/sn-criminal-set-video.mp4",
     "descripcion": "Set completo de Snoopy estilo Smooth Criminal.",
-    "slug": "snoopy-smooth-criminal-set"
+    "slug": "snoopy-smooth-criminal-set",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 13,
@@ -245,7 +258,8 @@
       "assets/sn-criminal-ind-2.webp"
     ],
     "descripcion": "Snoopy estilo Smooth Criminal versión individual.",
-    "slug": "snoopy-smooth-criminal"
+    "slug": "snoopy-smooth-criminal",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 201,
@@ -259,7 +273,8 @@
       "assets/MADRE E HIJO.webp"
     ],
     "descripcion": "Hermosa figura que representa el amor maternal.",
-    "slug": "madre-e-hijo"
+    "slug": "madre-e-hijo",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 202,
@@ -273,7 +288,8 @@
       "assets/CORAZON EN CORAZON.webp"
     ],
     "descripcion": "Pieza decorativa con diseño de corazones entrelazados.",
-    "slug": "corazon-en-corazon"
+    "slug": "corazon-en-corazon",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 203,
@@ -287,7 +303,8 @@
       "assets/CORAZON CON ROSA.webp"
     ],
     "descripcion": "Detalle romántico y único, perfecto para regalar.",
-    "slug": "corazon-con-rosa"
+    "slug": "corazon-con-rosa",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 204,
@@ -301,7 +318,8 @@
       "assets/OSO CON CORAZON.webp"
     ],
     "descripcion": "Tierno oso impreso en 3D sosteniendo un corazón.",
-    "slug": "oso-con-corazon"
+    "slug": "oso-con-corazon",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 205,
@@ -315,7 +333,8 @@
       "assets/TULIPAN.webp"
     ],
     "descripcion": "Flor de tulipán impresa en 3D, un toque de naturaleza.",
-    "slug": "tulipan"
+    "slug": "tulipan",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 206,
@@ -329,7 +348,8 @@
       "assets/JARRON LUNA.webp"
     ],
     "descripcion": "Elegante jarrón con forma de luna creciente, pieza única.",
-    "slug": "jarron-luna"
+    "slug": "jarron-luna",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 207,
@@ -343,7 +363,8 @@
       "assets/JARRON TWISTING.webp"
     ],
     "descripcion": "Sofisticado jarrón con un diseño de torsión elegante y fluido.",
-    "slug": "jarron-twisting-eleg"
+    "slug": "jarron-twisting-eleg",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 208,
@@ -357,7 +378,8 @@
       "assets/JARRON TEZTURIZADO.webp"
     ],
     "descripcion": "Jarrón con una textura geométrica única y elegante.",
-    "slug": "jarron-texturizados"
+    "slug": "jarron-texturizados",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 209,
@@ -371,7 +393,8 @@
       "assets/JARRON ESPIRAL B.webp"
     ],
     "descripcion": "Jarrón decorativo con diseño de giro en espiral base.",
-    "slug": "jarron-espiral-b"
+    "slug": "jarron-espiral-b",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 210,
@@ -385,7 +408,8 @@
       "assets/JARRON ESPIRAL D.webp"
     ],
     "descripcion": "Jarrón decorativo con diseño de giro en espiral.",
-    "slug": "jarron-espiral-d"
+    "slug": "jarron-espiral-d",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 211,
@@ -399,12 +423,12 @@
       "assets/ELEFANTITO.webp"
     ],
     "descripcion": "Tierno elefantito impreso en 3D.",
-    "slug": "elefantito"
+    "slug": "elefantito",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 212,
     "categoria": "Adornos",
-    "badge": "Nuevo",
     "nombre": "TORRE EIFFEL",
     "medida": "25 CM",
     "material": "PLA Premium",
@@ -414,12 +438,12 @@
       "assets/TORRE EIFFEL-1.webp"
     ],
     "descripcion": "Elegante adorno de la Torre Eiffel impreso en 3D.",
-    "slug": "torre-eiffel"
+    "slug": "torre-eiffel",
+    "fechaAlta": "2026-09-30"
   },
   {
     "id": 213,
     "categoria": "Adornos",
-    "badge": "Nuevo",
     "nombre": "CALENDARIO PERPETUO",
     "medida": "20 CM",
     "material": "PLA Premium",
@@ -430,7 +454,8 @@
       "assets/CALENDARIO PERPETUO-2.webp"
     ],
     "descripcion": "Calendario perpetuo decorativo y funcional impreso en 3D.",
-    "slug": "calendario-perpetuo"
+    "slug": "calendario-perpetuo",
+    "fechaAlta": "2026-09-30"
   },
   {
     "id": 1001,
@@ -446,7 +471,8 @@
       "assets/U-M3.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Universitario, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-universitario"
+    "slug": "holder-universitario",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 1002,
@@ -461,7 +487,8 @@
       "assets/AL-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Alianza Lima, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-alianza-lima"
+    "slug": "holder-alianza-lima",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 1003,
@@ -476,7 +503,8 @@
       "assets/SC-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Sporting Cristal, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-sporting-cristal"
+    "slug": "holder-sporting-cristal",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 1004,
@@ -491,7 +519,8 @@
       "assets/SBA-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Sport Boys, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-sport-boys"
+    "slug": "holder-sport-boys",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 1005,
@@ -506,7 +535,8 @@
       "assets/CIE-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Cienciano, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-cienciano"
+    "slug": "holder-cienciano",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 1006,
@@ -521,7 +551,8 @@
       "assets/RM-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Real Madrid, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-real-madrid"
+    "slug": "holder-real-madrid",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 1007,
@@ -535,7 +566,8 @@
       "assets/BAR-M1.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Barcelona, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-barcelona"
+    "slug": "holder-barcelona",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 1008,
@@ -549,7 +581,8 @@
       "assets/PSG-M1.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de PSG, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-psg"
+    "slug": "holder-psg",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 1009,
@@ -564,7 +597,8 @@
       "assets/KNI-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Knicks Basquetbol, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-knicks-basquetbol"
+    "slug": "holder-knicks-basquetbol",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 1010,
@@ -579,7 +613,8 @@
       "assets/JIU-M2.webp"
     ],
     "descripcion": "Organizador de escritorio con el diseño de Jiu Jitsu, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
-    "slug": "holder-jiu-jitsu"
+    "slug": "holder-jiu-jitsu",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 301,
@@ -594,7 +629,8 @@
     ],
     "video": "assets/video/barber-rotulo-video.mp4",
     "descripcion": "Espejo infinito en 3D con temática de barbería.",
-    "slug": "octolux"
+    "slug": "octolux",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 302,
@@ -610,7 +646,8 @@
     ],
     "video": "assets/video/barber-frames3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería.",
-    "slug": "frameluz-302"
+    "slug": "frameluz-302",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 303,
@@ -626,7 +663,8 @@
     ],
     "video": "assets/video/barber-frame3d-video.mp4",
     "descripcion": "Cuadro en 3D iluminado con temática de barbería.",
-    "slug": "frameluz-303"
+    "slug": "frameluz-303",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 304,
@@ -642,7 +680,8 @@
     ],
     "video": "assets/video/barber-lamp-video.mp4",
     "descripcion": "Lámpara decorativa LED exclusiva para barberías.",
-    "slug": "barber-lamp"
+    "slug": "barber-lamp",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 305,
@@ -658,7 +697,8 @@
       "assets/barber-lineart-2.webp"
     ],
     "descripcion": "Arte lineal en 3D decorativo. Diseño y precio a medida.",
-    "slug": "line-art"
+    "slug": "line-art",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 306,
@@ -673,7 +713,8 @@
       "assets/barber-scissors-2.webp"
     ],
     "descripcion": "Organizador especializado en forma de tijeras para tarjetas de presentación.",
-    "slug": "scissors-card"
+    "slug": "scissors-card",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 307,
@@ -687,7 +728,8 @@
       "assets/barber-porta-1.webp"
     ],
     "descripcion": "Práctico organizador de guías de corte para máquinas.",
-    "slug": "porta-guias"
+    "slug": "porta-guias",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 308,
@@ -705,7 +747,8 @@
     "video": "assets/video/barber-bart-video.mp4",
     "descripcion": "Figura 3D de Bart Simpson con temática de barbero.",
     "slug": "bart-barbero",
-    "heroOrden": 1
+    "heroOrden": 1,
+    "fechaAlta": "2026-09-30"
   },
   {
     "id": 401,
@@ -719,7 +762,8 @@
       "assets/pet-hueso-xan-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "hueso-xa-naranja"
+    "slug": "hueso-xa-naranja",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 402,
@@ -733,7 +777,8 @@
       "assets/pet-hueso-xal-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "hueso-xa-lila"
+    "slug": "hueso-xa-lila",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 403,
@@ -747,7 +792,8 @@
       "assets/pet-hueso-xac-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "hueso-xa-celeste"
+    "slug": "hueso-xa-celeste",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 404,
@@ -761,7 +807,8 @@
       "assets/pet-hueso-xab-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "hueso-xa-blanco"
+    "slug": "hueso-xa-blanco",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 405,
@@ -775,7 +822,8 @@
       "assets/pet-hueso-xav-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "hueso-xa-verde"
+    "slug": "hueso-xa-verde",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 406,
@@ -789,7 +837,8 @@
       "assets/pet-huella-xcn-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XC en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xc-naranja"
+    "slug": "huella-xc-naranja",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 407,
@@ -803,7 +852,8 @@
       "assets/pet-huella-xcl-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XC en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xc-lila"
+    "slug": "huella-xc-lila",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 408,
@@ -817,7 +867,8 @@
       "assets/pet-huella-xcc-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XC en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xc-celeste"
+    "slug": "huella-xc-celeste",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 409,
@@ -831,7 +882,8 @@
       "assets/pet-huella-xcb-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XC en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xc-blanco"
+    "slug": "huella-xc-blanco",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 410,
@@ -845,7 +897,8 @@
       "assets/pet-huella-xcv-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XC en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xc-verde"
+    "slug": "huella-xc-verde",
+    "fechaAlta": "2026-09-16"
   },
   {
     "id": 411,
@@ -859,7 +912,8 @@
       "assets/pet-huella-xsn-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XS en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xs-naranja"
+    "slug": "huella-xs-naranja",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 412,
@@ -873,7 +927,8 @@
       "assets/pet-huella-xsl-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XS en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xs-lila"
+    "slug": "huella-xs-lila",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 413,
@@ -887,7 +942,8 @@
       "assets/pet-huella-xsc-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XS en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xs-celeste"
+    "slug": "huella-xs-celeste",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 414,
@@ -901,7 +957,8 @@
       "assets/pet-huella-xsb-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XS en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xs-blanco"
+    "slug": "huella-xs-blanco",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 415,
@@ -915,7 +972,8 @@
       "assets/pet-huella-xsv-1.webp"
     ],
     "descripcion": "Placa de identificación para mascota, modelo Huella XS en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
-    "slug": "huella-xs-verde"
+    "slug": "huella-xs-verde",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 501,
@@ -929,7 +987,8 @@
       "assets/ll-antisocial-1.webp"
     ],
     "descripcion": "Llavero impreso en 3D con diseño moderno.",
-    "slug": "antisocial"
+    "slug": "antisocial",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 503,
@@ -944,7 +1003,8 @@
       "assets/ll-debi-2.webp"
     ],
     "descripcion": "Llavero impreso en 3D.",
-    "slug": "debi-tirar-mas-fotos"
+    "slug": "debi-tirar-mas-fotos",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 504,
@@ -958,7 +1018,8 @@
       "assets/ll-offwhite-1.webp"
     ],
     "descripcion": "Llavero con diseño urbano impreso en 3D.",
-    "slug": "off-white"
+    "slug": "off-white",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 505,
@@ -973,7 +1034,8 @@
       "assets/ll-jordan-2.webp"
     ],
     "descripcion": "Llavero clásico impreso en 3D.",
-    "slug": "jordan"
+    "slug": "jordan",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 510,
@@ -988,7 +1050,8 @@
       "assets/ll-toyota-2.webp"
     ],
     "descripcion": "Llavero temático automotriz.",
-    "slug": "cochera-toyota"
+    "slug": "cochera-toyota",
+    "fechaAlta": "2026-09-17"
   },
   {
     "id": 512,
@@ -1004,7 +1067,8 @@
     ],
     "video": "assets/video/ll-audi-video.mp4",
     "descripcion": "Llavero temático automotriz.",
-    "slug": "cochera-audi"
+    "slug": "cochera-audi",
+    "fechaAlta": "2026-09-17"
   },
   {
     "id": 515,
@@ -1018,7 +1082,8 @@
       "assets/ll-nike-1.webp"
     ],
     "descripcion": "Llavero deportivo impreso en 3D.",
-    "slug": "nike"
+    "slug": "nike",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 601,
@@ -1033,7 +1098,8 @@
       "assets/la-bigthree-2.webp"
     ],
     "descripcion": "Decoración en arte lineal 3D de alta definición.",
-    "slug": "big-three"
+    "slug": "big-three",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 602,
@@ -1048,7 +1114,8 @@
       "assets/la-hermanas-2.webp"
     ],
     "descripcion": "Decoración en arte lineal 3D.",
-    "slug": "hermanas-w"
+    "slug": "hermanas-w",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 603,
@@ -1063,7 +1130,8 @@
       "assets/la-rayo-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars.",
-    "slug": "rayo-mc-queen"
+    "slug": "rayo-mc-queen",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 604,
@@ -1078,7 +1146,8 @@
       "assets/la-doc-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars.",
-    "slug": "doc-hudson"
+    "slug": "doc-hudson",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 605,
@@ -1093,7 +1162,8 @@
       "assets/la-mate-2.webp"
     ],
     "descripcion": "Arte lineal temático de Cars.",
-    "slug": "mate"
+    "slug": "mate",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 701,
@@ -1108,7 +1178,8 @@
       "assets/ei-espejo-2.webp"
     ],
     "descripcion": "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación.",
-    "slug": "espejo-infinito"
+    "slug": "espejo-infinito",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 801,
@@ -1125,7 +1196,8 @@
       "assets/led-letrero-2.webp"
     ],
     "descripcion": "Letrero luminoso personalizado. Diseño a medida del cliente.",
-    "slug": "letrero-led"
+    "slug": "letrero-led",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 802,
@@ -1140,7 +1212,8 @@
       "assets/led-cars-2.webp"
     ],
     "descripcion": "Lámpara temática con nombre personalizable.",
-    "slug": "lampara-led-cars-personalizadas"
+    "slug": "lampara-led-cars-personalizadas",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 803,
@@ -1155,7 +1228,8 @@
       "assets/led-boxrayo-2.webp"
     ],
     "descripcion": "Caja de luz decorativa.",
-    "slug": "light-box-rayo"
+    "slug": "light-box-rayo",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 804,
@@ -1170,7 +1244,8 @@
       "assets/led-gr-2.webp"
     ],
     "descripcion": "Lámpara decorativa LED de diseño.",
-    "slug": "lampara-led-qr"
+    "slug": "lampara-led-qr",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 805,
@@ -1186,7 +1261,8 @@
       "assets/led-box1-2.webp"
     ],
     "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees.",
-    "slug": "box-light-grande"
+    "slug": "box-light-grande",
+    "fechaAlta": "2026-09-17"
   },
   {
     "id": 806,
@@ -1202,7 +1278,8 @@
       "assets/led-box2-2.webp"
     ],
     "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees.",
-    "slug": "box-light-mediano"
+    "slug": "box-light-mediano",
+    "fechaAlta": "2026-09-17"
   },
   {
     "id": 807,
@@ -1217,7 +1294,8 @@
       "assets/led-luna-2.webp"
     ],
     "descripcion": "Hermosa lámpara iluminada en forma de luna.",
-    "slug": "luna-led"
+    "slug": "luna-led",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 901,
@@ -1232,7 +1310,8 @@
       "assets/du-moto-2.webp"
     ],
     "descripcion": "Figura articulada temática.",
-    "slug": "dummy-moto"
+    "slug": "dummy-moto",
+    "fechaAlta": "2026-09-15"
   },
   {
     "id": 902,
@@ -1247,7 +1326,8 @@
       "assets/du-dummy25-2.webp"
     ],
     "descripcion": "Figura articulada base 25cm.",
-    "slug": "dummy-902"
+    "slug": "dummy-902",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 903,
@@ -1262,7 +1342,8 @@
       "assets/du-dummy20-2.webp"
     ],
     "descripcion": "Figura articulada base 20cm.",
-    "slug": "dummy-903"
+    "slug": "dummy-903",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 904,
@@ -1277,7 +1358,8 @@
       "assets/du-dummy15-2.webp"
     ],
     "descripcion": "Figura articulada base 15cm.",
-    "slug": "dummy-904"
+    "slug": "dummy-904",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 905,
@@ -1292,7 +1374,8 @@
       "assets/du-mochila-2.webp"
     ],
     "descripcion": "Mochila a medida para personalizar a tu figura Dummy.",
-    "slug": "mochila-dummy-personalizada"
+    "slug": "mochila-dummy-personalizada",
+    "fechaAlta": "2026-09-14"
   },
   {
     "id": 2001,
@@ -1306,7 +1389,8 @@
       "assets/ORGANIZADOR CORAZON.webp"
     ],
     "descripcion": "Práctico organizador con forma de corazón para accesorios.",
-    "slug": "organizador-corazon"
+    "slug": "organizador-corazon",
+    "fechaAlta": "2026-09-08"
   },
   {
     "id": 2002,
@@ -1322,6 +1406,7 @@
     ],
     "video": "assets/video/acc-llavero-video.mp4",
     "descripcion": "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables.",
-    "slug": "llavero-soporte-para-celular"
+    "slug": "llavero-soporte-para-celular",
+    "fechaAlta": "2026-09-08"
   }
 ]

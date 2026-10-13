@@ -177,6 +177,52 @@
         }
         .catalog-carousel-image video { padding: .5rem; }
         @media (hover: hover) { .catalog-carousel-image:hover img { transform: scale(1.04); } }
+        .sr-only { border: 0; clip: rect(0, 0, 0, 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+        .catalog-carousel-card.is-new { border-color: #f5a572; box-shadow: 0 0 0 1px #f5a572, 0 14px 30px -22px rgba(232, 52, 15, .6); }
+        .catalog-new-ribbon { height: 7rem; overflow: hidden; pointer-events: none; position: absolute; right: 0; top: 0; width: 7rem; z-index: 3; }
+        .catalog-new-ribbon span {
+            background: linear-gradient(90deg, #e8340f, #f06a00);
+            box-shadow: 0 4px 10px -4px rgba(0,0,0,.45);
+            color: #fff;
+            font-size: .74rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            overflow: hidden;
+            padding: .38rem 0;
+            position: absolute;
+            right: -2.25rem;
+            text-align: center;
+            text-transform: uppercase;
+            top: 1.35rem;
+            transform: rotate(45deg);
+            width: 9.5rem;
+        }
+        .catalog-new-ribbon span::after {
+            animation: newShine 3s ease-in-out infinite;
+            background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.55) 50%, transparent 70%);
+            content: "";
+            inset: 0;
+            position: absolute;
+            transform: translateX(-120%);
+        }
+        @keyframes newShine { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+        .hero-product-new {
+            background: linear-gradient(90deg, #e8340f, #f06a00);
+            border-radius: 999px;
+            box-shadow: 0 4px 12px -4px rgba(0,0,0,.5);
+            color: #fff;
+            font-size: .68rem;
+            font-weight: 800;
+            left: .75rem;
+            letter-spacing: .14em;
+            padding: .35rem .75rem;
+            position: absolute;
+            text-transform: uppercase;
+            top: .75rem;
+            z-index: 2;
+        }
+        .lightbox-new { align-self: flex-start; background: linear-gradient(90deg, #e8340f, #f06a00); border-radius: 999px; color: #fff !important; font-size: .65rem !important; font-weight: 800; letter-spacing: .14em; margin-bottom: .25rem; padding: .2rem .65rem; text-transform: uppercase; }
+        .lightbox-new[hidden] { display: none; }
         .catalog-carousel-badge {
             background: #002244;
             border-radius: 999px;
