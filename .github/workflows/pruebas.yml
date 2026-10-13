@@ -1,0 +1,78 @@
+name: Pruebas y comprobaciones
+
+# Se ejecuta en cada cambio. NO bloquea la publicación del sitio (GitHub Pages se publica por separado):
+# si algo falla, GitHub lo marca en el commit y en la pestaña Actions.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pruebas:
+    name: Pruebas de navegador y archivos generados
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Las páginas generadas están al día
+        run: |
+          python3 scripts/build_product_pages.py
+          if ! git diff --exit-code --stat; then
+            echo "::error::Hay archivos generados desactualizados. Ejecuta 'python3 scripts/build_product_pages.py' y haz commit de los cambios."
+            exit 1
+          fi
+
+      - name: El CSS de Tailwind está al día
+        run: |
+          npx tailwindcss -c tailwind.config.js -i tailwind.input.css -o /tmp/tailwind.css --minify
+          if ! cmp -s /tmp/tailwind.css tailwind.css; then
+            echo "::error::tailwind.css está desactualizado. Ejecuta 'npm run build:css', sube la versión (?v=) en index.html y haz commit."
+            exit 1
+          fi
+
+      - name: Instalar Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Pruebas
+        run: npm test
+
+  tamano:
+    name: Alerta de tamaño del sitio y del repositorio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Medir
+        run: |
+          SITIO=$(du -sm --exclude=.git --exclude=node_modules . | cut -f1)
+          PAQUETE_KB=$(git count-objects -v | awk '/^size-pack/ {print $2}')
+          REPO=$(( PAQUETE_KB / 1024 ))
+          {
+            echo "### Tamaño"
+            echo ""
+            echo "| | Actual | Aviso | Límite de GitHub |"
+            echo "|---|---|---|---|"
+            echo "| Sitio publicado | ${SITIO} MB | 700 MB | 1 GB (GitHub Pages) |"
+            echo "| Historial del repositorio | ${REPO} MB | 900 MB | 1 GB recomendado |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$SITIO" -gt 950 ]; then
+            echo "::error::El sitio pesa ${SITIO} MB y está a punto de superar el límite de 1 GB de GitHub Pages."
+            exit 1
+          elif [ "$SITIO" -gt 700 ]; then
+            echo "::warning::El sitio pesa ${SITIO} MB (aviso a los 700 MB; límite de GitHub Pages: 1 GB). Revisa el plan de migración de medios en el README."
+          fi
+          if [ "$REPO" -gt 900 ]; then
+            echo "::warning::El historial del repositorio pesa ${REPO} MB (recomendado: menos de 1 GB). Revisa el plan de migración de medios en el README."
+          fi
+          echo "Sitio: ${SITIO} MB | Historial: ${REPO} MB"

@@ -1,0 +1,86 @@
+// Comprobaciones de datos y archivos (sin navegador).
+const fs = require('fs');
+const path = require('path');
+const { assert, RAIZ, leerJson } = require('./util.cjs');
+
+const existe = ruta => fs.existsSync(path.join(RAIZ, ruta));
+const productos = () => leerJson('productos.json');
+const rutasImagen = p => [...p.imagenes, ...(p.colores || []).map(c => c.img)];
+
+module.exports = {
+    'productos.json: ids y slugs únicos, campos obligatorios y fechas válidas'() {
+        const lista = productos();
+        assert.ok(lista.length > 0);
+        assert.equal(new Set(lista.map(p => p.id)).size, lista.length, 'ids repetidos');
+        assert.equal(new Set(lista.map(p => p.slug)).size, lista.length, 'slugs repetidos');
+        for (const p of lista) {
+            assert.ok(p.nombre && p.categoria && p.material && Array.isArray(p.imagenes) && p.imagenes.length, `incompleto: ${p.id}`);
+            assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(p.fechaAlta || ''), `fechaAlta inválida en ${p.nombre}`);
+            assert.ok(p.requiereCotizacion || p.precio > 0, `sin precio: ${p.nombre}`);
+        }
+    },
+    'cada producto tiene su descripción propia (sin duplicados)'() {
+        const textos = productos().map(p => p.descripcion);
+        assert.ok(textos.every(t => t && t.length > 20));
+        assert.equal(new Set(textos).size, textos.length, 'hay descripciones repetidas');
+    },
+    'todas las imágenes existen en los tres niveles y en WebP y AVIF'() {
+        for (const p of productos()) {
+            for (const ruta of rutasImagen(p)) {
+                for (const nivel of ['', 'sm/', 'md/']) {
+                    for (const extension of ['webp', 'avif']) {
+                        const destino = ruta.replace(/^assets\//, `assets/${nivel}`).replace(/\.webp$/, `.${extension}`);
+                        assert.ok(existe(destino), `falta ${destino} (${p.nombre})`);
+                    }
+                }
+            }
+            if (p.video) assert.ok(existe(p.video), `falta el video ${p.video}`);
+        }
+    },
+    'el índice de alta resolución coincide con los archivos de assets/hd'() {
+        const indice = leerJson('assets/hd/index.json');
+        assert.ok(Object.keys(indice).length > 0);
+        for (const nombre of Object.keys(indice)) {
+            assert.ok(existe(`assets/hd/${nombre}.webp`) && existe(`assets/hd/${nombre}.avif`), `falta el original de ${nombre}`);
+        }
+    },
+    'las 87 fichas, la 404 y la privacidad existen y sus datos estructurados son JSON válido'() {
+        const lista = productos();
+        const titulos = new Set();
+        for (const p of lista) {
+            const archivo = `producto/${p.slug}/index.html`;
+            assert.ok(existe(archivo), `falta ${archivo}`);
+            const html = fs.readFileSync(path.join(RAIZ, archivo), 'utf8');
+            for (const m of html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) JSON.parse(m[1]);
+            const titulo = html.match(/<title>(.*?)<\/title>/)[1];
+            assert.ok(!titulos.has(titulo), `título repetido: ${titulo}`);
+            titulos.add(titulo);
+            assert.ok(html.includes(`data-id="${p.id}"`) && html.includes('id="pp-cotizador"') && html.includes('Formas de pago'));
+        }
+        assert.ok(existe('404.html') && existe('privacidad/index.html'));
+        const indice = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
+        for (const m of indice.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) JSON.parse(m[1]);
+    },
+    'todas las rutas locales de las páginas generadas existen'() {
+        const rotas = [];
+        const revisar = archivo => {
+            const dir = path.dirname(archivo);
+            const html = fs.readFileSync(path.join(RAIZ, archivo), 'utf8');
+            for (const m of html.matchAll(/(?:src|href|srcset)="([^"]+)"/g)) {
+                const valor = m[1].replace(/&amp;/g, '&');
+                if (/^(https?:|mailto:|#|data:)/.test(valor)) continue;
+                const limpio = decodeURIComponent(valor.split('?')[0].split('#')[0]);
+                if (!limpio) continue;
+                if (!fs.existsSync(path.join(RAIZ, dir, limpio))) rotas.push(`${archivo} -> ${valor}`);
+            }
+        };
+        revisar('index.html');
+        revisar('privacidad/index.html');
+        productos().forEach(p => revisar(`producto/${p.slug}/index.html`));
+        assert.deepEqual(rotas.slice(0, 5), [], `${rotas.length} referencias rotas`);
+    },
+    'el sitemap lista la portada, la privacidad y todas las fichas'() {
+        const xml = fs.readFileSync(path.join(RAIZ, 'sitemap.xml'), 'utf8');
+        assert.equal((xml.match(/<loc>/g) || []).length, productos().length + 2);
+    }
+};

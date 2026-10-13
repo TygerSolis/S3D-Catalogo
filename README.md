@@ -110,6 +110,22 @@ The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script t
 - **Analytics (Umami Cloud, cookieless)** – `analytics.js` loads Umami using `CONFIG.websiteId` (the site is registered at cloud.umami.is for the domain `tygersolis.github.io`); if that value is emptied, nothing is loaded or sent. Custom events: `producto_visto`, `clic_comprar`, `clic_whatsapp`, `categoria`, `busqueda`, `color_elegido`, `orden`, `ficha_tarjeta`, `ficha_galeria`, `ficha_relacionado`, `ficha_ampliar` (details in the file header; any element with `data-evento` + `data-producto` also reports its click). Open the site once with `?sin-analitica` to exclude your own browser (`?con-analitica` to undo).
 - **Images (three quality tiers, always built from the originals)** – `assets/sm/` (800 px, catalog cards and thumbnails), `assets/md/` (1000 px, main photo of product pages on narrow screens), `assets/` (1600 px, gallery, hero and product pages) and `assets/hd/` (original resolution, loaded only when a visitor opens the gallery or the product-page viewer). Put the **original** PNG/JPEG files in a local, git-ignored `fuentes/` folder named like the image (e.g. `fuentes/ts-woody-1.png`) and run `npm i sharp && node scripts/optimize_images.cjs` (use `--parte 1/8` … `8/8` in parallel to go faster, then `--solo ninguno` to refresh `assets/hd/index.json`). Never re-compress an already compressed `.webp`/`.avif`: that is what softened the images before. AVIF is q90 (4:4:4) and WebP q90; the originals of the current images are in git history (`git show a52df36^:assets/<name>.png`). Every image needs a `.webp` and a matching `.avif`. Zoom detail is limited by the original photo: aim for at least 1600 px on the long side.
 
+## Tests and checks
+
+```bash
+npm ci
+npx playwright install chromium
+npm test            # 50 browser + data checks (node tests/run.cjs [module])
+```
+
+`tests/` holds the checks (data integrity, catalog, lightbox, product pages, order list and favorites, search, analytics events, navigation/404/privacy). They start their own static server, run against a fixed clock (so the "Nuevo" window is deterministic) and replace Umami with a stub, so they never send analytics.
+
+The GitHub Action `.github/workflows/pruebas.yml` runs on every push and pull request: it verifies that the generated pages (`scripts/build_product_pages.py`) and `tailwind.css` are up to date, runs the tests, and reports the site and repository size (warning at 700 MB site / 900 MB history). It does **not** block GitHub Pages deployment.
+
+### If the repository gets too heavy
+
+The history is already large because of images. Git LFS does not work with GitHub Pages' "deploy from branch" mode (it would serve LFS pointer files), so moving to LFS means switching Pages to deploy through a GitHub Actions workflow that checks out with `lfs: true`. The alternative is an external image CDN (Cloudflare R2, ImageKit). Do either before the history reaches about 1 GB, and meanwhile avoid committing new large images: keep originals in the git-ignored `fuentes/` folder.
+
 ## Portfolio Focus
 
 **Business problem:** turn a 3D-printing product collection into a digital storefront that combines product discovery, rich media and direct customer contact.
