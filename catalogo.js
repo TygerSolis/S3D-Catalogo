@@ -1,5 +1,7 @@
 (async function() {
 
+        const track = (evento, datos) => { if (window.s3dTrack) window.s3dTrack(evento, datos); };
+
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
         // Las imágenes diferidas no se imprimen si no se han cargado: se fuerzan antes de imprimir.
@@ -77,6 +79,7 @@
         let terminoBusqueda = "";
         let ordenActual = "default";
         let debounceBusqueda;
+        let debounceAnalitica;
         const filtersContainer = document.getElementById('category-filters');
         const sortSelect = document.getElementById('sort-select');
         const resultsCount = document.getElementById('results-count');
@@ -195,7 +198,7 @@
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
                     </div>
-                    <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                    <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
                 </div>
             </article>`;
         }
@@ -374,6 +377,7 @@
                     if (label) label.textContent = `Color: ${color.nombre}`;
                     const buy = card.querySelector('[data-carousel-buy]');
                     if (buy) buy.href = urlWhatsApp(product, color.nombre);
+                    track('color_elegido', { eleccion: `${product.nombre} · ${color.nombre}` });
                 });
             });
 
@@ -392,6 +396,7 @@
         }
 
         window.filtrarPorCategoria = function(categoria) {
+            track('categoria', { categoria });
             categoriaActual = categoria;
             renderizarProductos();
         };
@@ -403,12 +408,17 @@
 
         document.getElementById('search-input').addEventListener('input', function(e) {
             terminoBusqueda = e.target.value;
+            // La búsqueda se registra solo cuando la persona deja de escribir un momento.
+            clearTimeout(debounceAnalitica);
+            const termino = normalizar(terminoBusqueda).trim();
+            if (termino.length >= 3) debounceAnalitica = setTimeout(() => track('busqueda', { termino }), 1500);
             clearTimeout(debounceBusqueda);
             debounceBusqueda = setTimeout(renderizarProductos, 250);
         });
 
         sortSelect.addEventListener('change', function(e) {
             ordenActual = e.target.value;
+            track('orden', { orden: ordenActual });
             renderizarProductos();
         });
 
@@ -482,6 +492,7 @@
         window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
             if (!prod) return;
+            track('producto_visto', { producto: prod.nombre });
             const imagenes = prod.colores?.length
                 ? prod.colores.map(color => ({ type: 'img', src: color.img, color: color.nombre }))
                 : prod.imagenes.map(src => ({ type: 'img', src }));
@@ -560,6 +571,7 @@
                 document.getElementById('lightbox-meta').textContent = partes.join(' · ');
                 const buy = document.getElementById('lightbox-buy');
                 buy.href = urlWhatsApp(prod, media.color || null);
+                buy.dataset.producto = prod.nombre;
                 buy.textContent = prod.requiereCotizacion ? 'Cotizar' : 'Comprar';
             }
         }
@@ -675,7 +687,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=nuevo-2');
+            const response = await fetch('productos.json?v=analitica-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

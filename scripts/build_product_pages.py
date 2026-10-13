@@ -248,7 +248,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
             <span aria-current="page">{esc(p['nombre'])}</span>
         </nav>
 
-        <article class="pp-product"{fecha_attr}>
+        <article class="pp-product" data-producto="{esc(p['nombre'])}"{fecha_attr}>
             <div class="pp-gallery">
                 <div class="pp-stage">
                     <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
@@ -267,7 +267,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 <dl class="pp-facts">
 {ficha}
                 </dl>
-                <a id="pp-buy" class="pp-buy" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
+                <a id="pp-buy" class="pp-buy" data-producto="{esc(p['nombre'])}" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
                 <ul class="pp-perks">
                     <li>Todos los productos se elaboran a pedido en nuestro taller</li>
                     <li>El precio corresponde a la medida publicada; si lo quieres más grande o más pequeño, el costo varía</li>
@@ -285,7 +285,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
         <p><a href="../../">Ir al catálogo completo</a></p>
     </footer>
 
-    <script src="../../producto.js?v=2" defer></script>
+    <script src="../../analytics.js?v=1" defer></script>
+    <script src="../../producto.js?v=3" defer></script>
 </body>
 </html>
 """

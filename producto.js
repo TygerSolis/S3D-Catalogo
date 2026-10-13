@@ -52,5 +52,6 @@
         mostrarImagen(boton.dataset.img);
         if (etiqueta) etiqueta.textContent = boton.dataset.ppColor;
         if (buy && boton.dataset.wa) buy.href = boton.dataset.wa;
+        if (window.s3dTrack && producto) window.s3dTrack('color_elegido', { eleccion: `${producto.dataset.producto} · ${boton.dataset.ppColor}` });
     }));
 })();
