@@ -82,7 +82,8 @@
       }
     ],
     "descripcion": "Modelo exclusivo de Hello Kitty con estilo Urbano.",
-    "slug": "hello-kitty-urbana"
+    "slug": "hello-kitty-urbana",
+    "heroFoco": "center 62%"
   },
   {
     "id": 5,
@@ -703,7 +704,8 @@
     ],
     "video": "assets/video/barber-bart-video.mp4",
     "descripcion": "Figura 3D de Bart Simpson con temática de barbero.",
-    "slug": "bart-barbero"
+    "slug": "bart-barbero",
+    "heroOrden": 1
   },
   {
     "id": 401,

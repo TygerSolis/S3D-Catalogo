@@ -107,7 +107,11 @@
         function renderFeaturedProducts() {
             const container = document.getElementById('hero-products');
             if (!container) return;
-            const destacados = productos.filter(producto => producto.badge === 'Top Ventas').slice(0, 4);
+            // El primero (tile grande) lo marca heroOrden en productos.json; el resto sigue el orden del catálogo.
+            const destacados = productos
+                .filter(producto => producto.badge === 'Top Ventas')
+                .sort((a, b) => (a.heroOrden ?? Infinity) - (b.heroOrden ?? Infinity))
+                .slice(0, 4);
             container.innerHTML = destacados.map((producto, index) => {
                 const imagen = producto.colores?.length ? producto.colores[0].img : producto.imagenes[0];
                 const precio = producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`;
@@ -115,7 +119,7 @@
                 <button type="button" class="hero-product" data-hero-product="${producto.id}" aria-label="Ver ${escaparHTML(producto.nombre)}">
                     <picture>
                         <source srcset="${imagen.replace(/\.(webp|png|jpe?g)$/i, '.avif')}" type="image/avif">
-                        <img src="${imagen}" alt="${escaparHTML(producto.nombre)}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
+                        <img src="${imagen}" alt="${escaparHTML(producto.nombre)}"${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                     </picture>
                     <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
                 </button>`;
@@ -652,7 +656,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=slug-1');
+            const response = await fetch('productos.json?v=hero-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
