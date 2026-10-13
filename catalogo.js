@@ -649,7 +649,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=featured-1');
+            const response = await fetch('productos.json?v=desc-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
