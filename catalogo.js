@@ -302,10 +302,11 @@
                     ${miniaturasHTML}
                 </div>`}
                 <div class="catalog-carousel-info">
+                    <p class="catalog-card-kicker">${escaparHTML(producto.coleccion || producto.categoria)}</p>
                     <h3>${producto.nombre}</h3>
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
-                        <span>${producto.medida || ''}</span>
+                        <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
                     </div>
                     <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
                 </div>
@@ -482,16 +483,10 @@
                             <span class="text-sm font-semibold text-gray-500 bg-white px-4 py-1.5 rounded-full w-fit shadow-sm border border-gray-200">${items.length} modelos</span>
                         </div>
                         ${categoryBanner}
-                        <div class="catalog-carousel-shell${ordenGlobal ? ' is-flat' : ''}">
-                            <button class="catalog-carousel-arrow catalog-carousel-prev" type="button" aria-label="Productos anteriores" data-carousel-direction="-1">
-                                <i data-lucide="arrow-left" class="w-5 h-5"></i>
-                            </button>
-                            <div class="catalog-carousel-track" data-carousel-track>
+                        <div class="catalog-carousel-shell">
+                            <div class="catalog-carousel-track">
                                 ${items.map(producto => generarHTMLProductoCarrusel(producto)).join('')}
                             </div>
-                            <button class="catalog-carousel-arrow catalog-carousel-next" type="button" aria-label="Siguientes productos" data-carousel-direction="1">
-                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                            </button>
                         </div>
                     </div>
                 `;
@@ -576,20 +571,6 @@
                 });
             });
 
-            mainContainer.querySelectorAll('.catalog-carousel-shell').forEach(shell => {
-                const track = shell.querySelector('[data-carousel-track]');
-                const cards = shell.querySelectorAll('.catalog-carousel-card');
-                const step = () => {
-                    const card = cards[0];
-                    return card ? card.getBoundingClientRect().width + 24 : track.clientWidth;
-                };
-                shell.querySelectorAll('[data-carousel-direction]').forEach(button => {
-                    button.addEventListener('click', () => {
-                        track.scrollBy({ left: Number(button.dataset.carouselDirection) * step() * 2, behavior: 'smooth' });
-                    });
-                });
-            });
-            
             lucide.createIcons();
         }
 
