@@ -11,7 +11,8 @@
     "imagenes": [
       "assets/ts-woody-1.webp"
     ],
-    "descripcion": "Figura detallada de Woody impresa en 3D."
+    "descripcion": "Figura detallada de Woody impresa en 3D.",
+    "slug": "woody"
   },
   {
     "id": 2,
@@ -26,7 +27,8 @@
       "assets/ts-jessie-1.webp",
       "assets/ts-jessie-2.webp"
     ],
-    "descripcion": "Figura detallada de Jessie la vaquerita impresa en 3D."
+    "descripcion": "Figura detallada de Jessie la vaquerita impresa en 3D.",
+    "slug": "jessie"
   },
   {
     "id": 3,
@@ -41,7 +43,8 @@
       "assets/ts-buzz-1.webp",
       "assets/ts-buzz-2.webp"
     ],
-    "descripcion": "Figura de Buzz Lightyear impresa en 3D."
+    "descripcion": "Figura de Buzz Lightyear impresa en 3D.",
+    "slug": "buzz"
   },
   {
     "id": 4,
@@ -78,7 +81,8 @@
         "img": "assets/hk-urbana-amarillo-1.webp"
       }
     ],
-    "descripcion": "Modelo exclusivo de Hello Kitty con estilo Urbano."
+    "descripcion": "Modelo exclusivo de Hello Kitty con estilo Urbano.",
+    "slug": "hello-kitty-urbana"
   },
   {
     "id": 5,
@@ -92,7 +96,8 @@
     "imagenes": [
       "assets/hk-fashion-1.webp"
     ],
-    "descripcion": "Modelo de Hello Kitty Fashion impreso en 3D."
+    "descripcion": "Modelo de Hello Kitty Fashion impreso en 3D.",
+    "slug": "hello-kitty-fashion"
   },
   {
     "id": 6,
@@ -107,7 +112,8 @@
       "assets/sn-saludo-1.webp",
       "assets/sn-saludo-2.webp"
     ],
-    "descripcion": "Figura de Snoopy saludando."
+    "descripcion": "Figura de Snoopy saludando.",
+    "slug": "snoopy-saludos"
   },
   {
     "id": 7,
@@ -121,7 +127,8 @@
     "imagenes": [
       "assets/sn-base-1.webp"
     ],
-    "descripcion": "Figura estándar de Snoopy."
+    "descripcion": "Figura estándar de Snoopy.",
+    "slug": "snoopy"
   },
   {
     "id": 8,
@@ -136,7 +143,8 @@
       "assets/sn-aviador-1.webp",
       "assets/sn-aviador-2.webp"
     ],
-    "descripcion": "El icónico Snoopy en su faceta de piloto aviador."
+    "descripcion": "El icónico Snoopy en su faceta de piloto aviador.",
+    "slug": "snoopy-aviador"
   },
   {
     "id": 9,
@@ -151,7 +159,8 @@
       "assets/sn-zzz-1.webp",
       "assets/sn-zzz-2.webp"
     ],
-    "descripcion": "Snoopy durmiendo plácidamente."
+    "descripcion": "Snoopy durmiendo plácidamente.",
+    "slug": "snoopy-zzz"
   },
   {
     "id": 10,
@@ -167,7 +176,8 @@
       "assets/sn-peaky-2.webp"
     ],
     "video": "assets/video/sn-peaky-video.mp4",
-    "descripcion": "Snoopy con un estilo inspirado en la serie Peaky Blinders."
+    "descripcion": "Snoopy con un estilo inspirado en la serie Peaky Blinders.",
+    "slug": "snoopy-peaky-blinders"
   },
   {
     "id": 14,
@@ -183,7 +193,8 @@
       "assets/sn-peaky-set-1.webp",
       "assets/sn-peaky-set-2.webp"
     ],
-    "descripcion": "Set de Snoopy con un estilo inspirado en la serie Peaky Blinders."
+    "descripcion": "Set de Snoopy con un estilo inspirado en la serie Peaky Blinders.",
+    "slug": "snoopy-peaky-blinders-set"
   },
   {
     "id": 11,
@@ -198,7 +209,8 @@
       "assets/sn-tenista-1.webp",
       "assets/sn-tenista-2.webp"
     ],
-    "descripcion": "Figura de Snoopy listo para jugar al tenis."
+    "descripcion": "Figura de Snoopy listo para jugar al tenis.",
+    "slug": "snoopy-tenista"
   },
   {
     "id": 12,
@@ -215,7 +227,8 @@
       "assets/sn-criminal-set-2.webp"
     ],
     "video": "assets/video/sn-criminal-set-video.mp4",
-    "descripcion": "Set completo de Snoopy estilo Smooth Criminal."
+    "descripcion": "Set completo de Snoopy estilo Smooth Criminal.",
+    "slug": "snoopy-smooth-criminal-set"
   },
   {
     "id": 13,
@@ -230,7 +243,8 @@
       "assets/sn-criminal-ind-1.webp",
       "assets/sn-criminal-ind-2.webp"
     ],
-    "descripcion": "Snoopy estilo Smooth Criminal versión individual."
+    "descripcion": "Snoopy estilo Smooth Criminal versión individual.",
+    "slug": "snoopy-smooth-criminal"
   },
   {
     "id": 201,
@@ -243,7 +257,8 @@
     "imagenes": [
       "assets/MADRE E HIJO.webp"
     ],
-    "descripcion": "Hermosa figura que representa el amor maternal."
+    "descripcion": "Hermosa figura que representa el amor maternal.",
+    "slug": "madre-e-hijo"
   },
   {
     "id": 202,
@@ -256,7 +271,8 @@
     "imagenes": [
       "assets/CORAZON EN CORAZON.webp"
     ],
-    "descripcion": "Pieza decorativa con diseño de corazones entrelazados."
+    "descripcion": "Pieza decorativa con diseño de corazones entrelazados.",
+    "slug": "corazon-en-corazon"
   },
   {
     "id": 203,
@@ -269,7 +285,8 @@
     "imagenes": [
       "assets/CORAZON CON ROSA.webp"
     ],
-    "descripcion": "Detalle romántico y único, perfecto para regalar."
+    "descripcion": "Detalle romántico y único, perfecto para regalar.",
+    "slug": "corazon-con-rosa"
   },
   {
     "id": 204,
@@ -282,7 +299,8 @@
     "imagenes": [
       "assets/OSO CON CORAZON.webp"
     ],
-    "descripcion": "Tierno oso impreso en 3D sosteniendo un corazón."
+    "descripcion": "Tierno oso impreso en 3D sosteniendo un corazón.",
+    "slug": "oso-con-corazon"
   },
   {
     "id": 205,
@@ -295,7 +313,8 @@
     "imagenes": [
       "assets/TULIPAN.webp"
     ],
-    "descripcion": "Flor de tulipán impresa en 3D, un toque de naturaleza."
+    "descripcion": "Flor de tulipán impresa en 3D, un toque de naturaleza.",
+    "slug": "tulipan"
   },
   {
     "id": 206,
@@ -308,7 +327,8 @@
     "imagenes": [
       "assets/JARRON LUNA.webp"
     ],
-    "descripcion": "Elegante jarrón con forma de luna creciente, pieza única."
+    "descripcion": "Elegante jarrón con forma de luna creciente, pieza única.",
+    "slug": "jarron-luna"
   },
   {
     "id": 207,
@@ -321,7 +341,8 @@
     "imagenes": [
       "assets/JARRON TWISTING.webp"
     ],
-    "descripcion": "Sofisticado jarrón con un diseño de torsión elegante y fluido."
+    "descripcion": "Sofisticado jarrón con un diseño de torsión elegante y fluido.",
+    "slug": "jarron-twisting-eleg"
   },
   {
     "id": 208,
@@ -334,7 +355,8 @@
     "imagenes": [
       "assets/JARRON TEZTURIZADO.webp"
     ],
-    "descripcion": "Jarrón con una textura geométrica única y elegante."
+    "descripcion": "Jarrón con una textura geométrica única y elegante.",
+    "slug": "jarron-texturizados"
   },
   {
     "id": 209,
@@ -347,7 +369,8 @@
     "imagenes": [
       "assets/JARRON ESPIRAL B.webp"
     ],
-    "descripcion": "Jarrón decorativo con diseño de giro en espiral base."
+    "descripcion": "Jarrón decorativo con diseño de giro en espiral base.",
+    "slug": "jarron-espiral-b"
   },
   {
     "id": 210,
@@ -360,7 +383,8 @@
     "imagenes": [
       "assets/JARRON ESPIRAL D.webp"
     ],
-    "descripcion": "Jarrón decorativo con diseño de giro en espiral."
+    "descripcion": "Jarrón decorativo con diseño de giro en espiral.",
+    "slug": "jarron-espiral-d"
   },
   {
     "id": 211,
@@ -373,7 +397,8 @@
     "imagenes": [
       "assets/ELEFANTITO.webp"
     ],
-    "descripcion": "Tierno elefantito impreso en 3D."
+    "descripcion": "Tierno elefantito impreso en 3D.",
+    "slug": "elefantito"
   },
   {
     "id": 212,
@@ -387,7 +412,8 @@
     "imagenes": [
       "assets/TORRE EIFFEL-1.webp"
     ],
-    "descripcion": "Elegante adorno de la Torre Eiffel impreso en 3D."
+    "descripcion": "Elegante adorno de la Torre Eiffel impreso en 3D.",
+    "slug": "torre-eiffel"
   },
   {
     "id": 213,
@@ -402,7 +428,8 @@
       "assets/CALENDARIO PERPETUO-1.webp",
       "assets/CALENDARIO PERPETUO-2.webp"
     ],
-    "descripcion": "Calendario perpetuo decorativo y funcional impreso en 3D."
+    "descripcion": "Calendario perpetuo decorativo y funcional impreso en 3D.",
+    "slug": "calendario-perpetuo"
   },
   {
     "id": 1001,
@@ -417,7 +444,8 @@
       "assets/U-M2.webp",
       "assets/U-M3.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Universitario, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Universitario, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-universitario"
   },
   {
     "id": 1002,
@@ -431,7 +459,8 @@
       "assets/AL-M1.webp",
       "assets/AL-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Alianza Lima, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Alianza Lima, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-alianza-lima"
   },
   {
     "id": 1003,
@@ -445,7 +474,8 @@
       "assets/SC-M1.webp",
       "assets/SC-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Sporting Cristal, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Sporting Cristal, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-sporting-cristal"
   },
   {
     "id": 1004,
@@ -459,7 +489,8 @@
       "assets/SBA-M1.webp",
       "assets/SBA-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Sport Boys, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Sport Boys, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-sport-boys"
   },
   {
     "id": 1005,
@@ -473,7 +504,8 @@
       "assets/CIE-M1.webp",
       "assets/CIE-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Cienciano, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Cienciano, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-cienciano"
   },
   {
     "id": 1006,
@@ -487,7 +519,8 @@
       "assets/RM-M1.webp",
       "assets/RM-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Real Madrid, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Real Madrid, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-real-madrid"
   },
   {
     "id": 1007,
@@ -500,7 +533,8 @@
     "imagenes": [
       "assets/BAR-M1.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Barcelona, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Barcelona, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-barcelona"
   },
   {
     "id": 1008,
@@ -513,7 +547,8 @@
     "imagenes": [
       "assets/PSG-M1.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de PSG, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de PSG, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-psg"
   },
   {
     "id": 1009,
@@ -527,7 +562,8 @@
       "assets/KNI-M1.webp",
       "assets/KNI-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Knicks Basquetbol, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Knicks Basquetbol, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-knicks-basquetbol"
   },
   {
     "id": 1010,
@@ -541,7 +577,8 @@
       "assets/JIU-M1.webp",
       "assets/JIU-M2.webp"
     ],
-    "descripcion": "Organizador de escritorio con el diseño de Jiu Jitsu, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños."
+    "descripcion": "Organizador de escritorio con el diseño de Jiu Jitsu, impreso en 3D en PLA Premium (10 cm). Se elabora a pedido: consulta por otros equipos o diseños.",
+    "slug": "holder-jiu-jitsu"
   },
   {
     "id": 301,
@@ -555,7 +592,8 @@
       "assets/barber-rotulo-1.webp"
     ],
     "video": "assets/video/barber-rotulo-video.mp4",
-    "descripcion": "Espejo infinito en 3D con temática de barbería."
+    "descripcion": "Espejo infinito en 3D con temática de barbería.",
+    "slug": "octolux"
   },
   {
     "id": 302,
@@ -570,7 +608,8 @@
       "assets/barber-frames3d-2.webp"
     ],
     "video": "assets/video/barber-frames3d-video.mp4",
-    "descripcion": "Cuadro en 3D iluminado con temática de barbería."
+    "descripcion": "Cuadro en 3D iluminado con temática de barbería.",
+    "slug": "frameluz-302"
   },
   {
     "id": 303,
@@ -585,7 +624,8 @@
       "assets/barber-frame3d-2.webp"
     ],
     "video": "assets/video/barber-frame3d-video.mp4",
-    "descripcion": "Cuadro en 3D iluminado con temática de barbería."
+    "descripcion": "Cuadro en 3D iluminado con temática de barbería.",
+    "slug": "frameluz-303"
   },
   {
     "id": 304,
@@ -600,7 +640,8 @@
       "assets/barber-lamp-2.webp"
     ],
     "video": "assets/video/barber-lamp-video.mp4",
-    "descripcion": "Lámpara decorativa LED exclusiva para barberías."
+    "descripcion": "Lámpara decorativa LED exclusiva para barberías.",
+    "slug": "barber-lamp"
   },
   {
     "id": 305,
@@ -615,7 +656,8 @@
       "assets/barber-lineart-1.webp",
       "assets/barber-lineart-2.webp"
     ],
-    "descripcion": "Arte lineal en 3D decorativo. Diseño y precio a medida."
+    "descripcion": "Arte lineal en 3D decorativo. Diseño y precio a medida.",
+    "slug": "line-art"
   },
   {
     "id": 306,
@@ -629,7 +671,8 @@
       "assets/barber-scissors-1.webp",
       "assets/barber-scissors-2.webp"
     ],
-    "descripcion": "Organizador especializado en forma de tijeras para tarjetas de presentación."
+    "descripcion": "Organizador especializado en forma de tijeras para tarjetas de presentación.",
+    "slug": "scissors-card"
   },
   {
     "id": 307,
@@ -642,7 +685,8 @@
     "imagenes": [
       "assets/barber-porta-1.webp"
     ],
-    "descripcion": "Práctico organizador de guías de corte para máquinas."
+    "descripcion": "Práctico organizador de guías de corte para máquinas.",
+    "slug": "porta-guias"
   },
   {
     "id": 308,
@@ -658,7 +702,8 @@
       "assets/barber-bart-2.webp"
     ],
     "video": "assets/video/barber-bart-video.mp4",
-    "descripcion": "Figura 3D de Bart Simpson con temática de barbero."
+    "descripcion": "Figura 3D de Bart Simpson con temática de barbero.",
+    "slug": "bart-barbero"
   },
   {
     "id": 401,
@@ -671,7 +716,8 @@
     "imagenes": [
       "assets/pet-hueso-xan-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "hueso-xa-naranja"
   },
   {
     "id": 402,
@@ -684,7 +730,8 @@
     "imagenes": [
       "assets/pet-hueso-xal-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "hueso-xa-lila"
   },
   {
     "id": 403,
@@ -697,7 +744,8 @@
     "imagenes": [
       "assets/pet-hueso-xac-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "hueso-xa-celeste"
   },
   {
     "id": 404,
@@ -710,7 +758,8 @@
     "imagenes": [
       "assets/pet-hueso-xab-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "hueso-xa-blanco"
   },
   {
     "id": 405,
@@ -723,7 +772,8 @@
     "imagenes": [
       "assets/pet-hueso-xav-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Hueso XA en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "hueso-xa-verde"
   },
   {
     "id": 406,
@@ -736,7 +786,8 @@
     "imagenes": [
       "assets/pet-huella-xcn-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xc-naranja"
   },
   {
     "id": 407,
@@ -749,7 +800,8 @@
     "imagenes": [
       "assets/pet-huella-xcl-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xc-lila"
   },
   {
     "id": 408,
@@ -762,7 +814,8 @@
     "imagenes": [
       "assets/pet-huella-xcc-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xc-celeste"
   },
   {
     "id": 409,
@@ -775,7 +828,8 @@
     "imagenes": [
       "assets/pet-huella-xcb-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xc-blanco"
   },
   {
     "id": 410,
@@ -788,7 +842,8 @@
     "imagenes": [
       "assets/pet-huella-xcv-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XC en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xc-verde"
   },
   {
     "id": 411,
@@ -801,7 +856,8 @@
     "imagenes": [
       "assets/pet-huella-xsn-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color naranja. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xs-naranja"
   },
   {
     "id": 412,
@@ -814,7 +870,8 @@
     "imagenes": [
       "assets/pet-huella-xsl-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color lila. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xs-lila"
   },
   {
     "id": 413,
@@ -827,7 +884,8 @@
     "imagenes": [
       "assets/pet-huella-xsc-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color celeste. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xs-celeste"
   },
   {
     "id": 414,
@@ -840,7 +898,8 @@
     "imagenes": [
       "assets/pet-huella-xsb-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color blanco. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xs-blanco"
   },
   {
     "id": 415,
@@ -853,7 +912,8 @@
     "imagenes": [
       "assets/pet-huella-xsv-1.webp"
     ],
-    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde."
+    "descripcion": "Placa de identificación para mascota, modelo Huella XS en color verde. Impresa en 3D en PLA Premium y elaborada a pedido. Disponible en naranja, lila, celeste, blanco y verde.",
+    "slug": "huella-xs-verde"
   },
   {
     "id": 501,
@@ -866,7 +926,8 @@
     "imagenes": [
       "assets/ll-antisocial-1.webp"
     ],
-    "descripcion": "Llavero impreso en 3D con diseño moderno."
+    "descripcion": "Llavero impreso en 3D con diseño moderno.",
+    "slug": "antisocial"
   },
   {
     "id": 503,
@@ -880,7 +941,8 @@
       "assets/ll-debi-1.webp",
       "assets/ll-debi-2.webp"
     ],
-    "descripcion": "Llavero impreso en 3D."
+    "descripcion": "Llavero impreso en 3D.",
+    "slug": "debi-tirar-mas-fotos"
   },
   {
     "id": 504,
@@ -893,7 +955,8 @@
     "imagenes": [
       "assets/ll-offwhite-1.webp"
     ],
-    "descripcion": "Llavero con diseño urbano impreso en 3D."
+    "descripcion": "Llavero con diseño urbano impreso en 3D.",
+    "slug": "off-white"
   },
   {
     "id": 505,
@@ -907,7 +970,8 @@
       "assets/ll-jordan-1.webp",
       "assets/ll-jordan-2.webp"
     ],
-    "descripcion": "Llavero clásico impreso en 3D."
+    "descripcion": "Llavero clásico impreso en 3D.",
+    "slug": "jordan"
   },
   {
     "id": 510,
@@ -921,7 +985,8 @@
       "assets/ll-toyota-1.webp",
       "assets/ll-toyota-2.webp"
     ],
-    "descripcion": "Llavero temático automotriz."
+    "descripcion": "Llavero temático automotriz.",
+    "slug": "cochera-toyota"
   },
   {
     "id": 512,
@@ -936,7 +1001,8 @@
       "assets/ll-audi-2.webp"
     ],
     "video": "assets/video/ll-audi-video.mp4",
-    "descripcion": "Llavero temático automotriz."
+    "descripcion": "Llavero temático automotriz.",
+    "slug": "cochera-audi"
   },
   {
     "id": 515,
@@ -949,7 +1015,8 @@
     "imagenes": [
       "assets/ll-nike-1.webp"
     ],
-    "descripcion": "Llavero deportivo impreso en 3D."
+    "descripcion": "Llavero deportivo impreso en 3D.",
+    "slug": "nike"
   },
   {
     "id": 601,
@@ -963,7 +1030,8 @@
       "assets/la-bigthree-1.webp",
       "assets/la-bigthree-2.webp"
     ],
-    "descripcion": "Decoración en arte lineal 3D de alta definición."
+    "descripcion": "Decoración en arte lineal 3D de alta definición.",
+    "slug": "big-three"
   },
   {
     "id": 602,
@@ -977,7 +1045,8 @@
       "assets/la-hermanas-1.webp",
       "assets/la-hermanas-2.webp"
     ],
-    "descripcion": "Decoración en arte lineal 3D."
+    "descripcion": "Decoración en arte lineal 3D.",
+    "slug": "hermanas-w"
   },
   {
     "id": 603,
@@ -991,7 +1060,8 @@
       "assets/la-rayo-1.webp",
       "assets/la-rayo-2.webp"
     ],
-    "descripcion": "Arte lineal temático de Cars."
+    "descripcion": "Arte lineal temático de Cars.",
+    "slug": "rayo-mc-queen"
   },
   {
     "id": 604,
@@ -1005,7 +1075,8 @@
       "assets/la-doc-1.webp",
       "assets/la-doc-2.webp"
     ],
-    "descripcion": "Arte lineal temático de Cars."
+    "descripcion": "Arte lineal temático de Cars.",
+    "slug": "doc-hudson"
   },
   {
     "id": 605,
@@ -1019,7 +1090,8 @@
       "assets/la-mate-1.webp",
       "assets/la-mate-2.webp"
     ],
-    "descripcion": "Arte lineal temático de Cars."
+    "descripcion": "Arte lineal temático de Cars.",
+    "slug": "mate"
   },
   {
     "id": 701,
@@ -1033,7 +1105,8 @@
       "assets/ei-espejo-1.webp",
       "assets/ei-espejo-2.webp"
     ],
-    "descripcion": "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación."
+    "descripcion": "Impresionante espejo decorativo con efecto de profundidad infinita e iluminación.",
+    "slug": "espejo-infinito"
   },
   {
     "id": 801,
@@ -1049,7 +1122,8 @@
       "assets/led-letrero-1.webp",
       "assets/led-letrero-2.webp"
     ],
-    "descripcion": "Letrero luminoso personalizado. Diseño a medida del cliente."
+    "descripcion": "Letrero luminoso personalizado. Diseño a medida del cliente.",
+    "slug": "letrero-led"
   },
   {
     "id": 802,
@@ -1063,7 +1137,8 @@
       "assets/led-cars-1.webp",
       "assets/led-cars-2.webp"
     ],
-    "descripcion": "Lámpara temática con nombre personalizable."
+    "descripcion": "Lámpara temática con nombre personalizable.",
+    "slug": "lampara-led-cars-personalizadas"
   },
   {
     "id": 803,
@@ -1077,7 +1152,8 @@
       "assets/led-boxrayo-1.webp",
       "assets/led-boxrayo-2.webp"
     ],
-    "descripcion": "Caja de luz decorativa."
+    "descripcion": "Caja de luz decorativa.",
+    "slug": "light-box-rayo"
   },
   {
     "id": 804,
@@ -1091,7 +1167,8 @@
       "assets/led-gr-1.webp",
       "assets/led-gr-2.webp"
     ],
-    "descripcion": "Lámpara decorativa LED de diseño."
+    "descripcion": "Lámpara decorativa LED de diseño.",
+    "slug": "lampara-led-qr"
   },
   {
     "id": 805,
@@ -1106,7 +1183,8 @@
       "assets/led-box1-1.webp",
       "assets/led-box1-2.webp"
     ],
-    "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees."
+    "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees.",
+    "slug": "box-light-grande"
   },
   {
     "id": 806,
@@ -1121,7 +1199,8 @@
       "assets/led-box2-1.webp",
       "assets/led-box2-2.webp"
     ],
-    "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees."
+    "descripcion": "Caja de luz iluminada. Caras delanteras totalmente personalizables con cualquier temática: tu actor favorito, jugador, club de fútbol o el diseño que desees.",
+    "slug": "box-light-mediano"
   },
   {
     "id": 807,
@@ -1135,7 +1214,8 @@
       "assets/led-luna-1.webp",
       "assets/led-luna-2.webp"
     ],
-    "descripcion": "Hermosa lámpara iluminada en forma de luna."
+    "descripcion": "Hermosa lámpara iluminada en forma de luna.",
+    "slug": "luna-led"
   },
   {
     "id": 901,
@@ -1149,7 +1229,8 @@
       "assets/du-moto-1.webp",
       "assets/du-moto-2.webp"
     ],
-    "descripcion": "Figura articulada temática."
+    "descripcion": "Figura articulada temática.",
+    "slug": "dummy-moto"
   },
   {
     "id": 902,
@@ -1163,7 +1244,8 @@
       "assets/du-dummy25-1.webp",
       "assets/du-dummy25-2.webp"
     ],
-    "descripcion": "Figura articulada base 25cm."
+    "descripcion": "Figura articulada base 25cm.",
+    "slug": "dummy-902"
   },
   {
     "id": 903,
@@ -1177,7 +1259,8 @@
       "assets/du-dummy20-1.webp",
       "assets/du-dummy20-2.webp"
     ],
-    "descripcion": "Figura articulada base 20cm."
+    "descripcion": "Figura articulada base 20cm.",
+    "slug": "dummy-903"
   },
   {
     "id": 904,
@@ -1191,7 +1274,8 @@
       "assets/du-dummy15-1.webp",
       "assets/du-dummy15-2.webp"
     ],
-    "descripcion": "Figura articulada base 15cm."
+    "descripcion": "Figura articulada base 15cm.",
+    "slug": "dummy-904"
   },
   {
     "id": 905,
@@ -1205,7 +1289,8 @@
       "assets/du-mochila-1.webp",
       "assets/du-mochila-2.webp"
     ],
-    "descripcion": "Mochila a medida para personalizar a tu figura Dummy."
+    "descripcion": "Mochila a medida para personalizar a tu figura Dummy.",
+    "slug": "mochila-dummy-personalizada"
   },
   {
     "id": 2001,
@@ -1218,7 +1303,8 @@
     "imagenes": [
       "assets/ORGANIZADOR CORAZON.webp"
     ],
-    "descripcion": "Práctico organizador con forma de corazón para accesorios."
+    "descripcion": "Práctico organizador con forma de corazón para accesorios.",
+    "slug": "organizador-corazon"
   },
   {
     "id": 2002,
@@ -1233,6 +1319,7 @@
       "assets/acc-llavero-2.webp"
     ],
     "video": "assets/video/acc-llavero-video.mp4",
-    "descripcion": "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables."
+    "descripcion": "Práctico llavero que funciona como soporte para tu celular. Color y nombre personalizables.",
+    "slug": "llavero-soporte-para-celular"
   }
 ]
