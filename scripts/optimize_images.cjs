@@ -1,81 +1,96 @@
 #!/usr/bin/env node
 /**
- * Genera los tres niveles de calidad de cada imagen de assets/ sin perder nunca el original:
+ * Genera los tres niveles de calidad de cada imagen a partir de sus ORIGINALES (PNG/JPEG/WebP/AVIF):
  *
- *   assets/hd/<n>.webp|avif   original en alta resolución (solo si supera STD px); se sirve al ampliar
+ *   assets/hd/<n>.webp|avif   resolución original (solo si supera STD px); se sirve al ampliar
  *   assets/<n>.webp|avif      versión estándar (lado largo máx. STD px); galería y páginas de producto
  *   assets/sm/<n>.webp|avif   miniatura (lado largo máx. SM px); tarjetas del catálogo y miniaturas
  *   assets/hd/index.json      nombres con versión HD y sus dimensiones
  *
- * Para añadir fotos nuevas: copia los .webp/.avif originales a assets/ y ejecuta el script. Si miden
- * más de STD px, el original se MUEVE a assets/hd/ y la versión estándar se genera desde él.
+ * Los originales NO se publican: guárdalos en una carpeta aparte (por defecto "fuentes/", ignorada por
+ * Git) con el nombre que tendrá la imagen, p. ej. fuentes/ts-woody-1.png. Siempre se parte del original,
+ * nunca de una copia ya comprimida, para no perder nitidez en cada pasada.
  *
- * Uso:  npm i sharp && node scripts/optimize_images.cjs [--rebuild-std]
- *   --rebuild-std  vuelve a generar estándar y miniaturas desde los originales de assets/hd/
+ * Calidad: AVIF q90 y WebP q90 con color completo en HD/estándar; AVIF q82 y WebP q88 en miniaturas
+ * (AVIF es lo que sirve la gran mayoría de navegadores; WebP queda de respaldo).
+ *
+ * Uso:  npm i sharp && node scripts/optimize_images.cjs [--fuentes carpeta] [--solo nombre1,nombre2]
+ *        --parte i/N   procesa solo la parte i de N (para repartir el trabajo entre varios procesos)
+ *        --sin-indice  no recalcula assets/hd/index.json (hazlo después con --solo ninguno)
+ *   sin --fuentes se usa "fuentes/"; las imágenes de assets/ sin original en esa carpeta no se tocan.
  */
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const ASSETS = path.resolve(__dirname, '..', 'assets');
+const RAIZ = path.resolve(__dirname, '..');
+const ASSETS = path.join(RAIZ, 'assets');
 const HD = path.join(ASSETS, 'hd');
 const SM_DIR = path.join(ASSETS, 'sm');
 const STD = 1600;
 const SM = 800;
-const REBUILD = process.argv.includes('--rebuild-std');
-const EXTS = ['webp', 'avif'];
+
+const argumento = nombre => { const i = process.argv.indexOf(nombre); return i > -1 ? process.argv[i + 1] : null; };
+const FUENTES = path.resolve(argumento('--fuentes') || path.join(RAIZ, 'fuentes'));
+const SOLO = argumento('--solo') ? new Set(argumento('--solo').split(',')) : null;
+const PARTE = argumento('--parte') ? argumento('--parte').split('/').map(Number) : null;
+const SIN_INDICE = process.argv.includes('--sin-indice');
+
+const CALIDAD = {
+    grande: { avif: 90, webp: 90 },
+    mini: { avif: 82, webp: 88 }
+};
 
 const codificar = (imagen, ext, calidad) => (ext === 'webp'
-    ? imagen.webp({ quality: calidad.webp, effort: 6 })
-    : imagen.avif({ quality: calidad.avif, effort: 5 })).toBuffer();
+    ? imagen.webp({ quality: calidad.webp, effort: 6, smartSubsample: true })
+    : imagen.avif({ quality: calidad.avif, effort: 4, chromaSubsampling: '4:4:4' })).toBuffer();
 
-async function reducir(origen, ladoMax, calidad, ext) {
-    const base = sharp(origen).rotate().resize({ width: ladoMax, height: ladoMax, fit: 'inside', withoutEnlargement: true });
-    return codificar(base, ext, calidad);
+async function generar(origen, ladoMax, calidad, ext) {
+    let imagen = sharp(origen).rotate();
+    if (ladoMax) imagen = imagen.resize({ width: ladoMax, height: ladoMax, fit: 'inside', withoutEnlargement: true });
+    return codificar(imagen, ext, calidad);
 }
 
 (async () => {
+    if (!fs.existsSync(FUENTES)) { console.error(`No existe la carpeta de originales: ${FUENTES}`); process.exit(1); }
     fs.mkdirSync(HD, { recursive: true });
     fs.mkdirSync(SM_DIR, { recursive: true });
-    const nombres = [...new Set(fs.readdirSync(ASSETS)
-        .filter(f => /\.(webp|avif)$/i.test(f))
-        .map(f => f.replace(/\.(webp|avif)$/i, '')))].sort();
 
-    const hdIndex = {};
-    const resumen = { estandar: 0, miniaturas: 0, movidos: 0 };
-
-    for (const nombre of nombres) {
-        for (const ext of EXTS) {
-            const principal = path.join(ASSETS, `${nombre}.${ext}`);
-            const original = path.join(HD, `${nombre}.${ext}`);
-            if (!fs.existsSync(principal) && !fs.existsSync(original)) continue;
-
-            // Si la imagen supera STD y aún no hay original guardado, se conserva en hd/ antes de reducirla.
-            if (fs.existsSync(principal) && !fs.existsSync(original)) {
-                const { width, height } = await sharp(principal).metadata();
-                if (Math.max(width, height) > STD) { fs.renameSync(principal, original); resumen.movidos++; }
-            }
-
-            const hayHd = fs.existsSync(original);
-            if (hayHd && (REBUILD || !fs.existsSync(principal))) {
-                fs.writeFileSync(principal, await reducir(original, STD, { webp: 90, avif: 68 }, ext));
-                resumen.estandar++;
-            }
-
-            const destinoSm = path.join(SM_DIR, `${nombre}.${ext}`);
-            if (REBUILD || !fs.existsSync(destinoSm)) {
-                const { width, height } = await sharp(principal).metadata();
-                if (Math.max(width, height) > SM) fs.writeFileSync(destinoSm, await reducir(principal, SM, { webp: 84, avif: 58 }, ext));
-                else fs.copyFileSync(principal, destinoSm);
-                resumen.miniaturas++;
-            }
-
-            if (hayHd && ext === 'webp') {
-                const { width, height } = await sharp(original).metadata();
-                hdIndex[nombre] = { w: width, h: height };
-            }
-        }
+    // Si hay varios archivos con el mismo nombre base (p. ej. .png y .jpg) se usa el de más píxeles.
+    const fuentes = new Map();
+    for (const f of fs.readdirSync(FUENTES).filter(f => /\.(png|jpe?g|webp|avif)$/i.test(f))) {
+        const nombre = f.replace(/\.(png|jpe?g|webp|avif)$/i, '');
+        const { width, height } = await sharp(path.join(FUENTES, f)).metadata();
+        const px = width * height;
+        if (!fuentes.has(nombre) || px > fuentes.get(nombre).px) fuentes.set(nombre, { archivo: path.join(FUENTES, f), width, height, px });
     }
-    fs.writeFileSync(path.join(HD, 'index.json'), JSON.stringify(hdIndex, null, 1) + '\n');
-    console.log(`${nombres.length} imágenes. Originales movidos: ${resumen.movidos}; estándar generadas: ${resumen.estandar}; miniaturas: ${resumen.miniaturas}; con HD: ${Object.keys(hdIndex).length}`);
+
+    let hechas = 0;
+    const lista = [...fuentes].sort();
+    for (const [posicion, [nombre, f]] of lista.entries()) {
+        if (SOLO && !SOLO.has(nombre)) continue;
+        if (PARTE && posicion % PARTE[1] !== PARTE[0] - 1) continue;
+        const grande = Math.max(f.width, f.height) > STD;
+        for (const ext of ['webp', 'avif']) {
+            if (grande) fs.writeFileSync(path.join(HD, `${nombre}.${ext}`), await generar(f.archivo, null, CALIDAD.grande, ext));
+            else fs.rmSync(path.join(HD, `${nombre}.${ext}`), { force: true });
+            fs.writeFileSync(path.join(ASSETS, `${nombre}.${ext}`), await generar(f.archivo, STD, CALIDAD.grande, ext));
+            fs.writeFileSync(path.join(SM_DIR, `${nombre}.${ext}`), await generar(f.archivo, SM, CALIDAD.mini, ext));
+        }
+        hechas++;
+        console.log(`[${hechas}/${fuentes.size}] ${nombre} ${f.width}x${f.height}${grande ? ' (con HD)' : ''}`);
+    }
+
+    if (SIN_INDICE) { console.log(`Parte lista: ${hechas} imágenes.`); return; }
+    // Índice de originales HD (se recalcula con lo que haya en assets/hd/)
+    const indice = {};
+    for (const f of fs.readdirSync(HD).filter(f => f.endsWith('.webp')).sort()) {
+        const { width, height } = await sharp(path.join(HD, f)).metadata();
+        indice[f.replace(/\.webp$/, '')] = { w: width, h: height };
+    }
+    fs.writeFileSync(path.join(HD, 'index.json'), JSON.stringify(indice, null, 1) + '\n');
+    console.log(`Listo: ${hechas} imágenes procesadas; ${Object.keys(indice).length} con versión HD.`);
+
+    const sinFuente = [...new Set(fs.readdirSync(ASSETS).filter(f => /\.webp$/.test(f)).map(f => f.replace(/\.webp$/, '')))].filter(n => !fuentes.has(n));
+    if (sinFuente.length) console.log(`Sin original en ${path.basename(FUENTES)}/ (no se tocaron): ${sinFuente.join(', ')}`);
 })();
