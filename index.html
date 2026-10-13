@@ -55,7 +55,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     
     <script>
         tailwind.config = {
@@ -83,9 +83,9 @@
         }
     </script>
     
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <link rel="stylesheet" href="styles.css?v=typography-1">
+    <script src="https://unpkg.com/lucide@1.56.0/dist/umd/lucide.min.js" defer></script>
+
+    <link rel="stylesheet" href="styles.css?v=p0-1">
 </head>
 <body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
 
@@ -145,7 +145,21 @@
                         Contáctanos
                     </a>
                 </div>
-                <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="lg:hidden bg-brand-accent text-white px-4 py-2.5 rounded-full text-xs font-bold no-print">WhatsApp</a>
+                <a href="https://api.whatsapp.com/send?phone=51955107609" target="_blank" rel="noopener noreferrer" class="nav-whatsapp-mobile lg:hidden bg-brand-accent text-white px-4 py-2.5 rounded-full text-xs font-bold no-print">WhatsApp</a>
+                <button id="nav-toggle" type="button" class="nav-toggle lg:hidden no-print" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu lg:hidden no-print" hidden>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col text-sm font-semibold text-gray-700">
+                <a href="#catalogo">Shop</a>
+                <a href="#categorias">Colecciones</a>
+                <a href="#personalizados">Personalizados</a>
+                <a href="#como-comprar">Cómo comprar</a>
+                <a href="#nosotros">Nosotros</a>
+                <a href="#faq">FAQ</a>
+                <a href="#ubicacion">Ubicación</a>
             </div>
         </div>
     </nav>
@@ -163,7 +177,7 @@
                     </div>
                     <h1 class="font-title text-5xl md:text-6xl font-black text-white mb-6 tracking-tight leading-[1.1]">
                         Más que impresión: <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-blue-400">piezas con personalidad.</span>
-                    </h2>
+                    </h1>
                     <p class="text-blue-100 text-lg md:text-xl leading-relaxed mb-8 font-light">
                         Somos S3D, un taller de impresión 3D y postproducción que convierte ideas, personajes y diseños en piezas únicas, elaboradas a pedido.
                     </p>
@@ -505,6 +519,6 @@
         </button>
     </div>
 
-    <script src="catalogo.js?v=featured-2" defer></script>
+    <script src="catalogo.js?v=p0-1" defer></script>
 </body>
 </html>

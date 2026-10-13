@@ -2,6 +2,24 @@
 
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+        // Menú móvil
+        const navToggle = document.getElementById('nav-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        function cerrarMenuMovil() {
+            mobileMenu.hidden = true;
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Abrir menú');
+        }
+        navToggle.addEventListener('click', () => {
+            const abrir = mobileMenu.hidden;
+            mobileMenu.hidden = !abrir;
+            navToggle.setAttribute('aria-expanded', String(abrir));
+            navToggle.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
+        });
+        mobileMenu.addEventListener('click', event => { if (event.target.closest('a')) cerrarMenuMovil(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu.hidden) { cerrarMenuMovil(); navToggle.focus(); } });
+        window.matchMedia('(min-width: 1024px)').addEventListener('change', event => { if (event.matches) cerrarMenuMovil(); });
+
         // Control del Botón Volver Arriba
         window.addEventListener('scroll', function() {
             const btnArriba = document.getElementById('btn-volver-arriba');
@@ -236,14 +254,30 @@
             `;
         }
 
-        function generarHTMLProductoCarrusel(producto) {
-            const img = producto.imagenes[0];
-            const rutaAvif = img ? img.replace(/\.(webp|png|jpe?g)$/i, '.avif') : '';
-            const whatsappText = producto.requiereCotizacion
-                ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`
-                : `Hola, me interesa el modelo 3D: ${producto.nombre} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
+        function mensajeWhatsApp(producto, colorNombre) {
+            if (producto.requiereCotizacion) {
+                return `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}${colorNombre ? ` (Color: ${colorNombre})` : ''}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
+            }
+            return `Hola, me interesa el modelo 3D: ${producto.nombre}${colorNombre ? ` (Color: ${colorNombre})` : ''} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
+        }
 
-            const miniaturasHTML = producto.imagenes.map((imagen, index) => `
+        const urlWhatsApp = (producto, colorNombre) =>
+            `https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensajeWhatsApp(producto, colorNombre))}`;
+
+        function generarHTMLProductoCarrusel(producto) {
+            const tieneColores = Array.isArray(producto.colores) && producto.colores.length > 0;
+            const img = tieneColores ? producto.colores[0].img : producto.imagenes[0];
+            const rutaAvif = img ? img.replace(/\.(webp|png|jpe?g)$/i, '.avif') : '';
+            const colorInicial = tieneColores ? producto.colores[0].nombre : null;
+
+            const coloresHTML = tieneColores ? `
+                <div class="catalog-carousel-swatches" role="group" aria-label="Colores disponibles de ${escaparHTML(producto.nombre)}">
+                    ${producto.colores.map((color, index) => `
+                    <button type="button" data-color-product="${producto.id}" data-color-index="${index}" class="catalog-carousel-swatch${index === 0 ? ' is-active' : ''}" style="background-color: ${escaparHTML(color.hex)};" aria-label="Color ${escaparHTML(color.nombre)}" aria-pressed="${index === 0}" title="${escaparHTML(color.nombre)}"></button>`).join('')}
+                </div>
+                <p class="catalog-carousel-color-name" data-color-label aria-live="polite">Color: ${escaparHTML(colorInicial)}</p>` : '';
+
+            const miniaturasHTML = tieneColores ? '' : producto.imagenes.map((imagen, index) => `
                 <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${producto.nombre}">
                     <img src="${imagen}" loading="lazy" decoding="async" alt="">
                 </button>
@@ -264,16 +298,16 @@
                     ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
                     <span class="catalog-carousel-expand" aria-hidden="true"><i data-lucide="maximize-2" class="w-4 h-4"></i></span>
                 </div>
-                <div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
+                ${tieneColores ? coloresHTML : `<div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
                     ${miniaturasHTML}
-                </div>
+                </div>`}
                 <div class="catalog-carousel-info">
                     <h3>${producto.nombre}</h3>
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${producto.medida || ''}</span>
                     </div>
-                    <a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(whatsappText)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                    <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
                 </div>
             </article>`;
         }
@@ -368,24 +402,39 @@
                 return cumpleCategoria && cumpleBusqueda;
             });
             const productosOrdenados = [...productosFiltrados];
-            if (ordenActual === "price-asc") productosOrdenados.sort((a, b) => a.precio - b.precio);
-            if (ordenActual === "price-desc") productosOrdenados.sort((a, b) => b.precio - a.precio);
+            // Los productos "a cotizar" no tienen precio publicado: siempre van al final del orden por precio.
+            const precioOrden = p => (p.requiereCotizacion || !p.precio) ? Infinity : p.precio;
+            const compararPrecio = direccion => (a, b) => {
+                const pa = precioOrden(a);
+                const pb = precioOrden(b);
+                if (pa === pb) return 0;
+                if (pa === Infinity) return 1;
+                if (pb === Infinity) return -1;
+                return direccion * (pa - pb);
+            };
+            if (ordenActual === "price-asc") productosOrdenados.sort(compararPrecio(1));
+            if (ordenActual === "price-desc") productosOrdenados.sort(compararPrecio(-1));
             if (ordenActual === "name") productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+            // Con un orden explícito la lista se muestra plana: agrupar por categoría rompería el orden global.
+            const ordenGlobal = ordenActual !== "default";
             if (resultsCount) resultsCount.textContent = `${productosOrdenados.length} ${productosOrdenados.length === 1 ? "producto encontrado" : "productos encontrados"}`;
             actualizarURL();
 
-            let categoriasA_Renderizar = [];
-            ordenDeseado.forEach(cat => {
-                if (productosOrdenados.some(p => p.categoria === cat)) {
-                    categoriasA_Renderizar.push(cat);
+            let grupos = [];
+            if (ordenGlobal) {
+                if (productosOrdenados.length) {
+                    grupos.push({ categoria: categoriaActual === "Todas" ? "Todos los productos" : categoriaActual, items: productosOrdenados });
                 }
-            });
+            } else {
+                ordenDeseado.forEach(cat => {
+                    const items = productosOrdenados.filter(p => p.categoria === cat);
+                    if (items.length) grupos.push({ categoria: cat, items });
+                });
+            }
 
             let htmlCompleto = '';
 
-            for (const categoria of categoriasA_Renderizar) {
-                const items = productosOrdenados.filter(p => p.categoria === categoria);
-                if(items.length === 0) continue;
+            for (const { categoria, items } of grupos) {
 
                 let extraHeaderNote = '';
                 if (categoria === "Holders") {
@@ -433,7 +482,7 @@
                             <span class="text-sm font-semibold text-gray-500 bg-white px-4 py-1.5 rounded-full w-fit shadow-sm border border-gray-200">${items.length} modelos</span>
                         </div>
                         ${categoryBanner}
-                        <div class="catalog-carousel-shell">
+                        <div class="catalog-carousel-shell${ordenGlobal ? ' is-flat' : ''}">
                             <button class="catalog-carousel-arrow catalog-carousel-prev" type="button" aria-label="Productos anteriores" data-carousel-direction="-1">
                                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
                             </button>
@@ -488,6 +537,31 @@
                     } else return;
                     card.querySelectorAll('.catalog-carousel-thumbnail').forEach(item => item.classList.remove('is-active'));
                     thumbnail.classList.add('is-active');
+                });
+            });
+
+            mainContainer.querySelectorAll('.catalog-carousel-swatch').forEach(swatch => {
+                swatch.addEventListener('click', event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const card = swatch.closest('.catalog-carousel-card');
+                    const product = productos.find(item => item.id === Number(swatch.dataset.colorProduct));
+                    const color = product?.colores?.[Number(swatch.dataset.colorIndex)];
+                    const mainImage = card?.querySelector('[data-carousel-main-image]');
+                    const mainSource = card?.querySelector('[data-carousel-main-source]');
+                    if (!product || !color || !mainImage) return;
+                    mainImage.src = color.img;
+                    if (mainSource) mainSource.srcset = color.img.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+                    card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = swatch.dataset.colorIndex;
+                    card.querySelectorAll('.catalog-carousel-swatch').forEach(item => {
+                        const activo = item === swatch;
+                        item.classList.toggle('is-active', activo);
+                        item.setAttribute('aria-pressed', String(activo));
+                    });
+                    const label = card.querySelector('[data-color-label]');
+                    if (label) label.textContent = `Color: ${color.nombre}`;
+                    const buy = card.querySelector('[data-carousel-buy]');
+                    if (buy) buy.href = urlWhatsApp(product, color.nombre);
                 });
             });
 
@@ -567,7 +641,7 @@
         window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
             if(!prod) return;
-            currentLightboxMediaArray = prod.imagenes.map(src => ({ type: 'img', src }));
+            currentLightboxMediaArray = (prod.colores?.length ? prod.colores.map(color => color.img) : prod.imagenes).map(src => ({ type: 'img', src }));
             if (prod.video) {
                 currentLightboxMediaArray.push({ type: 'vid', src: prod.video });
             }
