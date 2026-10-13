@@ -389,6 +389,9 @@ def actualizar_itemlist(todos: list[dict]) -> None:
     indice.write_text(contenido, encoding="utf-8")
 
 
+# Fecha de la política de privacidad: actualizarla a mano cuando cambie el texto (así la generación es reproducible).
+FECHA_PRIVACIDAD = "13/10/2026"
+
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
 
 
@@ -428,7 +431,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 
 
 def pagina_privacidad() -> str:
-    hoy = date.today().strftime("%d/%m/%Y")
+    hoy = FECHA_PRIVACIDAD
     cuerpo = f"""        <p class="pg-kicker">Transparencia</p>
         <h1>Política de privacidad</h1>
         <p class="pg-actualizado">Última actualización: {hoy}</p>
@@ -497,10 +500,10 @@ def pagina_404(todos: list[dict]) -> str:
 
 
 def escribir_sitemap(todos: list[dict]) -> None:
-    hoy = date.today().isoformat()
-    filas = [f"  <url>\n    <loc>{BASE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>1.0</priority>\n  </url>"]
-    filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>0.3</priority>\n  </url>")
-    filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>0.7</priority>\n  </url>" for p in todos]
+    """Sitemap sin <lastmod>: es opcional y una fecha inexacta es peor que no ponerla; así la generación es reproducible."""
+    filas = [f"  <url>\n    <loc>{BASE_URL}</loc>\n    <priority>1.0</priority>\n  </url>"]
+    filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <priority>0.3</priority>\n  </url>")
+    filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <priority>0.7</priority>\n  </url>" for p in todos]
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(filas) + "\n</urlset>\n",
         encoding="utf-8",

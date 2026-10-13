@@ -243,9 +243,10 @@
             window.S3D.aviso(ahora ? 'Guardado en favoritos' : 'Quitado de favoritos');
         });
         if (window.S3D) window.S3D.favoritos.alCambiar(() => {
-            if (categoriaActual === 'Favoritos' && idsFavoritos().length === 0) categoriaActual = 'Todas';   // ya no queda ninguno
+            let cambioLista = categoriaActual === 'Favoritos';   // en la lista de favoritos, quitar uno cambia lo que se ve
+            if (categoriaActual === 'Favoritos' && idsFavoritos().length === 0) { categoriaActual = 'Todas'; cambioLista = true; }   // ya no queda ninguno
             renderFilters();
-            if (categoriaActual === 'Favoritos' || categoriaActual === 'Todas' && !mainContainer.querySelector('.catalog-carousel-card')) renderizarProductos();
+            if (cambioLista) renderizarProductos();
             else pintarFavoritos();
         });
 
@@ -916,7 +917,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=tienda-2');
+            const response = await fetch('productos.json?v=tienda-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
