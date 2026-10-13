@@ -99,21 +99,21 @@
         }
 
         function renderFeaturedProducts() {
-            const container = document.getElementById('featured-products');
+            const container = document.getElementById('hero-products');
             if (!container) return;
-            const destacados = productos.filter(producto => producto.badge === 'Top Ventas');
-            container.innerHTML = destacados.map(producto => `
-                <article class="featured-card">
-                    <img src="${producto.imagenes[0]}" alt="${producto.nombre}" loading="lazy" decoding="async">
-                    <div class="featured-card-content">
-                        <span class="featured-badge">Top Ventas</span>
-                        <p class="text-xs uppercase tracking-widest text-brand-accent font-bold mt-5">${producto.categoria}</p>
-                        <h3 class="font-title text-2xl font-bold text-brand-900 mt-2">${escaparHTML(producto.nombre)}</h3>
-                        <p class="text-gray-500 mt-3">${producto.descripcion || 'Una pieza elaborada a pedido para tu colección.'}</p>
-                        <a href="#producto-${producto.id}" data-featured-product="${producto.id}" class="inline-flex items-center gap-2 mt-6 text-brand-accent font-bold text-sm">Ver producto <span>→</span></a>
-                    </div>
-                </article>
-            `).join('');
+            const destacados = productos.filter(producto => producto.badge === 'Top Ventas').slice(0, 4);
+            container.innerHTML = destacados.map((producto, index) => {
+                const imagen = producto.colores?.length ? producto.colores[0].img : producto.imagenes[0];
+                const precio = producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`;
+                return `
+                <button type="button" class="hero-product" data-hero-product="${producto.id}" aria-label="Ver ${escaparHTML(producto.nombre)}">
+                    <picture>
+                        <source srcset="${imagen.replace(/\.(webp|png|jpe?g)$/i, '.avif')}" type="image/avif">
+                        <img src="${imagen}" alt="${escaparHTML(producto.nombre)}" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
+                    </picture>
+                    <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
+                </button>`;
+            }).join('');
         }
 
         function generarHTMLProducto(producto) {
@@ -591,10 +591,8 @@
         };
 
         document.addEventListener('click', event => {
-            const link = event.target.closest('[data-featured-product]');
-            if (!link) return;
-            event.preventDefault();
-            window.mostrarProductoDestacado(Number(link.dataset.featuredProduct));
+            const tile = event.target.closest('[data-hero-product]');
+            if (tile) window.abrirModal(Number(tile.dataset.heroProduct));
         });
 
         document.getElementById('search-input').addEventListener('input', function(e) {
