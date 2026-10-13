@@ -623,6 +623,9 @@
                 const buy = document.getElementById('lightbox-buy');
                 buy.href = urlWhatsApp(prod, media.color || null);
                 buy.dataset.producto = prod.nombre;
+                const ficha = document.getElementById('lightbox-detail');
+                ficha.hidden = !prod.slug;
+                if (prod.slug) ficha.href = `producto/${prod.slug}/`;
                 buy.textContent = prod.requiereCotizacion ? 'Cotizar' : 'Comprar';
             }
         }
@@ -763,7 +766,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=ficha-1');
+            const response = await fetch('productos.json?v=ficha-2');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
