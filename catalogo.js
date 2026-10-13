@@ -190,6 +190,19 @@
         }
 
         const mainContainer = document.getElementById('main-content');
+
+        // Toda la tarjeta abre la ficha del producto, salvo los controles propios: el botón de comprar,
+        // la zona de imágenes (galería ampliada), las miniaturas y los selectores de color.
+        mainContainer.addEventListener('click', evento => {
+            const tarjeta = evento.target.closest('.catalog-carousel-card');
+            if (!tarjeta) return;
+            if (evento.target.closest('a, button, .catalog-carousel-image, .catalog-carousel-thumbnails, .catalog-carousel-swatches')) return;
+            if (String(window.getSelection()).trim()) return;   // no navegar si la persona está seleccionando texto
+            const enlace = tarjeta.querySelector('.catalog-card-link');
+            if (!enlace) return;
+            if (evento.ctrlKey || evento.metaKey) window.open(enlace.href, '_blank', 'noopener');
+            else window.location.href = enlace.href;
+        });
         
         function renderizarProductos() {
             renderFilters();
@@ -750,7 +763,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=chrome-3');
+            const response = await fetch('productos.json?v=ficha-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
