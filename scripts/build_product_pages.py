@@ -27,6 +27,30 @@ ITEMLIST_END = "<!-- ITEMLIST:END -->"
 
 esc = html.escape
 
+CHROME_DIR = ROOT / "scripts" / "chrome"
+CHROME_MARCAS = {
+    "top": ("<!-- CHROME-TOP:START -->", "<!-- CHROME-TOP:END -->"),
+    "pie": ("<!-- CHROME-FOOTER:START -->", "<!-- CHROME-FOOTER:END -->"),
+}
+
+
+def plantilla(nombre: str, base: str) -> str:
+    """Lee scripts/chrome/<nombre>.html y resuelve {{base}} (prefijo relativo a la raíz del sitio)."""
+    return (CHROME_DIR / f"{nombre}.html").read_text(encoding="utf-8").replace("{{base}}", base)
+
+
+def chrome_superior(base: str) -> str:
+    """Íconos + barra de aviso + navegación, idénticos en la portada y en las fichas."""
+    return plantilla("sprite", base) + "\n" + plantilla("header", base)
+
+
+def chrome_pie(base: str) -> str:
+    return plantilla("footer", base)
+
+
+def sangrar(texto: str, espacios: int = 4) -> str:
+    return "\n".join((" " * espacios + linea) if linea.strip() else linea for linea in texto.rstrip("\n").split("\n")) + "\n"
+
 
 def slugify(text: str) -> str:
     text = unicodedata.normalize("NFD", text).encode("ascii", "ignore").decode()
@@ -234,17 +258,12 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../producto.css?v=5">
+    <link rel="stylesheet" href="../../chrome.css?v=2">
+    <link rel="stylesheet" href="../../producto.css?v=7">
 {json_ld_producto(p, url)}
 </head>
 <body>
-    <header class="pp-topbar">
-        <a class="pp-brand" href="../../"><img src="../../assets/S3D.webp" alt="" width="40" height="40"><span>S3D</span></a>
-        <nav aria-label="Principal">
-            <a href="../../?categoria={cat_q}#catalogo">← Volver al catálogo</a>
-            <a class="pp-btn-small" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-        </nav>
-    </header>
+{sangrar(chrome_superior("../../"))}
 
     <main class="pp-main">
         <nav class="pp-breadcrumb" aria-label="Ruta">
@@ -285,16 +304,34 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {bloque_rel}
     </main>
 
-    <footer class="pp-footer">
-        <p>S3D · Impresión 3D y postproducción · WhatsApp <a href="https://api.whatsapp.com/send?phone={WHATSAPP}" target="_blank" rel="noopener noreferrer">+51 955 107 609</a> · <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a></p>
-        <p><a href="../../">Ir al catálogo completo</a></p>
-    </footer>
+{sangrar(chrome_pie("../../"))}
 
+    <script src="../../chrome.js?v=1" defer></script>
     <script src="../../analytics.js?v=2" defer></script>
-    <script src="../../producto.js?v=5" defer></script>
+    <script src="../../producto.js?v=6" defer></script>
 </body>
 </html>
 """
+
+
+def actualizar_chrome_indice() -> None:
+    """Mantiene la cabecera y el pie de index.html idénticos a los de las fichas (misma plantilla)."""
+    indice = ROOT / "index.html"
+    contenido = indice.read_text(encoding="utf-8")
+    bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie(""))}
+    for clave, (inicio, fin) in CHROME_MARCAS.items():
+        nuevo = f"    {inicio}\n{bloques[clave]}    {fin}"
+        if inicio in contenido:
+            contenido = re.sub(re.escape(inicio) + r".*?" + re.escape(fin), lambda _: nuevo.strip(), contenido, flags=re.S)
+        else:
+            if clave == "top":
+                a = contenido.index('    <div class="announcement-bar')
+                b = contenido.index("</nav>", a) + len("</nav>\n")
+            else:
+                a = contenido.index('    <footer id="contacto"')
+                b = contenido.index("</footer>", a) + len("</footer>")
+            contenido = contenido[:a] + nuevo + ("\n" if clave == "top" else "") + contenido[b:]
+    indice.write_text(contenido, encoding="utf-8")
 
 
 def actualizar_itemlist(todos: list[dict]) -> None:
@@ -343,6 +380,7 @@ def main() -> None:
         (carpeta / "index.html").write_text(pagina(p, productos), encoding="utf-8")
 
     actualizar_itemlist(productos)
+    actualizar_chrome_indice()
     escribir_sitemap(productos)
     print(f"{len(productos)} páginas generadas en {OUT_DIR.relative_to(ROOT)}/, sitemap.xml e ItemList actualizados")
 

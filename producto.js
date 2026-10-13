@@ -56,8 +56,9 @@
     }));
 
     // ---- Visor de alta resolución ----
-    // Al pulsar la foto principal se abre el original (assets/hd) si existe; el visor se abre al instante
-    // con la versión estándar y la cambia por el original en cuanto termina de descargarse.
+    // Al pulsar la foto principal se abre el visor con la imagen COMPLETA ajustada a la pantalla (sin barras de
+    // desplazamiento). Abre al instante con la versión estándar y la cambia por el original (assets/hd) cuando
+    // termina de descargarse. Un clic acerca (3x como máximo) y la imagen sigue al cursor; otro clic aleja.
     const escenario = document.getElementById('pp-stage');
     if (!escenario) return;
     const aviso = document.createElement('span');
@@ -79,15 +80,74 @@
     visor.setAttribute('aria-modal', 'true');
     visor.setAttribute('aria-label', 'Imagen ampliada');
     visor.innerHTML = '<div class="pp-viewer-bar"><span class="pp-viewer-info" role="status"></span><button type="button" class="pp-viewer-close" aria-label="Cerrar">×</button></div>' +
-        '<div class="pp-viewer-scroll"><picture><source type="image/avif"><img alt="" draggable="false"></picture></div>';
+        '<div class="pp-viewer-stage"><picture><source type="image/avif"><img alt="" draggable="false"></picture><span class="pp-viewer-hint" aria-hidden="true"></span></div>';
     document.body.append(visor);
     const info = visor.querySelector('.pp-viewer-info');
-    const zona = visor.querySelector('.pp-viewer-scroll');
+    const escena = visor.querySelector('.pp-viewer-stage');
     const imagenVisor = visor.querySelector('img');
     const fuenteVisor = visor.querySelector('source');
+    const ayuda = visor.querySelector('.pp-viewer-hint');
     const cerrar = visor.querySelector('.pp-viewer-close');
+    const conRaton = window.matchMedia('(hover: hover)').matches;
+    const zoom = { escala: 1, x: 0, y: 0 };
+    const ZOOM_CLIC = 3;
     let anterior = null;
     let abierta = null;
+    let objetivo = null;
+    let animando = false;
+
+    function aplicarZoom() {
+        imagenVisor.style.transform = `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.escala})`;
+        imagenVisor.classList.toggle('is-zoomed', zoom.escala > 1);
+        ayuda.textContent = zoom.escala > 1
+            ? (conRaton ? 'Clic para alejar' : 'Toca para alejar · arrastra para mover')
+            : (conRaton ? 'Clic para acercar · mueve el cursor para recorrer la imagen' : 'Toca para acercar');
+    }
+    const limites = () => ({
+        x: Math.max(0, (imagenVisor.clientWidth * zoom.escala - escena.clientWidth) / 2),
+        y: Math.max(0, (imagenVisor.clientHeight * zoom.escala - escena.clientHeight) / 2)
+    });
+    function limitar() {
+        const m = limites();
+        zoom.x = Math.min(m.x, Math.max(-m.x, zoom.x));
+        zoom.y = Math.min(m.y, Math.max(-m.y, zoom.y));
+    }
+    function reiniciar() { objetivo = null; zoom.escala = 1; zoom.x = 0; zoom.y = 0; aplicarZoom(); }
+    // Centro de la imagen sin la traslación actual (getBoundingClientRect ya la incluye).
+    const centro = () => {
+        const r = imagenVisor.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - zoom.x, y: r.top + r.height / 2 - zoom.y };
+    };
+    function acercar(clientX, clientY) {
+        const c = centro();
+        const nueva = Math.min(ZOOM_CLIC, Math.max(2, imagenVisor.naturalWidth / (imagenVisor.clientWidth || 1)));
+        const cx = clientX - c.x;
+        const cy = clientY - c.y;
+        const razon = nueva / zoom.escala;
+        zoom.x = cx - razon * (cx - zoom.x);
+        zoom.y = cy - razon * (cy - zoom.y);
+        zoom.escala = nueva;
+        limitar();
+        aplicarZoom();
+    }
+    function animar() {
+        if (!objetivo || zoom.escala <= 1) { animando = false; return; }
+        zoom.x += (objetivo.x - zoom.x) * 0.2;
+        zoom.y += (objetivo.y - zoom.y) * 0.2;
+        limitar();
+        aplicarZoom();
+        if (Math.abs(objetivo.x - zoom.x) > 0.3 || Math.abs(objetivo.y - zoom.y) > 0.3) requestAnimationFrame(animar);
+        else animando = false;
+    }
+    function seguirCursor(clientX, clientY) {
+        if (zoom.escala <= 1) return;
+        const c = centro();
+        const u = Math.max(-1, Math.min(1, (clientX - c.x) / (imagenVisor.clientWidth / 2)));
+        const v = Math.max(-1, Math.min(1, (clientY - c.y) / (imagenVisor.clientHeight / 2)));
+        const m = limites();
+        objetivo = { x: -u * m.x, y: -v * m.y };
+        if (!animando) { animando = true; requestAnimationFrame(animar); }
+    }
 
     const mostrar = ruta => { fuenteVisor.srcset = avifDe(ruta); imagenVisor.src = ruta; };
 
@@ -96,7 +156,7 @@
         const estandar = img.getAttribute('src');
         abierta = estandar;
         anterior = document.activeElement;
-        zona.classList.remove('is-zoom');
+        reiniciar();
         imagenVisor.alt = img.alt;
         mostrar(estandar);
         info.textContent = '';
@@ -105,7 +165,7 @@
         cerrar.focus();
         if (navigator.connection && navigator.connection.saveData) return;
         const datos = (await cargarIndice())[nombreDe(estandar)];
-        if (!datos) { info.textContent = 'Clic en la imagen para acercar'; return; }
+        if (!datos) return;
         info.textContent = 'Cargando alta resolución…';
         const hd = hdDe(estandar);
         const prueba = new Image();
@@ -117,45 +177,58 @@
         prueba.onload = () => {
             if (abierta !== estandar || visor.hidden) return;
             mostrar(hd);
-            info.textContent = `Alta resolución · ${datos.w}×${datos.h} · clic en la imagen para acercar y mueve el cursor para recorrerla`;
+            info.textContent = `Alta resolución · ${datos.w}×${datos.h}`;
         };
-        prueba.onerror = () => { info.textContent = 'Clic en la imagen para acercar'; };
+        prueba.onerror = () => { info.textContent = ''; };
         prueba.src = hd;
     }
 
     function cerrarVisor() {
         visor.hidden = true;
         abierta = null;
+        reiniciar();
         document.body.style.overflow = '';
         if (anterior && document.contains(anterior)) anterior.focus();
     }
 
-    // Alterna entre ajustar a la pantalla y tamaño real, manteniendo el punto tocado.
-    imagenVisor.addEventListener('click', evento => {
-        const caja = imagenVisor.getBoundingClientRect();
-        const fx = (evento.clientX - caja.left) / caja.width;
-        const fy = (evento.clientY - caja.top) / caja.height;
-        const ampliar = !zona.classList.contains('is-zoom');
-        zona.classList.toggle('is-zoom', ampliar);
-        if (ampliar) {
-            requestAnimationFrame(() => {
-                zona.scrollLeft = fx * imagenVisor.offsetWidth - zona.clientWidth / 2;
-                zona.scrollTop = fy * imagenVisor.offsetHeight - zona.clientHeight / 2;
-            });
+    // Un clic o toque alterna entre ajustar y acercar; con ratón la imagen sigue al cursor, con el dedo se arrastra.
+    let gesto = null;
+    escena.addEventListener('pointerdown', evento => {
+        if (evento.target.closest('button')) return;
+        escena.setPointerCapture(evento.pointerId);
+        gesto = { x: evento.clientX, y: evento.clientY, t: Date.now(), movido: false, zx: zoom.x, zy: zoom.y, fondo: evento.target === escena };
+    });
+    escena.addEventListener('pointermove', evento => {
+        if (evento.pointerType === 'mouse' && evento.buttons === 0) seguirCursor(evento.clientX, evento.clientY);
+        if (!gesto) return;
+        const dx = evento.clientX - gesto.x;
+        const dy = evento.clientY - gesto.y;
+        if (Math.hypot(dx, dy) > 8) gesto.movido = true;
+        if (zoom.escala > 1 && gesto.movido && evento.pointerType !== 'mouse') {
+            zoom.x = gesto.zx + dx;
+            zoom.y = gesto.zy + dy;
+            limitar();
+            aplicarZoom();
         }
     });
-    // Con ratón y la imagen a tamaño real, el cursor recorre la imagen como una lupa.
-    zona.addEventListener('pointermove', evento => {
-        if (evento.pointerType !== 'mouse' || !zona.classList.contains('is-zoom')) return;
-        const caja = zona.getBoundingClientRect();
-        const fx = Math.min(1, Math.max(0, (evento.clientX - caja.left) / caja.width));
-        const fy = Math.min(1, Math.max(0, (evento.clientY - caja.top) / caja.height));
-        zona.scrollLeft = fx * (zona.scrollWidth - zona.clientWidth);
-        zona.scrollTop = fy * (zona.scrollHeight - zona.clientHeight);
+    escena.addEventListener('pointerup', evento => {
+        if (!gesto) return;
+        const toque = !gesto.movido && Date.now() - gesto.t < 400;
+        const fondo = gesto.fondo;
+        gesto = null;
+        if (!toque) return;
+        if (fondo) { cerrarVisor(); return; }
+        if (zoom.escala > 1) { objetivo = null; reiniciar(); return; }
+        acercar(evento.clientX, evento.clientY);
+        if (evento.pointerType === 'mouse') seguirCursor(evento.clientX, evento.clientY);
     });
-    zona.addEventListener('click', evento => { if (evento.target === zona) cerrarVisor(); });
+    escena.addEventListener('pointercancel', () => { gesto = null; });
     cerrar.addEventListener('click', cerrarVisor);
-    document.addEventListener('keydown', evento => { if (!visor.hidden && evento.key === 'Escape') cerrarVisor(); });
+    document.addEventListener('keydown', evento => {
+        if (visor.hidden) return;
+        if (evento.key === 'Escape') cerrarVisor();
+        else if (evento.key === '0') reiniciar();
+    });
     escenario.addEventListener('click', evento => { if (!evento.target.closest('video')) abrir(); });
     escenario.addEventListener('keydown', evento => { if (evento.key === 'Enter' || evento.key === ' ') { evento.preventDefault(); abrir(); } });
 })();

@@ -2,30 +2,10 @@
 
         const track = (evento, datos) => { if (window.s3dTrack) window.s3dTrack(evento, datos); };
 
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
         // Las imágenes diferidas no se imprimen si no se han cargado: se fuerzan antes de imprimir.
         window.addEventListener('beforeprint', () => {
             document.querySelectorAll('img[loading="lazy"]').forEach(img => { img.loading = 'eager'; });
         });
-
-        // Menú móvil
-        const navToggle = document.getElementById('nav-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        function cerrarMenuMovil() {
-            mobileMenu.hidden = true;
-            navToggle.setAttribute('aria-expanded', 'false');
-            navToggle.setAttribute('aria-label', 'Abrir menú');
-        }
-        navToggle.addEventListener('click', () => {
-            const abrir = mobileMenu.hidden;
-            mobileMenu.hidden = !abrir;
-            navToggle.setAttribute('aria-expanded', String(abrir));
-            navToggle.setAttribute('aria-label', abrir ? 'Cerrar menú' : 'Abrir menú');
-        });
-        mobileMenu.addEventListener('click', event => { if (event.target.closest('a')) cerrarMenuMovil(); });
-        document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu.hidden) { cerrarMenuMovil(); navToggle.focus(); } });
-        window.matchMedia('(min-width: 1024px)').addEventListener('change', event => { if (event.matches) cerrarMenuMovil(); });
 
         // Botón Volver Arriba: visible tras desplazarse, y oculto cuando el pie ya está a la vista
         // (ahí taparía los íconos de contacto).
@@ -90,7 +70,8 @@
             if (terminoBusqueda) params.set("buscar", terminoBusqueda);
             if (ordenActual !== "default") params.set("orden", ordenActual);
             const query = params.toString();
-            history.replaceState(null, "", query ? `${window.location.pathname}?${query}` : window.location.pathname);
+            // Se conserva el #ancla (p. ej. al llegar desde una ficha con /#faq).
+            history.replaceState(null, "", (query ? `${window.location.pathname}?${query}` : window.location.pathname) + window.location.hash);
         }
         
         function renderFilters() {
@@ -653,7 +634,7 @@
         // Zoom de un solo clic: clic (o toque) sobre la imagen alterna entre ajustar y acercar.
         // Con ratón, al estar acercada la imagen sigue al cursor como una lupa; con el dedo se arrastra.
         // Otros gestos: pellizco para acercar, deslizar para cambiar de foto, toque en el fondo para cerrar.
-        const nivelAcercar = () => Math.min(ZOOM_MAX, Math.max(2, imgEl.naturalWidth / (imgEl.clientWidth || 1)));
+        const nivelAcercar = () => Math.min(3, Math.max(2, imgEl.naturalWidth / (imgEl.clientWidth || 1)));
 
         let objetivoPan = null;
         let animandoPan = false;
@@ -769,7 +750,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=zoom-1');
+            const response = await fetch('productos.json?v=chrome-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
@@ -796,6 +777,10 @@
             sortSelect.value = ordenActual;
             renderFeaturedProducts();
             renderizarProductos();
+            if (window.location.hash.length > 1) {
+                const destino = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+                if (destino) requestAnimationFrame(() => destino.scrollIntoView());
+            }
         } catch (error) {
             console.error('No se pudo cargar el catalogo:', error);
             mainContainer.innerHTML = `
