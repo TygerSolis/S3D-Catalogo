@@ -433,7 +433,7 @@
         let currentLightboxProduct = null;
         let lightboxReturnFocus = null;
         const zoom = { scale: 1, x: 0, y: 0 };
-        const ZOOM_MAX = 4;
+        const ZOOM_MAX = 5;
 
         const lightboxEl = document.getElementById('lightbox');
         const stageEl = document.getElementById('lightbox-stage');
@@ -481,6 +481,18 @@
         function aplicarZoom() {
             imgEl.style.transform = `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale})`;
             imgEl.classList.toggle('is-zoomed', zoom.scale > 1);
+            actualizarAyudaZoom();
+        }
+
+        // Texto de ayuda sobre la imagen, según el dispositivo y si ya está ampliada.
+        const conRaton = window.matchMedia('(hover: hover)').matches;
+        function actualizarAyudaZoom() {
+            const ayuda = document.getElementById('lightbox-hint');
+            if (!ayuda) return;
+            ayuda.hidden = !imagenActiva();
+            ayuda.textContent = zoom.scale > 1
+                ? (conRaton ? 'Clic para alejar' : 'Toca para alejar · arrastra para mover')
+                : (conRaton ? 'Clic para acercar · mueve el cursor para recorrer la imagen' : 'Toca para acercar');
         }
 
         function limitarZoom() {
@@ -491,6 +503,7 @@
         }
 
         function reiniciarZoom() {
+            objetivoPan = null;
             zoom.scale = 1; zoom.x = 0; zoom.y = 0;
             imgEl.classList.remove('is-dragging');
             aplicarZoom();
@@ -637,10 +650,41 @@
             cambiarZoom(zoom.scale * (event.deltaY < 0 ? 1.2 : 1 / 1.2), event.clientX - c.x, event.clientY - c.y);
         }, { passive: false });
 
-        // Gestos: arrastrar para mover, pellizco para zoom, deslizar para cambiar de foto, doble toque/clic para ampliar.
+        // Zoom de un solo clic: clic (o toque) sobre la imagen alterna entre ajustar y acercar.
+        // Con ratón, al estar acercada la imagen sigue al cursor como una lupa; con el dedo se arrastra.
+        // Otros gestos: pellizco para acercar, deslizar para cambiar de foto, toque en el fondo para cerrar.
+        const nivelAcercar = () => Math.min(ZOOM_MAX, Math.max(2, imgEl.naturalWidth / (imgEl.clientWidth || 1)));
+
+        let objetivoPan = null;
+        let animandoPan = false;
+        function animarPan() {
+            if (!objetivoPan || zoom.scale <= 1) { animandoPan = false; return; }
+            zoom.x += (objetivoPan.x - zoom.x) * 0.2;
+            zoom.y += (objetivoPan.y - zoom.y) * 0.2;
+            limitarZoom();
+            aplicarZoom();
+            if (Math.abs(objetivoPan.x - zoom.x) > 0.3 || Math.abs(objetivoPan.y - zoom.y) > 0.3) requestAnimationFrame(animarPan);
+            else animandoPan = false;
+        }
+        function seguirCursor(clientX, clientY) {
+            if (zoom.scale <= 1) return;
+            const c = centroImagen();
+            const u = Math.max(-1, Math.min(1, (clientX - c.x) / (imgEl.clientWidth / 2)));
+            const v = Math.max(-1, Math.min(1, (clientY - c.y) / (imgEl.clientHeight / 2)));
+            const maxX = Math.max(0, (imgEl.clientWidth * zoom.scale - stageEl.clientWidth) / 2);
+            const maxY = Math.max(0, (imgEl.clientHeight * zoom.scale - stageEl.clientHeight) / 2);
+            objetivoPan = { x: -u * maxX, y: -v * maxY };
+            if (!animandoPan) { animandoPan = true; requestAnimationFrame(animarPan); }
+        }
+        function alternarZoom(clientX, clientY, conCursor) {
+            if (zoom.scale > 1) { objetivoPan = null; cambiarZoom(1); return; }
+            const c = centroImagen();
+            cambiarZoom(nivelAcercar(), clientX - c.x, clientY - c.y);
+            if (conCursor) seguirCursor(clientX, clientY);
+        }
+
         const punteros = new Map();
         let gesto = null;
-        let ultimoToque = { t: 0, x: 0, y: 0 };
 
         stageEl.addEventListener('pointerdown', event => {
             if (!imagenActiva() || event.target.closest('button')) return;
@@ -648,9 +692,9 @@
             punteros.set(event.pointerId, { x: event.clientX, y: event.clientY });
             gesto = {
                 inicioX: event.clientX, inicioY: event.clientY, inicioT: Date.now(),
-                enFondo: event.target === stageEl, zoomX: zoom.x, zoomY: zoom.y, movido: false, pellizco: punteros.size === 2 ? distanciaPunteros() : null, escalaInicial: zoom.scale
+                enFondo: event.target === stageEl, zoomX: zoom.x, zoomY: zoom.y, movido: false,
+                pellizco: punteros.size === 2 ? distanciaPunteros() : null, escalaInicial: zoom.scale
             };
-            if (punteros.size === 2) gesto.pellizco = distanciaPunteros();
         });
 
         function distanciaPunteros() {
@@ -659,6 +703,8 @@
         }
 
         stageEl.addEventListener('pointermove', event => {
+            // Ratón sin pulsar: la imagen ampliada sigue al cursor.
+            if (event.pointerType === 'mouse' && event.buttons === 0 && imagenActiva()) seguirCursor(event.clientX, event.clientY);
             if (!punteros.has(event.pointerId) || !gesto) return;
             punteros.set(event.pointerId, { x: event.clientX, y: event.clientY });
             if (punteros.size === 2 && gesto.pellizco) {
@@ -671,7 +717,7 @@
             const dx = event.clientX - gesto.inicioX;
             const dy = event.clientY - gesto.inicioY;
             if (Math.hypot(dx, dy) > 8) gesto.movido = true;
-            if (zoom.scale > 1 && gesto.movido) {
+            if (zoom.scale > 1 && gesto.movido && event.pointerType !== 'mouse') {
                 zoom.x = gesto.zoomX + dx;
                 zoom.y = gesto.zoomY + dy;
                 limitarZoom();
@@ -690,16 +736,8 @@
             const dy = event.clientY - gesto.inicioY;
             const toque = !gesto.movido && Date.now() - gesto.inicioT < 400;
             if (toque) {
-                const ahora = Date.now();
-                const dobleToque = ahora - ultimoToque.t < 320 && Math.hypot(event.clientX - ultimoToque.x, event.clientY - ultimoToque.y) < 30;
-                if (dobleToque) {
-                    const c = centroImagen();
-                    cambiarZoom(zoom.scale > 1 ? 1 : 2.5, event.clientX - c.x, event.clientY - c.y);
-                    ultimoToque = { t: 0, x: 0, y: 0 };
-                } else {
-                    ultimoToque = { t: ahora, x: event.clientX, y: event.clientY };
-                    if (gesto.enFondo) cerrarModal(event, true);
-                }
+                if (gesto.enFondo) cerrarModal(event, true);
+                else alternarZoom(event.clientX, event.clientY, event.pointerType === 'mouse');
             } else if (zoom.scale === 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
                 cambiarImagenLightbox(dx < 0 ? 1 : -1);
             }
@@ -731,7 +769,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=hd-1');
+            const response = await fetch('productos.json?v=zoom-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();

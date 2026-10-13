@@ -291,7 +291,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     </footer>
 
     <script src="../../analytics.js?v=2" defer></script>
-    <script src="../../producto.js?v=4" defer></script>
+    <script src="../../producto.js?v=5" defer></script>
 </body>
 </html>
 """

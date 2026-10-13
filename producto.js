@@ -105,7 +105,7 @@
         cerrar.focus();
         if (navigator.connection && navigator.connection.saveData) return;
         const datos = (await cargarIndice())[nombreDe(estandar)];
-        if (!datos) { info.textContent = 'Toca la imagen para acercar'; return; }
+        if (!datos) { info.textContent = 'Clic en la imagen para acercar'; return; }
         info.textContent = 'Cargando alta resolución…';
         const hd = hdDe(estandar);
         const prueba = new Image();
@@ -117,9 +117,9 @@
         prueba.onload = () => {
             if (abierta !== estandar || visor.hidden) return;
             mostrar(hd);
-            info.textContent = `Alta resolución · ${datos.w}×${datos.h} · toca la imagen para acercar`;
+            info.textContent = `Alta resolución · ${datos.w}×${datos.h} · clic en la imagen para acercar y mueve el cursor para recorrerla`;
         };
-        prueba.onerror = () => { info.textContent = 'Toca la imagen para acercar'; };
+        prueba.onerror = () => { info.textContent = 'Clic en la imagen para acercar'; };
         prueba.src = hd;
     }
 
@@ -143,6 +143,15 @@
                 zona.scrollTop = fy * imagenVisor.offsetHeight - zona.clientHeight / 2;
             });
         }
+    });
+    // Con ratón y la imagen a tamaño real, el cursor recorre la imagen como una lupa.
+    zona.addEventListener('pointermove', evento => {
+        if (evento.pointerType !== 'mouse' || !zona.classList.contains('is-zoom')) return;
+        const caja = zona.getBoundingClientRect();
+        const fx = Math.min(1, Math.max(0, (evento.clientX - caja.left) / caja.width));
+        const fy = Math.min(1, Math.max(0, (evento.clientY - caja.top) / caja.height));
+        zona.scrollLeft = fx * (zona.scrollWidth - zona.clientWidth);
+        zona.scrollTop = fy * (zona.scrollHeight - zona.clientHeight);
     });
     zona.addEventListener('click', evento => { if (evento.target === zona) cerrarVisor(); });
     cerrar.addEventListener('click', cerrarVisor);

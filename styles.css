@@ -45,9 +45,28 @@
             max-width: 100%;
             object-fit: contain;
         }
-        .lightbox-stage img { cursor: zoom-in; transform-origin: center center; will-change: transform; }
-        .lightbox-stage img.is-zoomed { cursor: grab; }
+        /* Sin will-change: con él el navegador deja la imagen rasterizada a escala 1 y la estira, y se ve borrosa al acercar. */
+        .lightbox-stage img { cursor: zoom-in; transform-origin: center center; }
+        .lightbox-stage img.is-zoomed { cursor: zoom-out; }
         .lightbox-stage img.is-dragging { cursor: grabbing; }
+        .lightbox-hint {
+            background: rgba(0,0,0,.55);
+            border-radius: 999px;
+            bottom: .5rem;
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 700;
+            left: 50%;
+            letter-spacing: .04em;
+            max-width: calc(100% - 1.5rem);
+            padding: .35rem .85rem;
+            pointer-events: none;
+            position: absolute;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 6;
+        }
+        .lightbox-hint[hidden] { display: none; }
         .lightbox-hd {
             background: rgba(0,0,0,.55);
             border-radius: 999px;
