@@ -99,7 +99,7 @@
                         ? 'category-filter-active text-brand-accent'
                         : 'text-gray-500 hover:text-brand-accent'}"
                 >
-                    ${cat}
+                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat}
                 </button>
             `).join('');
         }
@@ -206,7 +206,7 @@
             renderFilters();
             
             const productosFiltrados = productos.filter(p => {
-                const cumpleCategoria = categoriaActual === "Todas" || p.categoria === categoriaActual;
+                const cumpleCategoria = categoriaActual === "Todas" || (categoriaActual === "Novedades" ? esNuevo(p) : p.categoria === categoriaActual);
                 const cumpleBusqueda = terminoBusqueda === "" || 
                     normalizar(p.nombre).includes(normalizar(terminoBusqueda)) || 
                     normalizar(p.descripcion).includes(normalizar(terminoBusqueda)) ||
@@ -225,18 +225,23 @@
                 if (pb === Infinity) return -1;
                 return direccion * (pa - pb);
             };
+            // "Más recientes": por fecha de alta, del más nuevo al más antiguo (a igual fecha, el orden del catálogo).
+            const enNovedades = categoriaActual === "Novedades";
+            if (ordenActual === "recent" || (enNovedades && ordenActual === "default")) {
+                productosOrdenados.sort((a, b) => (b.fechaAlta || '').localeCompare(a.fechaAlta || ''));
+            }
             if (ordenActual === "price-asc") productosOrdenados.sort(compararPrecio(1));
             if (ordenActual === "price-desc") productosOrdenados.sort(compararPrecio(-1));
             if (ordenActual === "name") productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
             // Con un orden explícito la lista se muestra plana: agrupar por categoría rompería el orden global.
-            const ordenGlobal = ordenActual !== "default";
+            const ordenGlobal = ordenActual !== "default" || enNovedades;
             if (resultsCount) resultsCount.textContent = `${productosOrdenados.length} ${productosOrdenados.length === 1 ? "producto encontrado" : "productos encontrados"}`;
             actualizarURL();
 
             let grupos = [];
             if (ordenGlobal) {
                 if (productosOrdenados.length) {
-                    grupos.push({ categoria: categoriaActual === "Todas" ? "Todos los productos" : categoriaActual, items: productosOrdenados });
+                    grupos.push({ categoria: categoriaActual !== "Todas" ? categoriaActual : (ordenActual === "recent" ? "Más recientes" : "Todos los productos"), items: productosOrdenados });
                 }
             } else {
                 ordenDeseado.forEach(cat => {
@@ -670,7 +675,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=nuevo-1');
+            const response = await fetch('productos.json?v=nuevo-2');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
@@ -686,11 +691,13 @@
             ordenDeseado.forEach(cat => {
                 if (categoriasPresentes.includes(cat)) categorias.push(cat);
             });
+            // "Novedades" solo existe mientras haya productos con el aviso "Nuevo" vigente.
+            if (productos.some(esNuevo)) categorias.splice(1, 0, "Novedades");
             const params = new URLSearchParams(window.location.search);
             const requestedCategory = params.get("categoria");
             if (requestedCategory && categorias.includes(requestedCategory)) categoriaActual = requestedCategory;
             terminoBusqueda = params.get("buscar") || "";
-            ordenActual = ["price-asc", "price-desc", "name"].includes(params.get("orden")) ? params.get("orden") : "default";
+            ordenActual = ["recent", "price-asc", "price-desc", "name"].includes(params.get("orden")) ? params.get("orden") : "default";
             document.getElementById("search-input").value = terminoBusqueda;
             sortSelect.value = ordenActual;
             renderFeaturedProducts();

@@ -126,6 +126,7 @@
             text-transform: uppercase;
         }
         #category-filters .category-filter { flex: 0 0 auto; }
+        .filter-new-dot { background: #e8340f; border-radius: 999px; display: inline-block; height: .5rem; margin-right: .45rem; vertical-align: .1em; width: .5rem; }
         .category-filter-active::after {
             content: "";
             position: absolute;
