@@ -1,10 +1,6 @@
 .print-only, .print-only-flex { display: none; }
         body { background-color: #ffffff; }
         
-        .media-hidden { opacity: 0; pointer-events: none; z-index: 0; }
-        .media-active { opacity: 1; pointer-events: auto; z-index: 10; }
-        .media-transition { transition: opacity 0.4s ease-in-out; }
-        .media-viewer picture { display: contents; }
 
         #lightbox { display: none; }
         #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }
@@ -465,7 +461,6 @@
             .announcement-bar a { display: none; }
             .site-nav-inner { display: flex !important; gap: .5rem; }
             .site-nav-inner > .nav-whatsapp-mobile { display: block; }
-            .media-viewer { height: 20rem; }
             .reference-hero .hero-content { padding-top: 4rem !important; padding-bottom: 4rem !important; }
             .hero-content h2 { font-size: 2.75rem; }
             .category-scroll { gap: .15rem .55rem; max-height: none; padding-left: .2rem; padding-right: .2rem; }
@@ -497,18 +492,18 @@
         @media print {
             @page { size: A4 portrait; margin: 12mm; }
             body { background-color: white !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            nav, header, footer, .no-print, .thumbnails-container { display: none !important; }
+            nav, header, footer, section, .no-print, .announcement-bar, #lightbox, #btn-volver-arriba,
+            .catalog-carousel-thumbnails, .catalog-carousel-swatches, .catalog-carousel-color-name, .catalog-carousel-expand, .catalog-carousel-buy { display: none !important; }
             .print-only { display: block !important; }
             .print-only-flex { display: flex !important; }
-            #productos-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10mm !important; }
-            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-            .print-break-avoid { break-inside: avoid !important; page-break-inside: avoid !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; margin-bottom: 0 !important; }
-            .media-viewer { height: 200px !important; background: white !important; }
-            .media-viewer video { display: none !important; }
-            .media-viewer img { opacity: 1 !important; }
-            .print-text-sm { font-size: 10pt !important; line-height: 1.4 !important; }
-            .print-price { font-size: 16pt !important; }
-            .print-card-body { padding: 12px !important; }
+            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; background: #fff !important; }
+            main h2 { break-after: avoid; }
+            .catalog-carousel-track { gap: 6mm !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            .catalog-carousel-card { box-shadow: none !important; break-inside: avoid; page-break-inside: avoid; transform: none !important; }
+            .catalog-carousel-image { aspect-ratio: 4 / 5; }
+            .catalog-carousel-info { padding: 2mm 3mm 3mm; }
+            .catalog-carousel-info h3 { font-size: 10pt !important; }
+            .catalog-carousel-meta span:first-child { font-size: 12pt !important; }
         }
 
 /* Accessibility and motion preferences */
