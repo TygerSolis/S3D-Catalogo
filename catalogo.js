@@ -122,10 +122,12 @@
         }
 
         function mensajeWhatsApp(producto, colorNombre) {
-            if (producto.requiereCotizacion) {
-                return `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}${colorNombre ? ` (Color: ${colorNombre})` : ''}. Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
-            }
-            return `Hola, me interesa el modelo 3D: ${producto.nombre}${colorNombre ? ` (Color: ${colorNombre})` : ''} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV). Es un producto elaborado a pedido y deseo consultar el costo de envío.`;
+            const color = colorNombre ? ` (Color: ${colorNombre})` : '';
+            const base = producto.requiereCotizacion
+                ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}${color}.`
+                : `Hola, me interesa el modelo 3D: ${producto.nombre}${color} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV).`;
+            const enlace = producto.slug ? `\n${new URL(`producto/${producto.slug}/`, document.baseURI).href}` : '';
+            return `${base} Es un producto elaborado a pedido y deseo consultar el costo de envío.${enlace}`;
         }
 
         const urlWhatsApp = (producto, colorNombre) =>
@@ -170,7 +172,7 @@
                 </div>`}
                 <div class="catalog-carousel-info">
                     <p class="catalog-card-kicker">${escaparHTML(producto.coleccion || producto.categoria)}</p>
-                    <h3>${producto.nombre}</h3>
+                    <h3>${producto.slug ? `<a href="producto/${producto.slug}/" class="catalog-card-link">${producto.nombre}</a>` : producto.nombre}</h3>
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
@@ -649,7 +651,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=desc-1');
+            const response = await fetch('productos.json?v=slug-1');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
