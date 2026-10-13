@@ -149,7 +149,7 @@ def json_ld_producto(p: dict, url: str) -> str:
 
 def tarjeta_relacionada(p: dict) -> str:
     img = imagen_principal(p)
-    return f"""                <a class="pp-related-card" href="../{esc(p['slug'])}/">
+    return f"""                <a class="pp-related-card" href="../{esc(p['slug'])}/" data-evento="ficha_relacionado" data-producto="{esc(p['nombre'])}">
                     <picture><source srcset="{esc(url_ruta(avif(miniatura(img)), '../../'))}" type="image/avif"><img src="{esc(url_ruta(miniatura(img), '../../'))}" alt="{esc(p['nombre'])}" loading="lazy" decoding="async"></picture>
                     <strong>{esc(p['nombre'])}</strong>
                     <span>{esc(precio_txt(p))}</span>
@@ -307,8 +307,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {sangrar(chrome_pie("../../"))}
 
     <script src="../../chrome.js?v=1" defer></script>
-    <script src="../../analytics.js?v=2" defer></script>
-    <script src="../../producto.js?v=6" defer></script>
+    <script src="../../analytics.js?v=3" defer></script>
+    <script src="../../producto.js?v=7" defer></script>
 </body>
 </html>
 """

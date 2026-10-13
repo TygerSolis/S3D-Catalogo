@@ -13,6 +13,10 @@
  *   busqueda         { termino }    texto buscado (tras 1,5 s sin escribir, mínimo 3 letras)
  *   color_elegido    { eleccion }   "PRODUCTO · Color" al cambiar de color
  *   orden            { orden }      criterio de orden del catálogo
+ *   ficha_tarjeta    { producto }   se abre la ficha desde la tarjeta del catálogo (clic en cualquier parte)
+ *   ficha_galeria    { producto }   se abre la ficha desde "Ver ficha completa" de la galería ampliada
+ *   ficha_relacionado{ producto }   clic en un producto relacionado dentro de una ficha
+ *   ficha_ampliar    { producto }   se amplía la foto principal en una ficha
  * Además Umami registra cada página vista; las páginas de producto aparecen por su URL.
  *
  * Para excluir tus propios dispositivos: abre el sitio una vez con ?sin-analitica
@@ -54,6 +58,12 @@
         if (!enlace) return;
         if (enlace.dataset.producto) window.s3dTrack('clic_comprar', { producto: enlace.dataset.producto });
         else window.s3dTrack('clic_whatsapp', { zona: zonaDe(enlace) });
+    }, true);
+
+    // Elementos con data-evento="nombre" y data-producto="..." envían ese evento al hacer clic.
+    document.addEventListener('click', evento => {
+        const elemento = evento.target.closest && evento.target.closest('[data-evento]');
+        if (elemento && elemento.dataset.producto) window.s3dTrack(elemento.dataset.evento, { producto: elemento.dataset.producto });
     }, true);
 
     if (!CONFIG.websiteId) return;

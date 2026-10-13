@@ -153,6 +153,7 @@
 
     async function abrir() {
         if (img.hidden) return;
+        if (window.s3dTrack && producto) window.s3dTrack('ficha_ampliar', { producto: producto.dataset.producto });
         const estandar = img.getAttribute('src');
         abierta = estandar;
         anterior = document.activeElement;

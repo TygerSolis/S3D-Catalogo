@@ -179,7 +179,7 @@
                 </div>`}
                 <div class="catalog-carousel-info">
                     <p class="catalog-card-kicker">${escaparHTML(producto.coleccion || producto.categoria)}</p>
-                    <h3>${producto.slug ? `<a href="producto/${producto.slug}/" class="catalog-card-link">${producto.nombre}</a>` : producto.nombre}</h3>
+                    <h3>${producto.slug ? `<a href="producto/${producto.slug}/" class="catalog-card-link" data-evento="ficha_tarjeta" data-producto="${escaparHTML(producto.nombre)}">${producto.nombre}</a>` : producto.nombre}</h3>
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
@@ -200,6 +200,7 @@
             if (String(window.getSelection()).trim()) return;   // no navegar si la persona está seleccionando texto
             const enlace = tarjeta.querySelector('.catalog-card-link');
             if (!enlace) return;
+            track('ficha_tarjeta', { producto: enlace.dataset.producto });
             if (evento.ctrlKey || evento.metaKey) window.open(enlace.href, '_blank', 'noopener');
             else window.location.href = enlace.href;
         });
@@ -624,6 +625,8 @@
                 buy.href = urlWhatsApp(prod, media.color || null);
                 buy.dataset.producto = prod.nombre;
                 const ficha = document.getElementById('lightbox-detail');
+                ficha.dataset.evento = 'ficha_galeria';
+                ficha.dataset.producto = prod.nombre;
                 ficha.hidden = !prod.slug;
                 if (prod.slug) ficha.href = `producto/${prod.slug}/`;
                 buy.textContent = prod.requiereCotizacion ? 'Cotizar' : 'Comprar';
@@ -766,7 +769,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=ficha-2');
+            const response = await fetch('productos.json?v=ficha-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
