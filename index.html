@@ -85,7 +85,7 @@
     
     <script src="https://unpkg.com/lucide@1.56.0/dist/umd/lucide.min.js" defer></script>
 
-    <link rel="stylesheet" href="styles.css?v=grid-1">
+    <link rel="stylesheet" href="styles.css?v=lightbox-1">
 </head>
 <body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
 
@@ -497,28 +497,45 @@
         <i data-lucide="chevron-up" class="w-6 h-6 group-hover:-translate-y-1 transition-transform"></i>
     </button>
 
-    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Galería de imágenes del producto" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
-        <button aria-label="Cerrar galería" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-50 p-2 bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Galería del producto" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
+        <button id="lightbox-close" type="button" aria-label="Cerrar galería" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white transition-colors z-50 w-11 h-11 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
             <i data-lucide="x" class="w-6 h-6"></i>
         </button>
-        
-        <button id="lightbox-prev" aria-label="Imagen anterior" class="lightbox-nav-btn absolute left-4 md:left-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(-1, event)">
-            <i data-lucide="arrow-left" class="w-6 h-6"></i>
-        </button>
 
-        <div class="relative w-full max-w-5xl h-full max-h-[85vh] flex flex-col items-center justify-center p-4">
-            <img id="lightbox-img" src="" alt="Vista ampliada" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-transform duration-300 hidden">
-            <video id="lightbox-vid" src="" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl hidden" controls playsinline></video>
-            <div id="lightbox-counter" class="absolute bottom-4 bg-black/60 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-widest backdrop-blur-md">
-                1 / 1
-            </div>
+        <div id="lightbox-tools" class="lightbox-tools" role="group" aria-label="Zoom">
+            <button type="button" id="lightbox-zoom-out" aria-label="Alejar"><i data-lucide="zoom-out" class="w-5 h-5"></i></button>
+            <button type="button" id="lightbox-zoom-in" aria-label="Acercar"><i data-lucide="zoom-in" class="w-5 h-5"></i></button>
+            <button type="button" id="lightbox-zoom-reset" aria-label="Restablecer zoom"><i data-lucide="minimize" class="w-5 h-5"></i></button>
         </div>
 
-        <button id="lightbox-next" aria-label="Siguiente imagen" class="lightbox-nav-btn absolute right-4 md:right-10 text-white rounded-full p-4 z-50 transition-all duration-200" onclick="cambiarImagenLightbox(1, event)">
-            <i data-lucide="arrow-right" class="w-6 h-6"></i>
-        </button>
+        <div class="lightbox-layout">
+            <div id="lightbox-stage" class="lightbox-stage">
+                <picture>
+                    <source id="lightbox-source" type="image/avif">
+                    <img id="lightbox-img" src="" alt="Vista ampliada del producto" class="hidden" draggable="false">
+                </picture>
+                <video id="lightbox-vid" src="" class="hidden" controls playsinline></video>
+                <button id="lightbox-prev" type="button" aria-label="Imagen anterior" class="lightbox-nav-btn lightbox-nav-prev" onclick="cambiarImagenLightbox(-1, event)">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </button>
+                <button id="lightbox-next" type="button" aria-label="Siguiente imagen" class="lightbox-nav-btn lightbox-nav-next" onclick="cambiarImagenLightbox(1, event)">
+                    <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="lightbox-footer">
+                <div id="lightbox-thumbs" class="lightbox-thumbs" aria-label="Miniaturas"></div>
+                <div id="lightbox-info" class="lightbox-info">
+                    <div class="lightbox-info-text">
+                        <strong id="lightbox-title"></strong>
+                        <span id="lightbox-meta"></span>
+                    </div>
+                    <span id="lightbox-counter" class="lightbox-counter" aria-live="polite">1 / 1</span>
+                    <a id="lightbox-buy" href="#" target="_blank" rel="noopener noreferrer" class="lightbox-buy">Comprar</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script src="catalogo.js?v=grid-1" defer></script>
+    <script src="catalogo.js?v=lightbox-1" defer></script>
 </body>
 </html>

@@ -608,103 +608,262 @@
             renderizarProductos();
         });
 
-        window.abrirVideoGeneral = function(src) {
-            currentLightboxMediaArray = [{ type: 'vid', src: src }];
-            currentLightboxIndex = 0;
-            actualizarLightbox();
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        };
-
+        // ---------- Lightbox ----------
         let currentLightboxMediaArray = [];
         let currentLightboxIndex = 0;
+        let currentLightboxProduct = null;
+        let lightboxReturnFocus = null;
+        const zoom = { scale: 1, x: 0, y: 0 };
+        const ZOOM_MAX = 4;
+
+        const lightboxEl = document.getElementById('lightbox');
+        const stageEl = document.getElementById('lightbox-stage');
+        const imgEl = document.getElementById('lightbox-img');
+        const sourceEl = document.getElementById('lightbox-source');
+        const vidEl = document.getElementById('lightbox-vid');
+        const avifDe = ruta => ruta.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+
+        function aplicarZoom() {
+            imgEl.style.transform = `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale})`;
+            imgEl.classList.toggle('is-zoomed', zoom.scale > 1);
+        }
+
+        function limitarZoom() {
+            const maxX = Math.max(0, (imgEl.clientWidth * zoom.scale - stageEl.clientWidth) / 2);
+            const maxY = Math.max(0, (imgEl.clientHeight * zoom.scale - stageEl.clientHeight) / 2);
+            zoom.x = Math.min(maxX, Math.max(-maxX, zoom.x));
+            zoom.y = Math.min(maxY, Math.max(-maxY, zoom.y));
+        }
+
+        function reiniciarZoom() {
+            zoom.scale = 1; zoom.x = 0; zoom.y = 0;
+            imgEl.classList.remove('is-dragging');
+            aplicarZoom();
+        }
+
+        // Zoom manteniendo fijo el punto (cx, cy), relativo al centro de la imagen.
+        function cambiarZoom(nuevaEscala, cx = 0, cy = 0) {
+            const escala = Math.min(ZOOM_MAX, Math.max(1, nuevaEscala));
+            const razon = escala / zoom.scale;
+            zoom.x = cx - razon * (cx - zoom.x);
+            zoom.y = cy - razon * (cy - zoom.y);
+            zoom.scale = escala;
+            if (escala === 1) { zoom.x = 0; zoom.y = 0; }
+            limitarZoom();
+            aplicarZoom();
+        }
+
+        const centroImagen = () => {
+            // Centro sin traslación: getBoundingClientRect ya incluye la transformación actual.
+            const r = imgEl.getBoundingClientRect();
+            return { x: r.left + r.width / 2 - zoom.x, y: r.top + r.height / 2 - zoom.y };
+        };
+        const imagenActiva = () => currentLightboxMediaArray[currentLightboxIndex]?.type === 'img';
+
+        function abrirLightbox(mediaArray, indice, producto) {
+            currentLightboxMediaArray = mediaArray;
+            currentLightboxProduct = producto;
+            currentLightboxIndex = Number.isInteger(indice) && indice >= 0 && indice < mediaArray.length ? indice : 0;
+            lightboxReturnFocus = document.activeElement;
+            actualizarLightbox();
+            lightboxEl.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('lightbox-close').focus();
+        }
+
+        window.abrirVideoGeneral = function(src) {
+            abrirLightbox([{ type: 'vid', src }], 0, null);
+        };
 
         window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
-            if(!prod) return;
-            currentLightboxMediaArray = (prod.colores?.length ? prod.colores.map(color => color.img) : prod.imagenes).map(src => ({ type: 'img', src }));
-            if (prod.video) {
-                currentLightboxMediaArray.push({ type: 'vid', src: prod.video });
-            }
-
-            const img2 = document.getElementById(`media-img2-${productoId}`);
-            const img3 = document.getElementById(`media-img3-${productoId}`);
-            const vid = document.getElementById(`media-vid-${productoId}`);
-            
-            if (Number.isInteger(initialIndex) && initialIndex >= 0 && initialIndex < currentLightboxMediaArray.length) currentLightboxIndex = initialIndex;
-            else if (vid && vid.classList.contains('media-active')) currentLightboxIndex = currentLightboxMediaArray.findIndex(m => m.type === 'vid');
-            else if (img3 && img3.classList.contains('media-active')) currentLightboxIndex = 2;
-            else if (img2 && img2.classList.contains('media-active')) currentLightboxIndex = 1;
-            else currentLightboxIndex = 0;
-
-            actualizarLightbox();
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+            if (!prod) return;
+            const imagenes = prod.colores?.length
+                ? prod.colores.map(color => ({ type: 'img', src: color.img, color: color.nombre }))
+                : prod.imagenes.map(src => ({ type: 'img', src }));
+            if (prod.video) imagenes.push({ type: 'vid', src: prod.video });
+            abrirLightbox(imagenes, initialIndex, prod);
+        };
 
         window.cerrarModal = function(event, forceClose = false) {
-            if (forceClose || event.target.id === 'lightbox') {
-                document.getElementById('lightbox').classList.remove('active');
-                document.body.style.overflow = 'auto';
-                document.getElementById('lightbox-vid').pause();
-            }
-        }
+            if (!forceClose && event.target.id !== 'lightbox') return;
+            lightboxEl.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            vidEl.pause();
+            reiniciarZoom();
+            if (lightboxReturnFocus && document.contains(lightboxReturnFocus)) lightboxReturnFocus.focus();
+            lightboxReturnFocus = null;
+        };
 
         window.cambiarImagenLightbox = function(direccion, event) {
-            if(event) event.stopPropagation(); 
-
+            if (event) event.stopPropagation();
             const total = currentLightboxMediaArray.length;
-            if(total <= 1) return;
+            if (total <= 1) return;
+            currentLightboxIndex = (currentLightboxIndex + direccion + total) % total;
+            actualizarLightbox();
+        };
 
-            currentLightboxIndex += direccion;
-            if (currentLightboxIndex >= total) currentLightboxIndex = 0;
-            if (currentLightboxIndex < 0) currentLightboxIndex = total - 1;
-
+        function irALightbox(indice) {
+            currentLightboxIndex = indice;
             actualizarLightbox();
         }
 
         function actualizarLightbox() {
-            const imgEl = document.getElementById('lightbox-img');
-            const vidEl = document.getElementById('lightbox-vid');
-            const counterEl = document.getElementById('lightbox-counter');
-            const prevBtn = document.getElementById('lightbox-prev');
-            const nextBtn = document.getElementById('lightbox-next');
-            
-            const currentMedia = currentLightboxMediaArray[currentLightboxIndex];
-            if (!currentMedia) return;
+            const media = currentLightboxMediaArray[currentLightboxIndex];
+            if (!media) return;
+            const total = currentLightboxMediaArray.length;
 
             imgEl.classList.add('hidden');
             vidEl.classList.add('hidden');
             vidEl.pause();
+            reiniciarZoom();
 
-            if(currentMedia.type === 'img') {
-                imgEl.src = currentMedia.src;
+            if (media.type === 'img') {
+                sourceEl.srcset = avifDe(media.src);
+                imgEl.src = media.src;
                 imgEl.classList.remove('hidden');
-            } else if (currentMedia.type === 'vid') {
-                vidEl.src = currentMedia.src;
+                // Precarga las imágenes vecinas para que el cambio sea inmediato.
+                [1, -1].forEach(d => {
+                    const vecina = currentLightboxMediaArray[(currentLightboxIndex + d + total) % total];
+                    if (vecina?.type === 'img') new Image().src = vecina.src;
+                });
+            } else {
+                vidEl.src = media.src;
                 vidEl.classList.remove('hidden');
                 vidEl.play().catch(() => {});
             }
 
-            const total = currentLightboxMediaArray.length;
-            counterEl.textContent = `${currentLightboxIndex + 1} / ${total}`;
-            
-            if (total <= 1) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
-                counterEl.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'flex';
-                nextBtn.style.display = 'flex';
-                counterEl.style.display = 'block';
+            document.getElementById('lightbox-prev').style.display = total > 1 ? 'flex' : 'none';
+            document.getElementById('lightbox-next').style.display = total > 1 ? 'flex' : 'none';
+            document.getElementById('lightbox-counter').textContent = `${currentLightboxIndex + 1} / ${total}`;
+            document.getElementById('lightbox-counter').style.display = total > 1 ? 'block' : 'none';
+            document.getElementById('lightbox-tools').style.display = media.type === 'img' ? 'flex' : 'none';
+
+            const thumbs = document.getElementById('lightbox-thumbs');
+            thumbs.style.display = total > 1 ? 'flex' : 'none';
+            thumbs.innerHTML = total > 1 ? currentLightboxMediaArray.map((item, i) => `
+                <button type="button" class="lightbox-thumb${i === currentLightboxIndex ? ' is-active' : ''}" data-lightbox-thumb="${i}" aria-label="${item.type === 'vid' ? 'Ver video' : `Ver imagen ${i + 1}`}"${i === currentLightboxIndex ? ' aria-current="true"' : ''}>
+                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<img src="${item.src}" alt="" loading="lazy" decoding="async">`}
+                </button>`).join('') : '';
+
+            const info = document.getElementById('lightbox-info');
+            const prod = currentLightboxProduct;
+            info.classList.toggle('no-product', !prod);
+            if (prod) {
+                document.getElementById('lightbox-title').textContent = prod.nombre;
+                const partes = [prod.requiereCotizacion ? 'Cotizar' : `S/ ${prod.precio.toFixed(2)}`, media.color ? `Color: ${media.color}` : null, prod.medida].filter(Boolean);
+                document.getElementById('lightbox-meta').textContent = partes.join(' · ');
+                const buy = document.getElementById('lightbox-buy');
+                buy.href = urlWhatsApp(prod, media.color || null);
+                buy.textContent = prod.requiereCotizacion ? 'Cotizar' : 'Comprar';
             }
         }
 
+        document.getElementById('lightbox-thumbs').addEventListener('click', event => {
+            event.stopPropagation();
+            const boton = event.target.closest('[data-lightbox-thumb]');
+            if (boton) irALightbox(Number(boton.dataset.lightboxThumb));
+        });
+        document.getElementById('lightbox-zoom-in').addEventListener('click', event => { event.stopPropagation(); cambiarZoom(zoom.scale * 1.5); });
+        document.getElementById('lightbox-zoom-out').addEventListener('click', event => { event.stopPropagation(); cambiarZoom(zoom.scale / 1.5); });
+        document.getElementById('lightbox-zoom-reset').addEventListener('click', event => { event.stopPropagation(); reiniciarZoom(); });
+
+        // Rueda del ratón: zoom hacia el cursor.
+        stageEl.addEventListener('wheel', event => {
+            if (!imagenActiva()) return;
+            event.preventDefault();
+            const c = centroImagen();
+            cambiarZoom(zoom.scale * (event.deltaY < 0 ? 1.2 : 1 / 1.2), event.clientX - c.x, event.clientY - c.y);
+        }, { passive: false });
+
+        // Gestos: arrastrar para mover, pellizco para zoom, deslizar para cambiar de foto, doble toque/clic para ampliar.
+        const punteros = new Map();
+        let gesto = null;
+        let ultimoToque = { t: 0, x: 0, y: 0 };
+
+        stageEl.addEventListener('pointerdown', event => {
+            if (!imagenActiva() || event.target.closest('button')) return;
+            stageEl.setPointerCapture(event.pointerId);
+            punteros.set(event.pointerId, { x: event.clientX, y: event.clientY });
+            gesto = {
+                inicioX: event.clientX, inicioY: event.clientY, inicioT: Date.now(),
+                enFondo: event.target === stageEl, zoomX: zoom.x, zoomY: zoom.y, movido: false, pellizco: punteros.size === 2 ? distanciaPunteros() : null, escalaInicial: zoom.scale
+            };
+            if (punteros.size === 2) gesto.pellizco = distanciaPunteros();
+        });
+
+        function distanciaPunteros() {
+            const [a, b] = [...punteros.values()];
+            return Math.hypot(a.x - b.x, a.y - b.y);
+        }
+
+        stageEl.addEventListener('pointermove', event => {
+            if (!punteros.has(event.pointerId) || !gesto) return;
+            punteros.set(event.pointerId, { x: event.clientX, y: event.clientY });
+            if (punteros.size === 2 && gesto.pellizco) {
+                const [a, b] = [...punteros.values()];
+                const c = centroImagen();
+                gesto.movido = true;
+                cambiarZoom(gesto.escalaInicial * distanciaPunteros() / gesto.pellizco, (a.x + b.x) / 2 - c.x, (a.y + b.y) / 2 - c.y);
+                return;
+            }
+            const dx = event.clientX - gesto.inicioX;
+            const dy = event.clientY - gesto.inicioY;
+            if (Math.hypot(dx, dy) > 8) gesto.movido = true;
+            if (zoom.scale > 1 && gesto.movido) {
+                zoom.x = gesto.zoomX + dx;
+                zoom.y = gesto.zoomY + dy;
+                limitarZoom();
+                imgEl.classList.add('is-dragging');
+                aplicarZoom();
+            }
+        });
+
+        function terminarPuntero(event) {
+            if (!punteros.has(event.pointerId) || !gesto) return;
+            const eraUnico = punteros.size === 1;
+            punteros.delete(event.pointerId);
+            imgEl.classList.remove('is-dragging');
+            if (!eraUnico) { gesto = null; return; }
+            const dx = event.clientX - gesto.inicioX;
+            const dy = event.clientY - gesto.inicioY;
+            const toque = !gesto.movido && Date.now() - gesto.inicioT < 400;
+            if (toque) {
+                const ahora = Date.now();
+                const dobleToque = ahora - ultimoToque.t < 320 && Math.hypot(event.clientX - ultimoToque.x, event.clientY - ultimoToque.y) < 30;
+                if (dobleToque) {
+                    const c = centroImagen();
+                    cambiarZoom(zoom.scale > 1 ? 1 : 2.5, event.clientX - c.x, event.clientY - c.y);
+                    ultimoToque = { t: 0, x: 0, y: 0 };
+                } else {
+                    ultimoToque = { t: ahora, x: event.clientX, y: event.clientY };
+                    if (gesto.enFondo) cerrarModal(event, true);
+                }
+            } else if (zoom.scale === 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                cambiarImagenLightbox(dx < 0 ? 1 : -1);
+            }
+            gesto = null;
+        }
+        stageEl.addEventListener('pointerup', terminarPuntero);
+        stageEl.addEventListener('pointercancel', event => { punteros.delete(event.pointerId); gesto = null; imgEl.classList.remove('is-dragging'); });
+
         document.addEventListener('keydown', function(event) {
-            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (!lightboxEl.classList.contains('active')) return;
             if (event.key === 'Escape') cerrarModal(event, true);
-            if (event.key === 'ArrowRight') cambiarImagenLightbox(1);
-            if (event.key === 'ArrowLeft') cambiarImagenLightbox(-1);
+            else if (event.key === 'ArrowRight') cambiarImagenLightbox(1);
+            else if (event.key === 'ArrowLeft') cambiarImagenLightbox(-1);
+            else if (event.key === '+' || event.key === '=') cambiarZoom(zoom.scale * 1.5);
+            else if (event.key === '-') cambiarZoom(zoom.scale / 1.5);
+            else if (event.key === '0') reiniciarZoom();
+            else if (event.key === 'Tab') {
+                // Mantiene el foco dentro del diálogo.
+                const foco = [...lightboxEl.querySelectorAll('button, a[href], video[controls]')].filter(el => el.offsetParent !== null);
+                if (!foco.length) return;
+                const primero = foco[0], ultimo = foco[foco.length - 1];
+                if (event.shiftKey && document.activeElement === primero) { event.preventDefault(); ultimo.focus(); }
+                else if (!event.shiftKey && document.activeElement === ultimo) { event.preventDefault(); primero.focus(); }
+                else if (!lightboxEl.contains(document.activeElement)) { event.preventDefault(); primero.focus(); }
+            }
         });
 
         lucide.createIcons();

@@ -10,8 +10,104 @@
         #lightbox.active { display: flex; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(8px); } }
         
-        .lightbox-nav-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
+        .lightbox-nav-btn {
+            align-items: center;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            color: #fff;
+            display: flex;
+            height: 3rem;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: background .2s ease;
+            width: 3rem;
+            z-index: 5;
+        }
+        .lightbox-nav-btn:hover { background: rgba(255, 255, 255, 0.28); }
+        .lightbox-nav-prev { left: .25rem; }
+        .lightbox-nav-next { right: .25rem; }
+        .lightbox-layout { display: flex; flex-direction: column; height: 100%; max-width: 76rem; padding: 4rem 1rem .75rem; width: 100%; }
+        .lightbox-stage {
+            align-items: center;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            min-height: 0;
+            overflow: hidden;
+            position: relative;
+            touch-action: none;
+            user-select: none;
+        }
+        .lightbox-stage picture { display: contents; }
+        .lightbox-stage img, .lightbox-stage video {
+            border-radius: .75rem;
+            box-shadow: 0 20px 50px -20px rgba(0,0,0,.6);
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        .lightbox-stage img { cursor: zoom-in; transform-origin: center center; will-change: transform; }
+        .lightbox-stage img.is-zoomed { cursor: grab; }
+        .lightbox-stage img.is-dragging { cursor: grabbing; }
+        .lightbox-tools {
+            background: rgba(255,255,255,.12);
+            border-radius: 999px;
+            display: flex;
+            gap: .15rem;
+            left: 1rem;
+            padding: .2rem;
+            position: absolute;
+            top: 1rem;
+            z-index: 50;
+        }
+        @media (min-width: 768px) { .lightbox-tools { left: 1.5rem; top: 1.5rem; } }
+        .lightbox-tools button {
+            align-items: center;
+            border-radius: 999px;
+            color: #fff;
+            display: flex;
+            height: 2.75rem;
+            justify-content: center;
+            width: 2.75rem;
+        }
+        .lightbox-tools button:hover { background: rgba(255,255,255,.2); }
+        .lightbox-footer { display: flex; flex-direction: column; gap: .6rem; padding-top: .75rem; }
+        .lightbox-thumbs { display: flex; gap: .5rem; justify-content: center; overflow-x: auto; scrollbar-width: none; }
+        .lightbox-thumbs::-webkit-scrollbar { display: none; }
+        .lightbox-thumb {
+            align-items: center;
+            background: rgba(255,255,255,.1);
+            border: 2px solid transparent;
+            border-radius: .6rem;
+            color: #fff;
+            display: flex;
+            flex: 0 0 auto;
+            height: 3.25rem;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0;
+            width: 3.25rem;
+        }
+        .lightbox-thumb img { height: 100%; object-fit: cover; width: 100%; }
+        .lightbox-thumb.is-active { border-color: #fff; }
+        .lightbox-info { align-items: center; color: #fff; display: flex; gap: .9rem; justify-content: center; }
+        .lightbox-info-text { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+        .lightbox-info-text strong { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .lightbox-info-text span { color: #bfdbfe; font-size: .85rem; }
+        .lightbox-counter { background: rgba(0,0,0,.35); border-radius: 999px; font-size: .75rem; font-weight: 700; letter-spacing: .1em; padding: .35rem .8rem; }
+        .lightbox-buy { background: #0066cc; border-radius: 999px; color: #fff; font-size: .85rem; font-weight: 800; padding: .75rem 1.4rem; text-decoration: none; white-space: nowrap; }
+        .lightbox-buy:hover { background: #1a7fe0; }
+        .lightbox-info.no-product .lightbox-info-text, .lightbox-info.no-product .lightbox-buy { display: none; }
+        @media (max-width: 640px) {
+            .lightbox-layout { padding: 4rem .5rem .5rem; }
+            .lightbox-nav-btn { height: 2.75rem; width: 2.75rem; }
+            .lightbox-info { flex-wrap: wrap; }
+            .lightbox-info-text { flex-basis: 100%; }
+            .lightbox-buy { flex: 1; text-align: center; }
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .category-scroll {
