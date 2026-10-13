@@ -1,0 +1,34 @@
+/* Páginas informativas (404, privacidad). Se apoyan en chrome.css para cabecera y pie. */
+:root { --navy: #002244; --blue: #0066cc; --ink: #1f2937; --muted: #64748b; --line: #e2e8f0; }
+*, *::before, *::after { box-sizing: border-box; }
+body { background: #f7faff; color: var(--ink); font-family: 'Manrope', system-ui, sans-serif; line-height: 1.6; margin: 0; }
+img, picture { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.pg-main { margin: 0 auto; max-width: 62rem; padding: 3rem 1rem 4rem; }
+.pg-kicker { color: var(--blue); font-size: .75rem; font-weight: 800; letter-spacing: .16em; margin: 0 0 .5rem; text-transform: uppercase; }
+.pg-main h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin: 0 0 1rem; }
+.pg-main h2 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; margin: 2.25rem 0 .75rem; }
+.pg-main p, .pg-main li { color: #475569; font-size: 1.02rem; }
+.pg-main a:not(.pg-btn):not(.pg-chip):not(.pg-card) { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: .2rem; }
+.pg-main ul { padding-left: 1.25rem; }
+.pg-main li + li { margin-top: .4rem; }
+.pg-actualizado { color: var(--muted); font-size: .85rem; }
+.pg-buscar { display: flex; gap: .5rem; margin: 1.25rem 0 0; max-width: 32rem; }
+.pg-buscar input { background: #fff; border: 2px solid var(--line); border-radius: 999px; flex: 1; font: inherit; min-width: 0; padding: .75rem 1.1rem; }
+.pg-buscar input:focus { border-color: var(--blue); outline: none; }
+.pg-btn { background: var(--blue); border: 0; border-radius: 999px; color: #fff; cursor: pointer; display: inline-block; font: inherit; font-weight: 800; padding: .75rem 1.4rem; text-decoration: none; }
+.pg-btn:hover { background: #003366; }
+.pg-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pg-chip { background: #fff; border: 1px solid var(--line); border-radius: 999px; color: var(--navy); font-size: .9rem; font-weight: 700; padding: .45rem 1rem; text-decoration: none; }
+.pg-chip:hover { border-color: var(--blue); color: var(--blue); }
+.pg-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 760px) { .pg-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pg-card { background: #fff; border: 1px solid var(--line); border-radius: 1rem; display: flex; flex-direction: column; overflow: hidden; padding-bottom: .9rem; text-decoration: none; transition: box-shadow .25s ease, transform .25s ease; }
+.pg-card:hover { box-shadow: 0 16px 30px -20px rgba(0, 51, 102, .4); transform: translateY(-3px); }
+.pg-card picture { aspect-ratio: 4 / 5; background: radial-gradient(circle at 50% 40%, #fff, #f1f5fa); }
+.pg-card img { height: 100%; object-fit: contain; padding: .4rem; width: 100%; }
+.pg-card strong { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: .95rem; line-height: 1.25; padding: .7rem .9rem 0; }
+.pg-card span { color: var(--muted); font-size: .88rem; font-weight: 700; padding: .2rem .9rem 0; }
+.pg-aviso { background: #eef6ff; border: 1px solid #cfe3f8; border-radius: 1rem; color: #1e3a5f; font-size: .92rem; margin-top: 2rem; padding: .9rem 1.1rem; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }

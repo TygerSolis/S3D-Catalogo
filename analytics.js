@@ -17,6 +17,13 @@
  *   ficha_galeria    { producto }   se abre la ficha desde "Ver ficha completa" de la galería ampliada
  *   ficha_relacionado{ producto }   clic en un producto relacionado dentro de una ficha
  *   ficha_ampliar    { producto }   se amplía la foto principal en una ficha
+ *   ficha_buscador   { producto }   se abre una ficha desde las sugerencias del buscador
+ *   busqueda_sin_resultados { termino } búsqueda que no encontró ningún producto
+ *   pedido_agregar   { producto }   se añade un producto a la lista de pedido
+ *   pedido_enviar    { unidades }   se envía la lista de pedido por WhatsApp
+ *   favorito_agregar { producto }   se guarda un producto en favoritos
+ *   cotizar_personalizado { producto } se envía el formulario de personalización
+ *   ficha_compartir  { producto }   se comparte o copia el enlace de la ficha
  * Además Umami registra cada página vista; las páginas de producto aparecen por su URL.
  *
  * Para excluir tus propios dispositivos: abre el sitio una vez con ?sin-analitica
@@ -47,6 +54,7 @@
         if (enlace.closest('.site-nav, .pp-topbar')) return 'cabecera';
         if (enlace.closest('.announcement-bar')) return 'aviso-superior';
         if (enlace.closest('.catalog-notice')) return 'aviso-catalogo';
+        if (enlace.closest('.search-suggest')) return 'buscador';
         if (enlace.closest('#inicio')) return 'hero';
         if (enlace.closest('#personalizados')) return 'personalizados';
         if (enlace.closest('footer')) return 'pie';

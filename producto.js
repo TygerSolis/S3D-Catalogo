@@ -22,6 +22,10 @@
         img.hidden = false;
         img.src = url;
         source.srcset = url.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+        const intermedia = url.replace(/assets\//, 'assets/md/');
+        document.querySelectorAll('#pp-picture source[data-md]').forEach(fuente => {
+            fuente.srcset = fuente.type === 'image/avif' ? intermedia.replace(/\.(webp|png|jpe?g)$/i, '.avif') : intermedia;
+        });
     };
 
     const activar = (grupo, elemento) => {
@@ -232,4 +236,80 @@
     });
     escenario.addEventListener('click', evento => { if (!evento.target.closest('video')) abrir(); });
     escenario.addEventListener('keydown', evento => { if (evento.key === 'Enter' || evento.key === ' ') { evento.preventDefault(); abrir(); } });
+})();
+
+// ---- Pedido, favoritos, compartir y cotizador de la ficha ----
+(function () {
+    const articulo = document.querySelector('.pp-product');
+    if (!articulo) return;
+    const tienda = () => window.S3D;
+    const track = (evento, datos) => { if (window.s3dTrack) window.s3dTrack(evento, datos); };
+    const nombre = articulo.dataset.producto;
+    const id = Number(articulo.dataset.id);
+    const colorActual = () => { const etiqueta = document.getElementById('pp-color-name'); return etiqueta ? etiqueta.textContent.trim() : null; };
+    const imagenActual = () => {
+        const activo = document.querySelector('.pp-swatch.is-active');
+        if (activo && activo.dataset.img) return activo.dataset.img.replace(/^(\.\.\/)+/, '').replace(/^assets\//, 'assets/sm/');
+        return articulo.dataset.imagen;
+    };
+
+    const agregar = document.getElementById('pp-add');
+    if (agregar) agregar.addEventListener('click', () => {
+        if (!tienda()) return;
+        tienda().pedido.agregar({
+            id, nombre, slug: articulo.dataset.slug,
+            precio: articulo.dataset.precio ? Number(articulo.dataset.precio) : null,
+            cotizar: articulo.dataset.cotizar === '1',
+            imagen: imagenActual(), color: colorActual(), medida: articulo.dataset.medida || null
+        });
+        agregar.classList.add('is-added');
+        agregar.querySelector('span').textContent = 'Añadido';
+        setTimeout(() => { agregar.classList.remove('is-added'); agregar.querySelector('span').textContent = 'Añadir al pedido'; }, 1600);
+    });
+
+    const favorito = document.getElementById('pp-fav');
+    const pintarFavorito = () => {
+        if (!favorito || !tienda()) return;
+        const activo = tienda().favoritos.tiene(id);
+        favorito.setAttribute('aria-pressed', String(activo));
+        favorito.setAttribute('aria-label', activo ? 'Quitar de favoritos' : 'Guardar en favoritos');
+        favorito.title = activo ? 'Quitar de favoritos' : 'Guardar en favoritos';
+    };
+    if (favorito && tienda()) {
+        pintarFavorito();
+        tienda().favoritos.alCambiar(pintarFavorito);
+        favorito.addEventListener('click', () => {
+            const ahora = tienda().favoritos.alternar(id, nombre);
+            tienda().aviso(ahora ? 'Guardado en favoritos' : 'Quitado de favoritos');
+        });
+    }
+
+    const compartir = document.getElementById('pp-share');
+    if (compartir) compartir.addEventListener('click', async () => {
+        const url = location.href.split('#')[0];
+        try {
+            if (navigator.share) { await navigator.share({ title: document.title, text: `${nombre} — S3D`, url }); }
+            else { await navigator.clipboard.writeText(url); if (tienda()) tienda().aviso('Enlace copiado'); }
+            track('ficha_compartir', { producto: nombre });
+        } catch (error) {
+            if (error && error.name !== 'AbortError' && tienda()) tienda().aviso('No se pudo compartir. Copia el enlace de la barra de direcciones.');
+        }
+    });
+
+    const formulario = document.getElementById('pp-cotizador');
+    if (formulario) formulario.addEventListener('submit', evento => {
+        evento.preventDefault();
+        const datos = new FormData(formulario);
+        const valor = clave => String(datos.get(clave) || '').trim();
+        const lineas = [];
+        if (valor('medida')) lineas.push(`Medida que necesito: ${valor('medida')}`);
+        if (valor('color') && valor('color') !== '__otro') lineas.push(`Color: ${valor('color')}`);
+        if (valor('texto')) lineas.push(`Nombre o texto: ${valor('texto')}`);
+        if (valor('notas')) lineas.push(`Detalles: ${valor('notas')}`);
+        const publicada = articulo.dataset.medida ? ` (medida publicada: ${articulo.dataset.medida})` : '';
+        const cuerpo = lineas.length ? lineas.map(linea => `• ${linea}`).join('\n') : 'Me gustaría conocer las opciones de personalización.';
+        const mensaje = `Hola, quiero cotizar una personalización de: ${nombre}${publicada}.\n${cuerpo}\nQuedo atento al costo y al tiempo de elaboración.\n${location.href.split('#')[0]}`;
+        window.open(`https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensaje)}`, '_blank', 'noopener');
+        track('cotizar_personalizado', { producto: nombre });
+    });
 })();

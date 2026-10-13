@@ -74,8 +74,16 @@
             history.replaceState(null, "", (query ? `${window.location.pathname}?${query}` : window.location.pathname) + window.location.hash);
         }
         
+        // Los favoritos viven en el navegador; el filtro aparece mientras haya alguno (o esté activo).
+        const idsFavoritos = () => (window.S3D ? window.S3D.favoritos.ids().filter(id => productos.some(p => p.id === id)) : []);
+        function categoriasVisibles() {
+            const lista = [...categorias];
+            if (idsFavoritos().length > 0 || categoriaActual === 'Favoritos') lista.splice(lista.includes('Novedades') ? 2 : 1, 0, 'Favoritos');
+            return lista;
+        }
+
         function renderFilters() {
-            filtersContainer.innerHTML = categorias.map(cat => `
+            filtersContainer.innerHTML = categoriasVisibles().map(cat => `
                 <button 
                     onclick="filtrarPorCategoria('${cat}')"
                     class="category-filter px-4 py-2 text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0
@@ -83,7 +91,7 @@
                         ? 'category-filter-active text-brand-accent'
                         : 'text-gray-500 hover:text-brand-accent'}"
                 >
-                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat}
+                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat === 'Favoritos' ? `<svg class="ico filter-heart" aria-hidden="true"><use href="#i-heart"/></svg>Favoritos (${idsFavoritos().length})` : cat}
                 </button>
             `).join('');
         }
@@ -150,7 +158,7 @@
             const coloresHTML = tieneColores ? `
                 <div class="catalog-carousel-swatches" role="group" aria-label="Colores disponibles de ${escaparHTML(producto.nombre)}">
                     ${producto.colores.map((color, index) => `
-                    <button type="button" data-color-product="${producto.id}" data-color-index="${index}" class="catalog-carousel-swatch${index === 0 ? ' is-active' : ''}" style="background-color: ${escaparHTML(color.hex)};" aria-label="Color ${escaparHTML(color.nombre)}" aria-pressed="${index === 0}" title="${escaparHTML(color.nombre)}"></button>`).join('')}
+                    <button type="button" data-color-product="${producto.id}" data-color-index="${index}" data-color="${escaparHTML(color.nombre)}" class="catalog-carousel-swatch${index === 0 ? ' is-active' : ''}" style="background-color: ${escaparHTML(color.hex)};" aria-label="Color ${escaparHTML(color.nombre)}" aria-pressed="${index === 0}" title="${escaparHTML(color.nombre)}"></button>`).join('')}
                 </div>
                 <p class="catalog-carousel-color-name" data-color-label aria-live="polite">Color: ${escaparHTML(colorInicial)}</p>` : '';
 
@@ -166,6 +174,7 @@
 
             return `
             <article id="producto-${producto.id}" class="catalog-carousel-card${esNuevo(producto) ? ' is-new' : ''}">
+                <div class="catalog-media">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0">
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
                     ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
@@ -177,6 +186,8 @@
                     <span class="sr-only">Ver en grande</span>
                     <span class="catalog-carousel-expand" aria-hidden="true"><svg class="ico w-4 h-4" aria-hidden="true"><use href="#i-maximize-2"/></svg></span>
                 </div>
+                <button type="button" class="catalog-fav" data-fav="${producto.id}" aria-pressed="false" aria-label="Guardar ${escaparHTML(producto.nombre)} en favoritos" title="Guardar en favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></button>
+                </div>
                 ${tieneColores ? coloresHTML : `<div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
                     ${miniaturasHTML}
                 </div>`}
@@ -187,12 +198,56 @@
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
                     </div>
-                    <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                    <div class="catalog-carousel-actions">
+                        <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                        <button type="button" class="catalog-carousel-add" data-pedido-add="${producto.id}" aria-label="Añadir ${escaparHTML(producto.nombre)} al pedido" title="Añadir al pedido"><svg class="ico ico-mas" aria-hidden="true"><use href="#i-plus"/></svg><svg class="ico ico-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
+                    </div>
                 </div>
             </article>`;
         }
 
         const mainContainer = document.getElementById('main-content');
+
+        // Añadir al pedido (botón + de cada tarjeta)
+        mainContainer.addEventListener('click', evento => {
+            const boton = evento.target.closest('[data-pedido-add]');
+            if (!boton || !window.S3D) return;
+            const producto = productos.find(p => p.id === Number(boton.dataset.pedidoAdd));
+            if (!producto) return;
+            const tarjeta = boton.closest('.catalog-carousel-card');
+            const color = tarjeta?.querySelector('.catalog-carousel-swatch.is-active')?.dataset.color || null;
+            const imagen = (color && producto.colores?.find(c => c.nombre === color)?.img) || producto.colores?.[0]?.img || producto.imagenes[0];
+            window.S3D.pedido.agregar({
+                id: producto.id, nombre: producto.nombre, slug: producto.slug,
+                precio: producto.requiereCotizacion ? null : producto.precio, cotizar: !!producto.requiereCotizacion,
+                imagen: rutaSm(imagen), color, medida: producto.medida || null
+            });
+            boton.classList.add('is-added');
+            setTimeout(() => boton.classList.remove('is-added'), 1400);
+        });
+
+        // Favoritos (corazón en cada tarjeta)
+        function pintarFavoritos() {
+            if (!window.S3D) return;
+            mainContainer.querySelectorAll('[data-fav]').forEach(boton => {
+                const activo = window.S3D.favoritos.tiene(Number(boton.dataset.fav));
+                boton.setAttribute('aria-pressed', String(activo));
+                boton.classList.toggle('is-fav', activo);
+            });
+        }
+        mainContainer.addEventListener('click', evento => {
+            const boton = evento.target.closest('[data-fav]');
+            if (!boton || !window.S3D) return;
+            const producto = productos.find(p => p.id === Number(boton.dataset.fav));
+            const ahora = window.S3D.favoritos.alternar(Number(boton.dataset.fav), producto?.nombre);
+            window.S3D.aviso(ahora ? 'Guardado en favoritos' : 'Quitado de favoritos');
+        });
+        if (window.S3D) window.S3D.favoritos.alCambiar(() => {
+            if (categoriaActual === 'Favoritos' && idsFavoritos().length === 0) categoriaActual = 'Todas';   // ya no queda ninguno
+            renderFilters();
+            if (categoriaActual === 'Favoritos' || categoriaActual === 'Todas' && !mainContainer.querySelector('.catalog-carousel-card')) renderizarProductos();
+            else pintarFavoritos();
+        });
 
         // Toda la tarjeta abre la ficha del producto, salvo los controles propios: el botón de comprar,
         // la zona de imágenes (galería ampliada), las miniaturas y los selectores de color.
@@ -212,7 +267,7 @@
             renderFilters();
             
             const productosFiltrados = productos.filter(p => {
-                const cumpleCategoria = categoriaActual === "Todas" || (categoriaActual === "Novedades" ? esNuevo(p) : p.categoria === categoriaActual);
+                const cumpleCategoria = categoriaActual === "Todas" || (categoriaActual === "Novedades" ? esNuevo(p) : categoriaActual === "Favoritos" ? idsFavoritos().includes(p.id) : p.categoria === categoriaActual);
                 const cumpleBusqueda = terminoBusqueda === "" || 
                     normalizar(p.nombre).includes(normalizar(terminoBusqueda)) || 
                     normalizar(p.descripcion).includes(normalizar(terminoBusqueda)) ||
@@ -240,7 +295,7 @@
             if (ordenActual === "price-desc") productosOrdenados.sort(compararPrecio(-1));
             if (ordenActual === "name") productosOrdenados.sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
             // Con un orden explícito la lista se muestra plana: agrupar por categoría rompería el orden global.
-            const ordenGlobal = ordenActual !== "default" || enNovedades;
+            const ordenGlobal = ordenActual !== "default" || enNovedades || categoriaActual === "Favoritos";
             if (resultsCount) resultsCount.textContent = `${productosOrdenados.length} ${productosOrdenados.length === 1 ? "producto encontrado" : "productos encontrados"}`;
             actualizarURL();
 
@@ -384,6 +439,8 @@
                 });
             });
 
+            pintarFavoritos();
+
             mainContainer.querySelectorAll('.catalog-carousel-image').forEach(viewer => {
                 const openLightbox = () => window.abrirModal(Number(viewer.dataset.lightboxProduct), Number(viewer.dataset.lightboxIndex || 0));
                 viewer.addEventListener('click', openLightbox);
@@ -407,12 +464,103 @@
             if (tile) window.abrirModal(Number(tile.dataset.heroProduct));
         });
 
+        // ---- Sugerencias del buscador (patrón combobox accesible) ----
+        const campoBusqueda = document.getElementById('search-input');
+        const listaSugerencias = document.getElementById('search-suggest');
+        let sugerenciaActiva = -1;
+
+        function calcularSugerencias(texto) {
+            const t = normalizar(texto).trim();
+            if (t.length < 2) return { productos: [], categorias: [], total: 0 };
+            const puntuar = p => {
+                const nombre = normalizar(p.nombre);
+                if (nombre.startsWith(t)) return 0;
+                if (nombre.split(/\s+/).some(palabra => palabra.startsWith(t))) return 1;
+                if (nombre.includes(t)) return 2;
+                if (normalizar(p.coleccion || '').includes(t)) return 3;
+                if (normalizar(p.categoria).includes(t)) return 4;
+                if (normalizar(p.descripcion).includes(t)) return 5;
+                return -1;
+            };
+            const encontrados = productos.map(p => ({ p, s: puntuar(p) })).filter(x => x.s >= 0)
+                .sort((a, b) => a.s - b.s || a.p.nombre.localeCompare(b.p.nombre, 'es')).map(x => x.p);
+            return { productos: encontrados.slice(0, 6), categorias: ordenDeseado.filter(c => normalizar(c).includes(t)).slice(0, 2), total: encontrados.length };
+        }
+        function resaltar(texto, termino) {
+            const normal = normalizar(texto);
+            const t = normalizar(termino).trim();
+            const i = normal.length === texto.length ? normal.indexOf(t) : -1;
+            if (i < 0 || !t) return escaparHTML(texto);
+            return `${escaparHTML(texto.slice(0, i))}<mark>${escaparHTML(texto.slice(i, i + t.length))}</mark>${escaparHTML(texto.slice(i + t.length))}`;
+        }
+        function cerrarSugerencias() {
+            listaSugerencias.hidden = true;
+            campoBusqueda.setAttribute('aria-expanded', 'false');
+            campoBusqueda.removeAttribute('aria-activedescendant');
+            sugerenciaActiva = -1;
+        }
+        function renderSugerencias(texto) {
+            const t = texto.trim();
+            if (t.length < 2) { cerrarSugerencias(); return; }
+            const { productos: ps, categorias: cs } = calcularSugerencias(t);
+            let indice = 0;
+            let html = '';
+            if (!ps.length && !cs.length) {
+                const mensaje = `Hola, busqué "${t}" en la web de S3D y no lo encontré. ¿Me pueden ayudar?`;
+                html = `<li class="search-suggest-vacio" role="presentation"><span>No encontramos resultados para “${escaparHTML(t)}”.</span><a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensaje)}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp y te ayudamos</a></li>`;
+            } else {
+                html += cs.map(c => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="categoria" data-valor="${escaparHTML(c)}"><span class="search-suggest-cat"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></span><span><strong>Ver ${escaparHTML(c)}</strong><small>Categoría</small></span></li>`).join('');
+                html += ps.map(p => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="producto" data-slug="${escaparHTML(p.slug)}" data-nombre="${escaparHTML(p.nombre)}"><img src="${rutaSm(p.colores?.[0]?.img || p.imagenes[0])}" alt="" width="40" height="50" loading="lazy" decoding="async"><span><strong>${resaltar(p.nombre, t)}</strong><small>${escaparHTML(p.categoria)} · ${p.requiereCotizacion ? 'Cotizar' : `S/ ${p.precio.toFixed(2)}`}</small></span></li>`).join('');
+            }
+            listaSugerencias.innerHTML = html;
+            listaSugerencias.hidden = false;
+            campoBusqueda.setAttribute('aria-expanded', 'true');
+            campoBusqueda.removeAttribute('aria-activedescendant');
+            sugerenciaActiva = -1;
+        }
+        function marcarSugerencia(nuevo) {
+            const opciones = [...listaSugerencias.querySelectorAll('[role="option"]')];
+            if (!opciones.length) return;
+            sugerenciaActiva = (nuevo + opciones.length) % opciones.length;
+            opciones.forEach((el, i) => { el.classList.toggle('is-active', i === sugerenciaActiva); el.setAttribute('aria-selected', String(i === sugerenciaActiva)); });
+            campoBusqueda.setAttribute('aria-activedescendant', opciones[sugerenciaActiva].id);
+            opciones[sugerenciaActiva].scrollIntoView({ block: 'nearest' });
+        }
+        function activarSugerencia(el) {
+            if (!el) return;
+            if (el.dataset.tipo === 'producto') {
+                track('ficha_buscador', { producto: el.dataset.nombre });
+                window.location.href = `producto/${el.dataset.slug}/`;
+            } else if (el.dataset.tipo === 'categoria') {
+                cerrarSugerencias();
+                campoBusqueda.value = '';
+                terminoBusqueda = '';
+                window.filtrarPorCategoria(el.dataset.valor);
+                document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        campoBusqueda.addEventListener('keydown', evento => {
+            if (listaSugerencias.hidden) return;
+            if (evento.key === 'ArrowDown') { evento.preventDefault(); marcarSugerencia(sugerenciaActiva + 1); }
+            else if (evento.key === 'ArrowUp') { evento.preventDefault(); marcarSugerencia(sugerenciaActiva - 1); }
+            else if (evento.key === 'Escape') { cerrarSugerencias(); }
+            else if (evento.key === 'Enter' && sugerenciaActiva >= 0) { evento.preventDefault(); activarSugerencia(listaSugerencias.querySelectorAll('[role="option"]')[sugerenciaActiva]); }
+        });
+        listaSugerencias.addEventListener('mousedown', evento => evento.preventDefault());   // evita perder el foco antes del clic
+        listaSugerencias.addEventListener('click', evento => activarSugerencia(evento.target.closest('[role="option"]')));
+        campoBusqueda.addEventListener('focus', () => { if (campoBusqueda.value.trim().length >= 2) renderSugerencias(campoBusqueda.value); });
+        document.addEventListener('click', evento => { if (!evento.target.closest('#search-input, #search-suggest')) cerrarSugerencias(); });
+
         document.getElementById('search-input').addEventListener('input', function(e) {
             terminoBusqueda = e.target.value;
+            renderSugerencias(e.target.value);
             // La búsqueda se registra solo cuando la persona deja de escribir un momento.
             clearTimeout(debounceAnalitica);
             const termino = normalizar(terminoBusqueda).trim();
-            if (termino.length >= 3) debounceAnalitica = setTimeout(() => track('busqueda', { termino }), 1500);
+            if (termino.length >= 3) debounceAnalitica = setTimeout(() => {
+                track('busqueda', { termino });
+                if (calcularSugerencias(termino).total === 0) track('busqueda_sin_resultados', { termino });
+            }, 1500);
             clearTimeout(debounceBusqueda);
             debounceBusqueda = setTimeout(renderizarProductos, 250);
         });
@@ -768,7 +916,7 @@
 
     async function cargarProductos() {
         try {
-            const response = await fetch('productos.json?v=perf-3');
+            const response = await fetch('productos.json?v=tienda-2');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             productos = await response.json();
             const ids = new Set();
@@ -788,7 +936,7 @@
             if (productos.some(esNuevo)) categorias.splice(1, 0, "Novedades");
             const params = new URLSearchParams(window.location.search);
             const requestedCategory = params.get("categoria");
-            if (requestedCategory && categorias.includes(requestedCategory)) categoriaActual = requestedCategory;
+            if (requestedCategory && (categorias.includes(requestedCategory) || (requestedCategory === "Favoritos" && idsFavoritos().length > 0))) categoriaActual = requestedCategory;
             terminoBusqueda = params.get("buscar") || "";
             ordenActual = ["recent", "price-asc", "price-desc", "name"].includes(params.get("orden")) ? params.get("orden") : "default";
             document.getElementById("search-input").value = terminoBusqueda;

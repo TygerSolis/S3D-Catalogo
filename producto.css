@@ -164,3 +164,31 @@ img, picture { display: block; max-width: 100%; }
 .pp-viewer-stage img { border-radius: .75rem; cursor: zoom-in; max-height: 100%; max-width: 100%; object-fit: contain; transform-origin: center center; }
 .pp-viewer-stage img.is-zoomed { cursor: zoom-out; }
 .pp-viewer-hint { background: rgba(0,0,0,.55); border-radius: 999px; bottom: 1.4rem; color: #fff; font-size: .72rem; font-weight: 700; left: 50%; letter-spacing: .04em; max-width: calc(100% - 2rem); padding: .35rem .85rem; pointer-events: none; position: absolute; transform: translateX(-50%); white-space: nowrap; }
+
+/* Acciones: añadir al pedido, favorito y compartir */
+.pp-acciones { align-items: center; display: flex; gap: .6rem; margin-top: .75rem; }
+.pp-add { align-items: center; background: #fff; border: 2px solid var(--blue); border-radius: 999px; color: var(--blue); cursor: pointer; display: flex; flex: 1; font: inherit; font-weight: 800; gap: .5rem; justify-content: center; padding: .8rem 1rem; transition: background .2s ease, color .2s ease; }
+.pp-add:hover { background: #e6f0fa; }
+.pp-add.is-added { background: #1aa34a; border-color: #1aa34a; color: #fff; }
+.pp-icono { align-items: center; background: #fff; border: 1px solid #cbd5e1; border-radius: 999px; color: var(--navy); cursor: pointer; display: flex; flex-shrink: 0; height: 3rem; justify-content: center; width: 3rem; }
+.pp-icono:hover { background: #f1f5f9; }
+.pp-icono[aria-pressed="true"] { background: #fff0f3; border-color: #f43f5e; color: #e11d48; }
+.pp-icono[aria-pressed="true"] .ico { fill: currentColor; }
+.pp-acciones .ico { height: 1.15rem; width: 1.15rem; }
+
+/* Cotizador de personalización */
+.pp-cotizador { background: #f7faff; border: 1px solid var(--line); border-radius: 1rem; margin-top: 1.25rem; }
+.pp-cotizador summary { align-items: center; color: var(--navy); cursor: pointer; display: flex; font-weight: 800; gap: .6rem; list-style: none; padding: .9rem 1.1rem; }
+.pp-cotizador summary::-webkit-details-marker { display: none; }
+.pp-cotizador summary .ico { color: var(--blue); }
+.pp-cotizador summary span { flex: 1; }
+.pp-flecha { transition: transform .2s ease; }
+.pp-cotizador[open] .pp-flecha { transform: rotate(180deg); }
+.pp-form { display: grid; gap: .35rem; padding: 0 1.1rem 1.1rem; }
+.pp-form-intro { color: var(--muted); font-size: .85rem; margin: 0 0 .5rem; }
+.pp-form label { color: var(--navy); font-size: .82rem; font-weight: 800; margin-top: .4rem; }
+.pp-form label span { color: var(--muted); font-weight: 600; }
+.pp-form input, .pp-form select, .pp-form textarea { background: #fff; border: 1px solid #cbd5e1; border-radius: .7rem; color: var(--ink); font: inherit; font-size: .92rem; padding: .6rem .8rem; width: 100%; }
+.pp-form input:focus, .pp-form select:focus, .pp-form textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(0,102,204,.15); }
+.pp-form-enviar { align-items: center; background: #1aa34a; border: 0; border-radius: 999px; color: #fff; cursor: pointer; display: flex; font: inherit; font-weight: 800; gap: .5rem; justify-content: center; margin-top: .8rem; padding: .85rem 1rem; }
+.pp-form-enviar:hover { background: #15893e; }

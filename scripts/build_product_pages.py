@@ -31,6 +31,7 @@ CHROME_DIR = ROOT / "scripts" / "chrome"
 CHROME_MARCAS = {
     "top": ("<!-- CHROME-TOP:START -->", "<!-- CHROME-TOP:END -->"),
     "pie": ("<!-- CHROME-FOOTER:START -->", "<!-- CHROME-FOOTER:END -->"),
+    "pagos": ("<!-- CHROME-PAGOS:START -->", "<!-- CHROME-PAGOS:END -->"),
 }
 
 
@@ -65,6 +66,11 @@ def url_ruta(ruta: str, prefijo: str = "") -> str:
 def miniatura(ruta: str) -> str:
     """Ruta del nivel pequeño (assets/sm/) para tarjetas y miniaturas."""
     return re.sub(r"^assets/", "assets/sm/", ruta)
+
+
+def nivel_medio(ruta: str) -> str:
+    """Ruta del nivel intermedio (assets/md/): foto principal de la ficha en pantallas estrechas."""
+    return re.sub(r"^assets/", "assets/md/", ruta)
 
 
 def avif(ruta: str) -> str:
@@ -231,6 +237,29 @@ def pagina(p: dict, todos: list[dict]) -> str:
         else ""
     )
     cat_q = quote(p["categoria"])
+    opciones_color = "".join(f'<option value="{esc(c["nombre"])}">{esc(c["nombre"])}</option>' for c in p.get("colores", []))
+    campo_color = (
+        f"""<label for="cq-color">Color</label>
+                        <select id="cq-color" name="color"><option value="">Sin preferencia</option>{opciones_color}<option value="__otro">Otro (lo detallo en las notas)</option></select>"""
+        if opciones_color
+        else """<label for="cq-color">Color o colores</label>
+                        <input id="cq-color" name="color" type="text" maxlength="80" placeholder="Ej.: negro con detalles dorados">"""
+    )
+    abierto = " open" if p.get("requiereCotizacion") or not p.get("precio") else ""
+    cotizador = f"""                <details class="pp-cotizador"{abierto}>
+                    <summary><svg class="ico" aria-hidden="true"><use href="#i-pencil-ruler"/></svg><span>Personalizar o cambiar la medida</span><svg class="ico pp-flecha" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+                    <form id="pp-cotizador" class="pp-form" novalidate>
+                        <p class="pp-form-intro">Cuéntanos qué necesitas y te cotizamos por WhatsApp. El precio publicado corresponde a la medida publicada ({esc(p.get('medida') or '—')}).</p>
+                        <label for="cq-medida">Medida que necesitas</label>
+                        <input id="cq-medida" name="medida" type="text" maxlength="80" placeholder="Ej.: 10 cm más grande">
+                        {campo_color}
+                        <label for="cq-texto">Nombre o texto a incluir <span>(opcional)</span></label>
+                        <input id="cq-texto" name="texto" type="text" maxlength="80" placeholder="Ej.: el nombre de tu mascota">
+                        <label for="cq-notas">Otros detalles <span>(opcional)</span></label>
+                        <textarea id="cq-notas" name="notas" rows="3" maxlength="400" placeholder="Cuéntanos cualquier otro detalle que quieras agregar"></textarea>
+                        <button type="submit" class="pp-form-enviar"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg>Pedir cotización por WhatsApp</button>
+                    </form>
+                </details>"""
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
 
     return f"""<!DOCTYPE html>
@@ -259,8 +288,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
-    <link rel="stylesheet" href="../../chrome.css?v=3">
-    <link rel="stylesheet" href="../../producto.css?v=8">
+    <link rel="stylesheet" href="../../chrome.css?v=6">
+    <link rel="stylesheet" href="../../producto.css?v=9">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -273,11 +302,11 @@ def pagina(p: dict, todos: list[dict]) -> str:
             <span aria-current="page">{esc(p['nombre'])}</span>
         </nav>
 
-        <article class="pp-product" data-producto="{esc(p['nombre'])}"{fecha_attr}>
+        <article class="pp-product" data-producto="{esc(p['nombre'])}" data-id="{p['id']}" data-slug="{esc(p['slug'])}" data-precio="{'' if p.get('requiereCotizacion') or not p.get('precio') else p['precio']}" data-cotizar="{'1' if p.get('requiereCotizacion') or not p.get('precio') else ''}" data-medida="{esc(p.get('medida') or '')}" data-imagen="{esc(miniatura(imagen_principal(p)))}"{fecha_attr}>
             <div class="pp-gallery">
                 <div class="pp-stage" id="pp-stage" role="button" tabindex="0" aria-label="Ampliar imagen en alta resolución">
                     <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
-                    <picture id="pp-picture"><source id="pp-main-src" srcset="{esc(url_ruta(avif(principal), '../../'))}" type="image/avif"><img id="pp-main-img" src="{esc(url_ruta(principal, '../../'))}" alt="{esc(p['nombre'])}" fetchpriority="high" decoding="async"></picture>
+                    <picture id="pp-picture"><source data-md media="(max-width: 859px)" srcset="{esc(url_ruta(avif(nivel_medio(principal)), '../../'))}" type="image/avif"><source data-md media="(max-width: 859px)" srcset="{esc(url_ruta(nivel_medio(principal), '../../'))}" type="image/webp"><source id="pp-main-src" srcset="{esc(url_ruta(avif(principal), '../../'))}" type="image/avif"><img id="pp-main-img" src="{esc(url_ruta(principal, '../../'))}" alt="{esc(p['nombre'])}" fetchpriority="high" decoding="async"></picture>
 {video}
                 </div>
 {miniaturas}
@@ -293,12 +322,18 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {ficha}
                 </dl>
                 <a id="pp-buy" class="pp-buy" data-producto="{esc(p['nombre'])}" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
-                <ul class="pp-perks">
+                <div class="pp-acciones">
+                    <button type="button" class="pp-add" id="pp-add"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg><span>Añadir al pedido</span></button>
+                    <button type="button" class="pp-icono" id="pp-fav" aria-pressed="false" aria-label="Guardar en favoritos" title="Guardar en favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></button>
+                    <button type="button" class="pp-icono" id="pp-share" aria-label="Compartir este producto" title="Compartir"><svg class="ico" aria-hidden="true"><use href="#i-share-2"/></svg></button>
+                </div>
+{sangrar(plantilla("pagos", "../../"), 16)}                <ul class="pp-perks">
                     <li>Todos los productos se elaboran a pedido en nuestro taller</li>
                     <li>El precio corresponde a la medida publicada; si lo quieres más grande o más pequeño, el costo varía</li>
                     <li>Personalizable: medidas, colores y detalles. Escríbenos y lo evaluamos</li>
                     <li>Envíos a todo el Perú, costo según tu ubicación</li>
                 </ul>
+{cotizador}
             </div>
         </article>
 
@@ -308,8 +343,9 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {sangrar(chrome_pie("../../"))}
 
     <script src="../../chrome.js?v=1" defer></script>
-    <script src="../../analytics.js?v=3" defer></script>
-    <script src="../../producto.js?v=7" defer></script>
+    <script src="../../tienda.js?v=1" defer></script>
+    <script src="../../analytics.js?v=4" defer></script>
+    <script src="../../producto.js?v=9" defer></script>
 </body>
 </html>
 """
@@ -319,11 +355,13 @@ def actualizar_chrome_indice() -> None:
     """Mantiene la cabecera y el pie de index.html idénticos a los de las fichas (misma plantilla)."""
     indice = ROOT / "index.html"
     contenido = indice.read_text(encoding="utf-8")
-    bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie(""))}
+    bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie("")), "pagos": sangrar(plantilla("pagos", ""), 12)}
     for clave, (inicio, fin) in CHROME_MARCAS.items():
         nuevo = f"    {inicio}\n{bloques[clave]}    {fin}"
         if inicio in contenido:
             contenido = re.sub(re.escape(inicio) + r".*?" + re.escape(fin), lambda _: nuevo.strip(), contenido, flags=re.S)
+        elif clave == "pagos":
+            continue  # las marcas se colocan una vez a mano en index.html
         else:
             if clave == "top":
                 a = contenido.index('    <div class="announcement-bar')
@@ -351,9 +389,117 @@ def actualizar_itemlist(todos: list[dict]) -> None:
     indice.write_text(contenido, encoding="utf-8")
 
 
+ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
+
+
+def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | None, cuerpo: str, robots: str | None = None, base_href: str | None = None) -> str:
+    """Página informativa con la misma cabecera y pie que el resto del sitio."""
+    etiqueta_base = f'    <base href="{esc(base_href)}">\n' if base_href else ""
+    meta_robots = f'    <meta name="robots" content="{robots}">\n' if robots else ""
+    enlace_canonico = f'    <link rel="canonical" href="{esc(canonical)}">\n' if canonical else ""
+    return f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+{etiqueta_base}    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{esc(titulo)}</title>
+    <meta name="description" content="{esc(descripcion)}">
+{meta_robots}{enlace_canonico}    <meta name="theme-color" content="#002244">
+    <link rel="icon" href="{base}assets/logo-96.webp" type="image/webp">
+    <link rel="apple-touch-icon" href="{base}assets/logo-192.png">
+    <link rel="preload" href="{base}assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{base}fonts.css?v=1">
+    <link rel="stylesheet" href="{base}chrome.css?v=6">
+    <link rel="stylesheet" href="{base}paginas.css?v=1">
+</head>
+<body>
+{sangrar(chrome_superior(base))}
+    <main class="pg-main">
+{cuerpo}
+    </main>
+
+{sangrar(chrome_pie(base))}
+    <script src="{base}chrome.js?v=1" defer></script>
+    <script src="{base}analytics.js?v=4" defer></script>
+</body>
+</html>
+"""
+
+
+def pagina_privacidad() -> str:
+    hoy = date.today().strftime("%d/%m/%Y")
+    cuerpo = f"""        <p class="pg-kicker">Transparencia</p>
+        <h1>Política de privacidad</h1>
+        <p class="pg-actualizado">Última actualización: {hoy}</p>
+        <p>En S3D queremos que sepas con claridad qué información se usa cuando visitas este sitio y cuando nos escribes para hacer un pedido.</p>
+
+        <h2>Qué medimos</h2>
+        <p>Usamos <strong>Umami</strong>, un servicio de estadísticas pensado para la privacidad, para saber de forma <strong>anónima y agregada</strong> cuántas personas visitan el sitio y qué productos o categorías despiertan más interés (por ejemplo, qué producto se abre más o qué se busca). Esta medición:</p>
+        <ul>
+            <li>no usa cookies de seguimiento ni de publicidad;</li>
+            <li>no identifica a las personas ni guarda tu nombre, correo o teléfono;</li>
+            <li>respeta la opción &laquo;No rastrear&raquo; de tu navegador.</li>
+        </ul>
+
+        <h2>Qué se guarda solo en tu dispositivo</h2>
+        <p>Tu lista de pedido y tus productos favoritos se guardan únicamente en tu navegador (almacenamiento local). No se envían a ningún servidor nuestro y puedes borrarlos cuando quieras limpiando los datos del sitio.</p>
+
+        <h2>Cuando nos escribes por WhatsApp o correo</h2>
+        <p>Al pulsar &laquo;Comprar&raquo;, &laquo;Pedir por WhatsApp&raquo; o enviar tu lista de pedido, se abre WhatsApp con un mensaje ya redactado. Desde ese momento la conversación se rige por las condiciones de WhatsApp. Usamos los datos que nos compartas (por ejemplo, tu nombre, tu número y tu dirección de entrega) <strong>solo para atender tu pedido</strong> y no los cedemos a terceros.</p>
+
+        <h2>Servicios de terceros</h2>
+        <ul>
+            <li><strong>GitHub Pages</strong>: aloja este sitio.</li>
+            <li><strong>Google Maps</strong>: muestra el mapa de nuestra ubicación; al verlo, Google puede recibir datos técnicos de tu visita.</li>
+            <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>
+        </ul>
+
+        <h2>Tus derechos y contacto</h2>
+        <p>Si quieres consultar, corregir o pedir que eliminemos datos que nos hayas compartido por WhatsApp o correo, escríbenos a <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a> o por <a href="https://api.whatsapp.com/send?phone={WHATSAPP}" target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p>
+        <p class="pg-aviso">Este texto es informativo y puede actualizarse. Si el negocio crece o empieza a recopilar más datos, conviene revisarlo con asesoría legal.</p>"""
+    return pagina_estatica("Política de privacidad | S3D", "Qué mide S3D en este sitio (estadísticas anónimas, sin cookies), qué se guarda en tu dispositivo y cómo usamos los datos que compartes por WhatsApp.", "../", f"{BASE_URL}privacidad/", cuerpo)
+
+
+def pagina_404(todos: list[dict]) -> str:
+    destacados = sorted([p for p in todos if p.get("badge") == "Top Ventas"], key=lambda p: p.get("heroOrden", 10**6))[:4]
+    cats = "\n".join(f'            <a class="pg-chip" href="./?categoria={quote(c)}#catalogo">{esc(c)}</a>' for c in ORDEN_CATEGORIAS)
+    tarjetas = "\n".join(
+        f"""            <a class="pg-card" href="producto/{esc(p['slug'])}/">
+                <picture><source srcset="{esc(url_ruta(avif(miniatura(imagen_principal(p)))))}" type="image/avif"><img src="{esc(url_ruta(miniatura(imagen_principal(p))))}" alt="" loading="lazy" decoding="async"></picture>
+                <strong>{esc(p['nombre'])}</strong>
+                <span>{esc(precio_txt(p))}</span>
+            </a>"""
+        for p in destacados
+    )
+    wa = f"https://api.whatsapp.com/send?phone={WHATSAPP}&text={quote('Hola, no encontré lo que buscaba en la web de S3D y quisiera consultar.', safe='')}"
+    cuerpo = f"""        <p class="pg-kicker">Error 404</p>
+        <h1>Esta página no existe</h1>
+        <p>El enlace puede estar mal escrito o el producto ya no está disponible. Prueba buscando lo que necesitas:</p>
+        <form class="pg-buscar" action="./" method="get" role="search">
+            <input type="search" name="buscar" placeholder="Buscar modelo, colección..." aria-label="Buscar productos">
+            <button class="pg-btn" type="submit">Buscar</button>
+        </form>
+
+        <h2>Explora por categoría</h2>
+        <div class="pg-chips">
+{cats}
+        </div>
+
+        <h2>Lo más vendido</h2>
+        <div class="pg-grid">
+{tarjetas}
+        </div>
+
+        <p style="margin-top:2rem">¿No encuentras lo que buscas? <a href="{esc(wa)}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a> y te ayudamos.</p>"""
+    # Se sirve en cualquier ruta inexistente: <base> hace que las rutas relativas apunten siempre a la raíz del sitio.
+    return pagina_estatica("Página no encontrada | S3D", "La página que buscas no existe. Explora el catálogo de S3D.", "", None, cuerpo, robots="noindex", base_href=BASE_URL)
+
+
 def escribir_sitemap(todos: list[dict]) -> None:
     hoy = date.today().isoformat()
     filas = [f"  <url>\n    <loc>{BASE_URL}</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>1.0</priority>\n  </url>"]
+    filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>0.3</priority>\n  </url>")
     filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <lastmod>{hoy}</lastmod>\n    <priority>0.7</priority>\n  </url>" for p in todos]
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(filas) + "\n</urlset>\n",
@@ -379,6 +525,10 @@ def main() -> None:
         carpeta = OUT_DIR / p["slug"]
         carpeta.mkdir(parents=True)
         (carpeta / "index.html").write_text(pagina(p, productos), encoding="utf-8")
+
+    (ROOT / "privacidad").mkdir(exist_ok=True)
+    (ROOT / "privacidad" / "index.html").write_text(pagina_privacidad(), encoding="utf-8")
+    (ROOT / "404.html").write_text(pagina_404(productos), encoding="utf-8")
 
     actualizar_itemlist(productos)
     actualizar_chrome_indice()

@@ -102,3 +102,65 @@
 .site-footer-legal { border-top: 1px solid rgba(255,255,255,.1); color: #94a3b8; display: flex; flex-wrap: wrap; font-size: .75rem; font-weight: 500; gap: .5rem 1rem; justify-content: space-between; padding-top: 1.25rem; }
 .site-footer-legal .ico { color: #6eb6ff; display: inline-block; vertical-align: -.1em; }
 @media print { .announcement-bar, .site-nav, .site-footer { display: none !important; } }
+
+/* Formas de pago */
+.pagos { font-family: 'Manrope', system-ui, sans-serif; margin-top: 1.25rem; }
+.pagos-titulo { color: #64748b; display: block; font-size: .7rem; font-weight: 800; letter-spacing: .14em; margin-bottom: .5rem; text-transform: uppercase; }
+.pagos-lista { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+.pagos-lista li { align-items: center; background: #fff; border: 1px solid #dbe5ef; border-radius: 999px; color: #1e3a5f; display: inline-flex; font-size: .8rem; font-weight: 700; gap: .4rem; padding: .4rem .85rem; }
+.pagos-lista .ico { color: #0066cc; height: .95rem; width: .95rem; }
+.pagos-nota { color: #64748b; font-size: .78rem; line-height: 1.5; margin: .6rem 0 0; }
+.pagos-oscuro .pagos-titulo { color: #7fb2e8; }
+.pagos-oscuro .pagos-lista li { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: #e2e8f0; }
+.pagos-oscuro .pagos-lista .ico { color: #6eb6ff; }
+.pagos-oscuro .pagos-nota { color: #94a3b8; }
+.site-footer-legal a:hover { color: #fff; text-decoration: underline; text-underline-offset: .2rem; }
+
+/* Pedido de varios productos (tienda.js): botón flotante, panel y aviso */
+.s3d-fab, .s3d-panel, .s3d-aviso { font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.5; }
+.s3d-fab { align-items: center; background: #002244; border: 0; border-radius: 999px; bottom: 1.25rem; box-shadow: 0 14px 30px -12px rgba(0,34,68,.7); color: #fff; cursor: pointer; display: inline-flex; font-size: .9rem; font-weight: 800; gap: .55rem; left: 1rem; padding: .75rem 1.1rem; position: fixed; z-index: 85; }
+.s3d-fab[hidden] { display: none; }
+.s3d-fab:hover { background: #003366; }
+.s3d-fab-cuenta { background: #e8340f; border-radius: 999px; font-size: .75rem; line-height: 1; min-width: 1.4rem; padding: .3rem .45rem; text-align: center; }
+.s3d-fondo { background: rgba(0, 20, 40, .55); inset: 0; position: fixed; z-index: 120; }
+.s3d-fondo[hidden], .s3d-panel[hidden] { display: none; }
+.s3d-panel { background: #fff; bottom: 0; box-shadow: -20px 0 50px -20px rgba(0,0,0,.5); color: #1f2937; display: flex; flex-direction: column; max-width: 100vw; position: fixed; right: 0; top: 0; width: 26rem; z-index: 125; }
+.s3d-cabecera { align-items: center; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; padding: .9rem 1rem; }
+.s3d-cabecera h2 { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; margin: 0; }
+.s3d-cerrar { align-items: center; background: #f1f5f9; border: 0; border-radius: 999px; color: #002244; cursor: pointer; display: flex; height: 2.5rem; justify-content: center; width: 2.5rem; }
+.s3d-lista { flex: 1; list-style: none; margin: 0; overflow-y: auto; padding: .5rem 1rem; }
+.s3d-vacio { color: #64748b; font-size: .92rem; padding: 2rem .5rem; text-align: center; }
+.s3d-item { align-items: center; border-bottom: 1px solid #f1f5f9; display: grid; gap: .75rem; grid-template-columns: 3.5rem minmax(0, 1fr) auto; padding: .8rem 0; }
+.s3d-item-img img { background: #f1f5fa; border-radius: .6rem; height: 4.4rem; object-fit: contain; width: 3.5rem; }
+.s3d-item-info { display: flex; flex-direction: column; min-width: 0; }
+.s3d-item-nombre { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: .92rem; font-weight: 700; line-height: 1.25; }
+.s3d-item-nombre:hover { color: #0066cc; text-decoration: underline; }
+.s3d-item-detalle { color: #64748b; font-size: .75rem; }
+.s3d-item-precio { color: #334155; font-size: .8rem; font-weight: 700; margin-top: .15rem; }
+.s3d-item-acciones { align-items: flex-end; display: flex; flex-direction: column; gap: .4rem; }
+.s3d-cantidad { align-items: center; border: 1px solid #cbd5e1; border-radius: 999px; display: inline-flex; }
+.s3d-cantidad button { align-items: center; background: none; border: 0; border-radius: 999px; color: #002244; cursor: pointer; display: flex; height: 2rem; justify-content: center; width: 2rem; }
+.s3d-cantidad button:hover:not([disabled]) { background: #e6f0fa; }
+.s3d-cantidad button[disabled] { color: #cbd5e1; cursor: default; }
+.s3d-cantidad span { font-size: .85rem; font-weight: 800; min-width: 1.4rem; text-align: center; }
+.s3d-quitar { background: none; border: 0; color: #94a3b8; cursor: pointer; padding: .2rem; }
+.s3d-quitar:hover { color: #e8340f; }
+.s3d-pie { border-top: 1px solid #e2e8f0; padding: .9rem 1rem 1.1rem; }
+.s3d-pie[hidden] { display: none; }
+.s3d-total { align-items: baseline; display: flex; justify-content: space-between; }
+.s3d-total span { color: #475569; font-size: .85rem; font-weight: 700; }
+.s3d-total strong { color: #002244; font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; }
+.s3d-total-nota { color: #64748b; font-size: .76rem; margin: .25rem 0 .8rem; }
+.s3d-enviar { align-items: center; background: #1aa34a; border-radius: 999px; color: #fff !important; display: flex; font-weight: 800; gap: .5rem; justify-content: center; padding: .85rem 1rem; }
+.s3d-enviar:hover { background: #15893e; }
+.s3d-vaciar { background: none; border: 0; color: #64748b; cursor: pointer; display: block; font-size: .82rem; font-weight: 700; margin: .7rem auto 0; text-decoration: underline; text-underline-offset: .2rem; }
+.s3d-vaciar:hover { color: #e8340f; }
+.s3d-aviso { background: #002244; border-radius: 999px; bottom: 5rem; box-shadow: 0 12px 28px -10px rgba(0,0,0,.6); color: #fff; font-size: .85rem; font-weight: 700; left: 50%; max-width: calc(100vw - 2rem); opacity: 0; padding: .65rem 1.2rem; pointer-events: none; position: fixed; text-align: center; transform: translate(-50%, 12px); transition: opacity .25s ease, transform .25s ease; z-index: 130; }
+.s3d-aviso.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.s3d-sin-scroll { overflow: hidden; }
+@media (max-width: 640px) {
+    .s3d-panel { border-radius: 1.25rem 1.25rem 0 0; bottom: 0; height: auto; left: 0; max-height: 88vh; top: auto; width: 100%; }
+    .s3d-fab-texto { display: none; }
+    .s3d-fab { padding: .8rem; }
+}
+@media print { .s3d-fab, .s3d-panel, .s3d-fondo, .s3d-aviso { display: none !important; } }
