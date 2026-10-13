@@ -74,8 +74,11 @@ The page includes dedicated print rules for generating a clean A4 product catalo
 ```text
 S3D-Catalogo/
 ├── assets/
+├── producto/            # páginas estáticas generadas (una por producto)
+├── scripts/
 ├── catalogo.js
 ├── index.html
+├── producto.css / producto.js
 ├── productos.json
 └── styles.css
 ```
@@ -90,6 +93,11 @@ Built by **Itamar Solis**
 ## Performance tooling
 
 The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script that transcodes referenced MP4 files to H.264 with `faststart`, scales oversized sources to a practical web resolution and updates repository references. Product videos are also configured to load on demand rather than preloading large media for every card.
+
+## Maintenance
+
+- **Product pages and SEO** – after editing `productos.json`, run `python3 scripts/build_product_pages.py`. It regenerates `producto/<slug>/index.html`, `sitemap.xml` and the `ItemList` structured data in `index.html`, and adds a `slug` to new products.
+- **Images** – `node scripts/optimize_images.cjs` (requires `npm i sharp`) shrinks any image in `assets/` whose longest side exceeds 1600 px, keeping file names so the JSON does not change. Every image needs a `.webp` and a matching `.avif`.
 
 ## Portfolio Focus
 
