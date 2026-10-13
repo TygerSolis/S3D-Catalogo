@@ -25,15 +25,16 @@
         document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu.hidden) { cerrarMenuMovil(); navToggle.focus(); } });
         window.matchMedia('(min-width: 1024px)').addEventListener('change', event => { if (event.matches) cerrarMenuMovil(); });
 
-        // Control del Botón Volver Arriba
-        window.addEventListener('scroll', function() {
-            const btnArriba = document.getElementById('btn-volver-arriba');
-            if (window.scrollY > 500) {
-                btnArriba.classList.add('visible');
-            } else {
-                btnArriba.classList.remove('visible');
-            }
-        });
+        // Botón Volver Arriba: visible tras desplazarse, y oculto cuando el pie ya está a la vista
+        // (ahí taparía los íconos de contacto).
+        const btnArriba = document.getElementById('btn-volver-arriba');
+        let pieVisible = false;
+        const actualizarBtnArriba = () => btnArriba.classList.toggle('visible', window.scrollY > 500 && !pieVisible);
+        window.addEventListener('scroll', actualizarBtnArriba, { passive: true });
+        const pie = document.getElementById('contacto');
+        if (pie && 'IntersectionObserver' in window) {
+            new IntersectionObserver(([entrada]) => { pieVisible = entrada.isIntersecting; actualizarBtnArriba(); }).observe(pie);
+        }
 
 ;
 
