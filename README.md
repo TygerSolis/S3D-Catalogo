@@ -110,6 +110,11 @@ The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script t
 - **Analytics (Umami Cloud, cookieless)** – `analytics.js` loads Umami using `CONFIG.websiteId` (the site is registered at cloud.umami.is for the domain `tygersolis.github.io`); if that value is emptied, nothing is loaded or sent. Custom events: `producto_visto`, `clic_comprar`, `clic_whatsapp`, `categoria`, `busqueda`, `color_elegido`, `orden`, `ficha_tarjeta`, `ficha_galeria`, `ficha_relacionado`, `ficha_ampliar` (details in the file header; any element with `data-evento` + `data-producto` also reports its click). Open the site once with `?sin-analitica` to exclude your own browser (`?con-analitica` to undo).
 - **Images (three quality tiers, always built from the originals)** – `assets/sm/` (800 px, catalog cards and thumbnails), `assets/md/` (1000 px, main photo of product pages on narrow screens), `assets/` (1600 px, gallery, hero and product pages) and `assets/hd/` (original resolution, loaded only when a visitor opens the gallery or the product-page viewer). Put the **original** PNG/JPEG files in a local, git-ignored `fuentes/` folder named like the image (e.g. `fuentes/ts-woody-1.png`) and run `npm i sharp && node scripts/optimize_images.cjs` (use `--parte 1/8` … `8/8` in parallel to go faster, then `--solo ninguno` to refresh `assets/hd/index.json`). Never re-compress an already compressed `.webp`/`.avif`: that is what softened the images before. AVIF is q90 (4:4:4) and WebP q90; the originals of the current images are in git history (`git show a52df36^:assets/<name>.png`). Every image needs a `.webp` and a matching `.avif`. Zoom detail is limited by the original photo: aim for at least 1600 px on the long side.
 
+## Guides (Spanish)
+
+- `docs/guia-analitica.md` – how to read the Umami dashboard: which event answers which business question, and a weekly 10-minute routine.
+- `docs/guia-fotos.md` – how to shoot the product photos and a prioritized list of the products whose photos are too small for sharp zooming.
+
 ## Tests and checks
 
 ```bash
