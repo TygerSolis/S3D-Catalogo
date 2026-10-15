@@ -1,5 +1,5 @@
 // Portada: hero, tarjetas, orden, novedades, colores y clics.
-const { assert, abrir, ruta } = require('./util.cjs');
+const { assert, abrir, ruta, visibles } = require('./util.cjs');
 
 const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
@@ -45,7 +45,7 @@ module.exports = {
             })
         });
         assert.equal(await p.locator('.catalog-carousel-card', { hasText: 'WOODY' }).count(), 0, 'un producto oculto aparece');
-        assert.equal(await p.locator('.catalog-carousel-card').count(), 86);
+        assert.equal(await p.locator('.catalog-carousel-card').count(), visibles() - 1);
         const filtros = await p.$$eval('#category-filters [data-categoria]', b => b.map(x => x.dataset.categoria));
         assert.equal(filtros[0], 'Todas');
         assert.ok(filtros.indexOf('Categoría Nueva') >= 1 && filtros.indexOf('Categoría Nueva') < filtros.indexOf('Muñecos Coleccionables'), filtros.join(', '));
@@ -108,12 +108,12 @@ module.exports = {
         assert.deepEqual(p.errores, []);
         await p.contexto.close();
     },
-    async 'las 87 tarjetas cargan miniaturas y ninguna imagen está rota'({ browser }) {
+    async 'todas las tarjetas cargan miniaturas y ninguna imagen está rota'({ browser }) {
         const p = await abrir(browser);
         await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 600) { scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); } });
         await p.waitForTimeout(1500);
         const usos = await p.$$eval('[data-carousel-main-image]', imgs => imgs.filter(i => i.currentSrc.includes('/assets/sm/')).length);
-        assert.equal(usos, 87);
+        assert.equal(usos, visibles());
         const rotas = await p.evaluate(() => [...document.images].filter(i => i.complete && i.naturalWidth === 0 && i.id !== 'lightbox-img').length);
         assert.equal(rotas, 0);
         await p.contexto.close();

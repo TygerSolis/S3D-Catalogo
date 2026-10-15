@@ -9,6 +9,8 @@ const RAIZ = path.resolve(__dirname, '..');
 const FECHA_FIJA = new Date('2026-10-14T12:00:00');   // fija el reloj: las "novedades" dependen de la fecha
 
 const leerJson = ruta => JSON.parse(fs.readFileSync(path.join(RAIZ, ruta), 'utf8'));
+// Productos visibles en el catálogo (los datos cambian desde la hoja: las pruebas no fijan cantidades).
+const visibles = () => leerJson('productos.json').filter(p => p.activo !== false).length;
 
 /**
  * Abre una página con Umami simulado (los eventos quedan en página.eventos) y el reloj fijo.
@@ -42,4 +44,4 @@ const escala = pagina => pagina.evaluate(() => {
     return m === 'none' ? 1 : Math.round(Number(m.match(/matrix\(([^,]+)/)[1]) * 100) / 100;
 });
 
-module.exports = { assert, BASE, PUERTO, RAIZ, leerJson, abrir, nombresEventos, ruta, escala };
+module.exports = { assert, BASE, PUERTO, RAIZ, leerJson, visibles, abrir, nombresEventos, ruta, escala };

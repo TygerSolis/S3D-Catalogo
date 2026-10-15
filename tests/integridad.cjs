@@ -8,6 +8,11 @@ const productos = () => leerJson('productos.json');
 const rutasImagen = p => [...p.imagenes, ...(p.colores || []).map(c => c.img)];
 
 module.exports = {
+    'no quedan fotos ni videos publicados que no use ningún producto ni página'() {
+        const { execFileSync } = require('child_process');
+        const salida = execFileSync('python3', ['scripts/hoja_catalogo.py', 'limpiar', 'listar'], { cwd: RAIZ, encoding: 'utf8' });
+        assert.equal(salida.trim(), '', `archivos sin uso:\n${salida}`);
+    },
     'la hoja de cálculo: exportar e importar deja productos.json idéntico y los errores se explican por fila'() {
         const { execFileSync } = require('child_process');
         const os = require('os');
@@ -108,7 +113,7 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
             assert.ok(existe(`assets/hd/${nombre}.webp`) && existe(`assets/hd/${nombre}.avif`), `falta el original de ${nombre}`);
         }
     },
-    'las 87 fichas, la 404 y la privacidad existen y sus datos estructurados son JSON válido'() {
+    'todas las fichas, la 404 y la privacidad existen y sus datos estructurados son JSON válido'() {
         const lista = productos();
         const titulos = new Set();
         for (const p of lista) {

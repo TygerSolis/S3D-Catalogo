@@ -5,6 +5,8 @@
   python3 scripts/hoja_catalogo.py importar <archivo.csv | URL>  CSV de la hoja -> productos.json
   python3 scripts/hoja_catalogo.py faltantes <archivo.csv | URL> imágenes que la hoja nombra y aún no existen
   python3 scripts/hoja_catalogo.py videos <archivo.csv | URL>    videos que la hoja nombra y aún no existen
+  python3 scripts/hoja_catalogo.py limpiar --aplicar             borra fotos y videos que ya no usa ningún producto
+                                                                 (sin --aplicar solo los lista)
 
 La hoja manda: «importar» reescribe productos.json entero. Si algún dato no es válido no escribe nada
 y lista los errores (fila y motivo). Las imágenes se escriben por su nombre, sin carpeta ni extensión
@@ -225,8 +227,42 @@ def videos(origen: str) -> None:
             print(nombre)
 
 
+# Archivos fuente que pueden nombrar imágenes o videos fuera de productos.json (logo, póster, video de portada...).
+FUENTES_WEB = ["index.html", "catalogo.js", "producto.js", "tienda.js", "chrome.js", "analytics.js", "styles.css",
+               "chrome.css", "producto.css", "paginas.css", "fonts.css", "scripts/build_product_pages.py"]
+
+
+def limpiar(modo: str) -> None:
+    """Quita del sitio las imágenes (4 niveles, WebP y AVIF) y los videos que no usa ningún producto ni ninguna página."""
+    productos = json.loads(JSON.read_text(encoding="utf-8"))
+    usadas = {Path(r).stem for p in productos for r in list(p["imagenes"]) + [c["img"] for c in p.get("colores") or []]}
+    videos = {Path(p["video"]).name for p in productos if p.get("video")}
+    textos = "".join((ROOT / f).read_text(encoding="utf-8", errors="ignore") for f in FUENTES_WEB if (ROOT / f).exists())
+    textos += "".join(f.read_text(encoding="utf-8") for f in (ROOT / "scripts" / "chrome").glob("*.html"))
+    nombrada = lambda n: re.search(re.escape(n) + r"\.(webp|avif|png|jpe?g)", textos)   # nombre + extensión, no una palabra suelta
+    sobran = sorted(f.stem for f in (ROOT / "assets").glob("*.webp") if f.stem not in usadas and not nombrada(f.stem))
+    videos_sobran = sorted(f.name for f in (ROOT / "assets" / "video").iterdir() if f.name not in videos and f.name not in textos)
+    for n in sobran:
+        print(f"imagen sin uso: {n}")
+    for n in videos_sobran:
+        print(f"video sin uso: {n}")
+    if modo != "--aplicar":
+        return
+    for n in sobran:
+        for nivel in ("", "sm/", "md/", "hd/"):
+            for ext in ("webp", "avif"):
+                (ROOT / "assets" / f"{nivel}{n}.{ext}").unlink(missing_ok=True)
+    for n in videos_sobran:
+        (ROOT / "assets" / "video" / n).unlink()
+    indice_ruta = ROOT / "assets" / "hd" / "index.json"
+    indice = json.loads(indice_ruta.read_text(encoding="utf-8"))
+    if any(n in indice for n in sobran):
+        indice = {k: v for k, v in indice.items() if k not in sobran}
+        indice_ruta.write_text(json.dumps(indice, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 if __name__ == "__main__":
-    comandos = {"exportar": exportar, "importar": importar, "faltantes": faltantes, "videos": videos}
+    comandos = {"exportar": exportar, "importar": importar, "faltantes": faltantes, "videos": videos, "limpiar": limpiar}
     if len(sys.argv) != 3 or sys.argv[1] not in comandos:
         print(__doc__)
         sys.exit(2)

@@ -105,6 +105,9 @@ jobs:
             exit 1
           }
 
+      - name: Quitar fotos y videos que ya no usa ningún producto
+        run: python3 scripts/hoja_catalogo.py limpiar --aplicar | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Regenerar páginas
         run: python3 scripts/build_product_pages.py
 

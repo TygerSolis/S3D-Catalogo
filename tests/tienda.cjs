@@ -1,5 +1,5 @@
 // Pedido de varios productos y favoritos.
-const { assert, abrir, ruta } = require('./util.cjs');
+const { assert, abrir, ruta, visibles } = require('./util.cjs');
 
 const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
@@ -65,7 +65,7 @@ module.exports = {
         await p.locator('.catalog-carousel-card').first().locator('[data-fav]').click();
         await p.waitForTimeout(300);
         assert.equal(await p.locator('#category-filters button', { hasText: 'Favoritos' }).count(), 0);
-        assert.equal(await p.locator('.catalog-carousel-card').count(), 87);
+        assert.equal(await p.locator('.catalog-carousel-card').count(), visibles());
         await p.contexto.close();
     },
     async 'el favorito de la ficha se refleja en el catálogo'({ browser }) {
