@@ -1,10 +1,11 @@
 name: Pruebas y comprobaciones
 
-# Se ejecuta en cada cambio. NO bloquea la publicación del sitio (GitHub Pages se publica por separado):
+# Se ejecuta en cada cambio de main y de vista-previa (al terminar, «Publicar sitio» actualiza la vista previa).
+# NO bloquea la publicación de main:
 # si algo falla, GitHub lo marca en el commit y en la pestaña Actions.
 on:
   push:
-    branches: [main]
+    branches: [main, vista-previa]
   pull_request:
 
 jobs:

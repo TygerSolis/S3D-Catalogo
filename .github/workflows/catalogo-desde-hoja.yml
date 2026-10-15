@@ -24,6 +24,8 @@ jobs:
     if: vars.HOJA_CSV_URL != ''
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      publicado: ${{ steps.publicar.outputs.publicado }}
     steps:
       - uses: actions/checkout@v4
 
@@ -112,6 +114,7 @@ jobs:
         run: python3 scripts/build_product_pages.py
 
       - name: Publicar
+        id: publicar
         run: |
           rm -rf fuentes
           if [ -z "$(git status --porcelain)" ]; then
@@ -124,4 +127,15 @@ jobs:
           git commit -q -m "catálogo: cambios desde la hoja de cálculo"
           git pull --rebase -q origin main
           git push -q origin HEAD:main
+          echo "publicado=true" >> "$GITHUB_OUTPUT"
           { echo "### Publicado"; git show --stat --format='%h %s' HEAD | head -40; } >> "$GITHUB_STEP_SUMMARY"
+
+  # Un push hecho con GITHUB_TOKEN no dispara otros flujos: se despliega aquí mismo.
+  desplegar:
+    needs: sincronizar
+    if: needs.sincronizar.outputs.publicado == 'true'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/publicar.yml

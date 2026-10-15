@@ -1,0 +1,92 @@
+name: Publicar sitio
+
+# Publica en GitHub Pages:
+#   main          -> https://tygersolis.github.io/S3D-Catalogo/              (la web real)
+#   vista-previa  -> https://tygersolis.github.io/S3D-Catalogo/vista-previa/ (para revisar antes de publicar)
+# La vista previa no se indexa (noindex), no envía analítica ni registra pedidos reales y muestra un aviso.
+# Requiere Settings > Pages > Source: «GitHub Actions».
+# El entorno github-pages solo acepta despliegues desde main; por eso los cambios de vista-previa se publican
+# a través de workflow_run (que siempre corre en main) cuando terminan sus pruebas.
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: ["Pruebas y comprobaciones"]
+    types: [completed]
+    branches: [vista-previa]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Traer main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+
+      - name: Traer vista-previa
+        id: previa
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: vista-previa
+          path: previa
+          fetch-depth: 0
+
+      - name: Comprobar los datos de main
+        run: python3 main/scripts/validar_productos.py
+
+      - name: Armar el sitio
+        env:
+          HAY_PREVIA: ${{ steps.previa.outcome == 'success' }}
+        run: |
+          # La vista previa solo se publica si tiene cambios que aún no están en main (así no se duplica el sitio).
+          if [ "$HAY_PREVIA" = "true" ] && [ "$(git -C previa rev-list --count origin/main..HEAD)" = "0" ]; then
+            echo "vista-previa no tiene cambios pendientes: no se publica." | tee -a "$GITHUB_STEP_SUMMARY"
+            HAY_PREVIA=false
+          fi
+          # Solo lo que el navegador necesita (fuera: código de herramientas, pruebas, documentación).
+          copiar() {
+            mkdir -p "$2"
+            rsync -a --exclude '.git' --exclude '.github' --exclude 'node_modules' --exclude 'tests' --exclude 'scripts' \
+              --exclude 'docs' --exclude 'fuentes' --exclude 'package.json' --exclude 'package-lock.json' --exclude 'README.md' \
+              --exclude 'tailwind.config.js' --exclude 'tailwind.input.css' --exclude 'config.json' "$1"/ "$2"/
+          }
+          copiar main _site
+          touch _site/.nojekyll
+          if [ "$HAY_PREVIA" = "true" ]; then
+            copiar previa _site/vista-previa
+            cd _site/vista-previa
+            rm -f 404.html sitemap.xml robots.txt
+            # Sin indexar y con aviso visible en cada página
+            find . -name '*.html' -print0 | xargs -0 sed -i \
+              -e 's#<head>#<head>\n    <meta name="robots" content="noindex, nofollow">#' \
+              -e 's#<body\([^>]*\)>#<body\1>\n<div style="position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;background:\#b45309;color:\#fff;font:600 13px/1.2 system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none">VISTA PREVIA · no es la web publicada</div>#'
+            # Sin analítica ni registro de pedidos reales
+            sed -i "s/websiteId: '[^']*'/websiteId: ''/" analytics.js
+            sed -i "s#const PEDIDOS_URL = '[^']*';#const PEDIDOS_URL = '';#" tienda.js
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Desplegar
+        id: despliegue
+        uses: actions/deploy-pages@v4
