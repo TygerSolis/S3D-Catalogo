@@ -24,6 +24,8 @@
  *   favorito_agregar { producto }   se guarda un producto en favoritos
  *   cotizar_personalizado { producto } se envía el formulario de personalización
  *   ficha_compartir  { producto }   se comparte o copia el enlace de la ficha
+ *   error_js         { error }      fallo de JavaScript en el navegador de un visitante: "mensaje @ archivo:línea"
+ *                                   (máx. 3 por visita; se ignoran extensiones del navegador y scripts de terceros)
  *   mapa_cargado     (sin datos)    se pulsa "Ver el mapa del taller" en la portada
  * Además Umami registra cada página vista; las páginas de producto aparecen por su URL.
  *
@@ -48,6 +50,26 @@
         if (window.umami && typeof window.umami.track === 'function') window.umami.track(evento, datos);
         else if (CONFIG.websiteId && cola.length < 50) cola.push([evento, datos]);
     };
+
+    // Errores de JavaScript de nuestros archivos: llegan a Umami como evento error_js para detectar fallos
+    // que solo ocurren en algunos navegadores o dispositivos.
+    let erroresEnviados = 0;
+    const reportarError = (mensaje, archivo, linea) => {
+        if (erroresEnviados >= 3 || !archivo || !archivo.startsWith(location.origin)) return;   // solo nuestros scripts
+        erroresEnviados += 1;
+        const nombre = archivo.split('?')[0].split('/').pop();
+        window.s3dTrack('error_js', { error: `${String(mensaje).slice(0, 140)} @ ${nombre}:${linea || 0}` });
+    };
+    window.addEventListener('error', evento => {
+        if (evento.target && evento.target !== window) return;   // recursos que no cargan (imágenes): no son errores de código
+        reportarError(evento.message, evento.filename, evento.lineno);
+    });
+    window.addEventListener('unhandledrejection', evento => {
+        const motivo = evento.reason || {};
+        const pila = String(motivo.stack || '');
+        const origen = (pila.match(/(https?:\/\/[^\s)]+?):(\d+):\d+/) || []);
+        reportarError(motivo.message || motivo, origen[1], origen[2]);
+    });
 
     // Clics en enlaces a WhatsApp: con data-producto cuentan como compra de ese producto;
     // el resto se agrupa por la zona de la página donde están.

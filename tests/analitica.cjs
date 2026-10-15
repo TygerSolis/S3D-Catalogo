@@ -5,6 +5,23 @@ const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const propiedades = (p, nombre) => p.eventos.filter(e => e.nombre === nombre).map(e => e.datos);
 
 module.exports = {
+    async 'los errores de nuestro JavaScript llegan como error_js (máx. 3) y los de terceros se ignoran'({ browser }) {
+        const p = await abrir(browser, '', {
+            preparar: pagina => pagina.route(/\/falla\.js/, r => r.fulfill({ contentType: 'text/javascript', body: '\n\nnoExiste();' }))
+        });
+        await p.evaluate(() => {
+            const cargar = src => new Promise(listo => { const s = document.createElement('script'); s.src = src; s.onload = s.onerror = listo; document.body.append(s); });
+            return (async () => {
+                await cargar('data:text/javascript,' + encodeURIComponent('throw new Error("de un tercero")'));   // otro origen: se ignora
+                for (let i = 0; i < 4; i++) await cargar(`falla.js?${i}`);                                           // nuestro origen: máx. 3
+            })();
+        });
+        await p.waitForTimeout(500);
+        const errores = p.eventos.filter(e => e.nombre === 'error_js').map(e => e.datos.error);
+        assert.equal(errores.length, 3, JSON.stringify(errores));
+        assert.match(errores[0], /noExiste is not defined @ falla\.js:3$/);
+        await p.contexto.close();
+    },
     async 'abrir la galería registra producto_visto y comprar registra clic_comprar con el producto'({ browser }) {
         const p = await abrir(browser, CATEGORIA);
         await p.locator('.catalog-carousel-card', { hasText: 'BUZZ' }).first().locator('.catalog-carousel-image').click();
