@@ -61,11 +61,11 @@ jobs:
             echo "vista-previa no tiene cambios pendientes: no se publica." | tee -a "$GITHUB_STEP_SUMMARY"
             HAY_PREVIA=false
           fi
-          # Solo lo que el navegador necesita (fuera: código de herramientas, pruebas, documentación).
+          # Solo lo que el navegador necesita (fuera: código de herramientas, pruebas, documentación, CLAUDE.md).
           copiar() {
             mkdir -p "$2"
             rsync -a --exclude '.git' --exclude '.github' --exclude 'node_modules' --exclude 'tests' --exclude 'scripts' \
-              --exclude 'docs' --exclude 'fuentes' --exclude 'package.json' --exclude 'package-lock.json' --exclude 'README.md' \
+              --exclude 'docs' --exclude 'fuentes' --exclude 'package.json' --exclude 'package-lock.json' --exclude 'README.md' --exclude 'CLAUDE.md' \
               --exclude 'tailwind.config.js' --exclude 'tailwind.input.css' --exclude 'config.json' "$1"/ "$2"/
           }
           copiar main _site
