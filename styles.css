@@ -301,16 +301,24 @@
             .catalog-carousel-image:hover .catalog-carousel-expand,
             .catalog-carousel-image:focus-visible .catalog-carousel-expand { opacity: 1; }
         }
+        /* Una sola fila de miniaturas: con muchas fotos se desliza en horizontal y la tarjeta no crece. */
         .catalog-carousel-thumbnails {
             align-items: center;
             display: flex;
-            flex-wrap: wrap;
             gap: .5rem;
-            justify-content: center;
             min-height: 4rem;
-            padding: .6rem .6rem 0;
+            overflow-x: auto;
+            overscroll-behavior-x: contain;
+            padding: .6rem .6rem .25rem;
+            scroll-snap-type: x proximity;
+            scrollbar-width: thin;
         }
+        /* Centradas cuando caben; alineadas al inicio cuando hay que deslizar. */
+        .catalog-carousel-thumbnails > :first-child { margin-left: auto; }
+        .catalog-carousel-thumbnails > :last-child { margin-right: auto; }
         .catalog-carousel-thumbnail {
+            flex-shrink: 0;
+            scroll-snap-align: start;
             background: #f6f9fc;
             border: 2px solid transparent;
             border-radius: .65rem;

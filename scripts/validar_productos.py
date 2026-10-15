@@ -77,7 +77,9 @@ def validar(productos: list, comprobar_archivos: bool = True) -> list[str]:
                 if not _existe_imagen(ruta):
                     error(f"no existe la imagen «{ruta}» (súbela a R2 fuentes/ o revisa el nombre)")
             if p.get("video") and not (ROOT / p["video"]).exists():
-                error(f"no existe el video «{p['video']}»")
+                error(f"no existe el video «{p['video']}» (súbelo a R2 fuentes/ con ese mismo nombre)")
+        if p.get("video") and not re.fullmatch(r"assets/video/[^/]+\.(mp4|webm)", p["video"]):
+            error(f"el video «{p['video']}» debe ser un archivo .mp4 o .webm")
     return errores
 
 

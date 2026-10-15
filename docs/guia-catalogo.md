@@ -25,9 +25,9 @@ Para publicar al instante: GitHub → pestaña **Actions** → **Catálogo desde
 | cotizar | `sí` si no tiene precio publicado (muestra «Cotizar»). | no |
 | disponibilidad | `A pedido`, `En stock` o `Agotado`. Las dos últimas muestran una etiqueta; el producto se puede pedir igual. | En stock |
 | descripcion | Texto de la ficha. | … |
-| imagenes | Nombres de las fotos, sin carpeta ni extensión, separados por comas. La primera es la principal. | ts-woody-1, ts-woody-2 |
+| imagenes | Nombres de las fotos, sin carpeta ni extensión, separados por comas. **Pon tantas como quieras**: la primera es la principal y las miniaturas se crean solas (en la tarjeta del catálogo van en una fila que se desliza). | ts-woody-1, ts-woody-2, ts-woody-3 |
 | colores | Opcional. Una línea por color: `Nombre #código foto`. | Rosa #ff99cc hk-urbana-1 |
-| video | Opcional: archivo de video ya subido al sitio. | sn-peaky-video.mp4 |
+| video | Opcional: un video por producto, con su extensión (.mp4 o .webm). Si es nuevo, súbelo a R2 `fuentes/` con ese mismo nombre (máx. 25 MB); aparece como última miniatura con ▶. | taza-rosa-video.mp4 |
 | etiqueta | Opcional: `Top Ventas` (sale en el mosaico de portada) o `Personalizable`. | Top Ventas |
 | fechaAlta | Fecha de alta `AAAA-MM-DD`. Durante 14 días el producto lleva el aviso «Nuevo». | 2026-10-20 |
 | slug | Dirección de la ficha (`producto/<slug>/`). **No la cambies** en productos existentes. En uno nuevo puedes dejarla vacía y se crea sola a partir del nombre. | woody |
@@ -36,9 +36,15 @@ Para publicar al instante: GitHub → pestaña **Actions** → **Catálogo desde
 
 ## Añadir un producto nuevo
 
-1. **Fotos:** súbelas al bucket R2 `s3d`, carpeta `fuentes/` (panel de Cloudflare → R2 → s3d → Upload).
-   Usa el original de la cámara (PNG o JPG, cuanto más grande mejor) y un nombre sin tildes, p. ej. `taza-rosa-1.jpg`.
-2. **Fila:** añade una fila en la hoja con un `id` nuevo, `activo` = `sí` y en `imagenes` el nombre sin extensión: `taza-rosa-1`.
-3. En la siguiente pasada GitHub descarga la foto, genera los 4 tamaños (AVIF y WebP) y publica la ficha.
+1. **Fotos y video:** súbelos al bucket R2 `s3d`, carpeta `fuentes/` (panel de Cloudflare → R2 → s3d → Upload).
+   Fotos: el original de la cámara (PNG o JPG, cuanto más grande mejor), con nombres sin tildes, p. ej.
+   `taza-rosa-1.jpg`, `taza-rosa-2.jpg`, `taza-rosa-3.jpg`. Video (opcional): p. ej. `taza-rosa-video.mp4`, hasta 25 MB.
+2. **Fila:** añade una fila en la hoja con un `id` nuevo; en `imagenes` los nombres sin extensión en el orden
+   en que quieres verlos (`taza-rosa-1, taza-rosa-2, taza-rosa-3`) y en `video` el nombre completo (`taza-rosa-video.mp4`).
+3. En la siguiente pasada GitHub descarga las fotos, genera los 4 tamaños (AVIF y WebP), copia el video tal cual
+   y publica la ficha. Si falta un archivo en R2 o el video pesa más de 25 MB, no publica nada y te avisa.
+
+Para **añadir o quitar fotos de un producto que ya existe** basta con editar su celda `imagenes`
+(y subir a R2 las fotos nuevas). Cambiar el orden de los nombres cambia la foto principal.
 
 Consejo: si quieres preparar un producto sin que se vea todavía, ponlo con `activo` = `no` y actívalo cuando esté listo.

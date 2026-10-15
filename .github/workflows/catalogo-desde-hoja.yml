@@ -35,6 +35,38 @@ jobs:
           curl -fsSL --retry 3 "$HOJA_CSV_URL" -o "$RUNNER_TEMP/hoja.csv"
           python3 scripts/hoja_catalogo.py faltantes "$RUNNER_TEMP/hoja.csv" > "$RUNNER_TEMP/faltan.txt"
           echo "faltan=$(wc -l < "$RUNNER_TEMP/faltan.txt")" >> "$GITHUB_OUTPUT"
+          python3 scripts/hoja_catalogo.py videos "$RUNNER_TEMP/hoja.csv" > "$RUNNER_TEMP/videos.txt"
+          echo "videos=$(wc -l < "$RUNNER_TEMP/videos.txt")" >> "$GITHUB_OUTPUT"
+
+      - name: Traer de R2 los videos nuevos
+        if: steps.hoja.outputs.videos != '0'
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          # Se publican tal cual (sin recomprimir). Máximo 25 MB por video para no inflar el repositorio.
+          E="https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com/$R2_BUCKET/fuentes"
+          mkdir -p assets/video
+          fallos=""
+          while IFS= read -r nombre; do
+            clave=$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$nombre")
+            if ! curl -fsS --aws-sigv4 "aws:amz:auto:s3" --user "$R2_ACCESS_KEY_ID:$R2_SECRET_ACCESS_KEY" \
+                 -o "assets/video/$nombre" "$E/$clave" 2>/dev/null; then
+              rm -f "assets/video/$nombre"; fallos="$fallos\n- $nombre: no está en R2 (carpeta fuentes/)"; continue
+            fi
+            mb=$(( $(stat -c%s "assets/video/$nombre") / 1048576 ))
+            if [ "$mb" -gt 25 ]; then
+              rm -f "assets/video/$nombre"; fallos="$fallos\n- $nombre: pesa ${mb} MB (máximo 25 MB)"; continue
+            fi
+            echo "Video añadido: $nombre (${mb} MB)"
+          done < "$RUNNER_TEMP/videos.txt"
+          if [ -n "$fallos" ]; then
+            printf "### Videos con problemas (no se publicó nada)%b\n" "$fallos" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Hay videos que no se pudieron traer de R2; revisa el resumen."
+            exit 1
+          fi
 
       - name: Traer de R2 las fotos nuevas y optimizarlas
         if: steps.hoja.outputs.faltan != '0'

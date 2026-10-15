@@ -5,6 +5,35 @@ const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
 
 module.exports = {
+    async 'las miniaturas se adaptan al número de fotos: centradas si caben, una sola fila deslizable si son muchas'({ browser }) {
+        const p = await abrir(browser, '', {
+            vp: { width: 390, height: 844 },
+            preparar: pagina => pagina.route(/productos\.json/, async ruta => {
+                const lista = await (await ruta.fetch()).json();
+                const woody = lista.find(x => x.nombre === 'WOODY');
+                woody.imagenes = lista.slice(0, 8).map(x => x.imagenes[0]);
+                woody.video = 'assets/video/barber-bart-video.mp4';
+                await ruta.fulfill({ json: lista });
+            })
+        });
+        const fila = sel => p.locator(sel).locator('.catalog-carousel-thumbnails');
+        const medir = sel => fila(sel).evaluate(f => {
+            const caja = f.getBoundingClientRect(); const hijos = [...f.children].map(h => h.getBoundingClientRect());
+            return { filas: 1 + hijos.filter(h => Math.abs(h.top - hijos[0].top) > 4).length /* la activa sube 1 px */, n: hijos.length, desliza: f.scrollWidth > f.clientWidth,
+                izq: Math.round(hijos[0].left - caja.left), der: Math.round(caja.right - hijos.at(-1).right) };
+        });
+        const muchas = await medir('#producto-1');
+        assert.equal(muchas.n, 9);             // 8 fotos + video
+        assert.equal(muchas.filas, 1);
+        assert.ok(muchas.desliza);
+        const pocas = await medir('#producto-2');   // JESSIE: 2 fotos
+        assert.equal(pocas.filas, 1);
+        assert.ok(!pocas.desliza && Math.abs(pocas.izq - pocas.der) <= 2, JSON.stringify(pocas));
+        await fila('#producto-1').locator('[data-carousel-index="7"]').click();
+        assert.match(await p.locator('#producto-1 [data-carousel-main-image]').getAttribute('src'), new RegExp((await p.evaluate(async () => (await (await fetch('productos.json')).json())[7].imagenes[0].split('/').pop().replace('.webp', '')))));
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
     async 'los datos mandan: ocultos fuera, orden por «orden», categorías nuevas y etiqueta de disponibilidad'({ browser }) {
         const p = await abrir(browser, '', {
             preparar: pagina => pagina.route(/productos\.json/, async ruta => {

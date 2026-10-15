@@ -4,6 +4,7 @@
   python3 scripts/hoja_catalogo.py exportar catalogo.csv        productos.json -> CSV (para cargar la hoja)
   python3 scripts/hoja_catalogo.py importar <archivo.csv | URL>  CSV de la hoja -> productos.json
   python3 scripts/hoja_catalogo.py faltantes <archivo.csv | URL> imágenes que la hoja nombra y aún no existen
+  python3 scripts/hoja_catalogo.py videos <archivo.csv | URL>    videos que la hoja nombra y aún no existen
 
 La hoja manda: «importar» reescribe productos.json entero. Si algún dato no es válido no escribe nada
 y lista los errores (fila y motivo). Las imágenes se escriben por su nombre, sin carpeta ni extensión
@@ -216,8 +217,17 @@ def faltantes(origen: str) -> None:
             print(n)
 
 
+def videos(origen: str) -> None:
+    """Imprime, uno por línea, los videos que nombra la hoja y no existen aún en assets/video/."""
+    for nombre in sorted({(f.get("video") or "").strip() for f in leer_csv(origen)} - {""}):
+        nombre = re.sub(r"^assets/video/", "", nombre)
+        if not (ROOT / "assets" / "video" / nombre).exists():
+            print(nombre)
+
+
 if __name__ == "__main__":
-    if len(sys.argv) != 3 or sys.argv[1] not in ("exportar", "importar", "faltantes"):
+    comandos = {"exportar": exportar, "importar": importar, "faltantes": faltantes, "videos": videos}
+    if len(sys.argv) != 3 or sys.argv[1] not in comandos:
         print(__doc__)
         sys.exit(2)
-    {"exportar": exportar, "importar": importar, "faltantes": faltantes}[sys.argv[1]](sys.argv[2])
+    comandos[sys.argv[1]](sys.argv[2])
