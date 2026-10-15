@@ -1,0 +1,92 @@
+name: Catálogo desde la hoja
+
+# Lee la hoja de cálculo del catálogo (CSV), trae de R2 las fotos nuevas, valida, regenera las páginas y
+# publica en main. Si un dato es inválido NO publica nada: la ejecución falla y GitHub avisa por correo
+# con la lista de errores (fila y motivo) en el resumen.
+#
+# Configuración (Settings > Secrets and variables > Actions):
+#   Variable  HOJA_CSV_URL   enlace de exportación CSV de la hoja
+#   Secretos  R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET  (token de SOLO LECTURA)
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalogo-desde-hoja
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    if: vars.HOJA_CSV_URL != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Leer la hoja
+        id: hoja
+        env:
+          HOJA_CSV_URL: ${{ vars.HOJA_CSV_URL }}
+        run: |
+          curl -fsSL --retry 3 "$HOJA_CSV_URL" -o "$RUNNER_TEMP/hoja.csv"
+          python3 scripts/hoja_catalogo.py faltantes "$RUNNER_TEMP/hoja.csv" > "$RUNNER_TEMP/faltan.txt"
+          echo "faltan=$(wc -l < "$RUNNER_TEMP/faltan.txt")" >> "$GITHUB_OUTPUT"
+
+      - name: Traer de R2 las fotos nuevas y optimizarlas
+        if: steps.hoja.outputs.faltan != '0'
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+        run: |
+          mkdir -p fuentes
+          E="https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com/$R2_BUCKET/fuentes"
+          sin_foto=""
+          while IFS= read -r nombre; do
+            clave=$(python3 -c 'import sys, urllib.parse; print(urllib.parse.quote(sys.argv[1]))' "$nombre")
+            ok=""
+            for ext in png jpg jpeg webp PNG JPG JPEG WEBP; do
+              if curl -fsS --aws-sigv4 "aws:amz:auto:s3" --user "$R2_ACCESS_KEY_ID:$R2_SECRET_ACCESS_KEY" \
+                   -o "fuentes/$nombre.$ext" "$E/$clave.$ext" 2>/dev/null; then ok=1; break; fi
+              rm -f "fuentes/$nombre.$ext"
+            done
+            [ -n "$ok" ] && echo "Foto encontrada en R2: $nombre" || sin_foto="$sin_foto $nombre"
+          done < "$RUNNER_TEMP/faltan.txt"
+          if [ -n "$sin_foto" ]; then
+            echo "::error::Estas fotos no están en R2 (carpeta fuentes/):$sin_foto"
+            { echo "### Fotos que faltan en R2 (fuentes/)"; for n in $sin_foto; do echo "- $n"; done; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          npm install --no-save --no-package-lock sharp@0.34.5
+          node scripts/optimize_images.cjs --fuentes fuentes
+
+      - name: Importar y validar los datos
+        run: |
+          set -o pipefail
+          python3 scripts/hoja_catalogo.py importar "$RUNNER_TEMP/hoja.csv" | tee "$RUNNER_TEMP/importar.txt" || {
+            { echo "### La hoja tiene errores (no se publicó nada)"; echo '```'; cat "$RUNNER_TEMP/importar.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
+
+      - name: Regenerar páginas
+        run: python3 scripts/build_product_pages.py
+
+      - name: Publicar
+        run: |
+          rm -rf fuentes
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Sin cambios en la hoja." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "Catálogo S3D (hoja)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "catálogo: cambios desde la hoja de cálculo"
+          git pull --rebase -q origin main
+          git push -q origin HEAD:main
+          { echo "### Publicado"; git show --stat --format='%h %s' HEAD | head -40; } >> "$GITHUB_STEP_SUMMARY"

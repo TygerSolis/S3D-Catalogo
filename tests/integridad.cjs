@@ -8,6 +8,31 @@ const productos = () => leerJson('productos.json');
 const rutasImagen = p => [...p.imagenes, ...(p.colores || []).map(c => c.img)];
 
 module.exports = {
+    'la hoja de cálculo: exportar e importar deja productos.json idéntico y los errores se explican por fila'() {
+        const { execFileSync } = require('child_process');
+        const os = require('os');
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), 's3d-hoja-'));
+        const copia = path.join(dir, 'productos.json');
+        const original = fs.readFileSync(path.join(RAIZ, 'productos.json'), 'utf8');
+        const py = (...args) => execFileSync('python3', ['-c', `import sys, pathlib; sys.path.insert(0, 'scripts'); import hoja_catalogo as h
+h.JSON = pathlib.Path(sys.argv[1]); getattr(h, sys.argv[2])(sys.argv[3])`, ...args], { cwd: RAIZ, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+        try {
+            fs.writeFileSync(copia, original);
+            py(copia, 'exportar', path.join(dir, 'hoja.csv'));
+            assert.match(py(copia, 'importar', path.join(dir, 'hoja.csv')), /Sin cambios/);
+            assert.equal(fs.readFileSync(copia, 'utf8'), original);
+            // Una hoja con errores no toca el archivo y dice fila y motivo
+            const csv = fs.readFileSync(path.join(dir, 'hoja.csv'), 'utf8').split('\n');
+            csv[1] = csv[1].replace(',A pedido,', ',Pronto,').replace(/^1,10,sí,/, '1,10,quizá,');
+            fs.writeFileSync(path.join(dir, 'mala.csv'), csv.join('\n'));
+            let salida = '';
+            try { py(copia, 'importar', path.join(dir, 'mala.csv')); } catch (error) { salida = error.stdout; }
+            assert.match(salida, /Fila 2 \(WOODY\): «activo» debe ser sí o no/);
+            assert.equal(fs.readFileSync(copia, 'utf8'), original);
+        } finally {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+    },
     'productos.json pasa el validador y el validador detecta datos erróneos'() {
         const { execFileSync } = require('child_process');
         const py = codigo => execFileSync('python3', ['-c', codigo], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
