@@ -24,6 +24,7 @@
  *   favorito_agregar { producto }   se guarda un producto en favoritos
  *   cotizar_personalizado { producto } se envía el formulario de personalización
  *   ficha_compartir  { producto }   se comparte o copia el enlace de la ficha
+ *   mapa_cargado     (sin datos)    se pulsa "Ver el mapa del taller" en la portada
  * Además Umami registra cada página vista; las páginas de producto aparecen por su URL.
  *
  * Para excluir tus propios dispositivos: abre el sitio una vez con ?sin-analitica

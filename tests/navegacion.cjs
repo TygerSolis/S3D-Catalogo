@@ -1,7 +1,23 @@
 // Menús, anclas, 404 y privacidad.
-const { assert, abrir, ruta, BASE } = require('./util.cjs');
+const { assert, abrir, ruta, BASE, nombresEventos } = require('./util.cjs');
 
 module.exports = {
+    async 'el mapa de Google solo se carga al pulsar «Ver el mapa del taller»'({ browser }) {
+        const aGoogle = [];
+        const p = await abrir(browser, '', { preparar: pagina => pagina.route(/google\.com\/maps/, ruta => { aGoogle.push(ruta.request().url()); ruta.fulfill({ contentType: 'text/html', body: '<p>mapa</p>' }); }) });
+        await p.locator('#ubicacion').scrollIntoViewIfNeeded();
+        await p.waitForTimeout(800);
+        assert.equal(await p.locator('#mapa-taller iframe').count(), 0);
+        assert.deepEqual(aGoogle, [], 'se pidió el mapa sin que la persona lo pulsara');
+        await p.locator('#mapa-taller .mapa-cargar').click();
+        await p.locator('#mapa-taller iframe').waitFor();
+        assert.match(await p.locator('#mapa-taller iframe').getAttribute('src'), /^https:\/\/www\.google\.com\/maps\?q=-12\.0797586,-77\.1041774&z=17&output=embed$/);
+        await p.waitForTimeout(300);
+        assert.equal(aGoogle.length, 1);
+        assert.ok(nombresEventos(p).includes('mapa_cargado'));
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
     async 'menú móvil: abre, navega y se cierra (portada y ficha)'({ browser }) {
         for (const pagina of ['', 'producto/woody/']) {
             const p = await abrir(browser, pagina, { vp: { width: 390, height: 844 }, touch: true });

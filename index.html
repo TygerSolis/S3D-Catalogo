@@ -66,7 +66,7 @@
     
 
     <link rel="stylesheet" href="chrome.css?v=6">
-    <link rel="stylesheet" href="styles.css?v=tienda-2">
+    <link rel="stylesheet" href="styles.css?v=tienda-3">
     <link rel="stylesheet" href="tailwind.css?v=1">
 </head>
 <body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
@@ -383,8 +383,13 @@
 
     <section id="ubicacion" class="bg-[#f7faff] py-20 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10 items-center">
-            <div class="rounded-3xl overflow-hidden shadow-soft border border-gray-200 bg-white h-80">
-                <iframe title="Ubicación del taller S3D" src="https://www.google.com/maps?q=-12.0797586,-77.1041774&z=17&output=embed" class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="rounded-3xl overflow-hidden shadow-soft border border-gray-200 bg-white h-80" id="mapa-taller" data-mapa="https://www.google.com/maps?q=-12.0797586,-77.1041774&amp;z=17&amp;output=embed">
+                <!-- El mapa de Google (que instala cookies) se carga solo cuando la persona lo pide. -->
+                <button type="button" class="mapa-cargar">
+                    <svg class="ico" aria-hidden="true"><use href="#i-map-pin"/></svg>
+                    <strong>Ver el mapa del taller</strong>
+                    <small>Al cargarlo, Google recibe datos técnicos de tu visita.</small>
+                </button>
             </div>
             <div>
                 <span class="section-kicker">Nuestro taller</span>
@@ -505,6 +510,6 @@
     <script src="chrome.js?v=1" defer></script>
     <script src="tienda.js?v=2" defer></script>
     <script src="analytics.js?v=4" defer></script>
-    <script src="catalogo.js?v=tienda-6" defer></script>
+    <script src="catalogo.js?v=tienda-7" defer></script>
 </body>
 </html>

@@ -974,4 +974,17 @@
 
     cargarProductos();
 
+    // Mapa del taller: el iframe de Google Maps se crea solo al pulsar el botón (sin cookies de Google antes).
+    const mapa = document.getElementById('mapa-taller');
+    mapa?.querySelector('.mapa-cargar')?.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.title = 'Ubicación del taller S3D';
+        iframe.src = mapa.dataset.mapa;
+        iframe.className = 'w-full h-full border-0';
+        iframe.referrerPolicy = 'no-referrer-when-downgrade';
+        mapa.replaceChildren(iframe);
+        iframe.focus();
+        if (window.s3dTrack) window.s3dTrack('mapa_cargado');
+    });
+
 })();

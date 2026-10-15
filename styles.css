@@ -639,3 +639,12 @@
 .search-suggest-vacio span, .search-suggest-vacio a { display: block; }
 .search-suggest-vacio a { color: #0066cc; font-weight: 800; margin-top: .35rem; text-decoration: underline; text-underline-offset: .2rem; }
 @media print { .search-suggest { display: none !important; } }
+
+/* Mapa del taller: vista previa propia; el iframe de Google se carga al pulsar */
+.mapa-cargar { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; width: 100%; height: 100%; padding: 1.5rem; text-align: center; color: #003366; cursor: pointer;
+    background: radial-gradient(circle at 50% 42%, #ffffff 0, #eaf2fb 70%); border: 0; font: inherit; transition: background-color .2s; }
+.mapa-cargar .ico { width: 2.5rem; height: 2.5rem; color: #0066cc; }
+.mapa-cargar strong { font-size: 1.05rem; }
+.mapa-cargar small { max-width: 18rem; color: #4b5563; font-size: .8rem; line-height: 1.35; }
+.mapa-cargar:hover strong, .mapa-cargar:focus-visible strong { text-decoration: underline; }
+.mapa-cargar:focus-visible { outline: 3px solid #0066cc; outline-offset: -3px; }

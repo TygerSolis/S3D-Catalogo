@@ -406,7 +406,7 @@ def actualizar_itemlist(todos: list[dict]) -> None:
 
 
 # Fecha de la política de privacidad: actualizarla a mano cuando cambie el texto (así la generación es reproducible).
-FECHA_PRIVACIDAD = "13/10/2026"
+FECHA_PRIVACIDAD = "15/10/2026"
 
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
 
@@ -470,7 +470,7 @@ def pagina_privacidad() -> str:
         <h2>Servicios de terceros</h2>
         <ul>
             <li><strong>GitHub Pages</strong>: aloja este sitio.</li>
-            <li><strong>Google Maps</strong>: muestra el mapa de nuestra ubicación; al verlo, Google puede recibir datos técnicos de tu visita.</li>
+            <li><strong>Google Maps</strong>: el mapa de nuestra ubicación solo se carga si pulsas «Ver el mapa del taller»; a partir de ese momento Google puede recibir datos técnicos de tu visita.</li>
             <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>
         </ul>
 
