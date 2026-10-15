@@ -5,6 +5,32 @@ const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
 
 module.exports = {
+    async 'nombres y colecciones con comillas o < > se muestran como texto y no rompen la tarjeta'({ browser }) {
+        const NOMBRE = `Taza "Rosa" <b>de</b> Ana's & co`;
+        const COLECCION = `Cosas d'Ana <i>x</i>`;
+        const p = await abrir(browser, '', {
+            preparar: pagina => pagina.route(/productos\.json/, async ruta => {
+                const lista = await (await ruta.fetch()).json();
+                lista[0].nombre = NOMBRE;
+                lista[0].coleccion = COLECCION;
+                lista[0].badge = '<b>Top</b>';
+                await ruta.fulfill({ json: lista });
+            })
+        });
+        assert.equal(await p.locator('#main-content b, #main-content i, #hero-products b').count(), 0, 'se interpretó HTML de los datos');
+        const t = p.locator('.catalog-carousel-card', { hasText: 'Taza' }).first();
+        assert.equal((await t.locator('h3').textContent()).trim(), NOMBRE);
+        assert.equal(await t.locator('[data-carousel-main-image]').getAttribute('alt'), NOMBRE);
+        assert.equal(await t.locator('.catalog-fav').getAttribute('aria-label'), `Guardar ${NOMBRE} en favoritos`);
+        assert.equal((await t.locator('.catalog-card-kicker').textContent()).trim(), COLECCION);
+        assert.match(await t.locator('[data-carousel-buy]').getAttribute('href'), /^https:\/\/api\.whatsapp\.com\/send\?phone=\d+&text=/);
+        // Los filtros funcionan sin onclick en el HTML
+        await p.locator('#category-filters [data-categoria="Muñecos Coleccionables"]').click();
+        assert.match(p.url(), /categoria=Mu%C3%B1ecos/);
+        assert.ok(await p.locator('.catalog-carousel-card').count() > 1);
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
     async 'el hero muestra 4 productos y Bart Barbero en grande'({ browser }) {
         const p = await abrir(browser);
         assert.equal(await p.locator('.hero-product').count(), 4);

@@ -84,14 +84,13 @@
 
         function renderFilters() {
             filtersContainer.innerHTML = categoriasVisibles().map(cat => `
-                <button 
-                    onclick="filtrarPorCategoria('${cat}')"
+                <button type="button" data-categoria="${escaparHTML(cat)}"
                     class="category-filter px-4 py-2 text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0
                     ${categoriaActual === cat 
                         ? 'category-filter-active text-brand-accent'
                         : 'text-gray-500 hover:text-brand-accent'}"
                 >
-                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat === 'Favoritos' ? `<svg class="ico filter-heart" aria-hidden="true"><use href="#i-heart"/></svg>Favoritos (${idsFavoritos().length})` : cat}
+                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat === 'Favoritos' ? `<svg class="ico filter-heart" aria-hidden="true"><use href="#i-heart"/></svg>Favoritos (${idsFavoritos().length})` : escaparHTML(cat)}
                 </button>
             `).join('');
         }
@@ -110,10 +109,10 @@
                 return `
                 <button type="button" class="hero-product" data-hero-product="${producto.id}">
                     <picture>
-                        ${index === 0 ? `<source media="(min-width: 1024px)" srcset="${rutaAvif(imagen)}" type="image/avif">
-                        <source media="(min-width: 1024px)" srcset="${imagen}" type="image/webp">` : ''}
-                        <source srcset="${rutaAvif(rutaSm(imagen))}" type="image/avif">
-                        <img src="${rutaSm(imagen)}" alt=""${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
+                        ${index === 0 ? `<source media="(min-width: 1024px)" srcset="${escaparHTML(rutaAvif(imagen))}" type="image/avif">
+                        <source media="(min-width: 1024px)" srcset="${escaparHTML(imagen)}" type="image/webp">` : ''}
+                        <source srcset="${escaparHTML(rutaAvif(rutaSm(imagen)))}" type="image/avif">
+                        <img src="${escaparHTML(rutaSm(imagen))}" alt=""${producto.heroFoco ? ` style="object-position: ${escaparHTML(producto.heroFoco)}"` : ''} ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
                     </picture>
                     ${esNuevo(producto) ? '<span class="hero-product-new">Nuevo</span>' : ''}
                     <span class="hero-product-label"><strong>${escaparHTML(producto.nombre)}</strong><span>${precio}</span></span>
@@ -163,11 +162,11 @@
                 <p class="catalog-carousel-color-name" data-color-label aria-live="polite">Color: ${escaparHTML(colorInicial)}</p>` : '';
 
             const miniaturasHTML = tieneColores ? '' : producto.imagenes.map((imagen, index) => `
-                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${producto.nombre}">
-                    <picture><source srcset="${rutaAvif(rutaSm(imagen))}" type="image/avif"><img src="${rutaSm(imagen)}" loading="lazy" decoding="async" alt=""></picture>
+                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${index}" class="catalog-carousel-thumbnail${index === 0 ? ' is-active' : ''}" aria-label="Mostrar imagen ${index + 1} de ${escaparHTML(producto.nombre)}">
+                    <picture><source srcset="${escaparHTML(rutaAvif(rutaSm(imagen)))}" type="image/avif"><img src="${escaparHTML(rutaSm(imagen))}" loading="lazy" decoding="async" alt=""></picture>
                 </button>
             `).join('') + (producto.video ? `
-                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" data-carousel-video="${producto.video}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${producto.nombre}">
+                <button type="button" data-carousel-thumbnail="${producto.id}" data-carousel-index="${producto.imagenes.length}" data-carousel-video="${escaparHTML(producto.video)}" class="catalog-carousel-thumbnail catalog-carousel-thumbnail-video" aria-label="Ver video de ${escaparHTML(producto.nombre)}">
                     <span aria-hidden="true">▶</span>
                 </button>
             ` : '');
@@ -177,29 +176,29 @@
                 <div class="catalog-media">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0">
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
-                    ${producto.badge ? `<span class="catalog-carousel-badge">${producto.badge}</span>` : ''}
+                    ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : ''}
                     <picture>
-                        <source data-carousel-main-source srcset="${rutaAvif(imgSm)}" type="image/avif">
-                        <img data-carousel-main-image src="${imgSm}" loading="lazy" decoding="async" alt="${producto.nombre}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
+                        <source data-carousel-main-source srcset="${escaparHTML(rutaAvif(imgSm))}" type="image/avif">
+                        <img data-carousel-main-image src="${escaparHTML(imgSm)}" loading="lazy" decoding="async" alt="${escaparHTML(producto.nombre)}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
                     </picture>
-                    ${producto.video ? `<video data-carousel-main-video src="${producto.video}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
+                    ${producto.video ? `<video data-carousel-main-video src="${escaparHTML(producto.video)}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
                     <span class="sr-only">Ver en grande</span>
                     <span class="catalog-carousel-expand" aria-hidden="true"><svg class="ico w-4 h-4" aria-hidden="true"><use href="#i-maximize-2"/></svg></span>
                 </div>
                 <button type="button" class="catalog-fav" data-fav="${producto.id}" aria-pressed="false" aria-label="Guardar ${escaparHTML(producto.nombre)} en favoritos" title="Guardar en favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></button>
                 </div>
-                ${tieneColores ? coloresHTML : `<div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${producto.nombre}">
+                ${tieneColores ? coloresHTML : `<div class="catalog-carousel-thumbnails" aria-label="Miniaturas de ${escaparHTML(producto.nombre)}">
                     ${miniaturasHTML}
                 </div>`}
                 <div class="catalog-carousel-info">
                     <p class="catalog-card-kicker">${escaparHTML(producto.coleccion || producto.categoria)}</p>
-                    <h3>${producto.slug ? `<a href="producto/${producto.slug}/" class="catalog-card-link" data-evento="ficha_tarjeta" data-producto="${escaparHTML(producto.nombre)}">${producto.nombre}</a>` : producto.nombre}</h3>
+                    <h3>${producto.slug ? `<a href="producto/${escaparHTML(producto.slug)}/" class="catalog-card-link" data-evento="ficha_tarjeta" data-producto="${escaparHTML(producto.nombre)}">${escaparHTML(producto.nombre)}</a>` : escaparHTML(producto.nombre)}</h3>
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
-                        <span>${[producto.medida, producto.material].filter(Boolean).join(' · ')}</span>
+                        <span>${escaparHTML([producto.medida, producto.material].filter(Boolean).join(' · '))}</span>
                     </div>
                     <div class="catalog-carousel-actions">
-                        <a href="${urlWhatsApp(producto, colorInicial)}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
+                        <a href="${escaparHTML(urlWhatsApp(producto, colorInicial))}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
                         <button type="button" class="catalog-carousel-add" data-pedido-add="${producto.id}" aria-label="Añadir ${escaparHTML(producto.nombre)} al pedido" title="Añadir al pedido"><svg class="ico ico-mas" aria-hidden="true"><use href="#i-plus"/></svg><svg class="ico ico-ok" aria-hidden="true"><use href="#i-check"/></svg></button>
                     </div>
                 </div>
@@ -453,6 +452,11 @@
                 });
             });
         }
+
+        filtersContainer.addEventListener('click', evento => {
+            const boton = evento.target.closest('[data-categoria]');
+            if (boton) window.filtrarPorCategoria(boton.dataset.categoria);
+        });
 
         window.filtrarPorCategoria = function(categoria) {
             track('categoria', { categoria });
@@ -760,7 +764,7 @@
             thumbs.style.display = total > 1 ? 'flex' : 'none';
             thumbs.innerHTML = total > 1 ? currentLightboxMediaArray.map((item, i) => `
                 <button type="button" class="lightbox-thumb${i === currentLightboxIndex ? ' is-active' : ''}" data-lightbox-thumb="${i}" aria-label="${item.type === 'vid' ? 'Ver video' : `Ver imagen ${i + 1}`}"${i === currentLightboxIndex ? ' aria-current="true"' : ''}>
-                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<picture><source srcset="${rutaAvif(rutaSm(item.src))}" type="image/avif"><img src="${rutaSm(item.src)}" alt="" loading="lazy" decoding="async"></picture>`}
+                    ${item.type === 'vid' ? '<span aria-hidden="true">▶</span>' : `<picture><source srcset="${escaparHTML(rutaAvif(rutaSm(item.src)))}" type="image/avif"><img src="${escaparHTML(rutaSm(item.src))}" alt="" loading="lazy" decoding="async"></picture>`}
                 </button>`).join('') : '';
 
             const info = document.getElementById('lightbox-info');

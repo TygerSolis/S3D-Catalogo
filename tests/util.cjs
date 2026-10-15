@@ -12,7 +12,7 @@ const leerJson = ruta => JSON.parse(fs.readFileSync(path.join(RAIZ, ruta), 'utf8
 
 /**
  * Abre una página con Umami simulado (los eventos quedan en página.eventos) y el reloj fijo.
- * opciones: { vp, touch, sinReloj }
+ * opciones: { vp, touch, sinReloj, preparar(pagina) }
  */
 async function abrir(browser, ruta = '', opciones = {}) {
     const contexto = await browser.newContext({
@@ -29,6 +29,7 @@ async function abrir(browser, ruta = '', opciones = {}) {
     // Sin Web Share API: así "Compartir" usa siempre el portapapeles en las pruebas.
     await pagina.addInitScript(() => { try { Object.defineProperty(navigator, 'share', { value: undefined }); } catch (e) { /* ya definida */ } });
     if (!opciones.sinReloj) await pagina.clock.setFixedTime(FECHA_FIJA);
+    if (opciones.preparar) await opciones.preparar(pagina);   // p. ej. interceptar productos.json
     await pagina.goto(BASE + ruta, { waitUntil: 'networkidle' });
     pagina.contexto = contexto;
     return pagina;
