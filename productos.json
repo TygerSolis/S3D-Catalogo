@@ -1621,7 +1621,7 @@
     "nombre": "MOCHILA DUMMY PERSONALIZADA",
     "medida": "6,5CM",
     "material": "PLA Premium",
-    "tipo": "Accesorio",
+    "tipo": "Accesorio 3D",
     "precio": 10,
     "disponibilidad": "A pedido",
     "imagenes": [
@@ -1669,5 +1669,24 @@
     "descripcion": "Llavero que se convierte en soporte para tu celular, ideal para ver videos o hacer videollamadas sin sostenerlo. Con tu nombre en relieve y el color que elijas (en la foto, Judith en celeste).",
     "slug": "llavero-soporte-para-celular",
     "fechaAlta": "2026-09-08"
+  },
+  {
+    "id": 595,
+    "orden": 880,
+    "activo": true,
+    "categoria": "Accesorios",
+    "nombre": "PRUEBA",
+    "medida": "PRUEBA",
+    "material": "PLA Premium",
+    "tipo": "Accesorio 3D",
+    "precio": 55,
+    "disponibilidad": "En stock",
+    "imagenes": [
+      "assets/prueba.webp"
+    ],
+    "video": "assets/video/prueba.mp4",
+    "descripcion": "PRUEBA",
+    "slug": "prueba",
+    "fechaAlta": "2026-10-15"
   }
 ]
