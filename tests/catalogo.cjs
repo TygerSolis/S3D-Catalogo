@@ -5,6 +5,21 @@ const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
 
 module.exports = {
+    async 'si una foto no carga, la tarjeta muestra la imagen propia "Sin foto" (sin servicios externos)'({ browser }) {
+        const externas = [];
+        const p = await abrir(browser, '', {
+            preparar: async pagina => {
+                pagina.on('request', r => { if (!r.url().startsWith('http://localhost') && !r.url().includes('umami')) externas.push(r.url()); });
+                await pagina.route(/assets\/sm\/ts-woody-1\.(avif|webp)/, ruta => ruta.fulfill({ status: 404, body: '' }));
+            }
+        });
+        const img = p.locator('.catalog-carousel-card', { hasText: 'WOODY' }).first().locator('[data-carousel-main-image]');
+        await img.scrollIntoViewIfNeeded();
+        await p.waitForFunction(() => { const i = document.querySelector('#producto-1 [data-carousel-main-image]'); return i?.currentSrc.endsWith('sin-foto.svg') && i.complete && i.naturalWidth > 0; }, null, { timeout: 5000 });
+        assert.deepEqual(externas.filter(u => u.includes('placehold')), []);
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
     async 'nombres y colecciones con comillas o < > se muestran como texto y no rompen la tarjeta'({ browser }) {
         const NOMBRE = `Taza "Rosa" <b>de</b> Ana's & co`;
         const COLECCION = `Cosas d'Ana <i>x</i>`;

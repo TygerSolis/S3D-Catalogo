@@ -179,7 +179,7 @@
                     ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : ''}
                     <picture>
                         <source data-carousel-main-source srcset="${escaparHTML(rutaAvif(imgSm))}" type="image/avif">
-                        <img data-carousel-main-image src="${escaparHTML(imgSm)}" loading="lazy" decoding="async" alt="${escaparHTML(producto.nombre)}" onerror="this.src='https://placehold.co/700x700/f3f7fb/003366?text=Sin+Foto'">
+                        <img data-carousel-main-image src="${escaparHTML(imgSm)}" loading="lazy" decoding="async" alt="${escaparHTML(producto.nombre)}">
                     </picture>
                     ${producto.video ? `<video data-carousel-main-video src="${escaparHTML(producto.video)}" class="hidden absolute inset-0 h-full w-full object-contain" controls playsinline preload="none"></video>` : ''}
                     <span class="sr-only">Ver en grande</span>
@@ -206,6 +206,15 @@
         }
 
         const mainContainer = document.getElementById('main-content');
+
+        // Si la foto de una tarjeta no carga, se muestra una imagen propia (sin servicios externos).
+        mainContainer.addEventListener('error', evento => {
+            const img = evento.target;
+            if (!img.matches || !img.matches('[data-carousel-main-image]') || img.dataset.sinFoto) return;
+            img.dataset.sinFoto = '1';
+            img.closest('picture')?.querySelectorAll('source').forEach(fuente => fuente.remove());
+            img.src = 'assets/sin-foto.svg';
+        }, true);
 
         // Añadir al pedido (botón + de cada tarjeta)
         mainContainer.addEventListener('click', evento => {
@@ -340,7 +349,7 @@
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
                             <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video" aria-label="Reproducir video explicativo de las placas">
-                                <img src="assets/sm/pet-video-poster.webp" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300" onerror="this.src='https://placehold.co/600x337/002244/ffffff?text=Ver+Video'">
+                                <img src="assets/sm/pet-video-poster.webp" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
                                     <svg class="ico w-6 h-6 text-white ml-1 fill-white" aria-hidden="true"><use href="#i-play"/></svg>
                                 </div>

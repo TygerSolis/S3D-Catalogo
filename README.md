@@ -92,7 +92,7 @@ Built by **Itamar Solis**
 
 ## Performance tooling
 
-The repository includes `scripts/optimize_videos.py`, a reusable FFmpeg script that transcodes referenced MP4 files to H.264 with `faststart`, scales oversized sources to a practical web resolution and updates repository references. Product videos are also configured to load on demand rather than preloading large media for every card.
+Images are generated in four sizes (AVIF + WebP) by `scripts/optimize_images.cjs` from the originals (kept outside Git). Product videos load on demand rather than preloading large media for every card. If a card photo fails to load, `catalogo.js` swaps in the local `assets/sin-foto.svg` (no third-party placeholder service).
 
 ## Maintenance
 
