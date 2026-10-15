@@ -309,7 +309,7 @@
         const publicada = articulo.dataset.medida ? ` (medida publicada: ${articulo.dataset.medida})` : '';
         const cuerpo = lineas.length ? lineas.map(linea => `• ${linea}`).join('\n') : 'Me gustaría conocer las opciones de personalización.';
         const mensaje = `Hola, quiero cotizar una personalización de: ${nombre}${publicada}.\n${cuerpo}\nQuedo atento al costo y al tiempo de elaboración.\n${location.href.split('#')[0]}`;
-        window.open(`https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensaje)}`, '_blank', 'noopener');
+        window.open(window.S3D.urlWhatsApp(mensaje), '_blank', 'noopener');
         track('cotizar_personalizado', { producto: nombre });
     });
 })();

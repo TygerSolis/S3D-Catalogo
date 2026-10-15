@@ -147,7 +147,7 @@
         }
 
         const urlWhatsApp = (producto, colorNombre) =>
-            `https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensajeWhatsApp(producto, colorNombre))}`;
+            window.S3D.urlWhatsApp(mensajeWhatsApp(producto, colorNombre));
 
         function generarHTMLProductoCarrusel(producto) {
             const tieneColores = Array.isArray(producto.colores) && producto.colores.length > 0;
@@ -508,7 +508,7 @@
             let html = '';
             if (!ps.length && !cs.length) {
                 const mensaje = `Hola, busqué "${t}" en la web de S3D y no lo encontré. ¿Me pueden ayudar?`;
-                html = `<li class="search-suggest-vacio" role="presentation"><span>No encontramos resultados para “${escaparHTML(t)}”.</span><a href="https://api.whatsapp.com/send?phone=51955107609&text=${encodeURIComponent(mensaje)}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp y te ayudamos</a></li>`;
+                html = `<li class="search-suggest-vacio" role="presentation"><span>No encontramos resultados para “${escaparHTML(t)}”.</span><a href="${escaparHTML(window.S3D.urlWhatsApp(mensaje))}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp y te ayudamos</a></li>`;
             } else {
                 html += cs.map(c => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="categoria" data-valor="${escaparHTML(c)}"><span class="search-suggest-cat"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></span><span><strong>Ver ${escaparHTML(c)}</strong><small>Categoría</small></span></li>`).join('');
                 html += ps.map(p => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="producto" data-slug="${escaparHTML(p.slug)}" data-nombre="${escaparHTML(p.nombre)}"><img src="${rutaSm(p.colores?.[0]?.img || p.imagenes[0])}" alt="" width="40" height="50" loading="lazy" decoding="async"><span><strong>${resaltar(p.nombre, t)}</strong><small>${escaparHTML(p.categoria)} · ${p.requiereCotizacion ? 'Cotizar' : `S/ ${p.precio.toFixed(2)}`}</small></span></li>`).join('');

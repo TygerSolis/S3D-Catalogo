@@ -5,11 +5,11 @@
  *  - Favoritos: ids guardados en el navegador.
  * Todo queda en el dispositivo de la persona; no se envía a ningún servidor.
  *
- * API global: window.S3D = { pedido: {...}, favoritos: {...}, aviso(texto) }
+ * API global: window.S3D = { pedido: {...}, favoritos: {...}, aviso(texto), urlWhatsApp(texto) }
  */
 (function () {
     const RAIZ = new URL('./', document.currentScript.src).href;   // raíz del sitio (funciona en la portada y en las fichas)
-    const WHATSAPP = '51955107609';
+    const WHATSAPP = '51955107609';   // lo escribe scripts/build_product_pages.py desde config.json: no editar aquí
     const CLAVE_PEDIDO = 's3d.pedido';
     const CLAVE_FAVORITOS = 's3d.favoritos';
 
@@ -55,7 +55,8 @@
         const resumen = total > 0 ? `Total referencial: ${dinero(total)} (incluye IGV)${porCotizar ? ' + productos por cotizar' : ''}.` : 'Todos los productos están por cotizar.';
         return `Hola, quiero hacer este pedido en S3D:\n\n${lineas.join('\n')}\n\n${resumen}\nSon productos elaborados a pedido y deseo consultar el costo de envío y los tiempos de entrega.`;
     }
-    const urlWhatsApp = () => `https://api.whatsapp.com/send?phone=${WHATSAPP}&text=${encodeURIComponent(mensajeWhatsApp())}`;
+    const urlChat = texto => `https://api.whatsapp.com/send?phone=${WHATSAPP}${texto ? `&text=${encodeURIComponent(texto)}` : ''}`;
+    const urlWhatsApp = () => urlChat(mensajeWhatsApp());
 
     const pedido = {
         items: () => items.map(item => ({ ...item })),
@@ -222,7 +223,7 @@
         renderizar();
     }
 
-    window.S3D = { pedido, favoritos: api, aviso, dinero, RAIZ };
+    window.S3D = { pedido, favoritos: api, aviso, dinero, RAIZ, urlWhatsApp: urlChat };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', construir);
     else construir();
 })();

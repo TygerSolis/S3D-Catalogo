@@ -19,8 +19,12 @@ from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_URL = "https://tygersolis.github.io/S3D-Catalogo/"
-WHATSAPP = "51955107609"
+# Datos de contacto y URL: se editan SOLO en config.json (este script los lleva a todas las páginas,
+# a la portada y a tienda.js).
+CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+BASE_URL = CONFIG["urlBase"]
+WHATSAPP = CONFIG["whatsapp"]
+WHATSAPP_VISIBLE = CONFIG["whatsappVisible"]
 OUT_DIR = ROOT / "producto"
 ITEMLIST_START = "<!-- ITEMLIST:START -->"
 ITEMLIST_END = "<!-- ITEMLIST:END -->"
@@ -36,8 +40,9 @@ CHROME_MARCAS = {
 
 
 def plantilla(nombre: str, base: str) -> str:
-    """Lee scripts/chrome/<nombre>.html y resuelve {{base}} (prefijo relativo a la raíz del sitio)."""
-    return (CHROME_DIR / f"{nombre}.html").read_text(encoding="utf-8").replace("{{base}}", base)
+    """Lee scripts/chrome/<nombre>.html y resuelve {{base}} (prefijo relativo a la raíz del sitio) y los datos de contacto."""
+    texto = (CHROME_DIR / f"{nombre}.html").read_text(encoding="utf-8")
+    return texto.replace("{{base}}", base).replace("{{whatsapp}}", WHATSAPP).replace("{{whatsapp_visible}}", WHATSAPP_VISIBLE)
 
 
 def chrome_superior(base: str) -> str:
@@ -343,9 +348,9 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {sangrar(chrome_pie("../../"))}
 
     <script src="../../chrome.js?v=1" defer></script>
-    <script src="../../tienda.js?v=1" defer></script>
+    <script src="../../tienda.js?v=2" defer></script>
     <script src="../../analytics.js?v=4" defer></script>
-    <script src="../../producto.js?v=9" defer></script>
+    <script src="../../producto.js?v=10" defer></script>
 </body>
 </html>
 """
@@ -371,6 +376,17 @@ def actualizar_chrome_indice() -> None:
                 b = contenido.index("</footer>", a) + len("</footer>")
             contenido = contenido[:a] + nuevo + ("\n" if clave == "top" else "") + contenido[b:]
     indice.write_text(contenido, encoding="utf-8")
+
+
+def sincronizar_contacto() -> None:
+    """Lleva el número de config.json a las partes que no salen de plantillas: el resto de index.html y tienda.js."""
+    indice = ROOT / "index.html"
+    texto = re.sub(r"phone=\d+", f"phone={WHATSAPP}", indice.read_text(encoding="utf-8"))
+    texto = re.sub(r"\+\d{2} \d{3} \d{3} \d{3}", WHATSAPP_VISIBLE, texto)
+    indice.write_text(texto, encoding="utf-8")
+    tienda = ROOT / "tienda.js"
+    texto = re.sub(r"const WHATSAPP = '\d+';", f"const WHATSAPP = '{WHATSAPP}';", tienda.read_text(encoding="utf-8"))
+    tienda.write_text(texto, encoding="utf-8")
 
 
 def actualizar_itemlist(todos: list[dict]) -> None:
@@ -535,6 +551,7 @@ def main() -> None:
 
     actualizar_itemlist(productos)
     actualizar_chrome_indice()
+    sincronizar_contacto()
     escribir_sitemap(productos)
     print(f"{len(productos)} páginas generadas en {OUT_DIR.relative_to(ROOT)}/, sitemap.xml e ItemList actualizados")
 
