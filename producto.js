@@ -309,7 +309,12 @@
         const publicada = articulo.dataset.medida ? ` (medida publicada: ${articulo.dataset.medida})` : '';
         const cuerpo = lineas.length ? lineas.map(linea => `• ${linea}`).join('\n') : 'Me gustaría conocer las opciones de personalización.';
         const mensaje = `Hola, quiero cotizar una personalización de: ${nombre}${publicada}.\n${cuerpo}\nQuedo atento al costo y al tiempo de elaboración.\n${location.href.split('#')[0]}`;
-        window.open(window.S3D.urlWhatsApp(mensaje), '_blank', 'noopener');
+        const codigo = window.S3D.registrarPedido('cotizar', {
+            items: [{ nombre, cantidad: 1, medida: valor('medida'), color: valor('color') === '__otro' ? 'otro' : valor('color') }],
+            detalle: mensaje
+        });
+        window.open(window.S3D.urlWhatsApp(window.S3D.conCodigo(codigo, mensaje)), '_blank', 'noopener');
+        if (codigo) window.S3D.aviso(`Tu código de pedido: ${codigo}`);
         track('cotizar_personalizado', { producto: nombre });
     });
 })();

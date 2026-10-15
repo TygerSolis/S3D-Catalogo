@@ -28,6 +28,8 @@ CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
 BASE_URL = CONFIG["urlBase"]
 WHATSAPP = CONFIG["whatsapp"]
 WHATSAPP_VISIBLE = CONFIG["whatsappVisible"]
+PEDIDOS_URL = CONFIG.get("pedidosUrl", "")
+assert PEDIDOS_URL == "" or re.fullmatch(r"https://script\.google\.com/macros/s/[\w-]+/exec", PEDIDOS_URL), "pedidosUrl inválida en config.json"
 OUT_DIR = ROOT / "producto"
 ITEMLIST_START = "<!-- ITEMLIST:START -->"
 ITEMLIST_END = "<!-- ITEMLIST:END -->"
@@ -376,9 +378,9 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {sangrar(chrome_pie("../../"))}
 
     <script src="../../chrome.js?v=1" defer></script>
-    <script src="../../tienda.js?v=2" defer></script>
+    <script src="../../tienda.js?v=3" defer></script>
     <script src="../../analytics.js?v=4" defer></script>
-    <script src="../../producto.js?v=10" defer></script>
+    <script src="../../producto.js?v=11" defer></script>
 </body>
 </html>
 """
@@ -414,6 +416,7 @@ def sincronizar_contacto() -> None:
     indice.write_text(texto, encoding="utf-8")
     tienda = ROOT / "tienda.js"
     texto = re.sub(r"const WHATSAPP = '\d+';", f"const WHATSAPP = '{WHATSAPP}';", tienda.read_text(encoding="utf-8"))
+    texto = re.sub(r"const PEDIDOS_URL = '[^'\n]*';", lambda _: f"const PEDIDOS_URL = '{PEDIDOS_URL}';", texto)
     tienda.write_text(texto, encoding="utf-8")
 
 
@@ -476,6 +479,13 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 
 def pagina_privacidad() -> str:
     hoy = FECHA_PRIVACIDAD
+    # Solo cuando el registro de pedidos está encendido (config.json «pedidosUrl»).
+    registro = """
+
+        <h2>Registro de tus pedidos</h2>
+        <p>Cuando pulsas &laquo;Comprar&raquo;, envías tu lista de pedido o pides una cotización, guardamos en una hoja de cálculo de S3D (Google) un <strong>código de pedido</strong> (por ejemplo, S3D-7K4Q2), los productos, cantidades, colores o medidas elegidos, el total referencial, la página desde la que pediste y la fecha. Ese mismo código aparece al inicio de tu mensaje de WhatsApp para que podamos darte seguimiento. <strong>No guardamos tu nombre ni tu teléfono</strong> en ese registro.</p>""" if PEDIDOS_URL else ""
+    tercero_google = """
+            <li><strong>Google (Apps Script y Hojas de cálculo)</strong>: guarda el registro de pedidos descrito arriba.</li>""" if PEDIDOS_URL else ""
     cuerpo = f"""        <p class="pg-kicker">Transparencia</p>
         <h1>Política de privacidad</h1>
         <p class="pg-actualizado">Última actualización: {hoy}</p>
@@ -493,13 +503,13 @@ def pagina_privacidad() -> str:
         <p>Tu lista de pedido y tus productos favoritos se guardan únicamente en tu navegador (almacenamiento local). No se envían a ningún servidor nuestro y puedes borrarlos cuando quieras limpiando los datos del sitio.</p>
 
         <h2>Cuando nos escribes por WhatsApp o correo</h2>
-        <p>Al pulsar &laquo;Comprar&raquo;, &laquo;Pedir por WhatsApp&raquo; o enviar tu lista de pedido, se abre WhatsApp con un mensaje ya redactado. Desde ese momento la conversación se rige por las condiciones de WhatsApp. Usamos los datos que nos compartas (por ejemplo, tu nombre, tu número y tu dirección de entrega) <strong>solo para atender tu pedido</strong> y no los cedemos a terceros.</p>
+        <p>Al pulsar &laquo;Comprar&raquo;, &laquo;Pedir por WhatsApp&raquo; o enviar tu lista de pedido, se abre WhatsApp con un mensaje ya redactado. Desde ese momento la conversación se rige por las condiciones de WhatsApp. Usamos los datos que nos compartas (por ejemplo, tu nombre, tu número y tu dirección de entrega) <strong>solo para atender tu pedido</strong> y no los cedemos a terceros.</p>{registro}
 
         <h2>Servicios de terceros</h2>
         <ul>
             <li><strong>GitHub Pages</strong>: aloja este sitio.</li>
             <li><strong>Google Maps</strong>: el mapa de nuestra ubicación solo se carga si pulsas «Ver el mapa del taller»; a partir de ese momento Google puede recibir datos técnicos de tu visita.</li>
-            <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>
+            <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>{tercero_google}
         </ul>
 
         <h2>Tus derechos y contacto</h2>

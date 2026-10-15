@@ -5,11 +5,16 @@
  *  - Favoritos: ids guardados en el navegador.
  * Todo queda en el dispositivo de la persona; no se envía a ningún servidor.
  *
- * API global: window.S3D = { pedido: {...}, favoritos: {...}, aviso(texto), urlWhatsApp(texto) }
+ *  - Registro de pedidos (Mi pedido, Comprar, Cotizar): si config.json tiene «pedidosUrl», cada pedido recibe un
+ *    código S3D-XXXXX que va al inicio del mensaje de WhatsApp y se envía a la hoja «Pedidos S3D» (Apps Script) sin
+ *    esperar respuesta, así WhatsApp abre al instante. Solo viajan productos, cantidades, total y página.
+ *
+ * API global: window.S3D = { pedido: {...}, favoritos: {...}, aviso(texto), urlWhatsApp(texto), registrarPedido(tipo, datos), conCodigo(codigo, texto) }
  */
 (function () {
     const RAIZ = new URL('./', document.currentScript.src).href;   // raíz del sitio (funciona en la portada y en las fichas)
     const WHATSAPP = '51955107609';   // lo escribe scripts/build_product_pages.py desde config.json: no editar aquí
+    const PEDIDOS_URL = '';   // ídem (config.json «pedidosUrl»); vacío = sin registro de pedidos
     const CLAVE_PEDIDO = 's3d.pedido';
     const CLAVE_FAVORITOS = 's3d.favoritos';
 
@@ -57,6 +62,23 @@
     }
     const urlChat = texto => `https://api.whatsapp.com/send?phone=${WHATSAPP}${texto ? `&text=${encodeURIComponent(texto)}` : ''}`;
     const urlWhatsApp = () => urlChat(mensajeWhatsApp());
+
+    // Código de pedido: 5 caracteres sin 0/O ni 1/I (32 símbolos, sin sesgo con bytes aleatorios).
+    const SIMBOLOS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const nuevoCodigo = () => 'S3D-' + Array.from(crypto.getRandomValues(new Uint8Array(5)), n => SIMBOLOS[n % 32]).join('');
+    const conCodigo = (codigo, texto) => (codigo ? `Pedido ${codigo}\n` : '') + String(texto).replace(/^Pedido S3D-[0-9A-Z]{5}\n/, '');
+
+    /** Registra el pedido en la hoja (sin esperar respuesta) y devuelve su código, o null si el registro está apagado. */
+    function registrarPedido(tipo, datos = {}) {
+        if (!PEDIDOS_URL) return null;
+        const codigo = nuevoCodigo();
+        const cuerpo = JSON.stringify({ codigo, tipo, pagina: location.href.split('#')[0], ...datos });
+        try {
+            const enviado = navigator.sendBeacon && navigator.sendBeacon(PEDIDOS_URL, new Blob([cuerpo], { type: 'text/plain;charset=UTF-8' }));
+            if (!enviado) fetch(PEDIDOS_URL, { method: 'POST', body: cuerpo, mode: 'no-cors', keepalive: true }).catch(() => {});
+        } catch (error) { /* sin registro: WhatsApp se abre igual */ }
+        return codigo;
+    }
 
     const pedido = {
         items: () => items.map(item => ({ ...item })),
@@ -200,7 +222,16 @@
         fondo.addEventListener('click', cerrarPanel);
         panel.querySelector('.s3d-cerrar').addEventListener('click', cerrarPanel);
         panel.querySelector('.s3d-vaciar').addEventListener('click', () => { pedido.vaciar(); });
-        pie.querySelector('.s3d-enviar').addEventListener('click', () => track('pedido_enviar', { unidades: totales().unidades }));
+        pie.querySelector('.s3d-enviar').addEventListener('click', evento => {
+            const { unidades, total } = totales();
+            const codigo = registrarPedido('pedido', {
+                items: items.map(item => ({ nombre: item.nombre, cantidad: item.cantidad, color: item.color, medida: item.medida, precio: item.cotizar ? 0 : item.precio })),
+                total
+            });
+            evento.currentTarget.href = urlChat(conCodigo(codigo, mensajeWhatsApp()));
+            if (codigo) aviso(`Tu código de pedido: ${codigo}`);
+            track('pedido_enviar', { unidades });
+        });
         lista.addEventListener('click', evento => {
             const fila = evento.target.closest('.s3d-item');
             if (!fila) return;
@@ -223,7 +254,18 @@
         renderizar();
     }
 
-    window.S3D = { pedido, favoritos: api, aviso, dinero, RAIZ, urlWhatsApp: urlChat };
+    // «Comprar» de las tarjetas y de la ficha: el enlace ya trae el mensaje; se le antepone el código al hacer clic.
+    document.addEventListener('click', evento => {
+        const enlace = evento.target.closest && evento.target.closest('a[data-carousel-buy], a#pp-buy');
+        if (!enlace || !PEDIDOS_URL) return;
+        const texto = conCodigo(null, new URL(enlace.href).searchParams.get('text') || '');
+        const precio = Number((texto.match(/Precio: S\/ ([\d.]+)/) || [])[1]) || 0;
+        const color = (texto.match(/\(Color: ([^)]+)\)/) || [])[1];
+        const codigo = registrarPedido('comprar', { items: [{ nombre: enlace.dataset.producto, cantidad: 1, color, precio }], total: precio, detalle: texto });
+        enlace.href = urlChat(conCodigo(codigo, texto));
+    });
+
+    window.S3D = { pedido, favoritos: api, aviso, dinero, RAIZ, urlWhatsApp: urlChat, registrarPedido, conCodigo };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', construir);
     else construir();
 })();
