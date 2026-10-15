@@ -14,7 +14,7 @@
 (function () {
     const RAIZ = new URL('./', document.currentScript.src).href;   // raíz del sitio (funciona en la portada y en las fichas)
     const WHATSAPP = '51955107609';   // lo escribe scripts/build_product_pages.py desde config.json: no editar aquí
-    const PEDIDOS_URL = '';   // ídem (config.json «pedidosUrl»); vacío = sin registro de pedidos
+    const PEDIDOS_URL = 'https://script.google.com/macros/s/AKfycbxbm6uDG6playzgKJ-tQSmG9WUK0qOY4AgxZlwK5HFO9vsb_L075fSzC7c2UKset8-kBg/exec';   // ídem (config.json «pedidosUrl»); vacío = sin registro de pedidos
     const CLAVE_PEDIDO = 's3d.pedido';
     const CLAVE_FAVORITOS = 's3d.favoritos';
 

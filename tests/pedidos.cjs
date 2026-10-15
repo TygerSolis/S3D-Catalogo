@@ -10,7 +10,7 @@ async function abrirConRegistro(browser, ruta = '') {
     const p = await abrir(browser, ruta, {
         preparar: async pagina => {
             await pagina.route(/tienda\.js/, async r => {
-                const cuerpo = (await (await r.fetch()).text()).replace("const PEDIDOS_URL = '';", `const PEDIDOS_URL = '${URL_PRUEBA}';`);
+                const cuerpo = (await (await r.fetch()).text()).replace(/const PEDIDOS_URL = '[^']*';/, `const PEDIDOS_URL = '${URL_PRUEBA}';`);
                 await r.fulfill({ contentType: 'text/javascript', body: cuerpo });
             });
             await pagina.context().route('https://script.google.com/**', r => { envios.push(JSON.parse(r.request().postData())); r.fulfill({ json: { ok: true } }); });
@@ -87,9 +87,12 @@ module.exports = {
         assert.equal(e.codigo, mensaje.match(CODIGO)[1]);
         await p.contexto.close();
     },
-    async 'con el registro apagado (config.json sin pedidosUrl) no hay código ni envíos'({ browser }) {
+    async 'con el registro apagado (pedidosUrl vacío) no hay código ni envíos'({ browser }) {
         const envios = [];
-        const p = await abrir(browser, '', { preparar: pagina => pagina.context().route('https://script.google.com/**', r => { envios.push(r.request().url()); r.abort(); }) });
+        const p = await abrir(browser, '', { preparar: async pagina => {
+            await pagina.route(/tienda\.js/, async r => r.fulfill({ contentType: 'text/javascript', body: (await (await r.fetch()).text()).replace(/const PEDIDOS_URL = '[^']*';/, "const PEDIDOS_URL = '';") }));
+            await pagina.context().route('https://script.google.com/**', r => { envios.push(r.request().url()); r.abort(); });
+        } });
         await p.context().route('https://api.whatsapp.com/**', r => r.fulfill({ contentType: 'text/html', body: 'wa' }));
         const [wa] = await Promise.all([p.contexto.waitForEvent('page'), p.locator('[data-carousel-buy]').first().click()]);
         assert.doesNotMatch(textoDe(wa.url()), /^Pedido S3D-/);

@@ -31,6 +31,8 @@ async function abrir(browser, ruta = '', opciones = {}) {
     // Sin Web Share API: así "Compartir" usa siempre el portapapeles en las pruebas.
     await pagina.addInitScript(() => { try { Object.defineProperty(navigator, 'share', { value: undefined }); } catch (e) { /* ya definida */ } });
     if (!opciones.sinReloj) await pagina.clock.setFixedTime(FECHA_FIJA);
+    // Las pruebas nunca envían pedidos a la hoja real (las de pedidos.cjs instalan su propia simulación).
+    await contexto.route('https://script.google.com/**', ruta => ruta.abort());
     if (opciones.preparar) await opciones.preparar(pagina);   // p. ej. interceptar productos.json
     await pagina.goto(BASE + ruta, { waitUntil: 'networkidle' });
     pagina.contexto = contexto;
