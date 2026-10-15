@@ -31,6 +31,22 @@ WHATSAPP_VISIBLE = CONFIG["whatsappVisible"]
 PEDIDOS_URL = CONFIG.get("pedidosUrl", "")
 assert PEDIDOS_URL == "" or re.fullmatch(r"https://script\.google\.com/macros/s/[\w-]+/exec", PEDIDOS_URL), "pedidosUrl inválida en config.json"
 OUT_DIR = ROOT / "producto"
+# Política de seguridad (CSP) de todas las páginas: solo se ejecuta JavaScript de archivos propios y de Umami
+# (sin código en línea ni atributos onclick). Si se añade un servicio externo, hay que permitir aquí su origen.
+CSP = "; ".join([
+    "default-src 'self'",
+    "script-src 'self' https://cloud.umami.is",
+    "connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://script.google.com https://script.googleusercontent.com",
+    "img-src 'self' data:",
+    "media-src 'self'",
+    "font-src 'self'",
+    "style-src 'self' 'unsafe-inline'",   # hay atributos style y estilos que pone el JavaScript
+    "frame-src https://www.google.com https://maps.google.com",   # mapa del taller (se carga al pulsar)
+    "object-src 'none'",
+    "base-uri 'self' https://tygersolis.github.io",   # 404.html usa <base href> con la URL publicada
+    "form-action 'self'",
+])
+META_CSP = f'<meta http-equiv="Content-Security-Policy" content="{CSP}">'
 ITEMLIST_START = "<!-- ITEMLIST:START -->"
 ITEMLIST_END = "<!-- ITEMLIST:END -->"
 
@@ -301,6 +317,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    {META_CSP}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{esc(titulo)}</title>
     <meta name="description" content="{esc(desc)}">
@@ -408,6 +425,17 @@ def actualizar_chrome_indice() -> None:
     indice.write_text(contenido, encoding="utf-8")
 
 
+def actualizar_csp_indice() -> None:
+    """Escribe (o actualiza) la política CSP en index.html, la misma que llevan las páginas generadas."""
+    indice = ROOT / "index.html"
+    contenido = indice.read_text(encoding="utf-8")
+    if 'http-equiv="Content-Security-Policy"' in contenido:
+        contenido = re.sub(r'<meta http-equiv="Content-Security-Policy" content="[^"]*">', lambda _: META_CSP, contenido, count=1)
+    else:
+        contenido = contenido.replace('<meta charset="UTF-8">\n', f'<meta charset="UTF-8">\n    {META_CSP}\n', 1)
+    indice.write_text(contenido, encoding="utf-8")
+
+
 def sincronizar_contacto() -> None:
     """Lleva el número de config.json a las partes que no salen de plantillas: el resto de index.html y tienda.js."""
     indice = ROOT / "index.html"
@@ -451,6 +479,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    {META_CSP}
 {etiqueta_base}    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{esc(titulo)}</title>
     <meta name="description" content="{esc(descripcion)}">
@@ -592,6 +621,7 @@ def main() -> None:
 
     actualizar_itemlist(productos)
     actualizar_chrome_indice()
+    actualizar_csp_indice()
     sincronizar_contacto()
     escribir_sitemap(productos)
     print(f"{len(productos)} páginas generadas en {OUT_DIR.relative_to(ROOT)}/, sitemap.xml e ItemList actualizados")

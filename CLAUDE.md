@@ -13,7 +13,7 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion)
+                                                #   pedidos, buscador, analitica, navegacion, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
@@ -48,6 +48,12 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
 - **Imágenes**: cada imagen existe como `.avif` + `.webp` en `assets/sm/` (800), `assets/md/` (1000),
   `assets/` (1600) y `assets/hd/` (original). Siempre se generan desde los originales; nunca recomprimir
   un webp/avif. Los originales viven en R2 (`fuentes/`), no en git. Videos en `assets/video/` (máx. 25 MB, sin recomprimir).
+- **Seguridad (CSP)**: todas las páginas llevan la misma `<meta http-equiv="Content-Security-Policy">`, definida
+  solo en `CSP` de `scripts/build_product_pages.py` (el generador la escribe también en `index.html`). Solo se
+  ejecuta JS de archivos propios y de `cloud.umami.is`: **no uses `onclick`/`on…=`, `<script>` en línea,
+  `javascript:` ni `eval`**; enlaza eventos con `addEventListener` (o atributos `data-*` + delegación, como
+  `data-video`). Un servicio externo nuevo (fetch, iframe, imagen) necesita su origen en `CSP`; si no, el
+  navegador lo bloquea. `tests/seguridad.cjs` lo comprueba y `util.cjs` registra cada bloqueo en `pagina.violaciones`.
 - **Pruebas** (`tests/`): runner propio `run.cjs` + Playwright; `util.cjs` fija el reloj (la etiqueta
   «Nuevo» depende de `fechaAlta`), simula Umami y bloquea `script.google.com`. Cuentan productos desde los
   datos (`visibles()`), no con números fijos.
@@ -62,3 +68,38 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   de `main`. Los cambios de infraestructura (workflows) van directo a `main`.
 - Un push hecho con `GITHUB_TOKEN` no dispara otros workflows: por eso `catalogo-desde-hoja.yml` llama a
   `publicar.yml` como workflow reutilizable.
+
+## Registro de decisiones e implementación
+
+Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full stack del catálogo S3D» en Claude Docs):
+
+| # | Tema | Decisión |
+|---|---|---|
+| D1 | Almacenamiento de medios | Cloudflare R2 (bucket `s3d`) solo como respaldo y origen de originales (`fuentes/`); la web se sirve desde GitHub Pages. |
+| D2 | Videos | No recomprimir: se publican tal cual (máx. 25 MB). |
+| D3 | Edición del catálogo | Google Sheets + GitHub Action (la hoja manda). |
+| D4 | Campos nuevos | Solo `disponibilidad`, `activo` y `orden` (sin días de elaboración ni variantes con precio). |
+| D5 | Registro de pedidos | Apps Script + hoja «Pedidos S3D», aviso a ventas.s3d@gmail.com. |
+| D6 | Revisión de cambios | Rama `vista-previa` publicada en `/vista-previa/`; pasa a `main` con «aprobado». |
+| D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
+
+Implementado (octubre de 2026):
+
+- **Fase 0 — saneamiento**: historial de git limpiado (885 → 192 MB; respaldos fuera del repo y en R2);
+  `config.json` único para contacto/URL; escapado HTML de datos en `catalogo.js`; `assets/sin-foto.svg` local;
+  mapa de Google que se carga al pulsar; eliminados los flujos de recompresión de medios.
+- **Fase 1 — catálogo desde la hoja**: campos `disponibilidad`/`activo`/`orden`, categorías derivadas de los
+  datos, `validar_productos.py`, `hoja_catalogo.py` y el workflow `catalogo-desde-hoja.yml` (fotos/videos desde
+  R2, limpieza de medios sin uso). Guía para el dueño: `docs/guia-catalogo.md`.
+- **Fase 2 — registro de pedidos**: código `S3D-XXXXX` (sin 0/O/1/I) al inicio del mensaje de WhatsApp en Mi
+  pedido, Comprar y Cotizar; envío por `sendBeacon` al Apps Script (validación, duplicados, freno de ráfagas,
+  anti-fórmulas, correo). La página de privacidad describe el registro. Guía: `docs/guia-pedidos.md`.
+- **Fase 3 — calidad y seguridad**: publicación por GitHub Actions con vista previa (Settings → Pages →
+  Source: GitHub Actions; el despliegue antiguo «pages build and deployment» ya no corre); errores de JS de
+  los visitantes como evento Umami `error_js` (máx. 3 por visita); sin atributos `onclick` y con CSP en todas
+  las páginas.
+
+Pendiente (no iniciado): pasar el JS a módulos, unificar las 5 hojas de estilo, una sola plantilla para
+tarjeta/ficha; Fase 4 (reseñas, promociones con fecha de fin). Del dueño: fotos nuevas de 35 productos
+(`docs/guia-fotos.md`), revisión legal de la privacidad, mensaje opcional a GitHub Support para purgar el
+historial antiguo de los `refs/pull`.

@@ -122,10 +122,10 @@ Images are generated in four sizes (AVIF + WebP) by `scripts/optimize_images.cjs
 ```bash
 npm ci
 npx playwright install chromium
-npm test            # 50 browser + data checks (node tests/run.cjs [module])
+npm test            # browser + data checks (node tests/run.cjs [module])
 ```
 
-`tests/` holds the checks (data integrity, catalog, lightbox, product pages, order list and favorites, search, analytics events, navigation/404/privacy). They start their own static server, run against a fixed clock (so the "Nuevo" window is deterministic) and replace Umami with a stub, so they never send analytics.
+`tests/` holds the checks (data integrity, catalog, lightbox, product pages, order list and favorites, search, analytics events, navigation/404/privacy, Content-Security-Policy). They start their own static server, run against a fixed clock (so the "Nuevo" window is deterministic) and replace Umami with a stub, so they never send analytics.
 
 The GitHub Action `.github/workflows/pruebas.yml` runs on every push and pull request: it verifies that the generated pages (`scripts/build_product_pages.py`) and `tailwind.css` are up to date, runs the tests, and reports the site and repository size (warning at 700 MB site / 900 MB history). It does **not** block GitHub Pages deployment.
 

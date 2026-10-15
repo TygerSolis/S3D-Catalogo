@@ -10,6 +10,7 @@
         // Botón Volver Arriba: visible tras desplazarse, y oculto cuando el pie ya está a la vista
         // (ahí taparía los íconos de contacto).
         const btnArriba = document.getElementById('btn-volver-arriba');
+        btnArriba.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         let pieVisible = false;
         const actualizarBtnArriba = () => btnArriba.classList.toggle('visible', window.scrollY > 500 && !pieVisible);
         window.addEventListener('scroll', actualizarBtnArriba, { passive: true });
@@ -342,7 +343,7 @@
                             <p class="text-brand-light text-sm md:text-base leading-relaxed opacity-90">Mira esta breve presentación donde detallamos las funcionalidades, los materiales y por qué son la opción ideal para mantener seguro a tu engreído.</p>
                         </div>
                         <div class="w-full md:w-80 shrink-0 relative z-10">
-                            <button onclick="abrirVideoGeneral('assets/video/pet-video-presentacion.mp4')" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video" aria-label="Reproducir video explicativo de las placas">
+                            <button type="button" data-video="assets/video/pet-video-presentacion.mp4" class="w-full aspect-video bg-black/60 rounded-2xl border border-white/20 hover:border-brand-accent flex items-center justify-center group overflow-hidden relative transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1" title="Reproducir Video" aria-label="Reproducir video explicativo de las placas">
                                 <img src="assets/sm/pet-video-poster.webp" alt="" loading="lazy" decoding="async" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300">
                                 <div class="w-14 h-14 rounded-full bg-brand-accent flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(0,102,204,0.6)] z-10">
                                     <svg class="ico w-6 h-6 text-white ml-1 fill-white" aria-hidden="true"><use href="#i-play"/></svg>
@@ -724,6 +725,16 @@
             currentLightboxIndex = (currentLightboxIndex + direccion + total) % total;
             actualizarLightbox();
         };
+
+        // Sin atributos onclick (la política de seguridad CSP los bloquearía): los eventos se enlazan aquí.
+        lightboxEl.addEventListener('click', event => cerrarModal(event));
+        document.getElementById('lightbox-close').addEventListener('click', event => cerrarModal(event, true));
+        document.getElementById('lightbox-prev').addEventListener('click', event => cambiarImagenLightbox(-1, event));
+        document.getElementById('lightbox-next').addEventListener('click', event => cambiarImagenLightbox(1, event));
+        document.addEventListener('click', event => {
+            const boton = event.target.closest('[data-video]');
+            if (boton) abrirVideoGeneral(boton.dataset.video);
+        });
 
         function irALightbox(indice) {
             currentLightboxIndex = indice;

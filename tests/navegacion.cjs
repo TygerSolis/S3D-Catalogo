@@ -52,13 +52,14 @@ module.exports = {
     async 'una ruta inexistente muestra la 404 con cabecera, pie, buscador y sugerencias'({ browser }) {
         const contexto = await browser.newContext({ viewport: { width: 1366, height: 900 } });
         const p = await contexto.newPage();
-        // La 404 usa <base href> con la URL de producción: en las pruebas se redirige al servidor local.
+        // La 404 usa <base href> con la URL de producción: se abre con esa URL (así la CSP la trata como en la
+        // web real, donde 'self' es tygersolis.github.io) y las peticiones se sirven desde el servidor local.
         await p.route('https://tygersolis.github.io/S3D-Catalogo/**', async ruta404 => {
             const respuesta = await fetch(ruta404.request().url().replace('https://tygersolis.github.io/S3D-Catalogo/', BASE));
             await ruta404.fulfill({ status: respuesta.status, headers: { 'content-type': respuesta.headers.get('content-type') || 'text/plain' }, body: Buffer.from(await respuesta.arrayBuffer()) });
         });
         await p.route('https://cloud.umami.is/**', r => r.abort());
-        const respuesta = await p.goto(`${BASE}no/existe/esta/ruta/`, { waitUntil: 'networkidle' });
+        const respuesta = await p.goto('https://tygersolis.github.io/S3D-Catalogo/no/existe/esta/ruta/', { waitUntil: 'networkidle' });
         assert.equal(respuesta.status(), 404);
         assert.match(await p.locator('h1').innerText(), /no existe/);
         assert.ok(await p.locator('.site-brand img').evaluate(i => i.naturalWidth > 0), 'el logo no carga desde una ruta profunda');

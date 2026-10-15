@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://script.google.com https://script.googleusercontent.com; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; frame-src https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self' https://tygersolis.github.io; form-action 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <meta name="description" content="S3D crea figuras, adornos, accesorios, iluminación y productos personalizados mediante impresión 3D. Catálogo online, pedidos por WhatsApp y envíos a todo el Perú." />
@@ -460,12 +461,12 @@
     <!-- CHROME-FOOTER:END -->
 
     <!-- Botón Volver Arriba -->
-    <button id="btn-volver-arriba" aria-label="Volver arriba" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-brand-accent hover:bg-brand-800 text-white w-12 h-12 rounded-full shadow-[0_4px_15px_rgba(0,102,204,0.4)] flex items-center justify-center no-print group">
+    <button id="btn-volver-arriba" aria-label="Volver arriba" class="bg-brand-accent hover:bg-brand-800 text-white w-12 h-12 rounded-full shadow-[0_4px_15px_rgba(0,102,204,0.4)] flex items-center justify-center no-print group">
         <svg class="ico w-6 h-6 group-hover:-translate-y-1 transition-transform" aria-hidden="true"><use href="#i-chevron-up"/></svg>
     </button>
 
-    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Galería del producto" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center" onclick="cerrarModal(event)">
-        <button id="lightbox-close" type="button" aria-label="Cerrar galería" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white transition-colors z-50 w-11 h-11 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20" onclick="cerrarModal(event, true)">
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Galería del producto" class="fixed inset-0 z-[100] bg-brand-900/95 backdrop-blur-md hidden items-center justify-center">
+        <button id="lightbox-close" type="button" aria-label="Cerrar galería" class="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white transition-colors z-50 w-11 h-11 flex items-center justify-center bg-white/10 rounded-full hover:bg-white/20">
             <svg class="ico w-6 h-6" aria-hidden="true"><use href="#i-x"/></svg>
         </button>
 
@@ -484,10 +485,10 @@
                 <video id="lightbox-vid" src="" class="hidden" controls playsinline></video>
                 <span id="lightbox-hd" class="lightbox-hd" role="status" hidden></span>
                 <span id="lightbox-hint" class="lightbox-hint" aria-hidden="true" hidden></span>
-                <button id="lightbox-prev" type="button" aria-label="Imagen anterior" class="lightbox-nav-btn lightbox-nav-prev" onclick="cambiarImagenLightbox(-1, event)">
+                <button id="lightbox-prev" type="button" aria-label="Imagen anterior" class="lightbox-nav-btn lightbox-nav-prev">
                     <svg class="ico w-6 h-6" aria-hidden="true"><use href="#i-arrow-left"/></svg>
                 </button>
-                <button id="lightbox-next" type="button" aria-label="Siguiente imagen" class="lightbox-nav-btn lightbox-nav-next" onclick="cambiarImagenLightbox(1, event)">
+                <button id="lightbox-next" type="button" aria-label="Siguiente imagen" class="lightbox-nav-btn lightbox-nav-next">
                     <svg class="ico w-6 h-6" aria-hidden="true"><use href="#i-arrow-right"/></svg>
                 </button>
             </div>
@@ -510,6 +511,6 @@
     <script src="chrome.js?v=1" defer></script>
     <script src="tienda.js?v=3" defer></script>
     <script src="analytics.js?v=5" defer></script>
-    <script src="catalogo.js?v=tienda-8" defer></script>
+    <script src="catalogo.js?v=tienda-9" defer></script>
 </body>
 </html>

@@ -28,6 +28,11 @@ async function abrir(browser, ruta = '', opciones = {}) {
     pagina.on('pageerror', error => pagina.errores.push(error.message));
     await pagina.exposeFunction('__log', (nombre, datos) => pagina.eventos.push({ nombre, datos }));
     await pagina.route('https://cloud.umami.is/**', r => r.fulfill({ contentType: 'text/javascript', body: 'window.umami={track:(n,d)=>window.__log(n,d||null)};' }));
+    // Bloqueos de la política de seguridad (CSP): quedan en página.violaciones (seguridad.cjs exige que no haya).
+    pagina.violaciones = [];
+    await pagina.exposeFunction('__csp', texto => pagina.violaciones.push(texto));
+    await pagina.addInitScript(() => document.addEventListener('securitypolicyviolation',
+        e => window.__csp(`${e.effectiveDirective} ${e.blockedURI || ''}`.trim())));
     // Sin Web Share API: así "Compartir" usa siempre el portapapeles en las pruebas.
     await pagina.addInitScript(() => { try { Object.defineProperty(navigator, 'share', { value: undefined }); } catch (e) { /* ya definida */ } });
     if (!opciones.sinReloj) await pagina.clock.setFixedTime(FECHA_FIJA);
