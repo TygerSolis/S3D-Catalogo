@@ -648,3 +648,9 @@
 .mapa-cargar small { max-width: 18rem; color: #4b5563; font-size: .8rem; line-height: 1.35; }
 .mapa-cargar:hover strong, .mapa-cargar:focus-visible strong { text-decoration: underline; }
 .mapa-cargar:focus-visible { outline: 3px solid #0066cc; outline-offset: -3px; }
+
+/* Disponibilidad en las tarjetas del catálogo (solo «En stock» y «Agotado») */
+.catalog-disp { display: inline-flex; align-items: center; gap: .3rem; padding: .1rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 700; }
+.catalog-disp::before { content: ""; width: .4rem; height: .4rem; border-radius: 50%; background: currentColor; }
+.catalog-disp-stock { background: #e7f6ec; color: #17663a; }
+.catalog-disp-agotado { background: #f1f2f4; color: #4b5563; }

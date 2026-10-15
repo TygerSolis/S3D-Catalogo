@@ -5,6 +5,32 @@ const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
 
 module.exports = {
+    async 'los datos mandan: ocultos fuera, orden por «orden», categorías nuevas y etiqueta de disponibilidad'({ browser }) {
+        const p = await abrir(browser, '', {
+            preparar: pagina => pagina.route(/productos\.json/, async ruta => {
+                const lista = await (await ruta.fetch()).json();
+                lista.find(x => x.nombre === 'WOODY').activo = false;
+                Object.assign(lista.find(x => x.nombre === 'JESSIE'), { disponibilidad: 'En stock' });
+                Object.assign(lista.find(x => x.nombre === 'BUZZ'), { disponibilidad: 'Agotado', categoria: 'Categoría Nueva', orden: -5 });
+                await ruta.fulfill({ json: lista });
+            })
+        });
+        assert.equal(await p.locator('.catalog-carousel-card', { hasText: 'WOODY' }).count(), 0, 'un producto oculto aparece');
+        assert.equal(await p.locator('.catalog-carousel-card').count(), 86);
+        const filtros = await p.$$eval('#category-filters [data-categoria]', b => b.map(x => x.dataset.categoria));
+        assert.equal(filtros[0], 'Todas');
+        assert.ok(filtros.indexOf('Categoría Nueva') >= 1 && filtros.indexOf('Categoría Nueva') < filtros.indexOf('Muñecos Coleccionables'), filtros.join(', '));
+        assert.match(await p.locator('#main-content h2').first().innerText(), /Categoría Nueva/);
+        const buzz = p.locator('.catalog-carousel-card', { hasText: 'BUZZ' });
+        assert.equal((await buzz.locator('.catalog-disp').textContent()).trim(), 'Agotado');
+        assert.match(decodeURIComponent(await buzz.locator('[data-carousel-buy]').getAttribute('href')), /Figura como agotado/);
+        assert.equal((await p.locator('.catalog-carousel-card', { hasText: 'JESSIE' }).locator('.catalog-disp').textContent()).trim(), 'En stock');
+        assert.equal(await p.locator('.catalog-carousel-card', { hasText: 'HELLO KITTY URBANA' }).locator('.catalog-disp').count(), 0);
+        await p.fill('#search-input', 'woody'); await p.waitForTimeout(400);
+        assert.equal(await p.locator('.search-suggest-item[data-tipo="producto"]').count(), 0, 'el buscador sugiere un producto oculto');
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
     async 'si una foto no carga, la tarjeta muestra la imagen propia "Sin foto" (sin servicios externos)'({ browser }) {
         const externas = [];
         const p = await abrir(browser, '', {

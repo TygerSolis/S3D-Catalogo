@@ -13,7 +13,10 @@
     ],
     "descripcion": "Figura de Woody, el vaquero de Toy Story, con su camisa amarilla, chaleco de vaca, sombrero y botas, impresa en 3D con todo el detalle en PLA Premium. Mide 23 cm: una pieza para coleccionistas y fans de la saga.",
     "slug": "woody",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 10
   },
   {
     "id": 2,
@@ -30,7 +33,10 @@
     ],
     "descripcion": "Figura de Jessie, la vaquerita de Toy Story, con su melena roja, sombrero y pantalón de vaca, e incluye su base circular. Impresa en 3D en PLA Premium, mide 24 cm.",
     "slug": "jessie",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 20
   },
   {
     "id": 3,
@@ -47,7 +53,10 @@
     ],
     "descripcion": "Figura de Buzz Lightyear, el guardián espacial de Toy Story, con su traje blanco, verde y morado y las alas desplegadas. Impresa en 3D en PLA Premium; mide 22 cm.",
     "slug": "buzz",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 30
   },
   {
     "id": 4,
@@ -87,7 +96,10 @@
     "descripcion": "Hello Kitty con look urbano: sudadera con capucha, gorra y zapatillas. Disponible en rosa, gris, negro y amarillo; elige tu color en la ficha. Impresa en 3D en PLA Premium, mide 20 cm.",
     "slug": "hello-kitty-urbana",
     "heroFoco": "center 62%",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 40
   },
   {
     "id": 5,
@@ -103,7 +115,10 @@
     ],
     "descripcion": "Hello Kitty en versión fashion: gorro rosa con lazo rojo, overol rosa sobre polera blanca, zapatillas lilas y una cartera azul. Impresa en 3D en PLA Premium; mide 20 cm.",
     "slug": "hello-kitty-fashion",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 50
   },
   {
     "id": 6,
@@ -120,7 +135,10 @@
     ],
     "descripcion": "Snoopy sonriente que saluda haciendo la señal de paz, con su collar rojo. Una figura alegre para tu escritorio, impresa en 3D en PLA Premium; mide 18 cm.",
     "slug": "snoopy-saludos",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 60
   },
   {
     "id": 7,
@@ -136,7 +154,10 @@
     ],
     "descripcion": "El Snoopy de siempre, sentado, con su collar rojo y sus orejas negras. Figura compacta de 12 cm impresa en 3D en PLA Premium, fácil de ubicar en cualquier repisa.",
     "slug": "snoopy",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 70
   },
   {
     "id": 8,
@@ -153,7 +174,10 @@
     ],
     "descripcion": "Snoopy como el As de la Aviación: gorro y gafas de piloto y bufanda roja, sobre el techo de su casita roja, que viene incluida. Impresa en 3D en PLA Premium; mide 17 cm.",
     "slug": "snoopy-aviador",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 80
   },
   {
     "id": 9,
@@ -170,7 +194,10 @@
     ],
     "descripcion": "Snoopy durmiendo plácidamente sobre su casita roja, con una base que imita el césped; casita y base vienen incluidas. Impresa en 3D en PLA Premium; mide 22 cm.",
     "slug": "snoopy-zzz",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 90
   },
   {
     "id": 10,
@@ -188,7 +215,10 @@
     "video": "assets/video/sn-peaky-video.mp4",
     "descripcion": "Snoopy con gorra plana, saco y abrigo al más puro estilo Peaky Blinders, con una mirada seria y de época. Impresa en 3D en PLA Premium; mide 20 cm.",
     "slug": "snoopy-peaky-blinders",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 100
   },
   {
     "id": 14,
@@ -206,7 +236,10 @@
     ],
     "descripcion": "Set de Snoopy Peaky Blinders: la figura con gorra plana y abrigo largo, que incluye su base con placa. Impreso en 3D en PLA Premium; mide 20 cm.",
     "slug": "snoopy-peaky-blinders-set",
-    "fechaAlta": "2026-10-01"
+    "fechaAlta": "2026-10-01",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 110
   },
   {
     "id": 11,
@@ -223,7 +256,10 @@
     ],
     "descripcion": "Snoopy listo para el partido, con gorra azul, raqueta y pelota de tenis en la mano. Figura de 13 cm impresa en 3D en PLA Premium.",
     "slug": "snoopy-tenista",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 120
   },
   {
     "id": 12,
@@ -242,7 +278,10 @@
     "video": "assets/video/sn-criminal-set-video.mp4",
     "descripcion": "Set de Snoopy inspirado en el videoclip Smooth Criminal: traje y sombrero blancos, corbata celeste y pose inclinada, e incluye su base con placa Club 30's. Impreso en 3D en PLA Premium; mide 22 cm.",
     "slug": "snoopy-smooth-criminal-set",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 130
   },
   {
     "id": 13,
@@ -259,7 +298,10 @@
     ],
     "descripcion": "Versión individual de Snoopy estilo Smooth Criminal: traje blanco, camisa celeste y sombrero fedora blanco con cinta negra. Impresa en 3D en PLA Premium; mide 20 cm.",
     "slug": "snoopy-smooth-criminal",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 140
   },
   {
     "id": 201,
@@ -274,7 +316,10 @@
     ],
     "descripcion": "Escultura minimalista en blanco mate de una madre que abraza a su hijo, de líneas suaves y delicadas. Un regalo muy emotivo, ideal para el Día de la Madre. Mide 14,6 cm, impresa en 3D en PLA Premium.",
     "slug": "madre-e-hijo",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 150
   },
   {
     "id": 202,
@@ -289,7 +334,10 @@
     ],
     "descripcion": "Dos corazones concéntricos que se entrelazan sobre una base circular, en blanco. Un detalle romántico para aniversarios o San Valentín. Mide 15 cm, impreso en 3D en PLA Premium.",
     "slug": "corazon-en-corazon",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 160
   },
   {
     "id": 203,
@@ -304,7 +352,10 @@
     ],
     "descripcion": "Corazón rojo que sostiene una rosa de tallo verde, un regalo romántico que no se marchita. Medidas: 12,3 cm y 20 cm. Impreso en 3D en PLA Premium.",
     "slug": "corazon-con-rosa",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 170
   },
   {
     "id": 204,
@@ -319,7 +370,10 @@
     ],
     "descripcion": "Osito marrón con textura que imita el tejido, abrazando un corazón rojo. Un detalle tierno para regalar o decorar. Mide 15,6 cm, impreso en 3D en PLA Premium.",
     "slug": "oso-con-corazon",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 180
   },
   {
     "id": 205,
@@ -334,7 +388,10 @@
     ],
     "descripcion": "Tulipán estilizado en blanco, con hojas que envuelven el tallo y una fina textura: una flor decorativa que nunca se marchita. Mide 24,2 cm, impreso en 3D en PLA Premium.",
     "slug": "tulipan",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 190
   },
   {
     "id": 206,
@@ -349,7 +406,10 @@
     ],
     "descripcion": "Jarrón en forma de luna creciente, en negro mate, con espacio para acomodar flores secas o pequeñas plantas. Mide 24,5 cm, impreso en 3D en PLA Premium.",
     "slug": "jarron-luna",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 200
   },
   {
     "id": 207,
@@ -364,7 +424,10 @@
     ],
     "descripcion": "Jarrón de silueta retorcida en espiral, de líneas fluidas y elegantes, en negro. Mide 25 cm y luce muy bien con flores secas. Impreso en 3D en PLA Premium.",
     "slug": "jarron-twisting-eleg",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 210
   },
   {
     "id": 208,
@@ -379,7 +442,10 @@
     ],
     "descripcion": "Jarrón de una pieza con textura geométrica en relieve, de patrón de rombos, que se ve muy bien con flores secas; en la foto, en blanco y negro, y se puede pedir en otros colores. Mide 25 cm, impreso en 3D en PLA Premium.",
     "slug": "jarron-texturizados",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 220
   },
   {
     "id": 209,
@@ -394,7 +460,10 @@
     ],
     "descripcion": "Jarrón de cuerpo facetado con giro en espiral y base ancha, en blanco. Una pieza decorativa de 24,5 cm impresa en 3D en PLA Premium.",
     "slug": "jarron-espiral-b",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 230
   },
   {
     "id": 210,
@@ -409,7 +478,10 @@
     ],
     "descripcion": "Jarrón en espiral con boca de bordes ondulados, en blanco, que recuerda a una flor abierta. Mide 24,5 cm, impreso en 3D en PLA Premium.",
     "slug": "jarron-espiral-d",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 240
   },
   {
     "id": 211,
@@ -424,7 +496,10 @@
     ],
     "descripcion": "Elefante gris con textura que imita el tejido, sosteniendo con la trompa un corazón rojo. Un adorno tierno para regalar. Mide 15 cm, impreso en 3D en PLA Premium.",
     "slug": "elefantito",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 250
   },
   {
     "id": 212,
@@ -439,7 +514,10 @@
     ],
     "descripcion": "Réplica de la Torre Eiffel con su estructura calada y detallada, en tono marfil: un recuerdo de París para el escritorio o la repisa. Mide 25 cm, impresa en 3D en PLA Premium.",
     "slug": "torre-eiffel",
-    "fechaAlta": "2026-09-30"
+    "fechaAlta": "2026-09-30",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 260
   },
   {
     "id": 213,
@@ -455,7 +533,10 @@
     ],
     "descripcion": "Calendario perpetuo de escritorio con engranajes y anillos giratorios para marcar el día, la fecha y el mes, con detalles amarillos sobre fondo negro y el lema Tempus Fugit. Mide 20 cm, impreso en 3D en PLA Premium.",
     "slug": "calendario-perpetuo",
-    "fechaAlta": "2026-09-30"
+    "fechaAlta": "2026-09-30",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 270
   },
   {
     "id": 1001,
@@ -472,7 +553,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en crema y con el escudo de Universitario, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-universitario",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 280
   },
   {
     "id": 1002,
@@ -488,7 +572,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en azul marino y con el escudo de Alianza Lima, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-alianza-lima",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 290
   },
   {
     "id": 1003,
@@ -504,7 +591,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en celeste y negro y con el escudo de Sporting Cristal, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-sporting-cristal",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 300
   },
   {
     "id": 1004,
@@ -520,7 +610,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en rosado y negro y con el escudo de Sport Boys, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-sport-boys",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 310
   },
   {
     "id": 1005,
@@ -536,7 +629,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en rojo y con el escudo de Cienciano, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-cienciano",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 320
   },
   {
     "id": 1006,
@@ -552,7 +648,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en blanco y con el escudo del Real Madrid, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-real-madrid",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 330
   },
   {
     "id": 1007,
@@ -567,7 +666,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en blanco y con el escudo del FC Barcelona, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-barcelona",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 340
   },
   {
     "id": 1008,
@@ -582,7 +684,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en azul marino y con el escudo del Paris Saint-Germain, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-psg",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 350
   },
   {
     "id": 1009,
@@ -598,7 +703,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de polera con capucha, en naranja y con el logo de los New York Knicks, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-knicks-basquetbol",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 360
   },
   {
     "id": 1010,
@@ -614,7 +722,10 @@
     ],
     "descripcion": "Organizador de escritorio con forma de kimono de jiu jitsu, en blanco y con cinturón marrón, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.",
     "slug": "holder-jiu-jitsu",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 370
   },
   {
     "id": 301,
@@ -630,7 +741,10 @@
     "video": "assets/video/barber-rotulo-video.mp4",
     "descripcion": "Espejo infinito octogonal con luces LED que crean un túnel de profundidad infinita alrededor del logo de tu barbería. Un letrero luminoso que llama la atención desde la puerta del local. Mide 25 cm.",
     "slug": "octolux",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 380
   },
   {
     "id": 302,
@@ -647,7 +761,10 @@
     "video": "assets/video/barber-frames3d-video.mp4",
     "descripcion": "Cuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño compacto de 15 × 11 cm, ideal para el mostrador.",
     "slug": "frameluz-302",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 390
   },
   {
     "id": 303,
@@ -664,7 +781,10 @@
     "video": "assets/video/barber-frame3d-video.mp4",
     "descripcion": "Cuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño grande de 25 × 18 cm, ideal para destacar en la pared o el mostrador.",
     "slug": "frameluz-303",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 400
   },
   {
     "id": 304,
@@ -681,7 +801,10 @@
     "video": "assets/video/barber-lamp-video.mp4",
     "descripcion": "Lámpara LED circular con el letrero Barber y un diseño de tijeras, peine y máquina, que ilumina con luz cálida el mostrador de tu barbería. Mide 23 × 23 × 4 cm.",
     "slug": "barber-lamp",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 410
   },
   {
     "id": 305,
@@ -698,7 +821,10 @@
     ],
     "descripcion": "Retrato en arte lineal de un hombre con barba y lentes, con acabado facetado en negro, para decorar la pared de tu barbería. Diseño y precio a medida.",
     "slug": "line-art",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 420
   },
   {
     "id": 306,
@@ -714,7 +840,10 @@
     ],
     "descripcion": "Portatarjetas con forma de tijeras abiertas sobre una base negra: presenta tus tarjetas de presentación con estilo en el mostrador de tu barbería. Mide 13 × 17 × 9 cm.",
     "slug": "scissors-card",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 430
   },
   {
     "id": 307,
@@ -729,7 +858,10 @@
     ],
     "descripcion": "Organizador alargado para las guías de corte de tus máquinas, con ranuras que las mantienen ordenadas y a la vista; en negro y con el nombre de tu barbería en relieve (en la foto, S3D). Mide 23 × 7,5 × 6 cm.",
     "slug": "porta-guias",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 440
   },
   {
     "id": 308,
@@ -748,7 +880,10 @@
     "descripcion": "Bart Simpson como barbero: sentado en un sillón de barbería, con lentes oscuros y tijeras en la mano, listo para atender. Figura de 25 cm impresa en 3D en PLA Premium, ideal para tu barbería o para coleccionar.",
     "slug": "bart-barbero",
     "heroOrden": 1,
-    "fechaAlta": "2026-09-30"
+    "fechaAlta": "2026-09-30",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 450
   },
   {
     "id": 401,
@@ -763,7 +898,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con forma de hueso: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "hueso-xa-naranja",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 460
   },
   {
     "id": 402,
@@ -778,7 +916,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con forma de hueso: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "hueso-xa-lila",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 470
   },
   {
     "id": 403,
@@ -793,7 +934,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con forma de hueso: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "hueso-xa-celeste",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 480
   },
   {
     "id": 404,
@@ -808,7 +952,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con forma de hueso: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "hueso-xa-blanco",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 490
   },
   {
     "id": 405,
@@ -823,7 +970,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con forma de hueso: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "hueso-xa-verde",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 500
   },
   {
     "id": 406,
@@ -838,7 +988,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con una huella dentro de un marco circular: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xc-naranja",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 510
   },
   {
     "id": 407,
@@ -853,7 +1006,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con una huella dentro de un marco circular: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xc-lila",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 520
   },
   {
     "id": 408,
@@ -868,7 +1024,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con una huella dentro de un marco circular: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xc-celeste",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 530
   },
   {
     "id": 409,
@@ -883,7 +1042,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con una huella dentro de un marco circular: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xc-blanco",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 540
   },
   {
     "id": 410,
@@ -898,7 +1060,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con una huella dentro de un marco circular: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xc-verde",
-    "fechaAlta": "2026-09-16"
+    "fechaAlta": "2026-09-16",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 550
   },
   {
     "id": 411,
@@ -913,7 +1078,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con el contorno en forma de huella: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xs-naranja",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 560
   },
   {
     "id": 412,
@@ -928,7 +1096,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con el contorno en forma de huella: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xs-lila",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 570
   },
   {
     "id": 413,
@@ -943,7 +1114,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con el contorno en forma de huella: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xs-celeste",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 580
   },
   {
     "id": 414,
@@ -958,7 +1132,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con el contorno en forma de huella: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xs-blanco",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 590
   },
   {
     "id": 415,
@@ -973,7 +1150,10 @@
     ],
     "descripcion": "Placa de identificación para mascota con el contorno en forma de huella: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.",
     "slug": "huella-xs-verde",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 600
   },
   {
     "id": 501,
@@ -988,7 +1168,10 @@
     ],
     "descripcion": "Llavero con el logo Anti Social Social Club en letras blancas con contorno negro, con estilo streetwear.",
     "slug": "antisocial",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 610
   },
   {
     "id": 503,
@@ -1004,7 +1187,10 @@
     ],
     "descripcion": "Llavero cuadrado naranja con la frase Debí tirar más fotos en letras blancas, inspirado en el álbum de Bad Bunny.",
     "slug": "debi-tirar-mas-fotos",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 620
   },
   {
     "id": 504,
@@ -1019,7 +1205,10 @@
     ],
     "descripcion": "Llavero con el logo de flechas cruzadas de Off-White, en negro y blanco con efecto de relieve.",
     "slug": "off-white",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 630
   },
   {
     "id": 505,
@@ -1035,7 +1224,10 @@
     ],
     "descripcion": "Llavero Jordan en dos versiones: con el logo Jumpman en blanco y negro, o con una mini zapatilla roja y negra y una chapita con tu nombre, como en la foto.",
     "slug": "jordan",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 640
   },
   {
     "id": 510,
@@ -1051,7 +1243,10 @@
     ],
     "descripcion": "Portallaves de pared con forma de cochera, con el logo de Toyota y un gancho para colgar las llaves: un detalle para los amantes de los autos.",
     "slug": "cochera-toyota",
-    "fechaAlta": "2026-09-17"
+    "fechaAlta": "2026-09-17",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 650
   },
   {
     "id": 512,
@@ -1068,7 +1263,10 @@
     "video": "assets/video/ll-audi-video.mp4",
     "descripcion": "Portallaves de pared con forma de cochera, con los cuatro aros de Audi, un pequeño auto en su interior y un gancho para colgar las llaves.",
     "slug": "cochera-audi",
-    "fechaAlta": "2026-09-17"
+    "fechaAlta": "2026-09-17",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 660
   },
   {
     "id": 515,
@@ -1083,7 +1281,10 @@
     ],
     "descripcion": "Llavero calado con la silueta de un osito y el logo de Nike, en negro con detalles blancos.",
     "slug": "nike",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 670
   },
   {
     "id": 601,
@@ -1099,7 +1300,10 @@
     ],
     "descripcion": "Decoración de pared en arte lineal con tres siluetas de tenistas en acción, inspirada en los Big Three del tenis. Mide 25 cm, impresa en 3D en PLA Premium.",
     "slug": "big-three",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 680
   },
   {
     "id": 602,
@@ -1115,7 +1319,10 @@
     ],
     "descripcion": "Decoración de pared en arte lineal con dos siluetas de tenistas en acción, inspirada en las hermanas Williams. Mide 25 cm, impresa en 3D en PLA Premium.",
     "slug": "hermanas-w",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 690
   },
   {
     "id": 603,
@@ -1131,7 +1338,10 @@
     ],
     "descripcion": "Rayo McQueen de Cars en arte lineal de gran formato, con contornos rojos y amarillos, el número 95 y sus ojos azules. Mide 75 cm: perfecto para el cuarto de un fan.",
     "slug": "rayo-mc-queen",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 700
   },
   {
     "id": 604,
@@ -1147,7 +1357,10 @@
     ],
     "descripcion": "Doc Hudson de Cars en arte lineal de gran formato, con su silueta clásica en negro y detalles en gris. Mide 75 cm, impreso en 3D en PLA Premium.",
     "slug": "doc-hudson",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 710
   },
   {
     "id": 605,
@@ -1163,7 +1376,10 @@
     ],
     "descripcion": "Mate, la grúa de Cars, en arte lineal en tonos naranja, con su sonrisa y sus ojos verdes. Mide 50 cm, impreso en 3D en PLA Premium.",
     "slug": "mate",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 720
   },
   {
     "id": 701,
@@ -1179,7 +1395,10 @@
     ],
     "descripcion": "Espejo infinito octogonal con luces LED azules que crean un túnel de profundidad infinita alrededor de tu logo o texto en relieve (en la foto, S3D). Mide 25 cm.",
     "slug": "espejo-infinito",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 730
   },
   {
     "id": 801,
@@ -1197,7 +1416,10 @@
     ],
     "descripcion": "Letrero luminoso con retroiluminación cálida y letras en relieve, hecho a la medida con el nombre o el diseño de tu negocio (en la foto, The Bunker Barber Studio). Diseño y precio a medida.",
     "slug": "letrero-led",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 740
   },
   {
     "id": 802,
@@ -1213,7 +1435,10 @@
     ],
     "descripcion": "Lámpara de pared inspirada en el logo de Cars, con luz LED blanca en el contorno y el nombre que elijas en el centro (en la foto, Lucca). Mide 50 × 60 × 5 cm.",
     "slug": "lampara-led-cars-personalizadas",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 750
   },
   {
     "id": 803,
@@ -1229,7 +1454,10 @@
     ],
     "descripcion": "Caja de luz con la silueta de Rayo McQueen en rojo, iluminada desde atrás, que incluye control remoto. Mide 25 × 18 × 4 cm.",
     "slug": "light-box-rayo",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 760
   },
   {
     "id": 804,
@@ -1245,7 +1473,10 @@
     ],
     "descripcion": "Lámpara LED circular para negocios, con luz cálida y códigos QR integrados para que tus clientes te encuentren o te sigan (en la foto, para una barbería). Mide 25 × 23 × 5 cm.",
     "slug": "lampara-led-qr",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 770
   },
   {
     "id": 805,
@@ -1262,7 +1493,10 @@
     ],
     "descripcion": "Caja de luz iluminada de 25 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, John Wick).",
     "slug": "box-light-grande",
-    "fechaAlta": "2026-09-17"
+    "fechaAlta": "2026-09-17",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 780
   },
   {
     "id": 806,
@@ -1279,7 +1513,10 @@
     ],
     "descripcion": "Caja de luz iluminada de 15 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, Manchester City).",
     "slug": "box-light-mediano",
-    "fechaAlta": "2026-09-17"
+    "fechaAlta": "2026-09-17",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 790
   },
   {
     "id": 807,
@@ -1295,7 +1532,10 @@
     ],
     "descripcion": "Lámpara redonda con la superficie de la luna en relieve, retroiluminada y con marco oscuro, que da una luz suave al dormitorio o la sala. Mide 25 cm.",
     "slug": "luna-led",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 800
   },
   {
     "id": 901,
@@ -1311,7 +1551,10 @@
     ],
     "descripcion": "Figura articulada Dummy montada sobre una moto de diseño futurista, lista para posar en distintas posiciones. Mide 29 × 14 × 5 cm, impresa en 3D en PLA Premium.",
     "slug": "dummy-moto",
-    "fechaAlta": "2026-09-15"
+    "fechaAlta": "2026-09-15",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 810
   },
   {
     "id": 902,
@@ -1327,7 +1570,10 @@
     ],
     "descripcion": "Figura articulada Dummy de 25 cm, con articulaciones que permiten armar distintas poses. En la foto es amarilla y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.",
     "slug": "dummy-902",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 820
   },
   {
     "id": 903,
@@ -1343,7 +1589,10 @@
     ],
     "descripcion": "Figura articulada Dummy de 20 cm, con articulaciones que permiten armar distintas poses. En la foto es celeste y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.",
     "slug": "dummy-903",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 830
   },
   {
     "id": 904,
@@ -1359,7 +1608,10 @@
     ],
     "descripcion": "Figura articulada Dummy de 15 cm, la más compacta de la familia, con articulaciones para distintas poses. En la foto es roja y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.",
     "slug": "dummy-904",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 840
   },
   {
     "id": 905,
@@ -1375,7 +1627,10 @@
     ],
     "descripcion": "Mini mochila de 6,5 cm para tu figura Dummy, personalizable con el texto o el nombre que quieras y en el color que prefieras (en la foto, con letras en relieve).",
     "slug": "mochila-dummy-personalizada",
-    "fechaAlta": "2026-09-14"
+    "fechaAlta": "2026-09-14",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 850
   },
   {
     "id": 2001,
@@ -1390,7 +1645,10 @@
     ],
     "descripcion": "Organizador con forma de corazón y compartimentos, en rosa, ideal para brochas de maquillaje, labiales y otros accesorios del tocador. Mide 13 × 14 × 11 cm, impreso en 3D en PLA Premium.",
     "slug": "organizador-corazon",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 860
   },
   {
     "id": 2002,
@@ -1407,6 +1665,9 @@
     "video": "assets/video/acc-llavero-video.mp4",
     "descripcion": "Llavero que se convierte en soporte para tu celular, ideal para ver videos o hacer videollamadas sin sostenerlo. Con tu nombre en relieve y el color que elijas (en la foto, Judith en celeste).",
     "slug": "llavero-soporte-para-celular",
-    "fechaAlta": "2026-09-08"
+    "fechaAlta": "2026-09-08",
+    "disponibilidad": "A pedido",
+    "activo": true,
+    "orden": 870
   }
 ]

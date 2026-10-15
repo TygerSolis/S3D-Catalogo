@@ -13,10 +13,13 @@ import html
 import json
 import re
 import shutil
+import sys
 import unicodedata
 from datetime import date
 from pathlib import Path
 from urllib.parse import quote
+
+from validar_productos import validar
 
 ROOT = Path(__file__).resolve().parents[1]
 # Datos de contacto y URL: se editan SOLO en config.json (este script los lleva a todas las páginas,
@@ -86,13 +89,30 @@ def precio_txt(p: dict) -> str:
     return "Cotizar" if p.get("requiereCotizacion") else f"S/ {p['precio']:.2f}"
 
 
+# Disponibilidad -> frase del mensaje de WhatsApp, etiqueta visible y valor schema.org (igual que en catalogo.js).
+DISPONIBILIDAD = {
+    "A pedido": ("Es un producto elaborado a pedido y deseo consultar el costo de envío.", "", "https://schema.org/MadeToOrder"),
+    "En stock": ("Figura en stock y deseo consultar el costo de envío.", "En stock", "https://schema.org/InStock"),
+    "Agotado": ("Figura como agotado; quisiera saber si pueden elaborarlo y el costo de envío.", "Agotado", "https://schema.org/OutOfStock"),
+}
+
+
+def texto_disponibilidad(p: dict) -> str:
+    return DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][0]
+
+
+def activos(todos: list[dict]) -> list[dict]:
+    """Productos visibles en el catálogo (los ocultos conservan su ficha, pero no se listan)."""
+    return [q for q in todos if q.get("activo", True)]
+
+
 def mensaje_whatsapp(p: dict, color: str | None, enlace: str) -> str:
     col = f" (Color: {color})" if color else ""
     if p.get("requiereCotizacion"):
         base = f"Hola, me interesa cotizar el modelo 3D: {p['nombre']}{col}."
     else:
         base = f"Hola, me interesa el modelo 3D: {p['nombre']}{col} - Precio: S/ {p['precio']:.2f} (incluye IGV)."
-    return f"{base} Es un producto elaborado a pedido y deseo consultar el costo de envío.\n{enlace}"
+    return f"{base} {texto_disponibilidad(p)}\n{enlace}"
 
 
 def url_whatsapp(p: dict, color: str | None, enlace: str) -> str:
@@ -142,6 +162,7 @@ def json_ld_producto(p: dict, url: str) -> str:
             "priceCurrency": "PEN",
             "price": f"{p['precio']:.2f}",
             "itemCondition": "https://schema.org/NewCondition",
+            "availability": DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][2],
             "seller": {"@type": "Organization", "name": "S3D"},
         }
     migas = {
@@ -168,7 +189,7 @@ def tarjeta_relacionada(p: dict) -> str:
 
 
 def relacionados(p: dict, todos: list[dict], n: int = 4) -> list[dict]:
-    mismos = [q for q in todos if q["categoria"] == p["categoria"] and q["id"] != p["id"]]
+    mismos = [q for q in activos(todos) if q["categoria"] == p["categoria"] and q["id"] != p["id"]]
     if not mismos:
         return []
     # Los siguientes del catálogo en la misma categoría, dando la vuelta al final.
@@ -266,6 +287,13 @@ def pagina(p: dict, todos: list[dict]) -> str:
                     </form>
                 </details>"""
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
+    etiqueta = DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][1]
+    clase_disp = "pp-disp-stock" if etiqueta == "En stock" else "pp-disp-agotado"
+    etiqueta_disp = f'\n                <p class="pp-disp {clase_disp}">{esc(etiqueta)}</p>' if etiqueta else ""
+    aviso_pausa = (
+        '\n                <p class="pp-pausado" role="status">Este producto no está disponible en el catálogo por ahora. Escríbenos si te interesa o <a href="../../#catalogo">mira el catálogo</a>.</p>'
+        if not p.get("activo", True) else ""
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="es">
@@ -294,7 +322,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
     <link rel="stylesheet" href="../../chrome.css?v=6">
-    <link rel="stylesheet" href="../../producto.css?v=9">
+    <link rel="stylesheet" href="../../producto.css?v=10">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -321,7 +349,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 <p class="pp-new" data-new hidden>Producto nuevo en S3D</p>
                 <p class="pp-kicker">{esc(p.get('coleccion') or p['categoria'])}</p>
                 <h1>{esc(p['nombre'])}</h1>
-                <div class="pp-price">{precio_html}</div>
+                <div class="pp-price">{precio_html}</div>{etiqueta_disp}{aviso_pausa}
                 <p class="pp-desc">{esc(p['descripcion'].strip())}</p>
                 <dl class="pp-facts">
 {ficha}
@@ -394,7 +422,7 @@ def actualizar_itemlist(todos: list[dict]) -> None:
     contenido = indice.read_text(encoding="utf-8")
     elementos = [
         {"@type": "ListItem", "position": i + 1, "url": f"{BASE_URL}producto/{p['slug']}/", "name": p["nombre"]}
-        for i, p in enumerate(todos)
+        for i, p in enumerate(activos(todos))
     ]
     ld = {"@context": "https://schema.org", "@type": "ItemList", "name": "Catálogo S3D", "numberOfItems": len(elementos), "itemListElement": elementos}
     bloque = f'{ITEMLIST_START}\n    <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>\n    {ITEMLIST_END}'
@@ -481,7 +509,7 @@ def pagina_privacidad() -> str:
 
 
 def pagina_404(todos: list[dict]) -> str:
-    destacados = sorted([p for p in todos if p.get("badge") == "Top Ventas"], key=lambda p: p.get("heroOrden", 10**6))[:4]
+    destacados = sorted([p for p in activos(todos) if p.get("badge") == "Top Ventas"], key=lambda p: p.get("heroOrden", 10**6))[:4]
     cats = "\n".join(f'            <a class="pg-chip" href="./?categoria={quote(c)}#catalogo">{esc(c)}</a>' for c in ORDEN_CATEGORIAS)
     tarjetas = "\n".join(
         f"""            <a class="pg-card" href="producto/{esc(p['slug'])}/">
@@ -534,8 +562,11 @@ def main() -> None:
     for p, b in zip(productos, base):
         # Los nombres repetidos (p. ej. DUMMY) se distinguen con el id.
         p["slug"] = p.get("slug") or (b if base.count(b) == 1 else f"{b}-{p['id']}")
-    slugs = [p["slug"] for p in productos]
-    assert len(set(slugs)) == len(slugs), "slugs duplicados"
+    errores = validar(productos)
+    if errores:
+        print("No se generó nada; corrige estos datos:\n" + "\n".join(f"  ✗ {e}" for e in errores))
+        sys.exit(1)
+    productos.sort(key=lambda p: p["orden"])   # sort estable: a igual orden, se respeta el orden del archivo
     ruta_json.write_text(json.dumps(productos, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if OUT_DIR.exists():

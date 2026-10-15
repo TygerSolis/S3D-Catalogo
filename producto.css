@@ -192,3 +192,11 @@ img, picture { display: block; max-width: 100%; }
 .pp-form input:focus, .pp-form select:focus, .pp-form textarea:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px rgba(0,102,204,.15); }
 .pp-form-enviar { align-items: center; background: #1aa34a; border: 0; border-radius: 999px; color: #fff; cursor: pointer; display: flex; font: inherit; font-weight: 800; gap: .5rem; justify-content: center; margin-top: .8rem; padding: .85rem 1rem; }
 .pp-form-enviar:hover { background: #15893e; }
+
+/* Disponibilidad (solo se muestra si no es «A pedido») y aviso de producto oculto del catálogo */
+.pp-disp { display: inline-flex; align-items: center; gap: .4rem; margin: .5rem 0 0; padding: .2rem .7rem; border-radius: 999px; font-size: .8rem; font-weight: 700; letter-spacing: .02em; }
+.pp-disp::before { content: ""; width: .5rem; height: .5rem; border-radius: 50%; background: currentColor; }
+.pp-disp-stock { background: #e7f6ec; color: #17663a; }
+.pp-disp-agotado { background: #f1f2f4; color: #4b5563; }
+.pp-pausado { margin: .75rem 0 0; padding: .7rem .9rem; border-radius: .75rem; background: #fff7e6; color: #7a4b00; font-size: .9rem; line-height: 1.45; }
+.pp-pausado a { color: inherit; font-weight: 700; text-decoration: underline; }

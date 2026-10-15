@@ -8,6 +8,29 @@ const productos = () => leerJson('productos.json');
 const rutasImagen = p => [...p.imagenes, ...(p.colores || []).map(c => c.img)];
 
 module.exports = {
+    'productos.json pasa el validador y el validador detecta datos erróneos'() {
+        const { execFileSync } = require('child_process');
+        const py = codigo => execFileSync('python3', ['-c', codigo], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
+        assert.equal(py("import json; from validar_productos import validar; print(len(validar(json.load(open('../productos.json')))))").trim(), '0');
+        const errores = JSON.parse(py(`import json; from validar_productos import validar
+p = json.load(open('../productos.json'))
+p[0]['disponibilidad'] = 'Mañana'; p[1]['imagenes'] = ['assets/no-existe.webp']; p[2]['id'] = p[3]['id']; p[4]['colores'] = [{'nombre': 'Rojo', 'hex': 'rojo', 'img': p[4]['imagenes'][0]}]; p[5]['activo'] = 'si'
+print(json.dumps(validar(p)))`));
+        for (const texto of ['disponibilidad «Mañana»', 'no existe la imagen «assets/no-existe.webp»', 'se repite', 'código inválido «rojo»', '«activo» debe ser sí o no']) {
+            assert.ok(errores.some(e => e.includes(texto)), `el validador no detectó: ${texto}`);
+        }
+    },
+    'la ficha refleja disponibilidad y producto oculto'() {
+        const { execFileSync } = require('child_process');
+        const html = execFileSync('python3', ['-c', `import json, build_product_pages as b
+p = json.load(open('../productos.json'))
+x = dict(p[0], disponibilidad='En stock', activo=False)
+print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
+        assert.ok(html.includes('<p class="pp-disp pp-disp-stock">En stock</p>'));
+        assert.ok(html.includes('class="pp-pausado"'));
+        assert.ok(html.includes('"availability": "https://schema.org/InStock"'));
+        assert.ok(decodeURIComponent(html.match(/id="pp-buy"[^>]*href="([^"]+)"/)[1]).includes('Figura en stock'));
+    },
     'el número de WhatsApp sale solo de config.json'() {
         const { whatsapp, whatsappVisible } = leerJson('config.json');
         const leer = ruta => fs.readFileSync(path.join(RAIZ, ruta), 'utf8');

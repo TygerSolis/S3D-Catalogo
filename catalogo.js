@@ -35,25 +35,11 @@
             "'": '&#039;'
         }[char]));
 
-        const ordenDeseado = [
-            "Muñecos Coleccionables",
-            "Adornos", 
-            "Holders",
-            "Barbería", 
-            "Mascota", 
-            "Llaveros", 
-            "Line Art", 
-            "Iluminación LED 3D", 
-            "Dummy", 
-            "Accesorios"
-        ];
+        // Orden de las categorías = orden en que aparecen los productos (campo «orden» de la hoja/productos.json).
+        let ordenDeseado = [];
         
         let categoriasPresentes = [...new Set(productos.map(p => p.categoria))];
         let categorias = ["Todas"];
-        
-        ordenDeseado.forEach(cat => {
-            if (categoriasPresentes.includes(cat)) categorias.push(cat);
-        });
 
         let categoriaActual = "Todas";
         let terminoBusqueda = "";
@@ -136,13 +122,20 @@
             return dias >= 0 && dias <= NUEVO_DIAS;
         }
 
+        const DISPONIBILIDAD = {
+            'A pedido': { frase: 'Es un producto elaborado a pedido y deseo consultar el costo de envío.', etiqueta: '' },
+            'En stock': { frase: 'Figura en stock y deseo consultar el costo de envío.', etiqueta: 'En stock', clase: 'catalog-disp-stock' },
+            'Agotado': { frase: 'Figura como agotado; quisiera saber si pueden elaborarlo y el costo de envío.', etiqueta: 'Agotado', clase: 'catalog-disp-agotado' }
+        };
+        const disponibilidad = producto => DISPONIBILIDAD[producto.disponibilidad] || DISPONIBILIDAD['A pedido'];
+
         function mensajeWhatsApp(producto, colorNombre) {
             const color = colorNombre ? ` (Color: ${colorNombre})` : '';
             const base = producto.requiereCotizacion
                 ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}${color}.`
                 : `Hola, me interesa el modelo 3D: ${producto.nombre}${color} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV).`;
             const enlace = producto.slug ? `\n${new URL(`producto/${producto.slug}/`, document.baseURI).href}` : '';
-            return `${base} Es un producto elaborado a pedido y deseo consultar el costo de envío.${enlace}`;
+            return `${base} ${disponibilidad(producto).frase}${enlace}`;
         }
 
         const urlWhatsApp = (producto, colorNombre) =>
@@ -196,6 +189,7 @@
                     <div class="catalog-carousel-meta">
                         <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
                         <span>${escaparHTML([producto.medida, producto.material].filter(Boolean).join(' · '))}</span>
+                        ${disponibilidad(producto).etiqueta ? `<span class="catalog-disp ${disponibilidad(producto).clase}">${disponibilidad(producto).etiqueta}</span>` : ''}
                     </div>
                     <div class="catalog-carousel-actions">
                         <a href="${escaparHTML(urlWhatsApp(producto, colorInicial))}" data-carousel-buy data-producto="${escaparHTML(producto.nombre)}" target="_blank" rel="noopener noreferrer" class="catalog-carousel-buy">Comprar</a>
@@ -782,7 +776,7 @@
             if (prod) {
                 document.getElementById('lightbox-title').textContent = prod.nombre;
                 document.getElementById('lightbox-new').hidden = !esNuevo(prod);
-                const partes = [prod.requiereCotizacion ? 'Cotizar' : `S/ ${prod.precio.toFixed(2)}`, media.color ? `Color: ${media.color}` : null, prod.medida].filter(Boolean);
+                const partes = [prod.requiereCotizacion ? 'Cotizar' : `S/ ${prod.precio.toFixed(2)}`, media.color ? `Color: ${media.color}` : null, prod.medida, disponibilidad(prod).etiqueta].filter(Boolean);
                 document.getElementById('lightbox-meta').textContent = partes.join(' · ');
                 const buy = document.getElementById('lightbox-buy');
                 buy.href = urlWhatsApp(prod, media.color || null);
@@ -932,7 +926,8 @@
         try {
             const response = await fetch('productos.json?v=tienda-3');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            productos = await response.json();
+            // Los productos ocultos (activo: false) no se listan; el resto se ordena por «orden».
+            productos = (await response.json()).filter(p => p.activo !== false).sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0));
             const ids = new Set();
             productos.forEach(producto => {
                 if (ids.has(producto.id)) throw new Error(`ID de producto duplicado: ${producto.id}`);
@@ -942,10 +937,8 @@
                 ids.add(producto.id);
             });
             categoriasPresentes = [...new Set(productos.map(p => p.categoria))];
-            categorias = ["Todas"];
-            ordenDeseado.forEach(cat => {
-                if (categoriasPresentes.includes(cat)) categorias.push(cat);
-            });
+            ordenDeseado = categoriasPresentes;
+            categorias = ["Todas", ...ordenDeseado];
             // "Novedades" solo existe mientras haya productos con el aviso "Nuevo" vigente.
             if (productos.some(esNuevo)) categorias.splice(1, 0, "Novedades");
             const params = new URLSearchParams(window.location.search);
