@@ -11,7 +11,7 @@
 La hoja manda: «importar» reescribe productos.json entero. Si algún dato no es válido no escribe nada
 y lista los errores (fila y motivo). Las imágenes se escriben por su nombre, sin carpeta ni extensión
 (p. ej. «ts-woody-1»), separadas por comas; los colores, uno por línea o separados por «;», con el
-formato «Nombre #rrggbb imagen».
+formato «Nombre #rrggbb imagen» y, si ese color cuesta distinto, su precio al final: «Nombre #rrggbb imagen 45».
 """
 import csv
 import io
@@ -26,6 +26,8 @@ from validar_productos import validar  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 JSON = ROOT / "productos.json"
+# Una línea de «colores»: «Nombre #rrggbb imagen» y, opcional, el precio de ese color («… imagen 45» o «… imagen S/ 45,50»).
+COLOR_RE = re.compile(r"\s*(.+?)\s+(#[0-9a-fA-F]{6})\s+(\S.*?)(?:\s+(?:S/\s*)?(\d+(?:[.,]\d{1,2})?))?\s*")
 
 # (columna de la hoja, campo de productos.json). El orden es el de las columnas en la hoja.
 COLUMNAS = [
@@ -82,7 +84,8 @@ def a_fila(p: dict) -> dict:
         elif campo == "imagenes":
             fila[col] = ", ".join(nombre_imagen(r) for r in v or [])
         elif campo == "colores":
-            fila[col] = "\n".join(f"{c['nombre']} {c['hex']} {nombre_imagen(c['img'])}" for c in v or [])
+            fila[col] = "\n".join(f"{c['nombre']} {c['hex']} {nombre_imagen(c['img'])}"
+                                  + (f" {numero(c['precio'])}" if c.get("precio") is not None else "") for c in v or [])
         elif campo == "video":
             fila[col] = re.sub(r"^assets/video/", "", v or "")
         elif campo in ("precio", "orden", "heroOrden") and v is not None:
@@ -164,11 +167,15 @@ def de_fila(fila: dict, n: int, errores: list[str]) -> dict:
     for linea in re.split(r"[;\n]", fila.get("colores") or ""):
         if not linea.strip():
             continue
-        m = re.fullmatch(r"\s*(.+?)\s+(#[0-9a-fA-F]{6})\s+(\S.*?)\s*", linea)
+        m = COLOR_RE.fullmatch(linea)
         if not m:
-            error(f"color «{linea.strip()}» no tiene el formato «Nombre #rrggbb imagen»")
+            error(f"color «{linea.strip()}» no tiene el formato «Nombre #rrggbb imagen» (y, opcional, su precio al final)")
             continue
-        colores.append({"nombre": m.group(1), "hex": m.group(2).lower(), "img": ruta_imagen(m.group(3))})
+        color = {"nombre": m.group(1), "hex": m.group(2).lower(), "img": ruta_imagen(m.group(3))}
+        if m.group(4):
+            valor = float(m.group(4).replace(",", "."))
+            color["precio"] = int(valor) if valor.is_integer() else valor
+        colores.append(color)
     if colores:
         p["colores"] = colores
     video = (fila.get("video") or "").strip()
@@ -211,7 +218,7 @@ def faltantes(origen: str) -> None:
     for f in leer_csv(origen):
         nombres |= {nombre_imagen(ruta_imagen(x)) for x in re.split(r"[,\n]", f.get("imagenes") or "") if x.strip()}
         for linea in re.split(r"[;\n]", f.get("colores") or ""):
-            m = re.fullmatch(r"\s*(.+?)\s+(#[0-9a-fA-F]{6})\s+(\S.*?)\s*", linea)
+            m = COLOR_RE.fullmatch(linea)
             if m:
                 nombres.add(nombre_imagen(ruta_imagen(m.group(3))))
     for n in sorted(nombres):

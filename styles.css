@@ -662,3 +662,106 @@
 .catalog-disp::before { content: ""; width: .4rem; height: .4rem; border-radius: 50%; background: currentColor; }
 .catalog-disp-stock { background: #e7f6ec; color: #17663a; }
 .catalog-disp-agotado { background: #f1f2f4; color: #4b5563; }
+
+/* Temporada (Navidad): solo con html.temporada-navidad (temporada.js) o elementos que el JS crea en temporada. */
+.nieve {
+    animation: nieve 32s linear infinite;
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 0 1.5px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.6) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,255,255,.45) 0 2.2px, transparent 2.7px);
+    background-position: 0 0, 40px 60px, 120px 30px;
+    background-size: 140px 140px, 90px 90px, 210px 210px;
+    inset: 0;
+    opacity: .5;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+}
+@keyframes nieve { to { background-position: 140px 280px, -50px 330px, 120px 450px; } }
+.temporada-navidad .reference-hero > .absolute:first-child { background: #c62a33; }
+.temporada-navidad .hero-pill-dot { background: var(--nav-dorado); }
+.temporada-navidad .hero-product { border-color: rgba(229,185,78,.35); }
+.hero-cta-temporada {
+    align-items: center;
+    background: linear-gradient(135deg, #c62a33, #9b1c24);
+    border-radius: 999px;
+    box-shadow: 0 10px 24px -10px rgba(198,42,51,.85);
+    color: #fff;
+    display: inline-flex;
+    font-weight: 800;
+    gap: .55rem;
+    padding: .875rem 1.6rem;
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+.hero-cta-temporada:hover { box-shadow: 0 14px 28px -10px rgba(198,42,51,.95); transform: translateY(-4px); }
+.hero-cta-temporada[hidden] { display: none; }
+.hero-cta-temporada .ico { color: #ffe7a8; height: 1.15rem; width: 1.15rem; }
+/* Mosaico del hero con menos de 4 productos (p. ej. al empezar la colección de temporada) */
+@media (min-width: 1024px) {
+    .hero-products[data-n="1"], .hero-products[data-n="2"] { grid-template-rows: minmax(0, 1fr); }
+    .hero-products[data-n="1"] { grid-template-columns: minmax(0, 1fr); }
+    .hero-products[data-n="3"] { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+    .hero-products[data-n="1"] .hero-product:first-child, .hero-products[data-n="2"] .hero-product:first-child { grid-row: auto; }
+    .hero-products[data-n="3"] .hero-product:first-child { grid-row: 1 / span 2; }
+}
+#category-filters .category-filter-temporada { color: #b4232c; }
+#category-filters .category-filter-temporada.category-filter-active::after { background: #b4232c; }
+.filter-tree { color: #1f7a4a; height: .9rem; margin-right: .35rem; vertical-align: -.12em; width: .9rem; }
+.catalog-carousel-card.is-temporada { border-color: #ebbcc0; box-shadow: 0 0 0 1px #ebbcc0, 0 14px 30px -22px rgba(180,35,44,.55); }
+.catalog-temporada-tag {
+    align-items: center;
+    background: #b4232c;
+    border-radius: 999px;
+    color: #fff;
+    display: inline-flex;
+    font-size: .62rem;
+    font-weight: 800;
+    gap: .3rem;
+    left: .75rem;
+    letter-spacing: .1em;
+    padding: .4rem .7rem;
+    position: absolute;
+    text-transform: uppercase;
+    top: .75rem;
+    z-index: 2;
+}
+.catalog-temporada-tag .ico { color: #ffe7a8; height: .8rem; width: .8rem; }
+.temporada-banner {
+    align-items: center;
+    background: radial-gradient(circle at 10% 15%, rgba(229,185,78,.22), transparent 40%), linear-gradient(120deg, #7f1820, #b4232c 55%, #8f1d26);
+    border-radius: 2rem;
+    box-shadow: 0 20px 40px -18px rgba(127,24,32,.55);
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    padding: 1.75rem 2rem;
+    position: relative;
+}
+.temporada-banner::after {
+    background-image: radial-gradient(circle, rgba(255,255,255,.8) 0 1.2px, transparent 1.7px), radial-gradient(circle, rgba(255,255,255,.5) 0 2px, transparent 2.5px);
+    background-position: 0 0, 50px 35px;
+    background-size: 90px 90px, 150px 150px;
+    content: "";
+    inset: 0;
+    opacity: .35;
+    pointer-events: none;
+    position: absolute;
+}
+.temporada-banner-ico { color: #ffe7a8; height: 3rem; position: relative; stroke-width: 1.5; width: 3rem; z-index: 1; }
+.temporada-banner-texto { flex: 1 1 22rem; position: relative; z-index: 1; }
+.temporada-banner h3 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 800; letter-spacing: -.01em; line-height: 1.15; margin: 0 0 .5rem; }
+.temporada-banner p { color: rgba(255,255,255,.9); line-height: 1.6; margin: 0; max-width: 40rem; }
+.temporada-banner .temporada-banner-kicker { color: #ffe7a8; font-size: .72rem; font-weight: 800; letter-spacing: .16em; margin-bottom: .35rem; text-transform: uppercase; }
+.temporada-banner-cta { align-items: center; background: #fff; border-radius: 999px; color: #7f1820; display: inline-flex; font-weight: 800; gap: .5rem; padding: .85rem 1.4rem; position: relative; transition: transform .2s ease; white-space: nowrap; z-index: 1; }
+.temporada-banner-cta:hover { transform: translateY(-2px); }
+.temporada-banner-cta .ico { color: #1aa34a; height: 1.1rem; width: 1.1rem; }
+@media (max-width: 640px) {
+    .temporada-banner { border-radius: 1.5rem; padding: 1.4rem 1.25rem; }
+    .temporada-banner-ico { height: 2.25rem; width: 2.25rem; }
+}
+@media (prefers-reduced-motion: reduce) { .nieve { animation: none; } }
+@media print { .temporada-banner, .catalog-temporada-tag, .hero-cta-temporada { display: none !important; } }

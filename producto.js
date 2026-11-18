@@ -56,6 +56,14 @@
         mostrarImagen(boton.dataset.img);
         if (etiqueta) etiqueta.textContent = boton.dataset.ppColor;
         if (buy && boton.dataset.wa) buy.href = boton.dataset.wa;
+        // Precio propio del color (si lo tiene): se ve en la ficha y es el que usa «Añadir al pedido».
+        const articulo = document.querySelector('.pp-product');
+        const precio = document.getElementById('pp-price-value');
+        if (boton.dataset.precio && articulo && articulo.dataset.precio) {
+            articulo.dataset.precio = boton.dataset.precio;
+            if (precio) precio.textContent = Number(boton.dataset.precio).toFixed(2);
+        }
+        activar(miniaturas, miniaturas.find(m => m.dataset.src === boton.dataset.img) || null);
         if (window.s3dTrack && producto) window.s3dTrack('color_elegido', { eleccion: `${producto.dataset.producto} · ${boton.dataset.ppColor}` });
     }));
 

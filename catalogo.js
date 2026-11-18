@@ -36,6 +36,30 @@
             "'": '&#039;'
         }[char]));
 
+        // Precio según el color: un color puede tener precio propio (p. ej. árbol blanco con luz LED / verde).
+        const precioDe = (producto, colorNombre) => producto.colores?.find(c => c.nombre === colorNombre)?.precio ?? producto.precio;
+        const preciosDe = producto => producto.colores?.length ? producto.colores.map(c => precioDe(producto, c.nombre)) : [producto.precio];
+        const precioMinimo = producto => Math.min(...preciosDe(producto));
+        // Texto del precio cuando no hay un color elegido: «Desde S/ 30.00» si cambia según el color.
+        const precioTexto = producto => producto.requiereCotizacion ? 'Cotizar'
+            : `${new Set(preciosDe(producto)).size > 1 ? 'Desde ' : ''}S/ ${precioMinimo(producto).toFixed(2)}`;
+
+        // Temporada (config.json «temporada», p. ej. Navidad): temporada.js pone html.temporada-<id> solo entre
+        // sus fechas. Mientras dure, su categoría va primero, protagoniza la portada y sus tarjetas se distinguen.
+        const raiz = document.documentElement;
+        const TEMPORADA = raiz.dataset.temporada && raiz.classList.contains(`temporada-${raiz.dataset.temporada}`)
+            ? { id: raiz.dataset.temporada, categoria: raiz.dataset.temporadaCategoria, titulo: raiz.dataset.temporadaTitulo }
+            : null;
+        const esDeTemporada = producto => !!TEMPORADA && producto.categoria === TEMPORADA.categoria;
+        // Textos del banner que encabeza la categoría de temporada (solo temporadas con textos propios).
+        const BANNER_TEMPORADA = {
+            navidad: {
+                titulo: 'Regalos con personalidad, hechos en 3D',
+                texto: 'Adornos y detalles navideños elaborados a pedido en nuestro taller. Escríbenos con tiempo para tener tu pedido listo antes de Navidad.',
+                mensaje: 'Hola, quiero consultar por la Colección Navideña.'
+            }
+        };
+
         // Orden de las categorías = orden en que aparecen los productos (campo «orden» de la hoja/productos.json).
         let ordenDeseado = [];
         
@@ -65,7 +89,9 @@
         const idsFavoritos = () => (window.S3D ? window.S3D.favoritos.ids().filter(id => productos.some(p => p.id === id)) : []);
         function categoriasVisibles() {
             const lista = [...categorias];
-            if (idsFavoritos().length > 0 || categoriaActual === 'Favoritos') lista.splice(lista.includes('Novedades') ? 2 : 1, 0, 'Favoritos');
+            // Favoritos va tras las categorías especiales del inicio (temporada y Novedades).
+            const especiales = lista.filter(cat => cat === 'Novedades' || (TEMPORADA && cat === TEMPORADA.categoria)).length;
+            if (idsFavoritos().length > 0 || categoriaActual === 'Favoritos') lista.splice(1 + especiales, 0, 'Favoritos');
             return lista;
         }
 
@@ -75,9 +101,9 @@
                     class="category-filter px-4 py-2 text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0
                     ${categoriaActual === cat 
                         ? 'category-filter-active text-brand-accent'
-                        : 'text-gray-500 hover:text-brand-accent'}"
+                        : 'text-gray-500 hover:text-brand-accent'}${TEMPORADA && cat === TEMPORADA.categoria ? ' category-filter-temporada' : ''}"
                 >
-                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${cat === 'Favoritos' ? `<svg class="ico filter-heart" aria-hidden="true"><use href="#i-heart"/></svg>Favoritos (${idsFavoritos().length})` : escaparHTML(cat)}
+                    ${cat === 'Novedades' ? '<span class="filter-new-dot" aria-hidden="true"></span>' : ''}${TEMPORADA && cat === TEMPORADA.categoria ? '<svg class="ico filter-tree" aria-hidden="true"><use href="#i-tree"/></svg>' : ''}${cat === 'Favoritos' ? `<svg class="ico filter-heart" aria-hidden="true"><use href="#i-heart"/></svg>Favoritos (${idsFavoritos().length})` : escaparHTML(cat)}
                 </button>
             `).join('');
         }
@@ -85,14 +111,28 @@
         function renderFeaturedProducts() {
             const container = document.getElementById('hero-products');
             if (!container) return;
+            // En temporada, si su categoría tiene productos, la portada muestra esos en lugar de los más vendidos.
             // El primero (tile grande) lo marca heroOrden en productos.json; el resto sigue el orden del catálogo.
-            const destacados = productos
-                .filter(producto => producto.badge === 'Top Ventas')
+            const deTemporada = productos.filter(esDeTemporada);
+            const destacados = (deTemporada.length ? deTemporada : productos.filter(producto => producto.badge === 'Top Ventas'))
                 .sort((a, b) => (a.heroOrden ?? Infinity) - (b.heroOrden ?? Infinity))
                 .slice(0, 4);
+            container.dataset.n = String(destacados.length);   // el mosaico se adapta si hay menos de 4
+            if (deTemporada.length) {
+                const titulo = document.querySelector('.hero-products-title');
+                if (titulo) titulo.textContent = TEMPORADA.titulo;
+                container.setAttribute('aria-label', TEMPORADA.titulo);
+                const boton = document.getElementById('hero-temporada');
+                if (boton) {
+                    boton.href = `?categoria=${encodeURIComponent(TEMPORADA.categoria)}#catalogo`;
+                    boton.querySelector('[data-temporada-titulo]').textContent = TEMPORADA.titulo;
+                    boton.hidden = false;
+                    document.getElementById('hero-catalogo')?.classList.add('hidden');   // ambos llevan al catálogo: basta uno
+                }
+            }
             container.innerHTML = destacados.map((producto, index) => {
                 const imagen = producto.colores?.length ? producto.colores[0].img : producto.imagenes[0];
-                const precio = producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`;
+                const precio = precioTexto(producto);
                 return `
                 <button type="button" class="hero-product" data-hero-product="${producto.id}">
                     <picture>
@@ -134,7 +174,7 @@
             const color = colorNombre ? ` (Color: ${colorNombre})` : '';
             const base = producto.requiereCotizacion
                 ? `Hola, me interesa cotizar el modelo 3D: ${producto.nombre}${color}.`
-                : `Hola, me interesa el modelo 3D: ${producto.nombre}${color} - Precio: S/ ${producto.precio.toFixed(2)} (incluye IGV).`;
+                : `Hola, me interesa el modelo 3D: ${producto.nombre}${color} - Precio: S/ ${precioDe(producto, colorNombre).toFixed(2)} (incluye IGV).`;
             const enlace = producto.slug ? `\n${new URL(`producto/${producto.slug}/`, document.baseURI).href}` : '';
             return `${base} ${disponibilidad(producto).frase}${enlace}`;
         }
@@ -166,11 +206,11 @@
             ` : '');
 
             return `
-            <article id="producto-${producto.id}" class="catalog-carousel-card${esNuevo(producto) ? ' is-new' : ''}">
+            <article id="producto-${producto.id}" class="catalog-carousel-card${esNuevo(producto) ? ' is-new' : ''}${esDeTemporada(producto) ? ' is-temporada' : ''}">
                 <div class="catalog-media">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0">
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
-                    ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : ''}
+                    ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : esDeTemporada(producto) ? `<span class="catalog-temporada-tag"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>${escaparHTML(TEMPORADA.categoria)}</span>` : ''}
                     <picture>
                         <source data-carousel-main-source srcset="${escaparHTML(rutaAvif(imgSm))}" type="image/avif">
                         <img data-carousel-main-image src="${escaparHTML(imgSm)}" loading="lazy" decoding="async" alt="${escaparHTML(producto.nombre)}">
@@ -188,7 +228,7 @@
                     <p class="catalog-card-kicker">${escaparHTML(producto.coleccion || producto.categoria)}</p>
                     <h3>${producto.slug ? `<a href="producto/${escaparHTML(producto.slug)}/" class="catalog-card-link" data-evento="ficha_tarjeta" data-producto="${escaparHTML(producto.nombre)}">${escaparHTML(producto.nombre)}</a>` : escaparHTML(producto.nombre)}</h3>
                     <div class="catalog-carousel-meta">
-                        <span>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${producto.precio.toFixed(2)}`}</span>
+                        <span data-precio-label>${producto.requiereCotizacion ? 'Cotizar' : `S/ ${precioDe(producto, colorInicial).toFixed(2)}`}</span>
                         <span>${escaparHTML([producto.medida, producto.material].filter(Boolean).join(' · '))}</span>
                         ${disponibilidad(producto).etiqueta ? `<span class="catalog-disp ${disponibilidad(producto).clase}">${disponibilidad(producto).etiqueta}</span>` : ''}
                     </div>
@@ -222,7 +262,7 @@
             const imagen = (color && producto.colores?.find(c => c.nombre === color)?.img) || producto.colores?.[0]?.img || producto.imagenes[0];
             window.S3D.pedido.agregar({
                 id: producto.id, nombre: producto.nombre, slug: producto.slug,
-                precio: producto.requiereCotizacion ? null : producto.precio, cotizar: !!producto.requiereCotizacion,
+                precio: producto.requiereCotizacion ? null : precioDe(producto, color), cotizar: !!producto.requiereCotizacion,
                 imagen: rutaSm(imagen), color, medida: producto.medida || null
             });
             boton.classList.add('is-added');
@@ -281,7 +321,7 @@
             });
             const productosOrdenados = [...productosFiltrados];
             // Los productos "a cotizar" no tienen precio publicado: siempre van al final del orden por precio.
-            const precioOrden = p => (p.requiereCotizacion || !p.precio) ? Infinity : p.precio;
+            const precioOrden = p => (p.requiereCotizacion || !p.precio) ? Infinity : precioDe(p, p.colores?.[0]?.nombre);   // el que muestra la tarjeta
             const compararPrecio = direccion => (a, b) => {
                 const pa = precioOrden(a);
                 const pb = precioOrden(b);
@@ -331,7 +371,19 @@
                 }
 
                 let categoryBanner = '';
-                if (categoria === "Mascota") {
+                const banner = TEMPORADA && categoria === TEMPORADA.categoria ? BANNER_TEMPORADA[TEMPORADA.id] : null;
+                if (banner) {
+                    categoryBanner = `
+                    <div class="temporada-banner">
+                        <svg class="ico temporada-banner-ico" aria-hidden="true"><use href="#i-gift"/></svg>
+                        <div class="temporada-banner-texto">
+                            <p class="temporada-banner-kicker">${escaparHTML(TEMPORADA.titulo)}</p>
+                            <h3>${escaparHTML(banner.titulo)}</h3>
+                            <p>${escaparHTML(banner.texto)}</p>
+                        </div>
+                        <a href="${escaparHTML(window.S3D.urlWhatsApp(banner.mensaje))}" target="_blank" rel="noopener noreferrer" class="temporada-banner-cta"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>Consultar por WhatsApp</a>
+                    </div>`;
+                } else if (categoria === "Mascota") {
                     categoryBanner = `
                     <div class="bg-gradient-to-r from-[#003366] to-[#004d99] rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 mb-10 shadow-float text-white border border-white/10 relative overflow-hidden">
                         <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
@@ -437,6 +489,8 @@
                     });
                     const label = card.querySelector('[data-color-label]');
                     if (label) label.textContent = `Color: ${color.nombre}`;
+                    const precio = card.querySelector('[data-precio-label]');
+                    if (precio && !product.requiereCotizacion) precio.textContent = `S/ ${precioDe(product, color.nombre).toFixed(2)}`;
                     const buy = card.querySelector('[data-carousel-buy]');
                     if (buy) buy.href = urlWhatsApp(product, color.nombre);
                     track('color_elegido', { eleccion: `${product.nombre} · ${color.nombre}` });
@@ -460,6 +514,14 @@
         filtersContainer.addEventListener('click', evento => {
             const boton = evento.target.closest('[data-categoria]');
             if (boton) window.filtrarPorCategoria(boton.dataset.categoria);
+        });
+
+        // Botón «Colección …» del hero: filtra sin recargar y baja al catálogo.
+        document.getElementById('hero-temporada')?.addEventListener('click', evento => {
+            if (!TEMPORADA || evento.ctrlKey || evento.metaKey) return;
+            evento.preventDefault();
+            window.filtrarPorCategoria(TEMPORADA.categoria);
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
         });
 
         window.filtrarPorCategoria = function(categoria) {
@@ -519,7 +581,7 @@
                 html = `<li class="search-suggest-vacio" role="presentation"><span>No encontramos resultados para “${escaparHTML(t)}”.</span><a href="${escaparHTML(window.S3D.urlWhatsApp(mensaje))}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp y te ayudamos</a></li>`;
             } else {
                 html += cs.map(c => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="categoria" data-valor="${escaparHTML(c)}"><span class="search-suggest-cat"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></span><span><strong>Ver ${escaparHTML(c)}</strong><small>Categoría</small></span></li>`).join('');
-                html += ps.map(p => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="producto" data-slug="${escaparHTML(p.slug)}" data-nombre="${escaparHTML(p.nombre)}"><img src="${rutaSm(p.colores?.[0]?.img || p.imagenes[0])}" alt="" width="40" height="50" loading="lazy" decoding="async"><span><strong>${resaltar(p.nombre, t)}</strong><small>${escaparHTML(p.categoria)} · ${p.requiereCotizacion ? 'Cotizar' : `S/ ${p.precio.toFixed(2)}`}</small></span></li>`).join('');
+                html += ps.map(p => `<li role="option" id="sug-${indice++}" class="search-suggest-item" data-tipo="producto" data-slug="${escaparHTML(p.slug)}" data-nombre="${escaparHTML(p.nombre)}"><img src="${rutaSm(p.colores?.[0]?.img || p.imagenes[0])}" alt="" width="40" height="50" loading="lazy" decoding="async"><span><strong>${resaltar(p.nombre, t)}</strong><small>${escaparHTML(p.categoria)} · ${precioTexto(p)}</small></span></li>`).join('');
             }
             listaSugerencias.innerHTML = html;
             listaSugerencias.hidden = false;
@@ -702,6 +764,8 @@
             track('producto_visto', { producto: prod.nombre });
             const imagenes = prod.colores?.length
                 ? prod.colores.map(color => ({ type: 'img', src: color.img, color: color.nombre }))
+                    // fotos extra que no son de ningún color (p. ej. el producto en otro ambiente)
+                    .concat([...new Set(prod.imagenes)].filter(src => !prod.colores.some(c => c.img === src)).map(src => ({ type: 'img', src })))
                 : prod.imagenes.map(src => ({ type: 'img', src }));
             if (prod.video) imagenes.push({ type: 'vid', src: prod.video });
             abrirLightbox(imagenes, initialIndex, prod);
@@ -787,7 +851,7 @@
             if (prod) {
                 document.getElementById('lightbox-title').textContent = prod.nombre;
                 document.getElementById('lightbox-new').hidden = !esNuevo(prod);
-                const partes = [prod.requiereCotizacion ? 'Cotizar' : `S/ ${prod.precio.toFixed(2)}`, media.color ? `Color: ${media.color}` : null, prod.medida, disponibilidad(prod).etiqueta].filter(Boolean);
+                const partes = [prod.requiereCotizacion ? 'Cotizar' : media.color ? `S/ ${precioDe(prod, media.color).toFixed(2)}` : precioTexto(prod), media.color ? `Color: ${media.color}` : null, prod.medida, disponibilidad(prod).etiqueta].filter(Boolean);
                 document.getElementById('lightbox-meta').textContent = partes.join(' · ');
                 const buy = document.getElementById('lightbox-buy');
                 buy.href = urlWhatsApp(prod, media.color || null);
@@ -948,10 +1012,13 @@
                 ids.add(producto.id);
             });
             categoriasPresentes = [...new Set(productos.map(p => p.categoria))];
+            // En temporada, su categoría va primero (en los filtros y en el catálogo).
+            const hayTemporada = productos.some(esDeTemporada);
+            if (hayTemporada) categoriasPresentes = [TEMPORADA.categoria, ...categoriasPresentes.filter(cat => cat !== TEMPORADA.categoria)];
             ordenDeseado = categoriasPresentes;
             categorias = ["Todas", ...ordenDeseado];
-            // "Novedades" solo existe mientras haya productos con el aviso "Nuevo" vigente.
-            if (productos.some(esNuevo)) categorias.splice(1, 0, "Novedades");
+            // "Novedades" solo existe mientras haya productos con el aviso "Nuevo" vigente (tras la de temporada).
+            if (productos.some(esNuevo)) categorias.splice(hayTemporada ? 2 : 1, 0, "Novedades");
             const params = new URLSearchParams(window.location.search);
             const requestedCategory = params.get("categoria");
             if (requestedCategory && (categorias.includes(requestedCategory) || (requestedCategory === "Favoritos" && idsFavoritos().length > 0))) categoriaActual = requestedCategory;

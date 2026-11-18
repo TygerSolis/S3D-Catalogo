@@ -71,6 +71,8 @@ def validar(productos: list, comprobar_archivos: bool = True) -> list[str]:
                 error(f"el color «{c.get('nombre')}» tiene un código inválido «{c.get('hex')}» (ej.: #ff99cc)")
             if not c.get("nombre"):
                 error("hay un color sin nombre")
+            if "precio" in c and not (isinstance(c["precio"], (int, float)) and c["precio"] > 0):
+                error(f"el color «{c.get('nombre')}» tiene un precio inválido «{c['precio']}» (ej.: 45)")
         if comprobar_archivos:
             rutas = list(p.get("imagenes") or []) + [c.get("img", "") for c in p.get("colores") or []]
             for ruta in rutas:

@@ -26,7 +26,7 @@ Para publicar al instante: GitHub → pestaña **Actions** → **Catálogo desde
 | disponibilidad | `A pedido`, `En stock` o `Agotado`. Las dos últimas muestran una etiqueta; el producto se puede pedir igual. | En stock |
 | descripcion | Texto de la ficha. | … |
 | imagenes | Nombres de las fotos, sin carpeta ni extensión, separados por comas. **Pon tantas como quieras**: la primera es la principal y las miniaturas se crean solas (en la tarjeta del catálogo van en una fila que se desliza). | ts-woody-1, ts-woody-2, ts-woody-3 |
-| colores | Opcional. Una línea por color: `Nombre #código foto`. | Rosa #ff99cc hk-urbana-1 |
+| colores | Opcional. Una línea por color: `Nombre #código foto`. Si un color cuesta distinto, pon su precio al final: `Nombre #código foto precio` (los colores sin precio usan la columna `precio`). La ficha y la tarjeta cambian el precio al elegir el color; donde no se elige, sale «Desde S/ …». Si el producto tiene más fotos o un video, se ven como miniaturas bajo los colores. | Rosa #ff99cc hk-urbana-1 <br> Blanco con luz LED (28 cm) #f4f1ea arbol-1 45 |
 | video | Opcional: un video por producto, con su extensión (.mp4 o .webm). Si es nuevo, súbelo a R2 `fuentes/` con ese mismo nombre (máx. 25 MB); aparece como última miniatura con ▶. | taza-rosa-video.mp4 |
 | etiqueta | Opcional: `Top Ventas` (sale en el mosaico de portada) o `Personalizable`. | Top Ventas |
 | fechaAlta | Fecha de alta `AAAA-MM-DD`. Durante 14 días el producto lleva el aviso «Nuevo». | 2026-10-20 |
@@ -48,3 +48,19 @@ Para **añadir o quitar fotos de un producto que ya existe** basta con editar su
 (y subir a R2 las fotos nuevas). Cambiar el orden de los nombres cambia la foto principal.
 
 Consejo: si quieres preparar un producto sin que se vea todavía, ponlo con `activo` = `no` y actívalo cuando esté listo.
+
+## Colección de temporada (Navidad)
+
+Del **17 de noviembre de 2026 al 6 de enero de 2027** la web se ambienta sola para Navidad: aviso rojo arriba,
+luces bajo el menú, nieve en la portada y detalles festivos. El 7 de enero vuelve sola al diseño normal.
+
+Para que un producto forme parte de la **Colección Navideña**, escribe `Navidad` en su columna `categoria`
+(con mayúscula inicial, igual en todas las filas). Mientras dure la temporada:
+
+- «Navidad» es el primer filtro y la primera sección del catálogo, con un banner propio.
+- La portada muestra hasta 4 productos navideños en lugar de «Más vendidos» (el grande lo eliges con `heroOrden` = 1)
+  y un botón rojo «Colección Navideña».
+- Sus tarjetas y fichas llevan la marca «Navidad».
+
+Si aún no hay productos con categoría `Navidad`, solo se ve la ambientación y la portada sigue mostrando los más vendidos.
+Las fechas, el título y el texto del aviso están en `config.json` → `temporada` (para quitarla antes de tiempo, se borra ese bloque).

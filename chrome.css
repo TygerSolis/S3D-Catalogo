@@ -164,3 +164,39 @@
     .s3d-fab { padding: .8rem; }
 }
 @media print { .s3d-fab, .s3d-panel, .s3d-fondo, .s3d-aviso { display: none !important; } }
+
+/* Temporada (config.json «temporada»): temporada.js pone html.temporada-<id> solo entre las fechas.
+   .con-temporada aparece solo en temporada; .sin-temporada se oculta en temporada. */
+html:not([class*="temporada-"]) .con-temporada { display: none !important; }
+html[class*="temporada-"] .sin-temporada { display: none !important; }
+
+/* Navidad: rojo arándano, verde pino y dorado sobre el azul de la marca (ambientación moderada). */
+.temporada-navidad {
+    --nav-rojo: #b4232c;
+    --nav-rojo-oscuro: #7f1820;
+    --nav-verde: #1f7a4a;
+    --nav-dorado: #e5b94e;
+}
+.temporada-navidad .announcement-bar { background: linear-gradient(90deg, var(--nav-rojo-oscuro), var(--nav-rojo) 50%, var(--nav-rojo-oscuro)); color: #fff; }
+.temporada-navidad .announcement-bar a { color: #ffe7a8; }
+.aviso-temporada { align-items: center; display: inline-flex; gap: .45rem; }
+.aviso-temporada .ico { color: var(--nav-dorado); height: .95rem; width: .95rem; }
+/* Guirnalda de luces bajo el menú */
+.temporada-navidad .site-nav::after {
+    animation: guirnalda 2.6s ease-in-out infinite alternate;
+    background:
+        radial-gradient(circle at 50% 3px, var(--nav-rojo) 0 3px, transparent 3.5px) 0 0 / 66px 9px repeat-x,
+        radial-gradient(circle at 50% 3px, var(--nav-dorado) 0 3px, transparent 3.5px) 22px 0 / 66px 9px repeat-x,
+        radial-gradient(circle at 50% 3px, var(--nav-verde) 0 3px, transparent 3.5px) 44px 0 / 66px 9px repeat-x;
+    bottom: -8px;
+    content: "";
+    height: 9px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+@keyframes guirnalda { from { opacity: .7; } to { opacity: 1; } }
+.temporada-navidad .site-footer { border-image: linear-gradient(90deg, var(--nav-rojo), var(--nav-dorado), var(--nav-verde)) 1; }
+@media (prefers-reduced-motion: reduce) { .temporada-navidad .site-nav::after { animation: none; } }
+@media print { .temporada-navidad .site-nav::after { display: none; } }

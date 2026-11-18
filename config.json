@@ -2,5 +2,13 @@
   "whatsapp": "51955107609",
   "whatsappVisible": "+51 955 107 609",
   "urlBase": "https://tygersolis.github.io/S3D-Catalogo/",
-  "pedidosUrl": "https://script.google.com/macros/s/AKfycbxbm6uDG6playzgKJ-tQSmG9WUK0qOY4AgxZlwK5HFO9vsb_L075fSzC7c2UKset8-kBg/exec"
+  "pedidosUrl": "https://script.google.com/macros/s/AKfycbxbm6uDG6playzgKJ-tQSmG9WUK0qOY4AgxZlwK5HFO9vsb_L075fSzC7c2UKset8-kBg/exec",
+  "temporada": {
+    "id": "navidad",
+    "titulo": "Colección Navideña",
+    "desde": "2026-11-17",
+    "hasta": "2027-01-06",
+    "categoria": "Navidad",
+    "aviso": "Colección Navideña: regalos impresos en 3D"
+  }
 }

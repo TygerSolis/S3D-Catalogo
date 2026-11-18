@@ -30,6 +30,15 @@ WHATSAPP = CONFIG["whatsapp"]
 WHATSAPP_VISIBLE = CONFIG["whatsappVisible"]
 PEDIDOS_URL = CONFIG.get("pedidosUrl", "")
 assert PEDIDOS_URL == "" or re.fullmatch(r"https://script\.google\.com/macros/s/[\w-]+/exec", PEDIDOS_URL), "pedidosUrl inválida en config.json"
+# Temporada (p. ej. Navidad): ambientación y categoría destacada entre «desde» y «hasta» (ambas incluidas).
+# Las páginas llevan las fechas y temporada.js decide en el navegador, así nada depende del día en que se genera.
+# Para quitarla del todo, se borra el bloque «temporada» de config.json y se regenera.
+TEMPORADA = CONFIG.get("temporada")
+if TEMPORADA:
+    assert re.fullmatch(r"[a-z0-9-]+", TEMPORADA["id"]), "temporada.id: solo minúsculas, números y guiones"
+    assert date.fromisoformat(TEMPORADA["desde"]) <= date.fromisoformat(TEMPORADA["hasta"]), "temporada: «desde» es posterior a «hasta»"
+    assert TEMPORADA["titulo"].strip() and TEMPORADA["categoria"].strip() and TEMPORADA["aviso"].strip(), "temporada: faltan titulo, categoria o aviso"
+HAY_PRODUCTOS_TEMPORADA = False   # lo fija main(): el enlace «Ver colección» solo aparece si la categoría tiene productos
 OUT_DIR = ROOT / "producto"
 # Política de seguridad (CSP) de todas las páginas: solo se ejecuta JavaScript de archivos propios y de Umami
 # (sin código en línea ni atributos onclick). Si se añade un servicio externo, hay que permitir aquí su origen.
@@ -63,7 +72,35 @@ CHROME_MARCAS = {
 def plantilla(nombre: str, base: str) -> str:
     """Lee scripts/chrome/<nombre>.html y resuelve {{base}} (prefijo relativo a la raíz del sitio) y los datos de contacto."""
     texto = (CHROME_DIR / f"{nombre}.html").read_text(encoding="utf-8")
+    texto = texto.replace("{{temporada_aviso}}", aviso_temporada(base))
     return texto.replace("{{base}}", base).replace("{{whatsapp}}", WHATSAPP).replace("{{whatsapp_visible}}", WHATSAPP_VISIBLE)
+
+
+def aviso_temporada(base: str) -> str:
+    """Mensaje de la barra de aviso durante la temporada (temporada.js decide si se ve)."""
+    if not TEMPORADA:
+        return ""
+    aviso = f'\n    <span class="con-temporada aviso-temporada"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>{esc(TEMPORADA["aviso"])}</span>'
+    if HAY_PRODUCTOS_TEMPORADA:
+        aviso += f'\n    <a class="con-temporada" href="{base}?categoria={quote(TEMPORADA["categoria"])}#catalogo">Ver colección</a>'
+    return aviso
+
+
+def html_temporada() -> str:
+    """Atributos de <html> con la temporada; temporada.js los lee para activar la ambientación."""
+    if not TEMPORADA:
+        return ""
+    return "".join(f' data-temporada{sufijo}="{esc(TEMPORADA[clave])}"' for sufijo, clave in
+                   (("", "id"), ("-desde", "desde"), ("-hasta", "hasta"), ("-categoria", "categoria"), ("-titulo", "titulo")))
+
+
+def script_temporada(base: str) -> str:
+    """temporada.js va en <head> sin defer: pone la clase de temporada antes de pintar."""
+    return f'\n    <script src="{base}temporada.js?v=1"></script>' if TEMPORADA else ""
+
+
+def es_de_temporada(p: dict) -> bool:
+    return bool(TEMPORADA) and p.get("categoria") == TEMPORADA["categoria"]
 
 
 def chrome_superior(base: str) -> str:
@@ -103,8 +140,22 @@ def avif(ruta: str) -> str:
     return re.sub(r"\.(webp|png|jpe?g)$", ".avif", ruta, flags=re.I)
 
 
+def precio_de(p: dict, color: str | None = None) -> float:
+    """Precio del producto o, si el color elegido tiene precio propio (p. ej. un árbol con luz LED), el de ese color."""
+    c = next((c for c in p.get("colores") or [] if c["nombre"] == color), None)
+    return c["precio"] if c and c.get("precio") is not None else p["precio"]
+
+
+def precios(p: dict) -> list[float]:
+    """Precios distintos del producto (más de uno si algún color tiene precio propio), de menor a mayor."""
+    return sorted({precio_de(p, c["nombre"]) for c in p.get("colores") or []} or {p["precio"]})
+
+
 def precio_txt(p: dict) -> str:
-    return "Cotizar" if p.get("requiereCotizacion") else f"S/ {p['precio']:.2f}"
+    if p.get("requiereCotizacion"):
+        return "Cotizar"
+    lista = precios(p)
+    return f"Desde S/ {lista[0]:.2f}" if len(lista) > 1 else f"S/ {lista[0]:.2f}"
 
 
 # Disponibilidad -> frase del mensaje de WhatsApp, etiqueta visible y valor schema.org (igual que en catalogo.js).
@@ -129,7 +180,7 @@ def mensaje_whatsapp(p: dict, color: str | None, enlace: str) -> str:
     if p.get("requiereCotizacion"):
         base = f"Hola, me interesa cotizar el modelo 3D: {p['nombre']}{col}."
     else:
-        base = f"Hola, me interesa el modelo 3D: {p['nombre']}{col} - Precio: S/ {p['precio']:.2f} (incluye IGV)."
+        base = f"Hola, me interesa el modelo 3D: {p['nombre']}{col} - Precio: S/ {precio_de(p, color):.2f} (incluye IGV)."
     return f"{base} {texto_disponibilidad(p)}\n{enlace}"
 
 
@@ -151,14 +202,24 @@ def galeria(p: dict) -> list[dict]:
 def descripcion_meta(p: dict) -> str:
     partes = [p["descripcion"].strip().replace("\n", " ")]
     if not p.get("requiereCotizacion"):
-        partes.append(f"Precio S/ {p['precio']:.2f} (incluye IGV).")
+        lista = precios(p)
+        rango = f"S/ {lista[0]:.2f} a S/ {lista[-1]:.2f} según el color" if len(lista) > 1 else f"S/ {lista[0]:.2f}"
+        partes.append(f"Precio {rango} (incluye IGV).")
     partes.append("Elaborado a pedido en S3D; medidas y colores personalizables.")
     texto = " ".join(partes)
     return texto if len(texto) <= 300 else texto[:297].rstrip() + "…"
 
 
+def fotos_extra(p: dict) -> list[str]:
+    """Fotos de un producto con colores que no son la foto de ningún color (se muestran como miniaturas aparte)."""
+    if not p.get("colores"):
+        return []
+    de_color = {c["img"] for c in p["colores"]}
+    return [s for s in dict.fromkeys(p["imagenes"]) if s not in de_color]
+
+
 def json_ld_producto(p: dict, url: str) -> str:
-    imagenes = [BASE_URL + url_ruta(g["src"]) for g in galeria(p)]
+    imagenes = [BASE_URL + url_ruta(s) for s in dict.fromkeys([g["src"] for g in galeria(p)] + fotos_extra(p))]
     datos = {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -174,15 +235,20 @@ def json_ld_producto(p: dict, url: str) -> str:
     if p.get("medida"):
         datos["size"] = p["medida"]
     if not p.get("requiereCotizacion"):
+        lista = precios(p)
         datos["offers"] = {
             "@type": "Offer",
             "url": url,
             "priceCurrency": "PEN",
-            "price": f"{p['precio']:.2f}",
+            "price": f"{lista[0]:.2f}",
             "itemCondition": "https://schema.org/NewCondition",
             "availability": DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][2],
             "seller": {"@type": "Organization", "name": "S3D"},
         }
+        if len(lista) > 1:   # precio según el color: rango de precios
+            datos["offers"] = {**datos["offers"], "@type": "AggregateOffer", "lowPrice": f"{lista[0]:.2f}",
+                               "highPrice": f"{lista[-1]:.2f}", "offerCount": len(p["colores"])}
+            del datos["offers"]["price"]
     migas = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -231,7 +297,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     miniaturas = ""
     if tiene_colores:
         botones = "\n".join(
-            f"""                    <button type="button" class="pp-swatch{' is-active' if i == 0 else ''}" data-pp-color="{esc(c['nombre'])}" data-img="{esc(url_ruta(c['img'], '../../'))}" data-wa="{esc(url_whatsapp(p, c['nombre'], url))}" style="background-color:{esc(c['hex'])}" aria-label="Color {esc(c['nombre'])}" aria-pressed="{'true' if i == 0 else 'false'}" title="{esc(c['nombre'])}"></button>"""
+            f"""                    <button type="button" class="pp-swatch{' is-active' if i == 0 else ''}" data-pp-color="{esc(c['nombre'])}" data-img="{esc(url_ruta(c['img'], '../../'))}" data-wa="{esc(url_whatsapp(p, c['nombre'], url))}" data-precio="{'' if p.get('requiereCotizacion') else f"{precio_de(p, c['nombre']):.2f}"}" style="background-color:{esc(c['hex'])}" aria-label="Color {esc(c['nombre'])}" aria-pressed="{'true' if i == 0 else 'false'}" title="{esc(c['nombre'])}"></button>"""
             for i, c in enumerate(p["colores"])
         )
         miniaturas = f"""                <div class="pp-colors" role="group" aria-label="Colores disponibles">
@@ -240,7 +306,13 @@ def pagina(p: dict, todos: list[dict]) -> str:
 {botones}
                     </div>
                 </div>"""
-    elif len(medios) > 1 or p.get("video"):
+    if tiene_colores:
+        # Con colores, las miniaturas solo aparecen si hay fotos extra o video: todas las fotos (la del color primero).
+        con_miniaturas = bool(fotos_extra(p) or p.get("video"))
+        medios = [{"src": s, "etiqueta": f"Foto {i + 1}"} for i, s in enumerate(dict.fromkeys([p["colores"][0]["img"]] + p["imagenes"]))]
+    else:
+        con_miniaturas = len(medios) > 1 or bool(p.get("video"))
+    if con_miniaturas:
         thumbs = "\n".join(
             f"""                    <button type="button" class="pp-thumb{' is-active' if i == 0 else ''}" data-pp-thumb data-src="{esc(url_ruta(m['src'], '../../'))}" aria-label="Ver {esc(m['etiqueta'].lower())}"{' aria-current="true"' if i == 0 else ''}><picture><source srcset="{esc(url_ruta(avif(miniatura(m['src'])), '../../'))}" type="image/avif"><img src="{esc(url_ruta(miniatura(m['src']), '../../'))}" alt="" loading="lazy" decoding="async"></picture></button>"""
             for i, m in enumerate(medios)
@@ -248,7 +320,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
         if p.get("video"):
             thumbs += f"""
                     <button type="button" class="pp-thumb pp-thumb-video" data-pp-video aria-label="Ver video del producto"><span aria-hidden="true">▶</span></button>"""
-        miniaturas = f"""                <div class="pp-thumbs" aria-label="Miniaturas">
+        miniaturas += f"""{chr(10) if miniaturas else ""}                <div class="pp-thumbs" aria-label="Miniaturas">
 {thumbs}
                 </div>"""
 
@@ -262,12 +334,12 @@ def pagina(p: dict, todos: list[dict]) -> str:
     ficha = "\n".join(
         f"                    <div><dt>{k}</dt><dd>{esc(str(v))}</dd></div>" for k, v in datos if v
     )
+    color0 = p["colores"][0]["nombre"] if tiene_colores else None
     precio_html = (
         '<span class="pp-price-main">Cotizar</span>'
         if p.get("requiereCotizacion")
-        else f'<span class="pp-price-main"><small>S/</small> {p["precio"]:.2f}</span><span class="pp-price-note">Incluye IGV · según la medida publicada</span>'
+        else f'<span class="pp-price-main"><small>S/</small> <span id="pp-price-value">{precio_de(p, color0):.2f}</span></span><span class="pp-price-note">Incluye IGV · {"según el color elegido" if len(precios(p)) > 1 else "según la medida publicada"}</span>'
     )
-    color0 = p["colores"][0]["nombre"] if tiene_colores else None
     boton = "Cotizar por WhatsApp" if p.get("requiereCotizacion") else "Comprar por WhatsApp"
     rel = relacionados(p, todos)
     bloque_rel = (
@@ -304,6 +376,10 @@ def pagina(p: dict, todos: list[dict]) -> str:
                         <button type="submit" class="pp-form-enviar"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg>Pedir cotización por WhatsApp</button>
                     </form>
                 </details>"""
+    marca_temporada = (
+        f'\n                <p class="pp-temporada-tag con-temporada"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>{esc(TEMPORADA["titulo"])}</p>'
+        if es_de_temporada(p) else ""
+    )
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
     etiqueta = DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][1]
     clase_disp = "pp-disp-stock" if etiqueta == "En stock" else "pp-disp-agotado"
@@ -314,10 +390,10 @@ def pagina(p: dict, todos: list[dict]) -> str:
     )
 
     return f"""<!DOCTYPE html>
-<html lang="es">
+<html lang="es"{html_temporada()}>
 <head>
     <meta charset="UTF-8">
-    {META_CSP}
+    {META_CSP}{script_temporada("../../")}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{esc(titulo)}</title>
     <meta name="description" content="{esc(desc)}">
@@ -340,8 +416,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
-    <link rel="stylesheet" href="../../chrome.css?v=6">
-    <link rel="stylesheet" href="../../producto.css?v=10">
+    <link rel="stylesheet" href="../../chrome.css?v=7">
+    <link rel="stylesheet" href="../../producto.css?v=11">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -354,7 +430,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
             <span aria-current="page">{esc(p['nombre'])}</span>
         </nav>
 
-        <article class="pp-product" data-producto="{esc(p['nombre'])}" data-id="{p['id']}" data-slug="{esc(p['slug'])}" data-precio="{'' if p.get('requiereCotizacion') or not p.get('precio') else p['precio']}" data-cotizar="{'1' if p.get('requiereCotizacion') or not p.get('precio') else ''}" data-medida="{esc(p.get('medida') or '')}" data-imagen="{esc(miniatura(imagen_principal(p)))}"{fecha_attr}>
+        <article class="pp-product{' pp-temporada' if es_de_temporada(p) else ''}" data-producto="{esc(p['nombre'])}" data-id="{p['id']}" data-slug="{esc(p['slug'])}" data-precio="{'' if p.get('requiereCotizacion') or not p.get('precio') else precio_de(p, color0)}" data-cotizar="{'1' if p.get('requiereCotizacion') or not p.get('precio') else ''}" data-medida="{esc(p.get('medida') or '')}" data-imagen="{esc(miniatura(imagen_principal(p)))}"{fecha_attr}>
             <div class="pp-gallery">
                 <div class="pp-stage" id="pp-stage" role="button" tabindex="0" aria-label="Ampliar imagen en alta resolución">
                     <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
@@ -365,7 +441,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
             </div>
 
             <div class="pp-info">
-                <p class="pp-new" data-new hidden>Producto nuevo en S3D</p>
+                <p class="pp-new" data-new hidden>Producto nuevo en S3D</p>{marca_temporada}
                 <p class="pp-kicker">{esc(p.get('coleccion') or p['categoria'])}</p>
                 <h1>{esc(p['nombre'])}</h1>
                 <div class="pp-price">{precio_html}</div>{etiqueta_disp}{aviso_pausa}
@@ -397,7 +473,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <script src="../../chrome.js?v=1" defer></script>
     <script src="../../tienda.js?v=3" defer></script>
     <script src="../../analytics.js?v=5" defer></script>
-    <script src="../../producto.js?v=11" defer></script>
+    <script src="../../producto.js?v=12" defer></script>
 </body>
 </html>
 """
@@ -433,6 +509,15 @@ def actualizar_csp_indice() -> None:
         contenido = re.sub(r'<meta http-equiv="Content-Security-Policy" content="[^"]*">', lambda _: META_CSP, contenido, count=1)
     else:
         contenido = contenido.replace('<meta charset="UTF-8">\n', f'<meta charset="UTF-8">\n    {META_CSP}\n', 1)
+    indice.write_text(contenido, encoding="utf-8")
+
+
+def actualizar_temporada_indice() -> None:
+    """Pone en index.html los atributos de temporada en <html> y temporada.js en <head> (o los quita)."""
+    indice = ROOT / "index.html"
+    contenido = re.sub(r'<html lang="es"[^>]*>', lambda _: f'<html lang="es"{html_temporada()}>', indice.read_text(encoding="utf-8"), count=1)
+    contenido = re.sub(r'\n *<script src="temporada\.js[^"]*"></script>', "", contenido)
+    contenido = contenido.replace(META_CSP, META_CSP + script_temporada(""), 1)
     indice.write_text(contenido, encoding="utf-8")
 
 
@@ -476,10 +561,10 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     meta_robots = f'    <meta name="robots" content="{robots}">\n' if robots else ""
     enlace_canonico = f'    <link rel="canonical" href="{esc(canonical)}">\n' if canonical else ""
     return f"""<!DOCTYPE html>
-<html lang="es">
+<html lang="es"{html_temporada()}>
 <head>
     <meta charset="UTF-8">
-    {META_CSP}
+    {META_CSP}{script_temporada(base)}
 {etiqueta_base}    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{esc(titulo)}</title>
     <meta name="description" content="{esc(descripcion)}">
@@ -489,7 +574,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     <link rel="preload" href="{base}assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{base}fonts.css?v=1">
-    <link rel="stylesheet" href="{base}chrome.css?v=6">
+    <link rel="stylesheet" href="{base}chrome.css?v=7">
     <link rel="stylesheet" href="{base}paginas.css?v=1">
 </head>
 <body>
@@ -606,6 +691,8 @@ def main() -> None:
         print("No se generó nada; corrige estos datos:\n" + "\n".join(f"  ✗ {e}" for e in errores))
         sys.exit(1)
     productos.sort(key=lambda p: p["orden"])   # sort estable: a igual orden, se respeta el orden del archivo
+    global HAY_PRODUCTOS_TEMPORADA
+    HAY_PRODUCTOS_TEMPORADA = any(es_de_temporada(p) for p in activos(productos))
     ruta_json.write_text(json.dumps(productos, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if OUT_DIR.exists():
@@ -622,6 +709,7 @@ def main() -> None:
     actualizar_itemlist(productos)
     actualizar_chrome_indice()
     actualizar_csp_indice()
+    actualizar_temporada_indice()
     sincronizar_contacto()
     escribir_sitemap(productos)
     print(f"{len(productos)} páginas generadas en {OUT_DIR.relative_to(ROOT)}/, sitemap.xml e ItemList actualizados")

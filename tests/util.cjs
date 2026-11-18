@@ -14,7 +14,7 @@ const visibles = () => leerJson('productos.json').filter(p => p.activo !== false
 
 /**
  * Abre una página con Umami simulado (los eventos quedan en página.eventos) y el reloj fijo.
- * opciones: { vp, touch, sinReloj, preparar(pagina) }
+ * opciones: { vp, touch, sinReloj, fecha (Date que sustituye a la fija), preparar(pagina) }
  */
 async function abrir(browser, ruta = '', opciones = {}) {
     const contexto = await browser.newContext({
@@ -35,7 +35,7 @@ async function abrir(browser, ruta = '', opciones = {}) {
         e => window.__csp(`${e.effectiveDirective} ${e.blockedURI || ''}`.trim())));
     // Sin Web Share API: así "Compartir" usa siempre el portapapeles en las pruebas.
     await pagina.addInitScript(() => { try { Object.defineProperty(navigator, 'share', { value: undefined }); } catch (e) { /* ya definida */ } });
-    if (!opciones.sinReloj) await pagina.clock.setFixedTime(FECHA_FIJA);
+    if (!opciones.sinReloj) await pagina.clock.setFixedTime(opciones.fecha || FECHA_FIJA);
     // Las pruebas nunca envían pedidos a la hoja real (las de pedidos.cjs instalan su propia simulación).
     await contexto.route('https://script.google.com/**', ruta => ruta.abort());
     if (opciones.preparar) await opciones.preparar(pagina);   // p. ej. interceptar productos.json

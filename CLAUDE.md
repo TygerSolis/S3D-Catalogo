@@ -13,7 +13,7 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion, seguridad)
+                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
@@ -38,6 +38,11 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   Se niega a generar si `validar_productos.py` encuentra errores.
 - **`config.json`** es el único lugar del número de WhatsApp, la URL base y `pedidosUrl`; el generador los
   propaga a todas las páginas y a `tienda.js`. Una prueba falla si el número aparece escrito en otro sitio.
+- **Temporada** (`config.json` → `temporada`: id, titulo, desde, hasta, categoria, aviso): el generador escribe
+  las fechas en `<html data-temporada-…>` y carga `temporada.js` en `<head>` (sin defer), que pone
+  `html.temporada-<id>` solo entre las fechas según el reloj del visitante (lo generado no depende del día).
+  `.con-temporada` / `.sin-temporada` muestran u ocultan elementos; `catalogo.js` pone la categoría de temporada
+  primero, la usa en el mosaico del hero y marca sus tarjetas; las fichas de esa categoría llevan `pp-temporada`.
 - **JS del navegador** (scripts clásicos, sin módulos): `catalogo.js` (portada: carga JSON, filtros por
   `data-categoria`, buscador combobox, tarjetas, visor), `producto.js` (fichas y cotizador), `tienda.js`
   (Mi pedido y favoritos en localStorage, mensaje de WhatsApp, código de pedido `S3D-XXXXX` y registro por
@@ -76,12 +81,13 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | # | Tema | Decisión |
 |---|---|---|
 | D1 | Almacenamiento de medios | Cloudflare R2 (bucket `s3d`) solo como respaldo y origen de originales (`fuentes/`); la web se sirve desde GitHub Pages. |
-| D2 | Videos | No recomprimir: se publican tal cual (máx. 25 MB). |
+| D2 | Videos | No recomprimir: se publican tal cual (máx. 25 MB). Excepción (17/11/2026): un video en HEVC/H.265 se convierte a H.264 solo por compatibilidad con los navegadores; el original queda en R2. |
 | D3 | Edición del catálogo | Google Sheets + GitHub Action (la hoja manda). |
-| D4 | Campos nuevos | Solo `disponibilidad`, `activo` y `orden` (sin días de elaboración ni variantes con precio). |
+| D4 | Campos nuevos | Solo `disponibilidad`, `activo` y `orden` (sin días de elaboración ni variantes con precio). Cambio (17/11/2026): un color puede tener precio propio (árboles navideños); los sets se publican como productos aparte. |
 | D5 | Registro de pedidos | Apps Script + hoja «Pedidos S3D», aviso a ventas.s3d@gmail.com. |
 | D6 | Revisión de cambios | Rama `vista-previa` publicada en `/vista-previa/`; pasa a `main` con «aprobado». |
 | D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
+| D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
 
 Implementado (octubre de 2026):
 
@@ -98,6 +104,17 @@ Implementado (octubre de 2026):
   Source: GitHub Actions; el despliegue antiguo «pages build and deployment» ya no corre); errores de JS de
   los visitantes como evento Umami `error_js` (máx. 3 por visita); sin atributos `onclick` y con CSP en todas
   las páginas.
+
+Retomado el 17/11/2026:
+
+- **Temporada navideña** (D8): `temporada.js` + bloque `temporada` de `config.json`; aviso rojo, guirnalda de luces
+  bajo el menú, nieve en el hero, categoría «Navidad» primero con banner, mosaico y botón del hero, marca en
+  tarjetas y fichas; mosaico del hero adaptable a 1–3 productos. Pruebas en `tests/temporada.cjs`; guía en
+  `docs/guia-catalogo.md`.
+- **Precio por color** (D4): en la hoja, `Nombre #rrggbb foto precio`; `color.precio` en productos.json. La ficha, la
+  tarjeta, el visor, Mi pedido y WhatsApp usan el precio del color elegido; sin color elegido, «Desde S/ …»;
+  schema.org `AggregateOffer`. Con colores, las fotos extra y el video salen como miniaturas bajo los colores.
+  Pruebas en `tests/precios.cjs`.
 
 Pendiente (no iniciado): pasar el JS a módulos, unificar las 5 hojas de estilo, una sola plantilla para
 tarjeta/ficha; Fase 4 (reseñas, promociones con fecha de fin). Del dueño: fotos nuevas de 35 productos

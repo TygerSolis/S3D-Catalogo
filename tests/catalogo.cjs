@@ -1,5 +1,5 @@
 // Portada: hero, tarjetas, orden, novedades, colores y clics.
-const { assert, abrir, ruta, visibles } = require('./util.cjs');
+const { assert, abrir, ruta, visibles, leerJson } = require('./util.cjs');
 
 const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const tarjeta = (pagina, nombre) => pagina.locator('.catalog-carousel-card', { hasText: nombre }).first();
@@ -137,7 +137,10 @@ module.exports = {
     },
     async 'Novedades desaparece solo cuando los avisos caducan'({ browser }) {
         const p = await abrir(browser, '', { sinReloj: true });
-        await p.clock.setFixedTime(new Date('2026-12-01T12:00:00'));
+        const ultima = leerJson('productos.json').map(x => x.fechaAlta).sort().at(-1);
+        const caducado = new Date(`${ultima}T12:00:00`);
+        caducado.setDate(caducado.getDate() + 15);   // el aviso «Nuevo» dura 14 días
+        await p.clock.setFixedTime(caducado);
         await p.reload({ waitUntil: 'networkidle' });
         assert.equal(await p.locator('#category-filters button', { hasText: 'Novedades' }).count(), 0);
         assert.equal(await p.locator('.catalog-carousel-card.is-new').count(), 0);
