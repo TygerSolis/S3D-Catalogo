@@ -190,7 +190,10 @@ module.exports = {
     'Apps Script: producto fuera de la cola, y «guardarPermiso» obtiene el permiso de la página'() {
         const s = cargarGs({ props: { META_TOKEN: '' } });
         assert.match(s.post({ accion: 'publicar', id: 1 }).error, /no está en la cola de la web principal/);
-        s.propiedades.set('APP_ID', '123'); s.propiedades.set('APP_SECRET', 'secreto'); s.propiedades.set('TOKEN_TEMPORAL', 'corto');
+        s.propiedades.set('APP_ID', ' 123\n'); s.propiedades.set('APP_SECRET', 'secreto'); s.propiedades.set('TOKEN_TEMPORAL', 'corto ');
+        // APP_ID equivocado: se explica cuál copiar
+        const mal = cargarGs({ props: Object.fromEntries(s.propiedades), meta: () => [400, { error: { code: 101, message: 'Invalid Client ID' } }] });
+        assert.throws(() => mal.gs.guardarPermiso(), /no reconoce APP_ID o APP_SECRET.*Configuración de la app → Básica/);
         const t = cargarGs({
             props: Object.fromEntries(s.propiedades),
             meta: url => {
@@ -203,6 +206,7 @@ module.exports = {
         assert.deepEqual(['META_TOKEN', 'PAGINA_ID', 'INSTAGRAM_ID'].map(k => t.propiedades.get(k)), ['pagina', 'PAG', 'IG']);
         assert.ok(!t.propiedades.has('TOKEN_TEMPORAL'));
         assert.equal(t.llamadas[0].datos.fb_exchange_token, 'corto');
+        assert.equal(t.llamadas[0].datos.client_id, '123');
         assert.equal(t.llamadas[1].datos.access_token, 'largo');
     },
     async 'página: con la clave, «Publicar ahora» (doble toque), «Aprobar» y los errores se muestran sin HTML'({ browser }) {

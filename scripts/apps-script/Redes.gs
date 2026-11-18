@@ -90,7 +90,8 @@ function generarClave() {
  */
 function guardarPermiso() {
   const props = PropertiesService.getScriptProperties();
-  const [appId, secreto, temporal] = ['APP_ID', 'APP_SECRET', 'TOKEN_TEMPORAL'].map(k => props.getProperty(k));
+  // trim: un espacio o salto de línea al pegar el valor hace que Meta no lo reconozca.
+  const [appId, secreto, temporal] = ['APP_ID', 'APP_SECRET', 'TOKEN_TEMPORAL'].map(k => (props.getProperty(k) || '').trim());
   if (!appId || !secreto || !temporal) throw new Error('faltan APP_ID, APP_SECRET o TOKEN_TEMPORAL en las propiedades');
   const largo = get_('oauth/access_token', { grant_type: 'fb_exchange_token', client_id: appId, client_secret: secreto, fb_exchange_token: temporal }, '');
   const paginas = get_('me/accounts', { fields: 'id,name,access_token,instagram_business_account{id,username}' }, largo.access_token).data || [];
@@ -127,7 +128,7 @@ function cuentas_() {
 }
 
 function token_() {
-  const t = PropertiesService.getScriptProperties().getProperty('META_TOKEN');
+  const t = (PropertiesService.getScriptProperties().getProperty('META_TOKEN') || '').trim();
   if (!t) throw new Error('falta el permiso de Meta (META_TOKEN): sigue la guía, paso 3');
   return t;
 }
@@ -150,11 +151,14 @@ const post_ = (ruta, params) => llamar_('post', ruta, params);
 /** Mensajes de Meta en palabras simples (el original va entre paréntesis para buscarlo si hace falta). */
 function errorMeta_(error, http) {
   const original = ' (Meta ' + (error.code || http) + ': ' + (error.error_user_msg || error.message || 'sin detalle') + ')';
+  if (error.code === 101 || error.code === 1 && /client|secret/i.test(error.message || '')) {
+    return 'Meta no reconoce APP_ID o APP_SECRET: copia el «Identificador de la app» y la «Clave secreta de la app» de Configuración de la app → Básica (no los de Instagram)' + original;
+  }
   if (error.code === 190) return 'el permiso de Meta venció o fue revocado: genera uno nuevo (guía, paso 3)' + original;
   if (error.code === 10 || error.code === 200 || error.code === 3) return 'falta un permiso en la app de Meta (guía, paso 2)' + original;
   if ([4, 17, 32, 613].indexOf(error.code) > -1 || error.code === 9) return 'Meta pide esperar: demasiadas publicaciones seguidas' + original;
   if (error.code === 9004 || error.code === 36003 || error.error_subcode === 2207052) return 'Meta no pudo descargar la foto o el video de la web' + original;
-  return 'Meta rechazó la publicación' + original;
+  return 'Meta rechazó la solicitud' + original;
 }
 
 // ---------------------------------------------------------------- contenido (de la web publicada)
