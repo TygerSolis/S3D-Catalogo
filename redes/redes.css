@@ -1,0 +1,48 @@
+/* Página interna de publicaciones para redes (redes/index.html). */
+:root { --navy: #002244; --blue: #0066cc; --ink: #1f2937; --muted: #64748b; --line: #e2e8f0; --ok: #15803d; }
+*, *::before, *::after { box-sizing: border-box; }
+body { background: #f7faff; color: var(--ink); font-family: 'Manrope', system-ui, sans-serif; line-height: 1.5; margin: 0; }
+img, video { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.rd-main { margin: 0 auto; max-width: 56rem; padding: 2rem 1rem 4rem; }
+.rd-kicker { color: var(--blue); font-size: .75rem; font-weight: 800; letter-spacing: .14em; margin: 0 0 .4rem; text-transform: uppercase; }
+h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.1; margin: 0 0 .6rem; }
+.rd-progreso { color: var(--muted); margin: 0 0 1rem; }
+.rd-progreso strong { color: var(--ok); }
+.rd-ayuda { background: #eef6ff; border: 1px solid #cfe3f8; border-radius: 1rem; margin-bottom: 1.5rem; padding: .8rem 1.1rem; }
+.rd-ayuda summary { color: var(--navy); cursor: pointer; font-weight: 800; }
+.rd-ayuda ol { margin: .6rem 0 0; padding-left: 1.2rem; }
+.rd-ayuda li + li { margin-top: .4rem; }
+.rd-url { font-family: ui-monospace, monospace; font-size: .85em; overflow-wrap: anywhere; }
+.rd-post { background: #fff; border: 1px solid var(--line); border-radius: 1.25rem; margin-bottom: 1.5rem; padding: 1.1rem; }
+.rd-post.rd-completo { border-color: #86efac; opacity: .7; }
+.rd-post-cab { align-items: center; display: flex; gap: .8rem; }
+.rd-num { align-items: center; background: var(--navy); border-radius: 999px; color: #fff; display: flex; flex: none; font-weight: 800; height: 2.2rem; justify-content: center; width: 2.2rem; }
+.rd-post h2 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; line-height: 1.2; margin: 0; }
+.rd-post-cab p { color: var(--muted); font-size: .9rem; margin: .15rem 0 0; }
+.rd-post a { color: var(--blue); font-weight: 700; }
+.rd-estado { display: flex; flex-wrap: wrap; gap: .5rem; margin: .9rem 0; }
+.rd-estado label { align-items: center; background: #f1f5f9; border-radius: 999px; cursor: pointer; display: flex; font-size: .88rem; font-weight: 700; gap: .35rem; padding: .35rem .8rem; }
+.rd-estado input { accent-color: var(--ok); height: 1.05rem; width: 1.05rem; }
+.rd-fotos { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); }
+.rd-foto { margin: 0; }
+.rd-foto img { aspect-ratio: 4 / 5; background: #f1f5f9; border-radius: .75rem; height: auto; object-fit: cover; width: 100%; }
+.rd-pendiente { align-items: center; aspect-ratio: 4 / 5; background: #fef3c7; border-radius: .75rem; color: #92400e; display: flex; font-size: .85rem; font-weight: 700; justify-content: center; padding: .6rem; text-align: center; }
+.rd-descargar { display: inline-block; font-size: .85rem; margin-top: .3rem; }
+.rd-compartir, .rd-copiar { background: var(--blue); border: 0; border-radius: 999px; color: #fff; cursor: pointer; font: inherit; font-weight: 800; }
+.rd-compartir { margin-top: .8rem; padding: .6rem 1.2rem; width: 100%; }
+.rd-compartir:disabled { opacity: .6; }
+.rd-video { margin-top: .9rem; }
+.rd-video video { aspect-ratio: 9 / 16; background: #000; border-radius: .75rem; max-height: 24rem; }
+.rd-red { border-top: 1px solid var(--line); margin-top: .9rem; padding-top: .7rem; }
+.rd-red summary { color: var(--navy); cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; }
+.rd-campo { margin-top: .7rem; }
+.rd-campo-cab { align-items: center; display: flex; gap: .5rem; justify-content: space-between; margin-bottom: .3rem; }
+.rd-campo-cab span { color: var(--muted); font-size: .82rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.rd-copiar { font-size: .85rem; padding: .35rem .9rem; }
+.rd-copiar.rd-ok { background: var(--ok); }
+.rd-texto { background: #f8fafc; border: 1px solid var(--line); border-radius: .75rem; font-size: .92rem; max-height: 18rem; overflow: auto; overflow-wrap: anywhere; padding: .7rem .85rem; white-space: pre-wrap; }
+.rd-corto { max-height: none; }
+.rd-nota { color: var(--muted); font-size: .9rem; margin: .7rem 0 0; }
+.rd-vacio { color: var(--muted); }

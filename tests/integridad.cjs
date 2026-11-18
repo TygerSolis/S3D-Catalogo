@@ -65,12 +65,12 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
         const { whatsapp, whatsappVisible } = leerJson('config.json');
         const leer = ruta => fs.readFileSync(path.join(RAIZ, ruta), 'utf8');
         // Las fuentes no lo escriben a mano: usan {{whatsapp}}, window.S3D.urlWhatsApp o config.json.
-        for (const ruta of ['catalogo.js', 'producto.js', 'scripts/build_product_pages.py', 'scripts/chrome/header.html', 'scripts/chrome/footer.html']) {
+        for (const ruta of ['catalogo.js', 'producto.js', 'redes/redes.js', 'scripts/redes.py', 'scripts/build_product_pages.py', 'scripts/chrome/header.html', 'scripts/chrome/footer.html']) {
             assert.ok(!/phone=\d|(?<!\d)51 ?9\d{2} ?\d{3} ?\d{3}(?!\d)/.test(leer(ruta)), `${ruta} tiene un número escrito a mano`);
         }
         // Todo lo generado usa el número de config.json.
         const fichas = fs.readdirSync(path.join(RAIZ, 'producto')).map(slug => `producto/${slug}/index.html`);
-        for (const ruta of ['index.html', '404.html', 'privacidad/index.html', 'tienda.js', ...fichas]) {
+        for (const ruta of ['index.html', '404.html', 'privacidad/index.html', 'redes/index.html', 'tienda.js', ...fichas]) {
             const texto = leer(ruta);
             for (const m of texto.matchAll(/phone=(\d+)/g)) assert.equal(m[1], whatsapp, `${ruta}: enlace a otro número`);
             for (const m of texto.matchAll(/\+\d{2} \d{3} \d{3} \d{3}/g)) assert.equal(m[0], whatsappVisible, `${ruta}: número visible distinto`);

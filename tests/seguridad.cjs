@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { assert, RAIZ, abrir } = require('./util.cjs');
 
-const paginas = () => ['index.html', '404.html', 'privacidad/index.html',
+const paginas = () => ['index.html', '404.html', 'privacidad/index.html', 'redes/index.html',
     ...fs.readdirSync(path.join(RAIZ, 'producto')).map(slug => `producto/${slug}/index.html`)];
 const leer = archivo => fs.readFileSync(path.join(RAIZ, archivo), 'utf8');
 const sinBloqueos = p => assert.deepEqual(p.violaciones, [], `la CSP bloqueó: ${p.violaciones.join(' | ')}`);
@@ -20,7 +20,7 @@ module.exports = {
             const enLinea = [...html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>/g)].filter(m => !/application\/ld\+json/.test(m[1]));
             assert.equal(enLinea.length, 0, `${archivo} tiene <script> en línea`);
         }
-        for (const js of ['catalogo.js', 'producto.js', 'tienda.js', 'chrome.js', 'analytics.js']) {
+        for (const js of ['catalogo.js', 'producto.js', 'tienda.js', 'chrome.js', 'analytics.js', 'redes/redes.js']) {
             assert.doesNotMatch(leer(js), /\son[a-z]+=["']|javascript:|\beval\(|new Function\(/, `${js} genera código que la CSP bloquearía`);
         }
     },

@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const servidor = require('./servidor.cjs');
 const { PUERTO } = require('./util.cjs');
 
-const MODULOS = ['integridad', 'catalogo', 'visor', 'fichas', 'tienda', 'pedidos', 'buscador', 'analitica', 'navegacion', 'temporada', 'precios', 'seguridad'];
+const MODULOS = ['integridad', 'catalogo', 'visor', 'fichas', 'tienda', 'pedidos', 'buscador', 'analitica', 'navegacion', 'temporada', 'precios', 'redes', 'seguridad'];
 
 (async () => {
     const filtro = process.argv[2];

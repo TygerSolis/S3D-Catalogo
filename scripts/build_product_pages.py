@@ -712,6 +712,8 @@ def main() -> None:
     actualizar_temporada_indice()
     sincronizar_contacto()
     escribir_sitemap(productos)
+    import redes   # aquí y no arriba: redes.py importa este módulo
+    redes.escribir(productos)
     print(f"{len(productos)} páginas generadas en {OUT_DIR.relative_to(ROOT)}/, sitemap.xml e ItemList actualizados")
 
 

@@ -13,12 +13,13 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, seguridad)
+                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
 node scripts/optimize_images.cjs                # genera AVIF/WebP en 4 tamaños desde fuentes/ (git-ignored)
 python3 scripts/hoja_catalogo.py --help         # exportar/importar/faltantes/videos/limpiar (hoja ↔ JSON)
+node scripts/redes_fotos.cjs                    # JPG 4:5 para redes de la cola (originales de fuentes/ o R2)
 ```
 
 La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están al día: tras tocar
@@ -59,6 +60,13 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   `javascript:` ni `eval`**; enlaza eventos con `addEventListener` (o atributos `data-*` + delegación, como
   `data-video`). Un servicio externo nuevo (fetch, iframe, imagen) necesita su origen en `CSP`; si no, el
   navegador lo bloquea. `tests/seguridad.cjs` lo comprueba y `util.cjs` registra cada bloqueo en `pagina.violaciones`.
+- **Kit para redes** (`scripts/redes.py`, llamado por el generador): `config.json` → `redes.cola` (ids en el orden
+  de publicación) genera `redes/index.html`, página interna (sin enlace desde el sitio, noindex, sin analítica) con
+  fotos limpias, texto para Facebook (enlace con `utm_source=facebook`), Instagram (sin enlace), anuncio de
+  Marketplace (sin enlaces) y respuesta para «¿Está disponible?» (`utm_source=marketplace`); `utm_campaign` es el id
+  de la temporada o `catalogo`. Las fotos son `redes/fotos/<nombre>.jpg` 1080×1350 con la foto completa sobre el
+  color de su borde (`scripts/redes_fotos.cjs`, desde los originales; si faltan, la página muestra «pendiente» y el
+  generador lo avisa); las que salen de la cola se borran solas. Marcas «ya publicado» en localStorage del dueño.
 - **Pruebas** (`tests/`): runner propio `run.cjs` + Playwright; `util.cjs` fija el reloj (la etiqueta
   «Nuevo» depende de `fechaAlta`), simula Umami y bloquea `script.google.com`. Cuentan productos desde los
   datos (`visibles()`), no con números fijos.
@@ -88,6 +96,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D6 | Revisión de cambios | Rama `vista-previa` publicada en `/vista-previa/`; pasa a `main` con «aprobado». |
 | D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
 | D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
+| D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa con bordes; orden: Navidad y luego los más vendidos (lista del dueño). Futuro: 2 publicaciones por día automáticas en FB+IG. |
 
 Implementado (octubre de 2026):
 
@@ -115,6 +124,10 @@ Retomado el 17/11/2026:
   tarjeta, el visor, Mi pedido y WhatsApp usan el precio del color elegido; sin color elegido, «Desde S/ …»;
   schema.org `AggregateOffer`. Con colores, las fotos extra y el video salen como miniaturas bajo los colores.
   Pruebas en `tests/precios.cjs`.
+
+- **Kit para redes** (D9, etapa 1): `redes/index.html` y fotos JPG; cola con los 10 productos navideños. Siguientes
+  etapas: catálogo de Meta (feed), publicación automática FB+IG (requiere página de Facebook vinculada a Instagram
+  profesional; el dueño debe confirmarlo) y respuestas automáticas en Meta Business Suite. Pruebas en `tests/redes.cjs`.
 
 Pendiente (no iniciado): pasar el JS a módulos, unificar las 5 hojas de estilo, una sola plantilla para
 tarjeta/ficha; Fase 4 (reseñas, promociones con fecha de fin). Del dueño: fotos nuevas de 35 productos
