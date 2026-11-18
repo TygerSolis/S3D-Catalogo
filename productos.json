@@ -539,6 +539,25 @@
     "fechaAlta": "2026-09-30"
   },
   {
+    "id": 214,
+    "orden": 275,
+    "activo": true,
+    "categoria": "Adornos",
+    "nombre": "ÁRBOL PORTAVASOS",
+    "medida": "30CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno",
+    "precio": 50,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/arbol-portavasos-1.webp",
+      "assets/arbol-portavasos-2.webp"
+    ],
+    "descripcion": "Arbolito decorativo cuyas hojas se retiran y sirven de portavasos. Color lila; a pedido lo hacemos en otros colores. Impreso en 3D en PLA Premium; mide 30 cm.",
+    "slug": "arbol-portavasos",
+    "fechaAlta": "2026-11-18"
+  },
+  {
     "id": 1001,
     "orden": 280,
     "activo": true,
@@ -1669,5 +1688,204 @@
     "descripcion": "Llavero que se convierte en soporte para tu celular, ideal para ver videos o hacer videollamadas sin sostenerlo. Con tu nombre en relieve y el color que elijas (en la foto, Judith en celeste).",
     "slug": "llavero-soporte-para-celular",
     "fechaAlta": "2026-09-08"
+  },
+  {
+    "id": 3001,
+    "orden": 900,
+    "activo": true,
+    "categoria": "Navidad",
+    "coleccion": "Snoopy Navideño",
+    "nombre": "SNOOPY NAVIDEÑO SET COMPLETO",
+    "medida": "20/28/16CM",
+    "material": "PLA Premium",
+    "tipo": "Set 3D",
+    "precio": 145,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-snoopy-set-completo-1.webp"
+    ],
+    "descripcion": "El set completo de Snoopy navideño: Snoopy con gorro y bufanda de Papá Noel (20 cm), Woodstock en su trineo con luz LED, los renos (16 cm) y el árbol blanco con luz LED (28 cm). Por separado (set de 3 piezas + árbol) costaría S/ 164: con el set completo ahorras S/ 19. Impreso en 3D en PLA Premium.",
+    "slug": "snoopy-navideno-set-completo",
+    "heroOrden": 1,
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3002,
+    "orden": 910,
+    "activo": true,
+    "categoria": "Navidad",
+    "coleccion": "Snoopy Navideño",
+    "nombre": "SNOOPY NAVIDEÑO SET 3 PIEZAS",
+    "medida": "20/16CM",
+    "material": "PLA Premium",
+    "tipo": "Set 3D",
+    "precio": 119,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-snoopy-set3-1.webp",
+      "assets/nav-snoopy-set3-2.webp",
+      "assets/nav-snoopy-set3-3.webp"
+    ],
+    "video": "assets/video/nav-snoopy-set3-video.mp4",
+    "descripcion": "Snoopy con gorro y bufanda de Papá Noel (20 cm), Woodstock en su trineo con luz LED y los renos (16 cm). Si quieres sumar el árbol blanco con luz LED, el set completo te sale más a cuenta. Impreso en 3D en PLA Premium.",
+    "slug": "snoopy-navideno-set-3-piezas",
+    "heroOrden": 3,
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3003,
+    "orden": 920,
+    "activo": true,
+    "categoria": "Navidad",
+    "coleccion": "Snoopy Navideño",
+    "nombre": "SNOOPY Y WOODSTOCK EN TRINEO CON ÁRBOL",
+    "medida": "20/28CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno navideño",
+    "precio": 129,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-snoopy-trineo-arbol-1.webp",
+      "assets/nav-snoopy-trineo-arbol-2.webp",
+      "assets/nav-snoopy-trineo-arbol-3.webp"
+    ],
+    "video": "assets/video/nav-snoopy-trineo-arbol-video.mp4",
+    "descripcion": "Adorno navideño con Snoopy (20 cm), Woodstock en su trineo con luz LED y el árbol blanco con luz LED (28 cm). Impreso en 3D en PLA Premium.",
+    "slug": "snoopy-y-woodstock-en-trineo-con-arbol",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3004,
+    "orden": 930,
+    "activo": true,
+    "categoria": "Navidad",
+    "coleccion": "Snoopy Navideño",
+    "nombre": "SNOOPY PAPÁ NOEL",
+    "medida": "20CM",
+    "material": "PLA Premium",
+    "tipo": "Figura 3D",
+    "precio": 60,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-snoopy-papa-noel-1.webp",
+      "assets/nav-snoopy-papa-noel-2.webp"
+    ],
+    "descripcion": "Snoopy con gorro y bufanda de Papá Noel, el mismo de los sets navideños. Impreso en 3D en PLA Premium; mide 20 cm.",
+    "slug": "snoopy-papa-noel",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3005,
+    "orden": 940,
+    "activo": true,
+    "categoria": "Navidad",
+    "nombre": "ÁRBOL NAVIDEÑO",
+    "medida": "22/28CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno navideño",
+    "precio": 30,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-arboles-1.webp",
+      "assets/nav-arboles-2.webp",
+      "assets/nav-arbol-blanco-1.webp",
+      "assets/nav-arbol-blanco-2.webp"
+    ],
+    "colores": [
+      {
+        "nombre": "Blanco con luz LED (28 cm)",
+        "hex": "#f4f1ea",
+        "img": "assets/nav-arboles-1.webp",
+        "precio": 45
+      },
+      {
+        "nombre": "Verde (22 cm)",
+        "hex": "#2f6b3a",
+        "img": "assets/nav-arboles-1.webp",
+        "precio": 30
+      }
+    ],
+    "video": "assets/video/nav-arboles-video.mp4",
+    "descripcion": "Árbol navideño decorativo en dos versiones: blanco con luz LED (28 cm) o verde (22 cm). Elige el color para ver su precio. Impreso en 3D en PLA Premium.",
+    "slug": "arbol-navideno",
+    "heroOrden": 2,
+    "heroFoco": "center 64%",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3006,
+    "orden": 950,
+    "activo": true,
+    "categoria": "Navidad",
+    "nombre": "ANGELITO CON ÁRBOL",
+    "medida": "14/28CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno navideño",
+    "precio": 60,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-angelito-arbol-1.webp",
+      "assets/nav-angelito-arbol-2.webp"
+    ],
+    "descripcion": "Angelito con estrella dorada (14 cm) junto a un árbol navideño blanco (28 cm). Impreso en 3D en PLA Premium.",
+    "slug": "angelito-con-arbol",
+    "heroOrden": 4,
+    "heroFoco": "center 65%",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3007,
+    "orden": 960,
+    "activo": true,
+    "categoria": "Navidad",
+    "nombre": "ANGELITO",
+    "medida": "14CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno navideño",
+    "precio": 16,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-angelito-1.webp",
+      "assets/nav-angelito-2.webp"
+    ],
+    "descripcion": "Angelito con alas y estrella dorada, ideal para el nacimiento, la mesa o el árbol. Impreso en 3D en PLA Premium; mide 14 cm.",
+    "slug": "angelito",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3008,
+    "orden": 970,
+    "activo": true,
+    "categoria": "Navidad",
+    "nombre": "SERVILLETERO PAPÁ NOEL",
+    "medida": "15CM",
+    "material": "PLA Premium",
+    "tipo": "Servilletero",
+    "precio": 28,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-servilletero-papa-noel-1.webp"
+    ],
+    "descripcion": "Servilletero con la cara de Papá Noel para la mesa de Navidad. Impreso en 3D en PLA Premium; mide 15 cm.",
+    "slug": "servilletero-papa-noel",
+    "fechaAlta": "2026-11-18"
+  },
+  {
+    "id": 3009,
+    "orden": 980,
+    "activo": true,
+    "categoria": "Navidad",
+    "nombre": "ADORNO DE BASTONES",
+    "medida": "25CM",
+    "material": "PLA Premium",
+    "tipo": "Adorno navideño",
+    "precio": 50,
+    "disponibilidad": "A pedido",
+    "imagenes": [
+      "assets/nav-bastones-1.webp"
+    ],
+    "descripcion": "Bastones de caramelo cruzados con lazo rojo y hojas de acebo, para colgar en la puerta o la pared. Impreso en 3D en PLA Premium; mide 25 cm.",
+    "slug": "adorno-de-bastones",
+    "fechaAlta": "2026-11-18"
   }
 ]

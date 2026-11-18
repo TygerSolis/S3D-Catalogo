@@ -3,6 +3,14 @@
   "w": 941,
   "h": 1672
  },
+ "arbol-portavasos-1": {
+  "w": 2400,
+  "h": 1792
+ },
+ "arbol-portavasos-2": {
+  "w": 1536,
+  "h": 2752
+ },
  "barber-frames3d-1": {
   "w": 1824,
   "h": 2164
@@ -122,6 +130,66 @@
  "ll-offwhite-1": {
   "w": 1792,
   "h": 2134
+ },
+ "nav-angelito-1": {
+  "w": 1792,
+  "h": 2400
+ },
+ "nav-angelito-2": {
+  "w": 1792,
+  "h": 2400
+ },
+ "nav-angelito-arbol-1": {
+  "w": 1792,
+  "h": 2400
+ },
+ "nav-angelito-arbol-2": {
+  "w": 1792,
+  "h": 2400
+ },
+ "nav-arbol-blanco-1": {
+  "w": 1792,
+  "h": 2390
+ },
+ "nav-arbol-blanco-2": {
+  "w": 1792,
+  "h": 2400
+ },
+ "nav-arboles-1": {
+  "w": 1536,
+  "h": 2752
+ },
+ "nav-arboles-2": {
+  "w": 1536,
+  "h": 2752
+ },
+ "nav-snoopy-set-completo-1": {
+  "w": 2390,
+  "h": 1792
+ },
+ "nav-snoopy-set3-1": {
+  "w": 1536,
+  "h": 2752
+ },
+ "nav-snoopy-set3-2": {
+  "w": 1536,
+  "h": 2752
+ },
+ "nav-snoopy-set3-3": {
+  "w": 1536,
+  "h": 2752
+ },
+ "nav-snoopy-trineo-arbol-1": {
+  "w": 1536,
+  "h": 2728
+ },
+ "nav-snoopy-trineo-arbol-2": {
+  "w": 1536,
+  "h": 2728
+ },
+ "nav-snoopy-trineo-arbol-3": {
+  "w": 1536,
+  "h": 2728
  },
  "pet-video-poster": {
   "w": 1440,

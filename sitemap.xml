@@ -117,6 +117,10 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/arbol-portavasos/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tygersolis.github.io/S3D-Catalogo/producto/holder-universitario/</loc>
     <priority>0.7</priority>
   </url>
@@ -354,6 +358,42 @@
   </url>
   <url>
     <loc>https://tygersolis.github.io/S3D-Catalogo/producto/llavero-soporte-para-celular/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-navideno-set-completo/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-navideno-set-3-piezas/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-y-woodstock-en-trineo-con-arbol/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-papa-noel/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/arbol-navideno/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/angelito-con-arbol/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/angelito/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/servilletero-papa-noel/</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tygersolis.github.io/S3D-Catalogo/producto/adorno-de-bastones/</loc>
     <priority>0.7</priority>
   </url>
 </urlset>
