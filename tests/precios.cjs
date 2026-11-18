@@ -93,5 +93,24 @@ print(json.dumps({'celda': fila['colores'], 'igual': vuelta == x, 'errores': err
         assert.ok(opciones.some(o => o.includes(NOMBRE) && o.includes('Desde S/ 65.00')), opciones.join(' | '));
         assert.deepEqual(p.errores, []);
         await p.contexto.close();
+    },
+    async 'visor: si dos colores comparten foto, la foto sale una sola vez'({ browser }) {
+        const p = await abrir(browser, CATEGORIA, {
+            preparar: pagina => pagina.route(/productos\.json/, async ruta => {
+                const lista = await (await ruta.fetch()).json();
+                const x = lista.find(q => q.nombre === NOMBRE);
+                x.colores[3].img = x.colores[2].img;   // Amarillo usa la foto de Negro
+                await ruta.fulfill({ json: lista });
+            })
+        });
+        const hk = tarjeta(p);
+        await hk.locator('.catalog-carousel-swatch').nth(3).click();
+        await hk.locator('.catalog-carousel-image').click();
+        const fotos = await p.locator('#lightbox-thumbs [data-lightbox-thumb] img').evaluateAll(i => i.map(x => x.getAttribute('src')));
+        assert.equal(fotos.length, 3);
+        assert.equal(new Set(fotos).size, fotos.length);
+        assert.match(await p.locator('#lightbox-meta').textContent(), /Color: Negro/);   // abre en la foto compartida
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
     }
 };

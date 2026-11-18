@@ -66,6 +66,9 @@ def validar(productos: list, comprobar_archivos: bool = True) -> list[str]:
             date.fromisoformat(str(p.get("fechaAlta")))
         except ValueError:
             error(f"fechaAlta «{p.get('fechaAlta')}» no es una fecha AAAA-MM-DD")
+        repetidas = sorted({r for r in p.get("imagenes") or [] if (p.get("imagenes") or []).count(r) > 1})
+        if repetidas:
+            error(f"la imagen «{', '.join(repetidas)}» está repetida en «imagenes» (pon cada foto una sola vez)")
         for c in p.get("colores") or []:
             if not re.fullmatch(r"#[0-9a-fA-F]{6}", str(c.get("hex", ""))):
                 error(f"el color «{c.get('nombre')}» tiene un código inválido «{c.get('hex')}» (ej.: #ff99cc)")

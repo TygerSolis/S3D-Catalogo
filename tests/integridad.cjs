@@ -44,9 +44,9 @@ h.JSON = pathlib.Path(sys.argv[1]); getattr(h, sys.argv[2])(sys.argv[3])`, ...ar
         assert.equal(py("import json; from validar_productos import validar; print(len(validar(json.load(open('../productos.json')))))").trim(), '0');
         const errores = JSON.parse(py(`import json; from validar_productos import validar
 p = json.load(open('../productos.json'))
-p[0]['disponibilidad'] = 'Mañana'; p[1]['imagenes'] = ['assets/no-existe.webp']; p[2]['id'] = p[3]['id']; p[4]['colores'] = [{'nombre': 'Rojo', 'hex': 'rojo', 'img': p[4]['imagenes'][0]}]; p[5]['activo'] = 'si'
+p[0]['disponibilidad'] = 'Mañana'; p[1]['imagenes'] = ['assets/no-existe.webp']; p[2]['id'] = p[3]['id']; p[4]['colores'] = [{'nombre': 'Rojo', 'hex': 'rojo', 'img': p[4]['imagenes'][0]}]; p[5]['activo'] = 'si'; p[6]['imagenes'] = p[6]['imagenes'] + p[6]['imagenes'][:1]
 print(json.dumps(validar(p)))`));
-        for (const texto of ['disponibilidad «Mañana»', 'no existe la imagen «assets/no-existe.webp»', 'se repite', 'código inválido «rojo»', '«activo» debe ser sí o no']) {
+        for (const texto of ['disponibilidad «Mañana»', 'no existe la imagen «assets/no-existe.webp»', 'se repite', 'código inválido «rojo»', '«activo» debe ser sí o no', 'está repetida en «imagenes»']) {
             assert.ok(errores.some(e => e.includes(texto)), `el validador no detectó: ${texto}`);
         }
     },

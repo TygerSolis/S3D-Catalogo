@@ -1746,8 +1746,7 @@
     "disponibilidad": "A pedido",
     "imagenes": [
       "assets/nav-snoopy-trineo-arbol-1.webp",
-      "assets/nav-snoopy-trineo-arbol-2.webp",
-      "assets/nav-snoopy-trineo-arbol-3.webp"
+      "assets/nav-snoopy-trineo-arbol-2.webp"
     ],
     "video": "assets/video/nav-snoopy-trineo-arbol-video.mp4",
     "descripcion": "Adorno navideño con Snoopy (20 cm), Woodstock en su trineo con luz LED y el árbol blanco con luz LED (28 cm). Impreso en 3D en PLA Premium.",
@@ -1824,8 +1823,7 @@
     "precio": 60,
     "disponibilidad": "A pedido",
     "imagenes": [
-      "assets/nav-angelito-arbol-1.webp",
-      "assets/nav-angelito-arbol-2.webp"
+      "assets/nav-angelito-arbol-1.webp"
     ],
     "descripcion": "Angelito con estrella dorada (14 cm) junto a un árbol navideño blanco (28 cm). Impreso en 3D en PLA Premium.",
     "slug": "angelito-con-arbol",

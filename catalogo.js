@@ -481,7 +481,7 @@
                     if (!product || !color || !mainImage) return;
                     mainImage.src = rutaSm(color.img);
                     if (mainSource) mainSource.srcset = rutaAvif(rutaSm(color.img));
-                    card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = swatch.dataset.colorIndex;
+                    card.querySelector('.catalog-carousel-image').dataset.lightboxIndex = String(indiceVisor(product, color));
                     card.querySelectorAll('.catalog-carousel-swatch').forEach(item => {
                         const activo = item === swatch;
                         item.classList.toggle('is-active', activo);
@@ -758,15 +758,21 @@
             abrirLightbox([{ type: 'vid', src }], 0, null);
         };
 
+        // Fotos del visor sin repetir: las de los colores (si dos colores comparten foto, sale una vez con el primero)
+        // y luego las fotos extra que no son de ningún color.
+        function mediosVisor(prod) {
+            const medios = (prod.colores?.length ? prod.colores.map(color => ({ type: 'img', src: color.img, color: color.nombre })) : [])
+                .concat(prod.imagenes.map(src => ({ type: 'img', src })));
+            return medios.filter((m, i) => medios.findIndex(otro => otro.src === m.src) === i);
+        }
+        // Posición en el visor de la foto de un color.
+        const indiceVisor = (prod, color) => Math.max(0, mediosVisor(prod).findIndex(m => m.src === color.img));
+
         window.abrirModal = function(productoId, initialIndex = 0) {
             const prod = productos.find(p => p.id === productoId);
             if (!prod) return;
             track('producto_visto', { producto: prod.nombre });
-            const imagenes = prod.colores?.length
-                ? prod.colores.map(color => ({ type: 'img', src: color.img, color: color.nombre }))
-                    // fotos extra que no son de ningún color (p. ej. el producto en otro ambiente)
-                    .concat([...new Set(prod.imagenes)].filter(src => !prod.colores.some(c => c.img === src)).map(src => ({ type: 'img', src })))
-                : prod.imagenes.map(src => ({ type: 'img', src }));
+            const imagenes = mediosVisor(prod);
             if (prod.video) imagenes.push({ type: 'vid', src: prod.video });
             abrirLightbox(imagenes, initialIndex, prod);
         };
