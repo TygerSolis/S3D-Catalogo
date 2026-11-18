@@ -216,7 +216,7 @@ module.exports = {
         const p = await abrir(browser, 'redes/', {
             preparar: async pagina => {
                 await pagina.route(/\/redes\/$/, async ruta => {
-                    const html = (await (await ruta.fetch()).text()).replace('data-api=""', `data-api="${API}"`);
+                    const html = (await (await ruta.fetch()).text()).replace(/data-api="[^"]*"/, `data-api="${API}"`);   // nunca la URL real
                     await ruta.fulfill({ body: html, contentType: 'text/html; charset=utf-8' });
                 });
                 await pagina.route(API, async ruta => {
