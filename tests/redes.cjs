@@ -46,7 +46,7 @@ print(json.dumps({'fb': r.texto_facebook(a), 'ig': r.texto_instagram(a), 'mp': r
             assert.deepEqual([m.format, m.width, m.height], ['jpeg', 1080, 1350], nombre);
         }
     },
-    async 'página: sigue la cola, copia textos y recuerda dónde ya se publicó'({ browser }) {
+    async 'página: sigue la cola, copia textos y recuerda lo publicado en Marketplace'({ browser }) {
         const p = await abrir(browser, 'redes/');
         assert.equal(await p.locator('meta[name="robots"]').getAttribute('content'), 'noindex, nofollow');
         const ids = await p.locator('.rd-post').evaluateAll(a => a.map(x => Number(x.dataset.id)));
@@ -58,15 +58,18 @@ print(json.dumps({'fb': r.texto_facebook(a), 'ig': r.texto_instagram(a), 'mp': r
         assert.equal(copiado, await primero.locator('[id^="fb-"]').textContent());
         assert.match(copiado, /utm_source=facebook/);
         assert.equal(await primero.locator('[data-copiar^="fb-"]').textContent(), '¡Copiado!');
-        // Marcar las tres redes: cuenta como publicado y se recuerda al volver
-        for (const red of ['marketplace', 'facebook', 'instagram']) await primero.locator(`[data-red="${red}"]`).check();
-        assert.equal(await p.locator('[data-progreso]').textContent(), '1');
-        assert.match(await primero.getAttribute('class'), /rd-completo/);
+        // Marketplace (a mano): la marca se cuenta y se recuerda al volver
+        await primero.locator('summary', { hasText: 'Marketplace' }).click();
+        await primero.locator('[data-red="marketplace"]').check();
+        assert.equal(await p.locator('[data-progreso="marketplace"]').textContent(), '1');
         await p.reload({ waitUntil: 'networkidle' });
-        assert.ok(await p.locator('.rd-post').first().locator('[data-red="instagram"]').isChecked());
-        assert.equal(await p.locator('[data-progreso]').textContent(), '1');
-        await p.locator('.rd-post').first().locator('[data-red="facebook"]').uncheck();
-        assert.equal(await p.locator('[data-progreso]').textContent(), '0');
+        assert.ok(await p.locator('.rd-post').first().locator('[data-red="marketplace"]').isChecked());
+        assert.equal(await p.locator('[data-progreso="marketplace"]').textContent(), '1');
+        // Sin el Apps Script configurado, los botones automáticos no aparecen y se explica por qué
+        if (!leerJson('config.json').redes.publicarUrl) {
+            assert.equal(await p.locator('.rd-auto:visible').count(), 0);
+            assert.match(await p.locator('[data-conexion-estado]').textContent(), /Aún no está conectada/);
+        }
         // Sin analítica: las visitas del dueño no cuentan
         assert.equal(await p.locator('script[src*="analytics"]').count(), 0);
         assert.deepEqual(p.eventos, []);

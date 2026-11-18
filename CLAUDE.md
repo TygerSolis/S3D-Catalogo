@@ -13,7 +13,7 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, seguridad)
+                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, publicar, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
@@ -66,7 +66,15 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   Marketplace (sin enlaces) y respuesta para «¿Está disponible?» (`utm_source=marketplace`); `utm_campaign` es el id
   de la temporada o `catalogo`. Las fotos son `redes/fotos/<nombre>.jpg` 1080×1350 con la foto completa sobre la
   misma foto desenfocada (`scripts/redes_fotos.cjs`, desde los originales; si faltan, la página muestra «pendiente» y el
-  generador lo avisa); las que salen de la cola se borran solas. Marcas «ya publicado» en localStorage del dueño.
+  generador lo avisa); las que salen de la cola se borran solas. Marketplace: marca «ya publicado» en localStorage.
+- **Publicación automática** (`scripts/apps-script/Redes.gs`, vinculado a la hoja del catálogo; guía
+  `docs/guia-redes.md`): la página /redes/ llama al Apps Script (`config.json` → `redes.publicarUrl`) con la clave del
+  dueño (localStorage); el script lee `redes/publicaciones.json` de la web PRINCIPAL y publica con la Graph API de Meta
+  (v27.0, token de página en propiedades del script): Facebook = fotos sin publicar + `/feed` con `attached_media`, o
+  `/videos`; Instagram = foto/carrusel o `REELS` (espera `status_code` FINISHED). Anota cada red en la pestaña
+  «publicaciones» (la última fila manda; nunca repite una red ya publicada). «Aprobar» = fila «programado»; los
+  activadores de `instalar` publican uno a las 11:00 y otro a las 19:00 (Lima). Pruebas en `tests/publicar.cjs`
+  (Google y Meta simulados con `vm`).
 - **Pruebas** (`tests/`): runner propio `run.cjs` + Playwright; `util.cjs` fija el reloj (la etiqueta
   «Nuevo» depende de `fechaAlta`), simula Umami y bloquea `script.google.com`. Cuentan productos desde los
   datos (`visibles()`), no con números fijos.
@@ -96,7 +104,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D6 | Revisión de cambios | Rama `vista-previa` publicada en `/vista-previa/`; pasa a `main` con «aprobado». |
 | D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
 | D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
-| D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa, con relleno de la misma foto desenfocada; orden: Navidad y luego los más vendidos (lista del dueño). Futuro: 2 publicaciones por día automáticas en FB+IG. |
+| D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa, con relleno de la misma foto desenfocada; orden: Navidad y luego los más vendidos (lista del dueño). Botones «Publicar ahora» y «Aprobar» (2 por día: 11:00 y 19:00); videos como Reel aparte; Instagram vinculado a la página de Facebook (confirmado). |
 
 Implementado (octubre de 2026):
 
@@ -126,8 +134,9 @@ Retomado el 17/11/2026:
   Pruebas en `tests/precios.cjs`.
 
 - **Kit para redes** (D9, etapa 1): `redes/index.html` y fotos JPG; cola con los 10 productos navideños. Siguientes
-  etapas: catálogo de Meta (feed), publicación automática FB+IG (requiere página de Facebook vinculada a Instagram
-  profesional; el dueño debe confirmarlo) y respuestas automáticas en Meta Business Suite. Pruebas en `tests/redes.cjs`.
+  etapas: catálogo de Meta (feed) y respuestas automáticas en Meta Business Suite. Pruebas en `tests/redes.cjs`.
+- **Publicación automática FB+IG** (D9): `Redes.gs` + botones en /redes/. Pendiente del dueño: crear la app de Meta,
+  instalar el script y enviar la URL (`docs/guia-redes.md`).
 
 Pendiente (no iniciado): pasar el JS a módulos, unificar las 5 hojas de estilo, una sola plantilla para
 tarjeta/ficha; Fase 4 (reseñas, promociones con fecha de fin). Del dueño: fotos nuevas de 35 productos
