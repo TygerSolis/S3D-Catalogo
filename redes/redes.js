@@ -48,7 +48,7 @@
         try {
             const archivos = await Promise.all(fotos.map(async img => {
                 const blob = await (await fetch(img.src)).blob();
-                return new File([blob], decodeURIComponent(img.src.split('/').pop()), { type: 'image/jpeg' });
+                return new File([blob], decodeURIComponent(img.src.split('?')[0].split('/').pop()), { type: 'image/jpeg' });
             }));
             await navigator.share({ files: archivos });
         } catch (e) {

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Fotos limpias para redes: redes/fotos/<nombre>.jpg, vertical 4:5 (1080×1350), la foto COMPLETA (sin recortar)
- * sobre un fondo liso del color de su propio borde, para que el relleno no se note. JPG porque es lo que aceptan
+ * sobre un fondo hecho con la misma foto desenfocada (decisión del dueño, 18/11/2026). JPG porque es lo que aceptan
  * Instagram, Facebook y Marketplace.
  *
  * Parte siempre del ORIGINAL (fuentes/<nombre>.jpg|png|…), nunca de un webp/avif ya comprimido. Si el original no
@@ -45,38 +45,26 @@ function original(nombre) {
     return null;
 }
 
-// Color del borde que quedará junto al relleno (arriba/abajo si la foto es más ancha que 4:5; si no, a los lados).
-// Se usa la mediana de cada canal para que un detalle aislado en el borde no tiña el fondo.
-async function colorDelBorde(ruta) {
-    const imagen = sharp(ruta).rotate();
-    const { width, height } = await imagen.metadata().then(m => (m.orientation >= 5 ? { width: m.height, height: m.width } : m));
-    const relleno = width / height > ANCHO / ALTO ? 'vertical' : 'horizontal';
-    const N = 100;
-    const { data } = await sharp(ruta).rotate().resize(N, N, { fit: 'fill' }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-    const muestras = [[], [], []];
-    for (let y = 0; y < N; y++) {
-        for (let x = 0; x < N; x++) {
-            const enBorde = relleno === 'vertical' ? (y < 2 || y >= N - 2) : (x < 2 || x >= N - 2);
-            if (!enBorde) continue;
-            for (let c = 0; c < 3; c++) muestras[c].push(data[(y * N + x) * 3 + c]);
-        }
-    }
-    const [r, g, b] = muestras.map(m => m.sort((a, z) => a - z)[m.length >> 1]);
-    return { r, g, b, alpha: 1 };
-}
+// Fondo: la misma foto ampliada hasta cubrir el cuadro 4:5, muy desenfocada y algo oscurecida, para que el
+// producto (encima, completo y nítido) resalte y el relleno no parezca un marco.
+const fondoDesenfocado = ruta => sharp(ruta).rotate()
+    .resize(ANCHO, ALTO, { fit: 'cover' })
+    .blur(40)
+    .modulate({ brightness: 0.8, saturation: 0.9 })
+    .removeAlpha()
+    .toBuffer();
 
 async function generar(nombre) {
     const ruta = original(nombre);
     if (!ruta) throw new Error(`no está el original de «${nombre}» en fuentes/ ni en R2 (¿cargaste las variables R2_*?)`);
-    const fondo = await colorDelBorde(ruta);
     fs.mkdirSync(SALIDA, { recursive: true });
     const destino = path.join(SALIDA, `${nombre}.jpg`);
-    await sharp(ruta).rotate()
-        .resize(ANCHO, ALTO, { fit: 'contain', background: fondo })
-        .flatten({ background: fondo })
+    const foto = await sharp(ruta).rotate().resize(ANCHO, ALTO, { fit: 'inside' }).flatten({ background: '#ffffff' }).toBuffer();
+    await sharp(await fondoDesenfocado(ruta))
+        .composite([{ input: foto, gravity: 'centre' }])
         .jpeg({ quality: 88, mozjpeg: true, chromaSubsampling: '4:4:4' })
         .toFile(destino);
-    console.log(`  ✓ ${path.relative(RAIZ, destino)} (${Math.round(fs.statSync(destino).size / 1024)} KB, fondo rgb(${fondo.r}, ${fondo.g}, ${fondo.b}))`);
+    console.log(`  ✓ ${path.relative(RAIZ, destino)} (${Math.round(fs.statSync(destino).size / 1024)} KB)`);
 }
 
 (async () => {

@@ -10,6 +10,7 @@ copie y publique a mano. build_product_pages.py la regenera junto con el resto d
 
 Uso:  python3 scripts/redes.py faltantes    imprime, una por línea, las fotos de la cola que aún no tienen JPG
 """
+import hashlib
 import sys
 from urllib.parse import quote
 
@@ -197,7 +198,9 @@ def articulo(n: int, p: dict) -> str:
     figuras = []
     for nombre in fotos(p):
         if (FOTOS / f"{nombre}.jpg").exists():
-            src = f"fotos/{quote(nombre)}.jpg"
+            jpg = FOTOS / f"{nombre}.jpg"
+            # ?v= cambia cuando cambia la foto: el celular no se queda con una versión vieja en caché.
+            src = f"fotos/{quote(nombre)}.jpg?v={hashlib.sha256(jpg.read_bytes()).hexdigest()[:8]}"
             figuras.append(f'                <figure class="rd-foto"><img src="{src}" alt="{esc(titulo(p["nombre"]))}" loading="lazy" decoding="async" width="1080" height="1350">'
                            f'<a class="rd-descargar" href="{src}" download>Descargar</a></figure>')
         else:
@@ -282,7 +285,7 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=1" defer></script>
+    <script src="redes.js?v=2" defer></script>
 </body>
 </html>
 """

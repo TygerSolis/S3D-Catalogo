@@ -64,8 +64,8 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   de publicación) genera `redes/index.html`, página interna (sin enlace desde el sitio, noindex, sin analítica) con
   fotos limpias, texto para Facebook (enlace con `utm_source=facebook`), Instagram (sin enlace), anuncio de
   Marketplace (sin enlaces) y respuesta para «¿Está disponible?» (`utm_source=marketplace`); `utm_campaign` es el id
-  de la temporada o `catalogo`. Las fotos son `redes/fotos/<nombre>.jpg` 1080×1350 con la foto completa sobre el
-  color de su borde (`scripts/redes_fotos.cjs`, desde los originales; si faltan, la página muestra «pendiente» y el
+  de la temporada o `catalogo`. Las fotos son `redes/fotos/<nombre>.jpg` 1080×1350 con la foto completa sobre la
+  misma foto desenfocada (`scripts/redes_fotos.cjs`, desde los originales; si faltan, la página muestra «pendiente» y el
   generador lo avisa); las que salen de la cola se borran solas. Marcas «ya publicado» en localStorage del dueño.
 - **Pruebas** (`tests/`): runner propio `run.cjs` + Playwright; `util.cjs` fija el reloj (la etiqueta
   «Nuevo» depende de `fechaAlta`), simula Umami y bloquea `script.google.com`. Cuentan productos desde los
@@ -96,7 +96,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D6 | Revisión de cambios | Rama `vista-previa` publicada en `/vista-previa/`; pasa a `main` con «aprobado». |
 | D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
 | D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
-| D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa con bordes; orden: Navidad y luego los más vendidos (lista del dueño). Futuro: 2 publicaciones por día automáticas en FB+IG. |
+| D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa, con relleno de la misma foto desenfocada; orden: Navidad y luego los más vendidos (lista del dueño). Futuro: 2 publicaciones por día automáticas en FB+IG. |
 
 Implementado (octubre de 2026):
 

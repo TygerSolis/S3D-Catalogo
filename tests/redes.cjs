@@ -34,7 +34,7 @@ print(json.dumps({'fb': r.texto_facebook(a), 'ig': r.texto_instagram(a), 'mp': r
     },
     async 'fotos: una JPG 4:5 (1080×1350) por foto de la cola, sin repetir y sin sobrantes'() {
         const html = leer('redes/index.html');
-        const usadas = [...html.matchAll(/<img src="fotos\/([^"]+)\.jpg"/g)].map(m => decodeURIComponent(m[1]));
+        const usadas = [...html.matchAll(/<img src="fotos\/([^"?]+)\.jpg\?v=[0-9a-f]{8}"/g)].map(m => decodeURIComponent(m[1]));
         assert.ok(usadas.length > 0);
         assert.doesNotMatch(html, /rd-pendiente/, 'hay fotos pendientes: ejecuta node scripts/redes_fotos.cjs');
         const porProducto = [...html.matchAll(/<article[\s\S]*?<\/article>/g)].map(a => [...a[0].matchAll(/<img src="([^"]+)"/g)].map(m => m[1]));
