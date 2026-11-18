@@ -28,7 +28,9 @@ MAX_FOTOS = 10   # máximo de un carrusel de Instagram y de Marketplace
 
 # Primer emoji del texto y hashtags según la categoría (los que no están en la lista usan solo los generales).
 EMOJI = {"Navidad": "🎄", "Mascota": "🐾", "Barbería": "💈", "Iluminación LED 3D": "💡", "Llaveros": "🔑"}
-HASHTAGS_BASE = ["#impresion3d", "#S3D", "#hechoenperu", "#regalos", "#lima"]
+# Instagram admite como máximo 5 hashtags por publicación (desde dic. 2025): colección, 2 de la categoría y los generales.
+MAX_HASHTAGS = 5
+HASHTAGS_BASE = ["#impresion3d", "#lima", "#regalos", "#hechoenperu"]
 HASHTAGS = {
     "Navidad": ["#navidad", "#decoracionnavideña", "#regalosnavideños"],
     "Muñecos Coleccionables": ["#coleccionables", "#figuras3d"],
@@ -123,10 +125,9 @@ def detalles(p: dict) -> list[str]:
 
 
 def hashtags(p: dict) -> str:
-    etiquetas = HASHTAGS.get(p["categoria"], []) + HASHTAGS_BASE
-    if p.get("coleccion"):
-        etiquetas.insert(0, "#" + "".join(p["coleccion"].lower().split()))
-    return " ".join(dict.fromkeys(etiquetas))
+    coleccion = ["#" + "".join(p["coleccion"].lower().split())] if p.get("coleccion") else []
+    etiquetas = coleccion + HASHTAGS.get(p["categoria"], [])[:2] + HASHTAGS_BASE
+    return " ".join(list(dict.fromkeys(etiquetas))[:MAX_HASHTAGS])
 
 
 def cabecera(p: dict) -> str:

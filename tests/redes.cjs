@@ -25,6 +25,8 @@ print(json.dumps({'fb': r.texto_facebook(a), 'ig': r.texto_instagram(a), 'mp': r
         assert.match(r.fb, /Blanco con luz LED \(28 cm\) S\/ 45\.00 · Verde \(22 cm\) S\/ 30\.00/);
         assert.match(r.fb, /desde S\/ 30\.00 según el color/);
         assert.doesNotMatch(r.ig, /https?:/);
+        // Instagram admite como máximo 5 hashtags por publicación
+        for (const texto of [r.fb, r.ig, r.fbo]) assert.ok((texto.match(/#\S+/g) || []).length <= 5, texto);
         assert.match(r.ig, /WhatsApp al \+51/);
         assert.doesNotMatch(r.mp.descripcion, /https?:|#\w/);
         assert.deepEqual([r.mp.titulo, r.mp.precio, r.mp.estado], ['Árbol Navideño - impreso en 3D', '30', 'Nuevo']);
