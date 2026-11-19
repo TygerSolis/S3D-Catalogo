@@ -8,8 +8,11 @@
  * está en fuentes/, lo descarga de Cloudflare R2 (fuentes/ del bucket) con las variables R2_ACCOUNT_ID,
  * R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY y R2_BUCKET (p. ej. `set -a; . ~/.config/s3d/r2.env; set +a`).
  *
- * Uso:  node scripts/redes_fotos.cjs                 genera las que faltan (python3 scripts/redes.py faltantes)
- *       node scripts/redes_fotos.cjs nombre1 nombre2  (re)genera esas fotos
+ * Con --catalogo hace lo mismo en cuadrado (1080×1080) en meta/fotos/, para el catálogo de Meta / WhatsApp
+ * (scripts/catalogo_meta.py).
+ *
+ * Uso:  node scripts/redes_fotos.cjs [--catalogo]                 genera las que faltan
+ *       node scripts/redes_fotos.cjs [--catalogo] nombre1 nombre2  (re)genera esas fotos
  */
 const sharp = require('sharp');
 const fs = require('fs');
@@ -18,9 +21,11 @@ const { execFileSync } = require('child_process');
 
 const RAIZ = path.resolve(__dirname, '..');
 const FUENTES = path.join(RAIZ, 'fuentes');
-const SALIDA = path.join(RAIZ, 'redes', 'fotos');
+const CATALOGO = process.argv.includes('--catalogo');
+const SALIDA = path.join(RAIZ, ...(CATALOGO ? ['meta', 'fotos'] : ['redes', 'fotos']));
+const LISTA = path.join(RAIZ, 'scripts', CATALOGO ? 'catalogo_meta.py' : 'redes.py');
 const ANCHO = 1080;
-const ALTO = 1350;
+const ALTO = CATALOGO ? 1080 : 1350;
 const EXTENSIONES = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP'];
 
 function original(nombre) {
@@ -68,8 +73,9 @@ async function generar(nombre) {
 }
 
 (async () => {
-    const nombres = process.argv.slice(2).length ? process.argv.slice(2)
-        : execFileSync('python3', [path.join(RAIZ, 'scripts', 'redes.py'), 'faltantes'], { encoding: 'utf8' }).split('\n').filter(Boolean);
+    const argumentos = process.argv.slice(2).filter(a => a !== '--catalogo');
+    const nombres = argumentos.length ? argumentos
+        : execFileSync('python3', [LISTA, 'faltantes'], { encoding: 'utf8' }).split('\n').filter(Boolean);
     if (!nombres.length) return console.log('No falta ninguna foto para redes.');
     let fallos = 0;
     for (const nombre of nombres) {

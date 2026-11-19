@@ -13,13 +13,13 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, publicar, seguridad)
+                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, publicar, meta, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
 node scripts/optimize_images.cjs                # genera AVIF/WebP en 4 tamaños desde fuentes/ (git-ignored)
 python3 scripts/hoja_catalogo.py --help         # exportar/importar/faltantes/videos/limpiar (hoja ↔ JSON)
-node scripts/redes_fotos.cjs                    # JPG 4:5 para redes de la cola (originales de fuentes/ o R2)
+node scripts/redes_fotos.cjs [--catalogo]       # JPG 4:5 para redes / 1:1 para el catálogo de Meta (originales de fuentes/ o R2)
 ```
 
 La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están al día: tras tocar
@@ -75,6 +75,13 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   «publicaciones» (la última fila manda; nunca repite una red ya publicada). «Aprobar» = fila «programado»; los
   activadores de `instalar` publican uno a las 11:00 y otro a las 19:00 (Lima). Pruebas en `tests/publicar.cjs`
   (Google y Meta simulados con `vm`).
+- **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
+  `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
+  Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,
+  precio del color), precio `145.00 PEN`, disponibilidad `available for order`/`in stock`/`out of stock`, enlace con
+  `utm_source=meta`. Fotos `meta/fotos/<nombre>.jpg` 1080×1080 (`redes_fotos.cjs --catalogo`), con `?v=` porque Meta
+  solo relee una foto si cambia su URL. `catalogo-desde-hoja.yml` genera las JPG que falten (redes y catálogo) sin
+  fallar si falta un original. Pruebas en `tests/meta.cjs`.
 - **Pruebas** (`tests/`): runner propio `run.cjs` + Playwright; `util.cjs` fija el reloj (la etiqueta
   «Nuevo» depende de `fechaAlta`), simula Umami y bloquea `script.google.com`. Cuentan productos desde los
   datos (`visibles()`), no con números fijos.
@@ -105,6 +112,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D7 | Dominio | Se mantiene `tygersolis.github.io/S3D-Catalogo` (sin dominio propio). |
 | D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
 | D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa, con relleno de la misma foto desenfocada; orden: Navidad y luego los más vendidos (lista del dueño). Botones «Publicar ahora» y «Aprobar» (2 por día: 11:00 y 19:00); videos como Reel aparte; Instagram vinculado a la página de Facebook (confirmado). |
+| D10 | WhatsApp Business (18/11/2026) | Mismo número de la web (+51 955 107 609) en WhatsApp Business en el celular del dueño; atención 24 h (sin mensaje de ausencia); perfil y respuestas rápidas a mano (la app no tiene API); catálogo desde un catálogo de Meta que se llena solo desde la web. |
 
 Implementado (octubre de 2026):
 
