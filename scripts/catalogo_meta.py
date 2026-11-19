@@ -25,7 +25,9 @@ CARPETA = b.ROOT / "meta"
 FOTOS = CARPETA / "fotos"
 CAMPOS = ["id", "item_group_id", "title", "description", "availability", "condition", "price", "link",
           "image_link", "brand", "color", "custom_label_0"]
-DISPONIBILIDAD = {"A pedido": "available for order", "En stock": "in stock", "Agotado": "out of stock"}
+# «A pedido» va como «in stock»: Meta muestra «available for order» como «Incompleto» y WhatsApp oculta los productos
+# que no están disponibles (visto el 19/11/2026). Un producto a pedido sí se puede comprar.
+DISPONIBILIDAD = {"A pedido": "in stock", "En stock": "in stock", "Agotado": "out of stock"}
 
 
 def productos(todos: list[dict]) -> list[dict]:

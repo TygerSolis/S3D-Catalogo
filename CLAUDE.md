@@ -78,7 +78,7 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
 - **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
   `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
   Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,
-  precio del color), precio `145.00 PEN`, disponibilidad `available for order`/`in stock`/`out of stock`, enlace con
+  precio del color), precio `145.00 PEN`, disponibilidad `in stock` (también «A pedido»: Meta marca `available for order` como «Incompleto» y WhatsApp lo oculta) u `out of stock`, enlace con
   `utm_source=meta`. Fotos `meta/fotos/<nombre>.jpg` 1080×1080 (`redes_fotos.cjs --catalogo`), con `?v=` porque Meta
   solo relee una foto si cambia su URL. `catalogo-desde-hoja.yml` genera las JPG que falten (redes y catálogo) sin
   fallar si falta un original. Pruebas en `tests/meta.cjs`.

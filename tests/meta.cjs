@@ -23,7 +23,7 @@ module.exports = {
                 assert.ok(f[campo], `${f.id}: falta ${campo}`);
             }
             assert.match(f.price, /^\d+\.\d{2} PEN$/, f.id);
-            assert.ok(['available for order', 'in stock', 'out of stock'].includes(f.availability), f.id);
+            assert.ok(['in stock', 'out of stock'].includes(f.availability), f.id);   // «available for order» Meta lo marca «Incompleto»
             assert.ok(f.link.startsWith(`${urlBase}producto/`) && f.link.includes('utm_source=meta'), f.id);
             assert.match(f.image_link, new RegExp(`^${urlBase.replace(/[.]/g, '\\.')}meta/fotos/[^?]+\\.jpg\\?v=[0-9a-f]{8}$`), f.id);
             assert.doesNotMatch(f.description, /<|>/, `${f.id}: la descripción no lleva HTML`);
@@ -35,8 +35,10 @@ module.exports = {
         for (const p of leerJson('productos.json').filter(q => q.requiereCotizacion)) {
             assert.ok(!filas.some(f => f.id === `S3D-${p.id}` || f.item_group_id === `S3D-${p.id}`), p.nombre);
         }
-        const stock = productos.find(p => p.disponibilidad === 'En stock');
-        if (stock) assert.equal(filas.find(f => f.id.startsWith(`S3D-${stock.id}`)).availability, 'in stock');
+        for (const p of productos) {
+            const esperado = p.disponibilidad === 'Agotado' ? 'out of stock' : 'in stock';   // «A pedido» se puede comprar
+            assert.ok(filas.filter(f => f.id === `S3D-${p.id}` || f.item_group_id === `S3D-${p.id}`).every(f => f.availability === esperado), p.nombre);
+        }
     },
     async 'catálogo de Meta: cada foto es una JPG cuadrada (1080×1080) que existe, sin sobrantes'() {
         const filas = leerCsv();
