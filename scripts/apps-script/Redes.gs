@@ -116,6 +116,26 @@ function guardarPermiso() {
     ? ' e Instagram @' + pagina.instagram_business_account.username : ' (SIN Instagram vinculado: revisa la guía)'));
 }
 
+const PERMISOS = ['pages_show_list', 'pages_read_engagement', 'pages_read_user_content', 'pages_manage_posts',
+  'business_management', 'read_insights', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights'];
+
+/**
+ * Ejecutar a mano: pregunta a Meta qué permisos tiene de verdad el token guardado (debug_token, con APP_ID y
+ * APP_SECRET) y lista los que faltan. Si falta alguno: agrégalo en la app y genera el token otra vez (guía, paso 3).
+ */
+function revisarPermisos() {
+  const props = PropertiesService.getScriptProperties();
+  const app = (props.getProperty('APP_ID') || '').trim() + '|' + (props.getProperty('APP_SECRET') || '').trim();
+  const d = get_('debug_token', { input_token: token_() }, app).data || {};
+  const tiene = d.scopes || [];
+  const faltan = PERMISOS.filter(p => tiene.indexOf(p) === -1);
+  console.log('Permisos del token: ' + tiene.join(', '));
+  console.log(faltan.length ? 'FALTAN: ' + faltan.join(', ') + ' → agrégalos en la app y genera el token otra vez (guía, paso 3, puntos 4 a 6)'
+    : 'Están todos los permisos necesarios.');
+  if (d.is_valid === false) console.log('El token NO es válido: genera uno nuevo (guía, paso 3).');
+  return faltan;
+}
+
 /** Ejecutar a mano para comprobar la conexión sin publicar nada. */
 function probarConexion() {
   const p = get_('me', { fields: 'id,name,instagram_business_account{id,username}' });
@@ -414,7 +434,8 @@ const COLUMNAS_RESULTADOS = ['Producto', 'Nombre', 'Tipo', 'Red', 'Publicado', '
  * publicación (no historias: Meta las borra a las 24 h) de los últimos DIAS_INFORME días y manda un resumen.
  * Métricas: Instagram /insights (reach, views, saved, shares) + like_count/comments_count; Facebook
  * post_total_media_view_unique (alcance), post_media_view (vistas), reacciones, comentarios y compartidos.
- * Necesita los permisos instagram_manage_insights y read_insights (guía, paso 6).
+ * Necesita los permisos instagram_manage_insights, read_insights y pages_read_user_content (guía, paso 6);
+ * «revisarPermisos» dice cuáles tiene el token.
  */
 function informeSemanal() {
   const estado = estado_();
@@ -475,7 +496,11 @@ function valorInsight_(datos, nombre) {
 
 function metricas_(red, r, cuentas) {
   const m = { alcance: '', vistas: '', me_gusta: '', comentarios: '', guardados: '', compartidos: '', nota: '' };
-  const nota = e => { m.nota = m.nota || (/permiso/.test(e.message) ? 'falta el permiso de estadísticas (guía, paso 6)' : e.message.slice(0, 200)); };
+  // La nota dice qué dato falló y por qué (el mensaje de Meta va entre paréntesis); «revisarPermisos» dice qué falta.
+  const nota = (que, e) => {
+    const texto = que + ': ' + (/permiso/.test(e.message) ? 'falta un permiso (ejecuta revisarPermisos) ' : '') + e.message;
+    m.nota = (m.nota ? m.nota + ' | ' : '') + texto.slice(0, 250);
+  };
   if (red === 'instagram') {
     const id = r.id || idInstagramDe_(r.enlace, cuentas.instagram);
     if (!id) { m.nota = 'no se encontró la publicación en Instagram'; return m; }
@@ -483,29 +508,33 @@ function metricas_(red, r, cuentas) {
       const b = get_(id, { fields: 'like_count,comments_count' });
       m.me_gusta = b.like_count === undefined ? '' : b.like_count;
       m.comentarios = b.comments_count === undefined ? '' : b.comments_count;
-    } catch (e) { nota(e); }
+    } catch (e) { nota('me gusta y comentarios', e); }
     try {
       const d = get_(id + '/insights', { metric: 'reach,views,saved,shares' }).data;
       m.alcance = valorInsight_(d, 'reach');
       m.vistas = valorInsight_(d, 'views');
       m.guardados = valorInsight_(d, 'saved');
       m.compartidos = valorInsight_(d, 'shares');
-    } catch (e) { nota(e); }
+    } catch (e) { nota('alcance y vistas', e); }
   } else {
     const id = r.id || (String(r.enlace).match(/facebook\.com\/(?:\d+\/videos\/)?([\d_]+)/) || [])[1];
     if (!id) { m.nota = 'no se encontró la publicación en Facebook'; return m; }
+    // Por separado: los comentarios piden pages_read_user_content; las reacciones, pages_read_engagement.
     try {
-      const b = get_(id, { fields: 'reactions.summary(total_count).limit(0),comments.summary(total_count).limit(0)' + (/_/.test(id) ? ',shares' : '') });
+      const b = get_(id, { fields: 'reactions.summary(total_count).limit(0)' + (/_/.test(id) ? ',shares' : '') });
       m.me_gusta = b.reactions && b.reactions.summary ? b.reactions.summary.total_count : '';
-      m.comentarios = b.comments && b.comments.summary ? b.comments.summary.total_count : '';
       if (/_/.test(id)) m.compartidos = b.shares ? b.shares.count : 0;
-    } catch (e) { nota(e); }
+    } catch (e) { nota('me gusta', e); }
+    try {
+      const b = get_(id, { fields: 'comments.summary(total_count).limit(0)' });
+      m.comentarios = b.comments && b.comments.summary ? b.comments.summary.total_count : '';
+    } catch (e) { nota('comentarios', e); }
     if (/_/.test(id)) {   // los ids de publicaciones llevan «página_post»; los videos no tienen estas métricas
       try {
         const d = get_(id + '/insights', { metric: 'post_total_media_view_unique,post_media_view' }).data;
         m.alcance = valorInsight_(d, 'post_total_media_view_unique');
         m.vistas = valorInsight_(d, 'post_media_view');
-      } catch (e) { nota(e); }
+      } catch (e) { nota('alcance y vistas', e); }
     }
   }
   return m;

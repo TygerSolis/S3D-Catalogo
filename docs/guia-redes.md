@@ -107,9 +107,11 @@ celular (repite en cada dispositivo que uses). La primera publicación real la h
 ### Paso 6. Permisos de estadísticas (para el informe semanal)
 
 1. En la app de Meta (**developers.facebook.com → Mis apps → S3D Publicaciones**), en los casos de uso → **Permisos
-   y funciones**, agrega `instagram_manage_insights` y `read_insights`.
+   y funciones**, agrega `instagram_manage_insights`, `read_insights` y `pages_read_user_content` (este último lo pide
+   Meta para contar los comentarios de las publicaciones de Facebook).
 2. Repite el **paso 3, puntos 4 a 6** (Explorador de la Graph API → marca también esos dos permisos → token →
-   `TOKEN_TEMPORAL` → **guardarPermiso**).
+   `TOKEN_TEMPORAL` → **guardarPermiso**). Luego ejecuta **revisarPermisos**: pregunta a Meta qué permisos tiene el token y
+   lista los que faltan.
 3. Pega la versión nueva de `Redes.gs` (ver «Si cambias el programa») y ejecuta **instalar** otra vez (agrega el
    informe de los lunes; no duplica los horarios).
 
@@ -121,7 +123,7 @@ celular (repite en cada dispositivo que uses). La primera publicación real la h
 | «falta un permiso en la app de Meta» | Revisa los permisos del paso 2.5 y genera el token otra vez (paso 3.4–3.6). |
 | «Meta no pudo descargar la foto o el video» | La web aún no tiene ese producto publicado; espera unos minutos tras el «aprobado». |
 | «no está en la cola de la web principal» | El producto todavía no pasó a la web principal. |
-| En «resultados» la nota «falta el permiso de estadísticas» | Haz el paso 6. |
+| En «resultados» una nota «… falta un permiso …» | Ejecuta **revisarPermisos** y agrega lo que diga que falta (paso 6). |
 | «Meta pide esperar» | Demasiadas publicaciones seguidas: espera una hora. |
 | Una publicación programada falló | Te llega un correo a ventas.s3d@gmail.com; usa «Publicar ahora» para reintentar. |
 

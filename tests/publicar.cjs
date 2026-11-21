@@ -254,7 +254,11 @@ module.exports = {
                 return [200, { data: [{ name: 'reach', values: [{ value: 200 }] }, { name: 'views', total_value: { value: 350 } },
                     { name: 'saved', values: [{ value: 4 }] }, { name: 'shares', values: [{ value: 2 }] }] }];
             }
-            if (campos.startsWith('reactions')) return [200, { reactions: { summary: { total_count: 7 } }, comments: { summary: { total_count: 1 } }, ...(/_/.test(ruta) ? { shares: { count: 2 } } : {}) }];
+            if (campos.startsWith('reactions')) return [200, { reactions: { summary: { total_count: 7 } }, ...(/_/.test(ruta) ? { shares: { count: 2 } } : {}) }];
+            if (campos.startsWith('comments')) {
+                if (sinPermiso) return [400, { error: { code: 10, message: 'Requires pages_read_user_content permission' } }];
+                return [200, { comments: { summary: { total_count: 1 } } }];
+            }
             if (ruta.endsWith('/insights') && metricas.startsWith('post_')) return [200, { data: [
                 { name: 'post_total_media_view_unique', values: [{ value: 150 }] }, { name: 'post_media_view', values: [{ value: 300 }] }] }];
             return undefined;
@@ -280,8 +284,19 @@ module.exports = {
         // Sin el permiso de estadísticas, el informe sale igual y lo explica
         sinPermiso = true;
         s.gs.informeSemanal();
-        assert.match(s.resultados.find(f => f[2] === 'fotos' && f[3] === 'instagram')[col('Nota')], /falta el permiso de estadísticas/);
+        assert.match(s.resultados.find(f => f[2] === 'fotos' && f[3] === 'instagram')[col('Nota')], /^alcance y vistas: falta un permiso \(ejecuta revisarPermisos\)/);
+        const notaFb = s.resultados.find(f => f[2] === 'fotos' && f[3] === 'facebook')[col('Nota')];
+        assert.match(notaFb, /comentarios: falta un permiso.*pages_read_user_content/);
+        assert.equal(s.resultados.find(f => f[2] === 'fotos' && f[3] === 'facebook')[col('Me gusta')], 7, 'un permiso que falta no borra los demás datos');
         assert.match(s.correos.at(-1)[2], /sin algunos datos/);
+    },
+    'Apps Script: «revisarPermisos» pregunta a Meta qué permisos tiene el token y lista los que faltan'() {
+        const s = cargarGs({ props: { APP_ID: '123', APP_SECRET: 'secreto' }, meta: url => (url.includes('/debug_token?')
+            ? [200, { data: { is_valid: true, scopes: ['pages_show_list', 'pages_read_engagement', 'pages_manage_posts', 'business_management',
+                'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights'] } }] : undefined) });
+        assert.deepEqual([...s.gs.revisarPermisos()], ['pages_read_user_content', 'read_insights']);
+        const consulta = s.llamadas.find(l => l.ruta === 'debug_token').datos;
+        assert.deepEqual([consulta.input_token, consulta.access_token], ['token-pagina', '123|secreto']);
     },
     'Apps Script: una publicación anotada sin id de Meta se encuentra por su enlace'() {
         const s = cargarGs({ meta: (url, o) => {

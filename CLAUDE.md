@@ -80,7 +80,8 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   (`photo_stories` / `STORIES`); la columna `IdMeta` guarda el id de cada publicación. `informeSemanal` (lunes 8:00)
   reescribe la pestaña «resultados» (IG: reach, views, saved, shares, like_count, comments_count; FB:
   post_total_media_view_unique, post_media_view, reacciones, comentarios, compartidos) y manda un resumen; necesita
-  `instagram_manage_insights` y `read_insights`. Pruebas en `tests/publicar.cjs` (Google y Meta simulados con `vm`).
+  `instagram_manage_insights`, `read_insights` y `pages_read_user_content` (`revisarPermisos` lista los que faltan con
+  `debug_token`). Pruebas en `tests/publicar.cjs` (Google y Meta simulados con `vm`).
 - **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
   `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
   Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,
