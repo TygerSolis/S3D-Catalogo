@@ -319,7 +319,7 @@ module.exports = {
         const enlace = new URL(s.gs.conectarTikTok());
         assert.equal(enlace.origin + enlace.pathname, 'https://www.tiktok.com/v2/auth/authorize/');
         assert.deepEqual(['client_key', 'response_type', 'scope', 'redirect_uri'].map(k => enlace.searchParams.get(k)),
-            ['clave-tt', 'code', 'user.info.basic,video.upload', 'https://script.google.com/macros/s/X/exec']);
+            ['clave-tt', 'code', 'user.info.basic,video.upload,video.publish', 'https://script.google.com/macros/s/X/exec']);
         assert.match(s.gs.doGet({ parameter: { code: 'abc', state: 'otro' } }).texto, /venció o no es válido/);
         assert.equal(s.llamadas.length, 0);
         assert.match(s.gs.doGet({ parameter: { code: 'abc', state: enlace.searchParams.get('state') } }).texto, /TikTok quedó conectado/);
@@ -386,6 +386,112 @@ module.exports = {
         assert.match(r2.resultado.tiktok.detalle, /no verificó que la web es tuya/);
         const sinConexion = cargarGs().post({ accion: 'tiktok', id: 3001, tipo: 'fotos' });
         assert.match(sinConexion.resultado.tiktok.detalle, /TikTok no está conectado: ejecuta conectarTikTok/);
+    },
+    'TikTok directo: publica con las opciones elegidas, música automática en fotos y valida las normas de TikTok'() {
+        const p3002 = JSON.parse(PUBLICACIONES).productos['3002'];
+        const creador = { creator_nickname: 'S3D', creator_username: 's3d.pe', privacy_level_options: ['PUBLIC_TO_EVERYONE', 'SELF_ONLY'],
+            comment_disabled: false, duet_disabled: true, stitch_disabled: false, max_video_post_duration_sec: 600 };
+        const s = cargarGs({ props: { TIKTOK_ACCESS: 'acceso', TIKTOK_VENCE: String(Date.now() + 3600e3) }, meta: (url, o) => {
+            if (url.endsWith('creator_info/query/')) return [200, { data: creador, error: { code: 'ok' } }];
+            if (url.endsWith('content/init/') || url.endsWith('video/init/')) return [200, { data: { publish_id: 'd_1', upload_url: 'https://open-upload.tiktokapis.com/v' }, error: { code: 'ok' } }];
+            if (url === 'https://open-upload.tiktokapis.com/v') return [201, ''];
+            if (url.endsWith('status/fetch/')) return [200, { data: { status: 'PUBLISH_COMPLETE' }, error: { code: 'ok' } }];
+            if (url.endsWith('.mp4')) return [200, Buffer.alloc(10, 1)];
+            return undefined;
+        } });
+        assert.deepEqual(JSON.parse(JSON.stringify(s.post({ accion: 'tiktok-info' }).creador)),
+            { nombre: 'S3D', usuario: 's3d.pe', privacidades: ['PUBLIC_TO_EVERYONE', 'SELF_ONLY'], sinComentarios: false, sinDuo: true, sinStitch: false, maxSegundos: 600 });
+        const base = { privacidad: 'PUBLIC_TO_EVERYONE', comentarios: true, acepta: true, titulo: 'Mi título', texto: 'Mi texto #s3d' };
+        const error = opciones => s.post({ accion: 'tiktok-publicar', id: 3002, tipo: 'fotos', opciones }).error;
+        assert.match(error({ ...base, acepta: false }), /Confirmación de uso de música/);
+        assert.match(error({ ...base, privacidad: 'FOLLOWER_OF_CREATOR' }), /elige quién puede ver/);
+        assert.match(error({ ...base, comercial: true, contenidoMarca: true, privacidad: 'SELF_ONLY' }), /no puede ser privado/);
+        assert.match(error({ ...base, comercial: true }), /tu marca, la de un tercero o ambas/);
+        assert.ok(!s.llamadas.some(l => l.ruta.endsWith('content/init/')), 'nada se envía a TikTok sin cumplir las normas');
+        const r = s.post({ accion: 'tiktok-publicar', id: 3002, tipo: 'fotos', opciones: { ...base, comercial: true, tuMarca: true } });
+        assert.equal(r.resultado.tiktok.estado, 'publicado', JSON.stringify(r));
+        const init = JSON.parse(s.llamadas.find(l => l.ruta.endsWith('content/init/')).datos);
+        assert.deepEqual([init.post_mode, init.media_type, init.source_info.photo_images], ['DIRECT_POST', 'PHOTO', p3002.fotos]);
+        assert.deepEqual(init.post_info, { title: 'Mi título', description: 'Mi texto #s3d', auto_add_music: true, privacy_level: 'PUBLIC_TO_EVERYONE',
+            disable_comment: false, brand_content_toggle: false, brand_organic_toggle: true });
+        assert.deepEqual([...s.filas.at(-1).slice(4, 7)], ['tiktok', 'publicado', 'https://www.tiktok.com/@s3d.pe']);
+        assert.ok(s.post({ accion: 'tiktok-publicar', id: 3002, tipo: 'fotos', opciones: base }).ok);
+        assert.equal(s.llamadas.filter(l => l.ruta.endsWith('content/init/')).length, 1, 'no se publica dos veces');
+        // Video: dúo desactivado por la cuenta aunque se pida; y el límite de duración se respeta
+        s.post({ accion: 'tiktok-publicar', id: 3005, tipo: 'reel', opciones: { ...base, duo: true, stitch: true } });
+        const video = JSON.parse(s.llamadas.find(l => l.ruta.endsWith('video/init/')).datos);
+        assert.deepEqual([video.post_info.title, video.post_info.disable_duet, video.post_info.disable_stitch, video.source_info.source], ['Mi texto #s3d', true, false, 'FILE_UPLOAD']);
+        creador.max_video_post_duration_sec = 5;
+        assert.match(s.post({ accion: 'tiktok-publicar', id: 3003, tipo: 'reel', opciones: base }).resultado === undefined
+            ? s.post({ accion: 'tiktok-publicar', id: 3003, tipo: 'reel', opciones: base }).error : '', /dura 18 s y tu cuenta permite hasta 5 s/);
+    },
+    async 'página: el panel directo de TikTok cumple las normas (cuenta, sin valores por defecto, contenido comercial)'({ browser }) {
+        const API = 'https://script.google.com/macros/s/PRUEBA/exec';
+        const pedidos = [];
+        const p = await abrir(browser, 'redes/?tiktok-directo', {
+            preparar: async pagina => {
+                await pagina.route(/\/redes\/\?tiktok-directo$/, async ruta => {
+                    const html = (await (await ruta.fetch()).text()).replace(/data-api="[^"]*"/, `data-api="${API}"`);
+                    await ruta.fulfill({ body: html, contentType: 'text/html; charset=utf-8' });
+                });
+                await pagina.route(API, async ruta => {
+                    const d = JSON.parse(ruta.request().postData());
+                    pedidos.push(d);
+                    if (d.accion === 'tiktok-info') return ruta.fulfill({ json: { ok: true, creador: { nombre: 'S3D', usuario: 's3d.pe',
+                        privacidades: ['PUBLIC_TO_EVERYONE', 'MUTUAL_FOLLOW_FRIENDS', 'SELF_ONLY'], sinComentarios: false, sinDuo: false, sinStitch: true, maxSegundos: 600 } } });
+                    if (d.accion === 'tiktok-publicar') return ruta.fulfill({ json: { ok: true, resultado: { tiktok: { estado: 'publicado' } },
+                        estado: { [`${d.id}:${d.tipo}`]: { tiktok: { estado: 'publicado', fecha: '2026-11-21T16:00:00Z', enlace: 'https://www.tiktok.com/@s3d.pe' } } } } });
+                    return ruta.fulfill({ json: { ok: true, estado: {} } });
+                });
+                await pagina.addInitScript(c => localStorage.setItem('s3d-redes-clave', JSON.stringify(c)), CLAVE);
+            }
+        });
+        await p.locator('[data-conexion-estado].rd-bien').waitFor();
+        const panel = p.locator('#p-3001 .rd-tiktok[data-tipo="fotos"] [data-directo]');
+        assert.ok(await panel.isVisible());
+        await panel.locator('summary').click();
+        await panel.locator('[data-tt-cuenta]', { hasText: '@s3d.pe' }).waitFor();
+        const select = panel.locator('[data-tt-privacidad]');
+        assert.equal(await select.inputValue(), '', 'la privacidad no tiene valor por defecto');
+        assert.deepEqual(await panel.locator('input[type=checkbox]').evaluateAll(c => c.map(x => x.checked)), [false, false, false, false]);
+        assert.equal(await panel.locator('[data-tt="duo"]').count(), 0, 'en fotos solo comentarios');
+        const publicar = panel.locator('[data-accion="tiktok-publicar"]');
+        assert.ok(await publicar.isDisabled());
+        await select.selectOption('SELF_ONLY');
+        assert.ok(await publicar.isEnabled());
+        // Contenido comercial: sin elegir tipo no se puede publicar; «contenido de marca» no admite «Solo yo»
+        await panel.locator('[data-tt="comercial"]').check();
+        assert.ok(await publicar.isDisabled());
+        await panel.locator('[data-tt="contenidoMarca"]').check();
+        assert.equal(await select.inputValue(), '');
+        assert.ok(await panel.locator('option[value="SELF_ONLY"]').evaluate(o => o.disabled), '«Solo yo» deshabilitado');
+        assert.match(await panel.locator('[data-tt-etiqueta]').textContent(), /Colaboración pagada/);
+        assert.ok(await panel.locator('[data-tt-declaracion="marca"]').isVisible());
+        await panel.locator('[data-tt="contenidoMarca"]').uncheck();
+        await panel.locator('[data-tt="tuMarca"]').check();
+        assert.match(await panel.locator('[data-tt-etiqueta]').textContent(), /Contenido promocional/);
+        assert.ok(await panel.locator('[data-tt-declaracion="musica"]').isVisible());
+        await select.selectOption('PUBLIC_TO_EVERYONE');
+        await panel.locator('[data-tt-texto]').fill('Texto editado');
+        await publicar.click();
+        await p.locator('#p-3001 .rd-tiktok[data-tipo="fotos"] li.rd-bien').waitFor();
+        const envio = pedidos.find(d => d.accion === 'tiktok-publicar');
+        assert.deepEqual([envio.id, envio.tipo, envio.opciones.privacidad, envio.opciones.tuMarca, envio.opciones.contenidoMarca, envio.opciones.texto, envio.opciones.acepta],
+            [3001, 'fotos', 'PUBLIC_TO_EVERYONE', true, false, 'Texto editado', true]);
+        assert.ok(await panel.isHidden(), 'ya publicado: el panel se oculta');
+        // Video: stitch desactivado por la cuenta
+        const video = p.locator('#p-3005 .rd-tiktok[data-tipo="reel"] [data-directo]');
+        await video.locator('summary').click();
+        await video.locator('[data-tt-cuenta]', { hasText: '@s3d.pe' }).waitFor();
+        assert.ok(await video.locator('[data-tt="stitch"]').isDisabled());
+        assert.ok(await video.locator('[data-tt="duo"]').isEnabled());
+        assert.deepEqual(p.errores, []);
+        assert.deepEqual(p.violaciones, []);
+        await p.contexto.close();
+        // Sin el interruptor, el panel no aparece
+        const q = await abrir(browser, 'redes/');
+        assert.equal(await q.locator('[data-directo]:visible').count(), 0);
+        await q.contexto.close();
     },
     async 'página: con la clave, «Publicar ahora» (doble toque), «Aprobar» y los errores se muestran sin HTML'({ browser }) {
         const API = 'https://script.google.com/macros/s/PRUEBA/exec';

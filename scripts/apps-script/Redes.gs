@@ -59,6 +59,8 @@ function doPost(e) {
       case 'aprobar': return respuesta_({ ok: true, resultado: programar_(id, tipo, true), estado: estado_() });
       case 'cancelar': return respuesta_({ ok: true, resultado: programar_(id, tipo, false), estado: estado_() });
       case 'tiktok': return respuesta_({ ok: true, resultado: enviarTikTok_(id, tipo), estado: estado_() });
+      case 'tiktok-info': return respuesta_({ ok: true, creador: creadorTikTok_() });
+      case 'tiktok-publicar': return respuesta_({ ok: true, resultado: publicarTikTok_(id, tipo, datos.opciones || {}), estado: estado_() });
       default: throw new Error('acción desconocida');
     }
   } catch (error) {
@@ -566,7 +568,10 @@ function idInstagramDe_(enlace, ig) {
 // ---------------------------------------------------------------- TikTok (enviar a la bandeja)
 
 const TIKTOK_API = 'https://open.tiktokapis.com/v2/';
-const TIKTOK_ALCANCES = 'user.info.basic,video.upload';
+// video.publish es para la publicación directa (necesita la auditoría de TikTok para cuentas públicas). Si la app
+// todavía no lo tiene aprobado, pon la propiedad TIKTOK_ALCANCES = user.info.basic,video.upload
+const TIKTOK_ALCANCES = 'user.info.basic,video.upload,video.publish';
+const PRIVACIDADES = ['PUBLIC_TO_EVERYONE', 'MUTUAL_FOLLOW_FRIENDS', 'FOLLOWER_OF_CREATOR', 'SELF_ONLY'];
 
 /**
  * Ejecutar a mano (una vez, y otra vez si TikTok pide reconectar): muestra el enlace para autorizar a la app de
@@ -579,7 +584,7 @@ function conectarTikTok() {
   const estado = Utilities.getUuid().replace(/-/g, '');
   CacheService.getScriptCache().put('tiktok-estado', estado, 900);
   const enlace = 'https://www.tiktok.com/v2/auth/authorize/?client_key=' + encodeURIComponent(clave) +
-    '&response_type=code&scope=' + encodeURIComponent(TIKTOK_ALCANCES) + '&redirect_uri=' + encodeURIComponent(url) +
+    '&response_type=code&scope=' + encodeURIComponent((props.getProperty('TIKTOK_ALCANCES') || TIKTOK_ALCANCES).trim()) + '&redirect_uri=' + encodeURIComponent(url) +
     '&state=' + estado;
   console.log('Abre este enlace (vale 15 minutos) con tu sesión de TikTok de S3D y acepta:\n' + enlace);
   return enlace;
@@ -666,7 +671,10 @@ function errorTikTok_(error, http) {
     spam_risk_too_many_pending_share: 'tienes 5 envíos esperando en tu bandeja de TikTok: publícalos o descártalos y vuelve a intentar',
     spam_risk_user_banned_from_posting: 'TikTok no permite publicar desde esta cuenta por ahora',
     rate_limit_exceeded: 'TikTok pide esperar un minuto: demasiados envíos seguidos',
-    app_version_check_failed: 'actualiza la app de TikTok en tu celular (se necesita la versión 31.8 o superior)'
+    app_version_check_failed: 'actualiza la app de TikTok en tu celular (se necesita la versión 31.8 o superior)',
+    unaudited_client_can_only_post_to_private_accounts: 'la publicación directa necesita la auditoría de TikTok (mientras tanto, solo funciona con la cuenta en privado)',
+    privacy_level_option_mismatch: 'esa privacidad no está disponible para tu cuenta: elige otra',
+    reached_active_user_cap: 'TikTok alcanzó el límite diario de publicaciones de la app: intenta mañana'
   };
   return (textos[error.code] || 'TikTok rechazó el envío') + original;
 }
@@ -713,11 +721,88 @@ function enviarTikTok_(id, tipo) {
   try {
     const p = contenido_(id, tipo);
     const actual = (estado_()[id + ':' + tipo] || {}).tiktok;
-    if (actual && actual.estado === 'enviado') return { tiktok: actual };
+    if (actual && (actual.estado === 'enviado' || actual.estado === 'publicado')) return { tiktok: actual };
     try {
       const publicacion = tipo === 'reel' ? tiktokVideo_(p) : tiktokFotos_(p);
       anotar_(id, p.nombre, tipo, 'tiktok', 'enviado', 'https://www.tiktok.com/', '', publicacion);
       return { tiktok: { estado: 'enviado' } };
+    } catch (error) {
+      anotar_(id, p.nombre, tipo, 'tiktok', 'error', '', error.message, '');
+      return { tiktok: { estado: 'error', detalle: error.message } };
+    }
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// ---------------------------------------------------------------- TikTok: publicación directa (tras la auditoría)
+// Normas de TikTok (Content Sharing Guidelines): la página muestra la cuenta, el dueño elige la privacidad (sin valor
+// por defecto), las interacciones (desmarcadas) y el contenido comercial, puede editar el texto y acepta la
+// Confirmación de uso de música antes de publicar. Aquí se vuelve a consultar la cuenta y se valida todo.
+
+/** Datos de la cuenta de TikTok que la página debe mostrar antes de publicar (se consultan siempre al momento). */
+function creadorTikTok_() {
+  const d = tiktok_('post/publish/creator_info/query/', {});
+  return {
+    nombre: d.creator_nickname || d.creator_username || '',
+    usuario: d.creator_username || '',
+    privacidades: (d.privacy_level_options || []).filter(p => PRIVACIDADES.indexOf(p) > -1),
+    sinComentarios: !!d.comment_disabled,
+    sinDuo: !!d.duet_disabled,
+    sinStitch: !!d.stitch_disabled,
+    maxSegundos: Number(d.max_video_post_duration_sec) || 0
+  };
+}
+
+function publicarTikTok_(id, tipo, o) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) throw new Error('hay otra publicación en curso; espera un momento y vuelve a intentar');
+  try {
+    const p = contenido_(id, tipo);
+    const actual = (estado_()[id + ':' + tipo] || {}).tiktok;
+    if (actual && (actual.estado === 'publicado' || actual.estado === 'enviado')) return { tiktok: actual };
+    const creador = creadorTikTok_();
+    // Validaciones de las normas de TikTok (la página ya las aplica; aquí se repiten por seguridad).
+    if (o.acepta !== true) throw new Error('falta aceptar la Confirmación de uso de música de TikTok');
+    if (creador.privacidades.indexOf(o.privacidad) === -1) throw new Error('elige quién puede ver la publicación');
+    if (o.contenidoMarca && o.privacidad === 'SELF_ONLY') throw new Error('el contenido de marca no puede ser privado («Solo yo»)');
+    if (o.comercial && !o.tuMarca && !o.contenidoMarca) throw new Error('indica si el contenido promociona tu marca, la de un tercero o ambas');
+    if (tipo === 'reel' && creador.maxSegundos && p.videoSegundos > creador.maxSegundos) {
+      throw new Error('el video dura ' + Math.round(p.videoSegundos) + ' s y tu cuenta permite hasta ' + creador.maxSegundos + ' s');
+    }
+    const titulo = String(o.titulo || p.tiktokTitulo).slice(0, 90);
+    const texto = String(o.texto || p.tiktok).slice(0, tipo === 'reel' ? 2200 : 4000);
+    const comunes = {
+      privacy_level: o.privacidad,
+      disable_comment: creador.sinComentarios || !o.comentarios,
+      brand_content_toggle: !!(o.comercial && o.contenidoMarca),
+      brand_organic_toggle: !!(o.comercial && o.tuMarca)
+    };
+    try {
+      let publicacion;
+      if (tipo === 'reel') {
+        const bytes = UrlFetchApp.fetch(p.video).getBlob().getBytes();
+        const n = bytes.length;
+        const d = tiktok_('post/publish/video/init/', {
+          post_info: Object.assign({ title: texto, disable_duet: creador.sinDuo || !o.duo, disable_stitch: creador.sinStitch || !o.stitch,
+            video_cover_timestamp_ms: 1000 }, comunes),
+          source_info: { source: 'FILE_UPLOAD', video_size: n, chunk_size: n, total_chunk_count: 1 }
+        });
+        const r = UrlFetchApp.fetch(d.upload_url, { method: 'put', contentType: 'video/mp4', payload: bytes, muteHttpExceptions: true,
+          headers: { 'Content-Range': 'bytes 0-' + (n - 1) + '/' + n } });
+        if (r.getResponseCode() >= 300) throw new Error('TikTok no recibió el video (' + r.getResponseCode() + ')');
+        publicacion = d.publish_id;
+      } else {
+        publicacion = tiktok_('post/publish/content/init/', {
+          post_info: Object.assign({ title: titulo, description: texto, auto_add_music: true }, comunes),
+          source_info: { source: 'PULL_FROM_URL', photo_cover_index: 0, photo_images: p.fotos.slice(0, 35) },
+          post_mode: 'DIRECT_POST',
+          media_type: 'PHOTO'
+        }).publish_id;
+      }
+      const fase = esperarTikTok_(publicacion);
+      anotar_(id, p.nombre, tipo, 'tiktok', 'publicado', 'https://www.tiktok.com/@' + creador.usuario, fase === 'PUBLISH_COMPLETE' ? '' : 'TikTok aún lo procesa', publicacion);
+      return { tiktok: { estado: 'publicado', procesando: fase !== 'PUBLISH_COMPLETE' } };
     } catch (error) {
       anotar_(id, p.nombre, tipo, 'tiktok', 'error', '', error.message, '');
       return { tiktok: { estado: 'error', detalle: error.message } };

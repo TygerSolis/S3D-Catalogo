@@ -16,6 +16,7 @@ Uso:  python3 scripts/redes.py faltantes            fotos de la cola que aún no
 import hashlib
 import json
 import re
+import struct
 import sys
 from datetime import date
 from urllib.parse import quote
@@ -176,6 +177,19 @@ def sonido_tiktok(p: dict) -> str:
     return "pop o electrónico en tendencia: elige uno de «Recomendados»"
 
 
+def duracion_video(ruta: str) -> float:
+    """Duración en segundos de un MP4 (caja «mvhd»): TikTok la compara con el máximo que permite la cuenta."""
+    datos = (b.ROOT / ruta).read_bytes()
+    i = datos.find(b"mvhd")
+    if i < 0:
+        return 0.0
+    if datos[i + 4] == 1:
+        escala, duracion = struct.unpack(">IQ", datos[i + 24:i + 36])
+    else:
+        escala, duracion = struct.unpack(">II", datos[i + 16:i + 24])
+    return duracion / escala if escala else 0.0
+
+
 def titulo_tiktok(p: dict) -> str:
     return cabecera(p)[:90]
 
@@ -271,9 +285,48 @@ def bloque_auto(tipo: str, titulo_: str, redes: str = "facebook,instagram") -> s
             </section>"""
 
 
+MUSICA_TIKTOK = "https://www.tiktok.com/legal/page/global/music-usage-confirmation/en"
+MARCA_TIKTOK = "https://www.tiktok.com/legal/page/global/bc-policy/en"
+
+
+def panel_directo(tipo: str, p: dict) -> str:
+    """Publicación directa (tras la auditoría de TikTok). Cumple sus normas: cuenta visible, privacidad sin valor por
+    defecto, interacciones y contenido comercial desmarcados, texto editable y aceptación de la música antes del botón."""
+    video = tipo == "reel"
+    interacciones = '<label><input type="checkbox" data-tt="comentarios"> Permitir comentarios</label>'
+    if video:
+        interacciones += ('\n                        <label><input type="checkbox" data-tt="duo"> Permitir dúo</label>'
+                          '\n                        <label><input type="checkbox" data-tt="stitch"> Permitir stitch</label>')
+    titulo_campo = "" if video else f"""
+                    <label class="rd-tt-campo">Título <input type="text" data-tt-titulo maxlength="90" value="{esc(titulo_tiktok(p))}"></label>"""
+    musica = "" if video else """
+                    <p class="rd-nota">TikTok agrega música automáticamente a las fotos.</p>"""
+    return f"""                <details class="rd-directo" data-directo hidden>
+                    <summary>Publicar directo en TikTok</summary>
+                    <p class="rd-nota" data-tt-cuenta>Cuenta de TikTok: se consulta al abrir…</p>
+                    <label class="rd-tt-campo">¿Quién puede verlo?
+                        <select data-tt-privacidad required><option value="" selected disabled>Elige una opción</option></select></label>
+                    <div class="rd-tt-casillas">
+                        {interacciones}
+                    </div>
+                    <label class="rd-tt-comercial" title="Indica si este contenido promociona tu marca, la de un tercero o ambas."><input type="checkbox" data-tt="comercial"> Indicar contenido comercial</label>
+                    <div class="rd-tt-casillas" data-tt-comercial hidden>
+                        <label><input type="checkbox" data-tt="tuMarca"> Tu marca (promocionas tu negocio)</label>
+                        <label><input type="checkbox" data-tt="contenidoMarca"> Contenido de marca (pagado por un tercero)</label>
+                    </div>
+                    <p class="rd-nota" data-tt-etiqueta hidden></p>{titulo_campo}
+                    <label class="rd-tt-campo">Texto <textarea data-tt-texto rows="6" maxlength="{2200 if video else 4000}">{esc(texto_tiktok(p))}</textarea></label>{musica}
+                    <p class="rd-nota" data-tt-declaracion="musica">Al publicar, aceptas la <a href="{MUSICA_TIKTOK}" target="_blank" rel="noopener">Confirmación de uso de música</a> de TikTok.</p>
+                    <p class="rd-nota" data-tt-declaracion="marca" hidden>Al publicar, aceptas la <a href="{MARCA_TIKTOK}" target="_blank" rel="noopener">Política de contenido de marca</a> y la <a href="{MUSICA_TIKTOK}" target="_blank" rel="noopener">Confirmación de uso de música</a> de TikTok.</p>
+                    <button class="rd-btn" type="button" data-accion="tiktok-publicar" disabled>Publicar en TikTok</button>
+                    <ul class="rd-auto-estado" data-tt-estado></ul>
+                </details>"""
+
+
 def bloque_tiktok(tipo: str, titulo_: str, p: dict) -> str:
-    """Envío a la bandeja de TikTok: el dueño elige la música y publica en la app."""
-    return f"""            <section class="rd-auto rd-tiktok" data-tipo="{tipo}" data-redes="tiktok" hidden>
+    """Envío a la bandeja de TikTok (el dueño elige la música y publica en la app) y, tras la auditoría, publicación directa."""
+    segundos = f' data-segundos="{duracion_video(p["video"]):.1f}"' if tipo == "reel" and p.get("video") else ""
+    return f"""            <section class="rd-auto rd-tiktok" data-tipo="{tipo}" data-redes="tiktok"{segundos} hidden>
                 <h3>{titulo_}</h3>
                 <ul class="rd-auto-estado" data-auto-estado></ul>
                 <p class="rd-nota">Llega a tu bandeja de TikTok: ábrela, toca <strong>Sonidos → Recomendados</strong> y publica.
@@ -281,6 +334,7 @@ def bloque_tiktok(tipo: str, titulo_: str, p: dict) -> str:
                 <div class="rd-auto-botones">
                     <button class="rd-btn" type="button" data-accion="tiktok">Enviar a TikTok</button>
                 </div>
+{panel_directo(tipo, p)}
             </section>"""
 
 
@@ -359,10 +413,10 @@ def pagina(productos: list[dict]) -> str:
     <meta name="theme-color" content="#002244">
     <link rel="icon" href="../assets/logo-96.webp" type="image/webp">
     <link rel="stylesheet" href="../fonts.css?v=1">
-    <link rel="stylesheet" href="redes.css?v=4">
+    <link rel="stylesheet" href="redes.css?v=5">
 </head>
 <body>
-    <main class="rd-main" data-api="{esc(api)}">
+    <main class="rd-main" data-api="{esc(api)}" data-tiktok-directo="{1 if REDES.get("tiktokDirecto") else 0}">
         <p class="rd-kicker">Uso interno · no aparece en la web</p>
         <h1>Publicaciones para redes</h1>
         <p class="rd-progreso" aria-live="polite">Facebook e Instagram: <strong data-progreso="redes">–</strong> de {len(lista)} ·
@@ -393,7 +447,7 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=5" defer></script>
+    <script src="redes.js?v=6" defer></script>
 </body>
 </html>
 """
@@ -418,6 +472,7 @@ def publicaciones(productos: list[dict]) -> dict:
             "historia": historia_url(p),
             "tiktokTitulo": titulo_tiktok(p),
             "tiktok": texto_tiktok(p),
+            "videoSegundos": round(duracion_video(p["video"]), 1) if p.get("video") else None,
         }
     return {"productos": datos}
 

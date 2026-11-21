@@ -72,3 +72,10 @@ h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: cl
 .rd-ocultar { color: var(--muted); font-size: .9rem; margin: 0 0 1rem; }
 .rd-tiktok { background: #fbf7ff; border-color: #e9d5ff; }
 .rd-tiktok .rd-nota { margin: 0 0 .6rem; }
+.rd-directo { border-top: 1px dashed #d8b4fe; margin-top: .8rem; padding-top: .6rem; }
+.rd-directo summary { color: #6b21a8; cursor: pointer; font-weight: 800; }
+.rd-tt-campo { display: flex; flex-direction: column; font-size: .9rem; font-weight: 700; gap: .3rem; margin-top: .6rem; }
+.rd-tt-campo select, .rd-tt-campo input, .rd-tt-campo textarea { border: 1px solid var(--line); border-radius: .6rem; font: inherit; font-weight: 400; padding: .5rem .7rem; }
+.rd-tt-casillas { display: flex; flex-direction: column; gap: .3rem; margin-top: .6rem; }
+.rd-tt-casillas label, .rd-tt-comercial { align-items: center; display: flex; font-size: .9rem; gap: .45rem; }
+.rd-tt-comercial { margin-top: .6rem; font-weight: 700; }

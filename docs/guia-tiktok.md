@@ -26,9 +26,10 @@ Por qué así: TikTok no permite que un programa ponga música ni que publique d
    - **Terms of Service URL**: `https://tygersolis.github.io/S3D-Catalogo/terminos/`
    - **Privacy Policy URL**: `https://tygersolis.github.io/S3D-Catalogo/privacidad/`
    - Plataforma: **Web** · Website URL: `https://tygersolis.github.io/S3D-Catalogo/`
-3. **Add products**: **Login Kit** y **Content Posting API** (no actives *Direct Post*).
+3. **Add products**: **Login Kit** y **Content Posting API** (dentro de este, activa también **Direct Post**: se usa
+   tras la auditoría, ver paso 6).
 4. En **Login Kit → Redirect URI** pega la URL de tu Apps Script (la que termina en `/exec`).
-5. En **Scopes** deben quedar `user.info.basic` y `video.upload`.
+5. En **Scopes** deben quedar `user.info.basic`, `video.upload` y `video.publish`.
 
 ### Paso 2. Verificar la web (para las fotos)
 
@@ -70,6 +71,32 @@ TikTok te dará un **archivo o código de verificación**: envíamelo, lo public
 3. Cuando TikTok la apruebe (suele tardar desde unos días hasta algunas semanas), cambia en las propiedades el
    *client key/secret* por los de producción y ejecuta **conectarTikTok** otra vez.
 
+### Paso 6. Auditoría para publicar directo (100 % sin abrir TikTok)
+
+Con la auditoría aprobada, cada producto tiene **Publicar directo en TikTok**: eliges quién puede verlo, si permites
+comentarios (y dúo/stitch en videos), si es contenido comercial («Tu marca»), revisas el texto y pulsas **Publicar en
+TikTok**: sale al momento, sin abrir la app, y las fotos llevan **música automática** que elige TikTok. TikTok exige
+que elijas esas opciones en cada publicación (nada viene marcado de antemano), así que no se programa a una hora.
+
+1. Mientras no hay auditoría, TikTok solo deja publicar directo en una **cuenta privada**: pon la cuenta de S3D en
+   **privado** solo mientras grabas (Configuración → Privacidad → Cuenta privada) y vuelve a ponerla pública al terminar.
+2. Abre la página de publicaciones con el panel encendido:
+   `https://tygersolis.github.io/S3D-Catalogo/redes/?tiktok-directo`
+3. Graba la pantalla mostrando, en un producto: **Publicar directo en TikTok** → tu cuenta → elegir **Solo yo** →
+   casillas → contenido comercial → editar el texto → la frase de la Confirmación de uso de música → **Publicar en
+   TikTok** → el aviso de que tarda unos minutos → la publicación en tu perfil de TikTok.
+4. En TikTok for Developers → Content Posting API → **Direct Post → solicitar la auditoría**, con el video y este texto:
+
+   > S3D's internal tool posts photos and videos of the shop's own products to the shop's own TikTok account. Before
+   > every post the page shows the creator's nickname (creator_info), the user picks the privacy level from the
+   > returned options (no default), interaction toggles (comment, duet, stitch) are off by default and greyed out when
+   > disabled in the creator's settings, the commercial content disclosure follows TikTok's rules (Your Brand /
+   > Branded Content labels, branded content cannot be private), the caption is editable, the Music Usage
+   > Confirmation (and Branded Content Policy when applicable) is shown before the Publish button, and the user is
+   > told that processing can take a few minutes. Photo posts use auto_add_music. No watermarks are added.
+
+5. Cuando TikTok apruebe la auditoría, avísame: enciendo el panel para siempre (`config.json` → `redes.tiktokDirecto`).
+
 ## Si algo falla
 
 | Mensaje | Qué hacer |
@@ -78,4 +105,5 @@ TikTok te dará un **archivo o código de verificación**: envíamelo, lo public
 | «TikTok aún no verificó que la web es tuya» | Paso 2. |
 | «tienes 5 envíos esperando en tu bandeja» | Publica o descarta los envíos pendientes en TikTok. |
 | «actualiza la app de TikTok» | Actualiza TikTok en tu celular. |
-| «falta el permiso video.upload» | Revisa los *Scopes* del paso 1.5 y conecta otra vez. |
+| «falta el permiso video.upload» | Revisa los *Scopes* del paso 1.5 y conecta otra vez. Si TikTok rechaza `video.publish` al conectar (aún no aprobado), agrega la propiedad `TIKTOK_ALCANCES` = `user.info.basic,video.upload`. |
+| «la publicación directa necesita la auditoría de TikTok» | Usa «Enviar a TikTok» hasta que aprueben el paso 6. |

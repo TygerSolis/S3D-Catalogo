@@ -154,6 +154,8 @@
         const boton = que => seccion.querySelector(`[data-accion="${que}"]`) || {};
         boton('publicar').hidden = completo;
         boton('tiktok').hidden = completo;
+        const directo = seccion.querySelector('[data-directo]');
+        if (directo) directo.hidden = completo || !DIRECTO;
         boton('aprobar').hidden = completo || !!e.programado;
         boton('cancelar').hidden = !e.programado;
         seccion.classList.toggle('rd-completo', completo);
@@ -190,6 +192,105 @@
             return;
         }
         botones.forEach(b => { b.disabled = false; });
+        pintar();
+    }
+
+    // ------------------------------------------------------------ TikTok: publicación directa
+    // Normas de TikTok: mostrar la cuenta, privacidad sin valor por defecto, interacciones y contenido comercial
+    // desmarcados, texto editable y aceptación de la música antes de publicar.
+
+    const DIRECTO = main && (main.dataset.tiktokDirecto === '1' || new URLSearchParams(location.search).has('tiktok-directo'));
+    const PRIVACIDAD = { PUBLIC_TO_EVERYONE: 'Todos', MUTUAL_FOLLOW_FRIENDS: 'Amigos', FOLLOWER_OF_CREATOR: 'Seguidores', SELF_ONLY: 'Solo yo' };
+    let creador = null;
+
+    async function abrirDirecto(panel) {
+        const cuenta = panel.querySelector('[data-tt-cuenta]');
+        try {
+            if (!creador) creador = (await llamar('tiktok-info')).creador;
+        } catch (e) {
+            cuenta.textContent = 'No se pudo consultar tu cuenta de TikTok: ' + e.message;
+            cuenta.className = 'rd-nota rd-mal';
+            return;
+        }
+        cuenta.textContent = `Se publicará en la cuenta de TikTok: ${creador.nombre}${creador.usuario ? ' (@' + creador.usuario + ')' : ''}`;
+        cuenta.className = 'rd-nota';
+        const select = panel.querySelector('[data-tt-privacidad]');
+        if (select.options.length === 1) {
+            for (const valor of creador.privacidades) {
+                const opcion = document.createElement('option');
+                opcion.value = valor;
+                opcion.textContent = PRIVACIDAD[valor] || valor;
+                select.append(opcion);
+            }
+        }
+        const bloquear = (nombre, sin) => {
+            const casilla = panel.querySelector(`[data-tt="${nombre}"]`);
+            if (!casilla) return;
+            casilla.disabled = sin;
+            if (sin) { casilla.checked = false; casilla.parentElement.title = 'Desactivado en la configuración de tu cuenta de TikTok'; }
+        };
+        bloquear('comentarios', creador.sinComentarios);
+        bloquear('duo', creador.sinDuo);
+        bloquear('stitch', creador.sinStitch);
+        const segundos = Number(panel.closest('.rd-auto').dataset.segundos || 0);
+        panel.dataset.largo = creador.maxSegundos && segundos > creador.maxSegundos ? '1' : '';
+        if (panel.dataset.largo) {
+            const estado = panel.querySelector('[data-tt-estado]');
+            estado.replaceChildren();
+            filaEstado(estado, `El video dura ${Math.round(segundos)} s y tu cuenta permite hasta ${creador.maxSegundos} s.`, '', 'rd-mal');
+        }
+        validarDirecto(panel);
+    }
+
+    function validarDirecto(panel) {
+        const marcado = nombre => !!(panel.querySelector(`[data-tt="${nombre}"]`) || {}).checked;
+        const comercial = marcado('comercial');
+        panel.querySelector('[data-tt-comercial]').hidden = !comercial;
+        const tuMarca = comercial && marcado('tuMarca');
+        const deMarca = comercial && marcado('contenidoMarca');
+        // El contenido de marca no puede ser privado: se deshabilita «Solo yo».
+        const select = panel.querySelector('[data-tt-privacidad]');
+        const soloYo = select.querySelector('option[value="SELF_ONLY"]');
+        if (soloYo) {
+            soloYo.disabled = deMarca;
+            if (deMarca && select.value === 'SELF_ONLY') select.value = '';
+        }
+        const etiqueta = panel.querySelector('[data-tt-etiqueta]');
+        etiqueta.hidden = !(tuMarca || deMarca);
+        etiqueta.textContent = deMarca ? 'Tu publicación se etiquetará como «Colaboración pagada».'
+            : 'Tu publicación se etiquetará como «Contenido promocional».';
+        panel.querySelector('[data-tt-declaracion="musica"]').hidden = deMarca;
+        panel.querySelector('[data-tt-declaracion="marca"]').hidden = !deMarca;
+        const listo = creador && select.value && !(comercial && !tuMarca && !deMarca) && !panel.dataset.largo;
+        panel.querySelector('[data-accion="tiktok-publicar"]').disabled = !listo;
+    }
+
+    async function publicarDirecto(boton) {
+        const panel = boton.closest('[data-directo]');
+        const seccion = panel.closest('.rd-auto');
+        const marcado = nombre => !!(panel.querySelector(`[data-tt="${nombre}"]`) || {}).checked;
+        const titulo = panel.querySelector('[data-tt-titulo]');
+        const opciones = {
+            privacidad: panel.querySelector('[data-tt-privacidad]').value,
+            comentarios: marcado('comentarios'), duo: marcado('duo'), stitch: marcado('stitch'),
+            comercial: marcado('comercial'), tuMarca: marcado('tuMarca'), contenidoMarca: marcado('contenidoMarca'),
+            titulo: titulo ? titulo.value : '', texto: panel.querySelector('[data-tt-texto]').value, acepta: true
+        };
+        const estado = panel.querySelector('[data-tt-estado]');
+        estado.replaceChildren();
+        filaEstado(estado, 'Publicando en TikTok… puede tardar unos minutos en aparecer en tu perfil.', '', 'rd-proceso');
+        boton.disabled = true;
+        try {
+            const r = await llamar('tiktok-publicar', { id: Number(seccion.closest('.rd-post').dataset.id), tipo: seccion.dataset.tipo, opciones });
+            const t = (r.resultado || {}).tiktok || {};
+            estado.replaceChildren();
+            if (t.estado === 'error') filaEstado(estado, 'No se pudo: ' + t.detalle, '', 'rd-mal');
+            else if (t.procesando) filaEstado(estado, 'Enviado: TikTok lo está procesando y aparecerá en tu perfil en unos minutos.', '', 'rd-bien');
+        } catch (e) {
+            estado.replaceChildren();
+            filaEstado(estado, 'No se pudo: ' + e.message, '', 'rd-mal');
+        }
+        validarDirecto(panel);
         pintar();
     }
 
@@ -234,11 +335,15 @@
         if (boton) copiar(boton);
         const enviar = evento.target.closest('[data-compartir]');
         if (enviar) compartir(enviar);
+        const directo = evento.target.closest('[data-accion="tiktok-publicar"]');
+        if (directo) { publicarDirecto(directo); return; }
         const auto = evento.target.closest('.rd-auto [data-accion]');
         if (auto) accion(auto);
     });
 
     document.addEventListener('change', evento => {
+        const panel = evento.target.closest('[data-directo]');
+        if (panel) { validarDirecto(panel); return; }
         if (evento.target.closest('[data-ocultar]')) {
             ocultarPublicados();
             return;
@@ -250,6 +355,14 @@
         marcas[id] = Object.assign({}, marcas[id], { [casilla.dataset.red]: casilla.checked });
         almacen.guardar(CLAVE_MARCAS, marcas);
         pintar();
+    });
+
+    document.addEventListener('toggle', evento => {
+        if (evento.target.matches && evento.target.matches('[data-directo]') && evento.target.open) abrirDirecto(evento.target);
+    }, true);
+    document.addEventListener('input', evento => {
+        const panel = evento.target.closest && evento.target.closest('[data-directo]');
+        if (panel) validarDirecto(panel);
     });
 
     const form = document.querySelector('[data-clave-form]');
