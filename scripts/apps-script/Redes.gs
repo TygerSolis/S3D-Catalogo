@@ -60,6 +60,7 @@ function doPost(e) {
       case 'cancelar': return respuesta_({ ok: true, resultado: programar_(id, tipo, false), estado: estado_() });
       case 'tiktok': return respuesta_({ ok: true, resultado: enviarTikTok_(id, tipo), estado: estado_() });
       case 'tiktok-info': return respuesta_({ ok: true, creador: creadorTikTok_() });
+      case 'tiktok-revisar': return respuesta_({ ok: true, resultado: revisarTikTokProducto_(id, tipo), estado: estado_() });
       case 'tiktok-publicar': return respuesta_({ ok: true, resultado: publicarTikTok_(id, tipo, datos.opciones || {}), estado: estado_() });
       default: throw new Error('acción desconocida');
     }
@@ -687,7 +688,60 @@ function esperarTikTok_(publicacion) {
     if (d.status === 'FAILED') throw new Error('TikTok no pudo procesar el envío (' + (d.fail_reason || 'sin detalle') + ')');
     Utilities.sleep(i < 5 ? 3000 : 10000);
   }
-  return 'PROCESSING';   // sigue procesando: igual llega a la bandeja
+  return 'PROCESSING';   // sigue procesando: se anota «procesando» y se revisa después («Revisar estado» o revisarTikTok)
+}
+
+/** Estado final según TikTok: bandeja → «enviado», publicado → «publicado», aún procesando → «procesando». */
+function estadoFinal_(fase, directo) {
+  if (fase === 'PROCESSING') return 'procesando';
+  return directo ? 'publicado' : 'enviado';
+}
+
+/** Vuelve a preguntar a TikTok por un envío que quedó «procesando» y anota el resultado. */
+function revisarEnvioTikTok_(id, tipo, nombre, r) {
+  const directo = r.detalle === 'directo' || r.detalle === 'TikTok aún lo procesa';   // la 2.ª es de la versión anterior
+  const d = tiktok_('post/publish/status/fetch/', { publish_id: r.id });
+  if (d.status === 'FAILED') {
+    anotar_(id, nombre, tipo, 'tiktok', 'error', '', 'TikTok no pudo procesarlo (' + (d.fail_reason || 'sin detalle') + ')', r.id);
+  } else if (d.status === 'SEND_TO_USER_INBOX' || d.status === 'PUBLISH_COMPLETE') {
+    anotar_(id, nombre, tipo, 'tiktok', estadoFinal_(d.status, d.status === 'PUBLISH_COMPLETE' || directo), r.enlace || 'https://www.tiktok.com/', '', r.id);
+  }
+  return d;
+}
+
+/** Desde la página («Revisar estado»): revisa el envío a TikTok de un producto que quedó procesando. */
+function revisarTikTokProducto_(id, tipo) {
+  const e = estado_()[id + ':' + tipo] || {};
+  if (!e.tiktok || e.tiktok.estado !== 'procesando' || !e.tiktok.id) return { tiktok: e.tiktok || null };
+  const d = revisarEnvioTikTok_(id, tipo, e.nombre || '', e.tiktok);
+  return { tiktok: { estado: d.status, detalle: d.fail_reason || '' } };
+}
+
+/**
+ * Ejecutar a mano: muestra en el registro el estado real en TikTok de los envíos de los últimos 7 días (y el motivo
+ * si TikTok los rechazó), y corrige la hoja de los que quedaron «procesando».
+ */
+function revisarTikTok() {
+  const filas = hoja_().getDataRange().getValues().slice(1);
+  const desde = Date.now() - 7 * 86400000;
+  const vistos = {};
+  filas.forEach(f => {
+    const fecha = f[0] instanceof Date ? f[0] : new Date(f[0]);
+    if (f[4] !== 'tiktok' || !f[8] || fecha.getTime() < desde || vistos[f[8]]) return;
+    vistos[f[8]] = true;
+    const d = tiktok_('post/publish/status/fetch/', { publish_id: String(f[8]) });
+    console.log('Producto ' + f[1] + ' (' + f[3] + '), anotado «' + f[5] + '» el ' + fecha.toISOString() + ': TikTok dice ' +
+      d.status + (d.fail_reason ? ' — motivo: ' + d.fail_reason : '') +
+      (d.publicaly_available_post_id && d.publicaly_available_post_id.length ? ' — publicación ' + d.publicaly_available_post_id.join(', ') : ''));
+  });
+  const estado = estado_();
+  Object.keys(estado).forEach(clave => {
+    const r = estado[clave].tiktok;
+    // También las que la versión anterior anotó «publicado» sin que TikTok hubiera terminado.
+    const pendiente = r && r.id && (r.estado === 'procesando' || r.detalle === 'TikTok aún lo procesa');
+    if (pendiente) revisarEnvioTikTok_(Number(clave.split(':')[0]), clave.split(':')[1], estado[clave].nombre, r);
+  });
+  if (!Object.keys(vistos).length) console.log('No hay envíos a TikTok de los últimos 7 días.');
 }
 
 function tiktokFotos_(p) {
@@ -697,8 +751,7 @@ function tiktokFotos_(p) {
     post_mode: 'MEDIA_UPLOAD',
     media_type: 'PHOTO'
   });
-  esperarTikTok_(d.publish_id);
-  return d.publish_id;
+  return { id: d.publish_id, fase: esperarTikTok_(d.publish_id) };
 }
 
 function tiktokVideo_(p) {
@@ -711,8 +764,7 @@ function tiktokVideo_(p) {
     headers: { 'Content-Range': 'bytes 0-' + (n - 1) + '/' + n }
   });
   if (r.getResponseCode() >= 300) throw new Error('TikTok no recibió el video (' + r.getResponseCode() + ')');
-  esperarTikTok_(d.publish_id);
-  return d.publish_id;
+  return { id: d.publish_id, fase: esperarTikTok_(d.publish_id) };
 }
 
 function enviarTikTok_(id, tipo) {
@@ -721,11 +773,12 @@ function enviarTikTok_(id, tipo) {
   try {
     const p = contenido_(id, tipo);
     const actual = (estado_()[id + ':' + tipo] || {}).tiktok;
-    if (actual && (actual.estado === 'enviado' || actual.estado === 'publicado')) return { tiktok: actual };
+    if (actual && ['enviado', 'publicado', 'procesando'].indexOf(actual.estado) > -1) return { tiktok: actual };
     try {
-      const publicacion = tipo === 'reel' ? tiktokVideo_(p) : tiktokFotos_(p);
-      anotar_(id, p.nombre, tipo, 'tiktok', 'enviado', 'https://www.tiktok.com/', '', publicacion);
-      return { tiktok: { estado: 'enviado' } };
+      const envio = tipo === 'reel' ? tiktokVideo_(p) : tiktokFotos_(p);
+      const final = estadoFinal_(envio.fase, false);
+      anotar_(id, p.nombre, tipo, 'tiktok', final, 'https://www.tiktok.com/', final === 'procesando' ? 'bandeja' : '', envio.id);
+      return { tiktok: { estado: final } };
     } catch (error) {
       anotar_(id, p.nombre, tipo, 'tiktok', 'error', '', error.message, '');
       return { tiktok: { estado: 'error', detalle: error.message } };
@@ -760,7 +813,7 @@ function publicarTikTok_(id, tipo, o) {
   try {
     const p = contenido_(id, tipo);
     const actual = (estado_()[id + ':' + tipo] || {}).tiktok;
-    if (actual && (actual.estado === 'publicado' || actual.estado === 'enviado')) return { tiktok: actual };
+    if (actual && ['enviado', 'publicado', 'procesando'].indexOf(actual.estado) > -1) return { tiktok: actual };
     const creador = creadorTikTok_();
     // Validaciones de las normas de TikTok (la página ya las aplica; aquí se repiten por seguridad).
     if (o.acepta !== true) throw new Error('falta aceptar la Confirmación de uso de música de TikTok');
@@ -800,9 +853,9 @@ function publicarTikTok_(id, tipo, o) {
           media_type: 'PHOTO'
         }).publish_id;
       }
-      const fase = esperarTikTok_(publicacion);
-      anotar_(id, p.nombre, tipo, 'tiktok', 'publicado', 'https://www.tiktok.com/@' + creador.usuario, fase === 'PUBLISH_COMPLETE' ? '' : 'TikTok aún lo procesa', publicacion);
-      return { tiktok: { estado: 'publicado', procesando: fase !== 'PUBLISH_COMPLETE' } };
+      const final = estadoFinal_(esperarTikTok_(publicacion), true);
+      anotar_(id, p.nombre, tipo, 'tiktok', final, 'https://www.tiktok.com/@' + creador.usuario, final === 'procesando' ? 'directo' : '', publicacion);
+      return { tiktok: { estado: final, procesando: final === 'procesando' } };
     } catch (error) {
       anotar_(id, p.nombre, tipo, 'tiktok', 'error', '', error.message, '');
       return { tiktok: { estado: 'error', detalle: error.message } };

@@ -107,3 +107,4 @@ que elijas esas opciones en cada publicación (nada viene marcado de antemano), 
 | «actualiza la app de TikTok» | Actualiza TikTok en tu celular. |
 | «falta el permiso video.upload» | Revisa los *Scopes* del paso 1.5 y conecta otra vez. Si TikTok rechaza `video.publish` al conectar (aún no aprobado), agrega la propiedad `TIKTOK_ALCANCES` = `user.info.basic,video.upload`. |
 | «la publicación directa necesita la auditoría de TikTok» | Usa «Enviar a TikTok» hasta que aprueben el paso 6. |
+| «TikTok lo está procesando» | Pulsa **Revisar estado** en unos minutos. Para ver el estado real (y el motivo si TikTok lo rechazó) de los envíos de la semana, ejecuta **revisarTikTok** en Apps Script. |

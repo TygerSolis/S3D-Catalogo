@@ -425,6 +425,42 @@ module.exports = {
         assert.match(s.post({ accion: 'tiktok-publicar', id: 3003, tipo: 'reel', opciones: base }).resultado === undefined
             ? s.post({ accion: 'tiktok-publicar', id: 3003, tipo: 'reel', opciones: base }).error : '', /dura 18 s y tu cuenta permite hasta 5 s/);
     },
+    'TikTok: si sigue procesando queda «procesando» (no «publicado») y «Revisar estado» trae el motivo si falla'() {
+        let estado = 'PROCESSING_DOWNLOAD';
+        const registro = [];
+        const s = cargarGs({ props: { TIKTOK_ACCESS: 'acceso', TIKTOK_VENCE: String(Date.now() + 3600e3) }, meta: url => {
+            if (url.endsWith('creator_info/query/')) return [200, { data: { creator_nickname: 'S3D', creator_username: 's3d.pe', privacy_level_options: ['SELF_ONLY'] }, error: { code: 'ok' } }];
+            if (url.endsWith('content/init/')) return [200, { data: { publish_id: 'p_9' }, error: { code: 'ok' } }];
+            if (url.endsWith('status/fetch/')) return [200, { data: { status: estado, fail_reason: estado === 'FAILED' ? 'picture_size_check_failed' : undefined }, error: { code: 'ok' } }];
+            return undefined;
+        } });
+        s.gs.console.log = texto => registro.push(texto);
+        const r = s.post({ accion: 'tiktok-publicar', id: 3001, tipo: 'fotos', opciones: { privacidad: 'SELF_ONLY', acepta: true } });
+        assert.equal(r.estado['3001:fotos'].tiktok.estado, 'procesando');
+        assert.equal(r.estado['3001:fotos'].tiktok.id, 'p_9');
+        // Mientras procesa, otro toque no vuelve a publicar
+        s.post({ accion: 'tiktok-publicar', id: 3001, tipo: 'fotos', opciones: { privacidad: 'SELF_ONLY', acepta: true } });
+        assert.equal(s.llamadas.filter(l => l.ruta.endsWith('content/init/')).length, 1);
+        estado = 'FAILED';
+        const r2 = s.post({ accion: 'tiktok-revisar', id: 3001, tipo: 'fotos' });
+        assert.equal(r2.estado['3001:fotos'].tiktok.estado, 'error');
+        assert.match(r2.estado['3001:fotos'].tiktok.detalle, /picture_size_check_failed/);
+        // revisarTikTok (a mano) muestra el estado real de los envíos recientes
+        s.gs.revisarTikTok();
+        assert.ok(registro.some(l => /Producto 3001 \(fotos\).*TikTok dice FAILED — motivo: picture_size_check_failed/.test(l)), registro.join('\n'));
+        // Si al revisar ya terminó, queda publicado
+        const t2 = cargarGs({ props: { TIKTOK_ACCESS: 'acceso', TIKTOK_VENCE: String(Date.now() + 3600e3) }, meta: url => {
+            if (url.endsWith('inbox/video/init/')) return [200, { data: { publish_id: 'v_9', upload_url: 'https://open-upload.tiktokapis.com/v' }, error: { code: 'ok' } }];
+            if (url === 'https://open-upload.tiktokapis.com/v') return [201, ''];
+            if (url.endsWith('.mp4')) return [200, Buffer.alloc(5, 1)];
+            if (url.endsWith('status/fetch/')) return [200, { data: { status: estado }, error: { code: 'ok' } }];
+            return undefined;
+        } });
+        estado = 'PROCESSING_UPLOAD';
+        assert.equal(t2.post({ accion: 'tiktok', id: 3005, tipo: 'reel' }).estado['3005:reel'].tiktok.estado, 'procesando');
+        estado = 'SEND_TO_USER_INBOX';
+        assert.equal(t2.post({ accion: 'tiktok-revisar', id: 3005, tipo: 'reel' }).estado['3005:reel'].tiktok.estado, 'enviado');
+    },
     async 'página: el panel directo de TikTok cumple las normas (cuenta, sin valores por defecto, contenido comercial)'({ browser }) {
         const API = 'https://script.google.com/macros/s/PRUEBA/exec';
         const pedidos = [];

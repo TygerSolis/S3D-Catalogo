@@ -333,6 +333,7 @@ def bloque_tiktok(tipo: str, titulo_: str, p: dict) -> str:
                     Sonido sugerido: {esc(sonido_tiktok(p))}.</p>
                 <div class="rd-auto-botones">
                     <button class="rd-btn" type="button" data-accion="tiktok">Enviar a TikTok</button>
+                    <button class="rd-btn rd-btn-sec" type="button" data-accion="tiktok-revisar" hidden>Revisar estado</button>
                 </div>
 {panel_directo(tipo, p)}
             </section>"""
@@ -447,7 +448,7 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=6" defer></script>
+    <script src="redes.js?v=7" defer></script>
 </body>
 </html>
 """

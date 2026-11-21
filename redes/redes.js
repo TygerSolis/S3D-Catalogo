@@ -143,6 +143,8 @@
             } else if (r && r.estado === 'enviado') {
                 publicadas++;
                 filaEstado(lista, `${nombre}: enviado a tu bandeja el ${fecha(r.fecha)} (elige la música y publica en la app)`, '', 'rd-bien');
+            } else if (r && r.estado === 'procesando') {
+                filaEstado(lista, `${nombre}: TikTok lo está procesando; pulsa «Revisar estado» en unos minutos`, '', 'rd-espera');
             } else if (r && r.estado === 'error') {
                 filaEstado(lista, `${nombre}: falló (${r.detalle})`, '', 'rd-mal');
             } else {
@@ -154,8 +156,11 @@
         const boton = que => seccion.querySelector(`[data-accion="${que}"]`) || {};
         boton('publicar').hidden = completo;
         boton('tiktok').hidden = completo;
+        const procesando = redes.some(red => e[red] && e[red].estado === 'procesando');
+        boton('tiktok-revisar').hidden = !procesando;
+        if (procesando) boton('tiktok').hidden = true;
         const directo = seccion.querySelector('[data-directo]');
-        if (directo) directo.hidden = completo || !DIRECTO;
+        if (directo) directo.hidden = completo || procesando || !DIRECTO;
         boton('aprobar').hidden = completo || !!e.programado;
         boton('cancelar').hidden = !e.programado;
         seccion.classList.toggle('rd-completo', completo);
@@ -183,7 +188,7 @@
         aviso.replaceChildren();
         filaEstado(aviso, que === 'publicar'
             ? (tipo === 'reel' ? 'Publicando el video… Instagram puede tardar hasta 4 minutos en procesarlo.' : 'Publicando…')
-            : (que === 'tiktok' ? 'Enviando a TikTok…' : 'Guardando…'), '', 'rd-proceso');
+            : ({ tiktok: 'Enviando a TikTok…', 'tiktok-revisar': 'Preguntando a TikTok…' }[que] || 'Guardando…'), '', 'rd-proceso');
         try {
             await llamar(que, { id, tipo });
         } catch (e) {
@@ -285,7 +290,6 @@
             const t = (r.resultado || {}).tiktok || {};
             estado.replaceChildren();
             if (t.estado === 'error') filaEstado(estado, 'No se pudo: ' + t.detalle, '', 'rd-mal');
-            else if (t.procesando) filaEstado(estado, 'Enviado: TikTok lo está procesando y aparecerá en tu perfil en unos minutos.', '', 'rd-bien');
         } catch (e) {
             estado.replaceChildren();
             filaEstado(estado, 'No se pudo: ' + e.message, '', 'rd-mal');
