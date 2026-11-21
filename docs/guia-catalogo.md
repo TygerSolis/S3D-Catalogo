@@ -33,6 +33,7 @@ Para publicar al instante: GitHub → pestaña **Actions** → **Catálogo desde
 | slug | Dirección de la ficha (`producto/<slug>/`). **No la cambies** en productos existentes. En uno nuevo puedes dejarla vacía y se crea sola a partir del nombre. | woody |
 | heroOrden | Opcional: 1 = producto grande del mosaico de portada. | 1 |
 | heroFoco | Opcional: encuadre de la foto en el mosaico. | center 62% |
+| redes | Opcional: turno en la cola de publicaciones de Facebook e Instagram (1 = el primero). Vacío = automático (los más nuevos primero); `no` = nunca se publica. Los ocultos y agotados no entran. | 3 |
 
 ## Añadir un producto nuevo
 

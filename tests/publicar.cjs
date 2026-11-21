@@ -24,11 +24,27 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
     let hoja = null;
     let n = 0;
     let ahora = AHORA;
-    const rango = { setFontWeight: () => rango, setBackground: () => rango, setFontColor: () => rango, setNumberFormat: () => rango };
+    const rango = (f0 = 1, c0 = 1) => {
+        const r = {
+            setFontWeight: () => r, setBackground: () => r, setFontColor: () => r, setNumberFormat: () => r,
+            getValue: () => (filas[f0 - 1] || [])[c0 - 1] ?? '',
+            setValues: v => { v.forEach((fila, i) => { filas[f0 - 1 + i] = [...fila]; }); return r; }
+        };
+        return r;
+    };
     const crearHoja = () => (hoja = {
-        appendRow: fila => filas.push(fila), setFrozenRows() {}, getRange: () => rango,
+        appendRow: fila => filas.push(fila), setFrozenRows() {}, getRange: (f, c) => rango(typeof f === 'number' ? f : 1, c || 1),
         getDataRange: () => ({ getValues: () => filas.map(f => [...f]) })
     });
+    // Pestaña «resultados» del informe semanal
+    const resultados = [];
+    const hojaResultados = {
+        clear: () => { resultados.length = 0; }, setFrozenRows() {},
+        getRange: (f, c, nf) => ({
+            setValues: v => { v.forEach((fila, i) => { resultados[f - 1 + i] = [...fila]; }); return { setFontWeight() { return this; }, setBackground() { return this; }, setFontColor() { return this; } }; },
+            setNumberFormat() { return this; }
+        })
+    };
     class FechaFija extends Date {
         constructor(...a) { super(...(a.length ? a : [ahora])); }
         static now() { return ahora.getTime(); }
@@ -42,6 +58,7 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
         if (ruta === 'PAG/photos') return [200, { id: `foto${++n}` }];
         if (ruta === 'PAG/feed') return [200, { id: `PAG_post${++n}` }];
         if (ruta === 'PAG/videos') return [200, { id: `video${++n}` }];
+        if (ruta === 'PAG/photo_stories') return [200, { success: true, post_id: `historia${++n}` }];
         if (ruta === 'IG/media') return [200, { id: `cont${++n}` }];
         if (ruta === 'IG/media_publish') return [200, { id: `media${++n}` }];
         if (datos.fields === 'status_code,status') return [200, { status_code: 'FINISHED' }];
@@ -60,7 +77,11 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
         }) },
         CacheService: { getScriptCache: () => ({ get: k => cache.get(k) ?? null, put: (k, v) => cache.set(k, v) }) },
         LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) },
-        SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: () => hoja, insertSheet: crearHoja }) },
+        SpreadsheetApp: { getActiveSpreadsheet: () => ({
+            getSheetByName: n => (n === 'resultados' ? hojaResultados : hoja),
+            insertSheet: n => (n === 'resultados' ? hojaResultados : crearHoja()),
+            getUrl: () => 'https://docs.google.com/spreadsheets/d/PRUEBA'
+        }) },
         UrlFetchApp: { fetch(url, o = {}) {
             const u = new URL(url);
             llamadas.push({ ruta: u.pathname.replace('/v27.0/', ''), metodo: o.method || 'get', datos: o.payload || Object.fromEntries(u.searchParams) });
@@ -76,14 +97,15 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
         ScriptApp: {
             getProjectTriggers: () => [],
             deleteTrigger() {},
-            newTrigger: f => { const t = { f, timeBased: () => t, atHour: h => { t.h = h; return t; }, everyDays: () => t, inTimezone: z => { t.z = z; return t; }, create: () => activadores.push(t) }; return t; }
+            newTrigger: f => { const t = { f, timeBased: () => t, atHour: h => { t.h = h; return t; }, everyDays: () => t, onWeekDay: d => { t.dia = d; return t; }, inTimezone: z => { t.z = z; return t; }, create: () => activadores.push(t) }; return t; },
+            WeekDay: { MONDAY: 'MONDAY' }
         }
     };
     vm.createContext(contexto);
     vm.runInContext(fs.readFileSync(path.join(RAIZ, 'scripts', 'apps-script', 'Redes.gs'), 'utf8'), contexto);
     const post = datos => JSON.parse(contexto.doPost({ postData: { contents: JSON.stringify({ clave: CLAVE, ...datos }) } }).texto);
     const publicadas = () => llamadas.filter(l => l.metodo === 'post');
-    return { gs: contexto, post, filas, llamadas, publicadas, correos, activadores, propiedades, fijarHora: d => { ahora = d; } };
+    return { gs: contexto, post, filas, resultados, llamadas, publicadas, correos, activadores, propiedades, fijarHora: d => { ahora = d; } };
 }
 
 module.exports = {
@@ -103,17 +125,25 @@ module.exports = {
         assert.ok(r.ok, r.error);
         assert.match(r.resultado.facebook.enlace, /^https:\/\/www\.facebook\.com\/PAG_post\d+$/);
         assert.match(r.resultado.instagram.enlace, /^https:\/\/www\.instagram\.com\/p\/media\d+\/$/);
-        const fotosFb = s.llamadas.filter(l => l.ruta === 'PAG/photos');
+        const fotosFb = s.llamadas.filter(l => l.ruta === 'PAG/photos' && !l.datos.url.includes('/historias/'));
         assert.deepEqual(fotosFb.map(l => [l.datos.url, l.datos.published]), contenido.fotos.map(u => [u, 'false']));
         const feed = s.llamadas.find(l => l.ruta === 'PAG/feed').datos;
         assert.equal(feed.message, contenido.facebook);
         assert.equal(Object.keys(feed).filter(k => k.startsWith('attached_media[')).length, contenido.fotos.length);
-        const ig = s.llamadas.filter(l => l.ruta === 'IG/media').map(l => l.datos);
+        const ig = s.llamadas.filter(l => l.ruta === 'IG/media' && l.datos.media_type !== 'STORIES').map(l => l.datos);
         assert.deepEqual(ig.slice(0, -1).map(d => [d.image_url, d.is_carousel_item]), contenido.fotos.map(u => [u, 'true']));
         assert.deepEqual([ig.at(-1).media_type, ig.at(-1).caption, ig.at(-1).children.split(',').length], ['CAROUSEL', contenido.instagram, contenido.fotos.length]);
         assert.ok(s.llamadas.every(l => l.ruta.includes('publicaciones.json') || l.datos.access_token === 'token-pagina'));
         // En la hoja: encabezado + una fila por red
-        assert.deepEqual(s.filas.slice(1).map(f => [f[1], f[3], f[4], f[5]]), [[3002, 'fotos', 'facebook', 'publicado'], [3002, 'fotos', 'instagram', 'publicado']]);
+        assert.deepEqual(s.filas.slice(1).map(f => [f[1], f[3], f[4], f[5]]), ['facebook', 'instagram', 'historia_facebook', 'historia_instagram'].map(red => [3002, 'fotos', red, 'publicado']));
+        // Se guarda el id de Meta de cada publicación (lo usa el informe semanal)
+        assert.ok(s.filas.slice(1).every(f => f[8]), 'falta el id de Meta');
+        // Historias: la imagen 9:16 de la web, en Facebook (photo_stories) e Instagram (STORIES)
+        assert.ok(contenido.historia && /\/redes\/historias\/3002-[0-9a-f]{8}\.jpg$/.test(contenido.historia), contenido.historia);
+        const fotoHistoria = s.llamadas.filter(l => l.ruta === 'PAG/photos').at(-1).datos;
+        assert.deepEqual([fotoHistoria.url, fotoHistoria.published], [contenido.historia, 'false']);
+        assert.ok(s.llamadas.some(l => l.ruta === 'PAG/photo_stories'));
+        assert.deepEqual(s.llamadas.filter(l => l.datos.media_type === 'STORIES').map(l => l.datos.image_url), [contenido.historia]);
         assert.equal(r.estado['3002:fotos'].facebook.estado, 'publicado');
         // Pulsar otra vez no vuelve a publicar
         const antes = s.publicadas().length;
@@ -125,7 +155,7 @@ module.exports = {
     'Apps Script: con una sola foto, Instagram recibe la foto con su texto (sin carrusel)'() {
         const s = cargarGs();
         assert.ok(s.post({ accion: 'publicar', id: 3001 }).ok);
-        const ig = s.llamadas.filter(l => l.ruta === 'IG/media');
+        const ig = s.llamadas.filter(l => l.ruta === 'IG/media' && l.datos.media_type !== 'STORIES');
         assert.equal(ig.length, 1);
         assert.ok(ig[0].datos.image_url.endsWith(JSON.parse(PUBLICACIONES).productos['3001'].fotos[0].split('/').pop()));
         assert.ok(ig[0].datos.caption);
@@ -177,7 +207,8 @@ module.exports = {
         s.gs.publicarProgramadas();
         assert.equal(s.llamadas.filter(l => l.ruta === 'PAG/feed').length, 1, 'sin aprobados, el horario no publica');
         s.gs.instalar();
-        assert.deepEqual(s.activadores.map(t => [t.f, t.h, t.z]), [['publicarProgramadas', 11, 'America/Lima'], ['publicarProgramadas', 19, 'America/Lima']]);
+        assert.deepEqual(s.activadores.map(t => [t.f, t.h, t.z, t.dia]), [['publicarProgramadas', 11, 'America/Lima', undefined],
+            ['publicarProgramadas', 19, 'America/Lima', undefined], ['informeSemanal', 8, 'America/Lima', 'MONDAY']]);
     },
     'Apps Script: si falla una publicación programada, avisa por correo'() {
         const s = cargarGs({ meta: url => (url.includes('/PAG/feed') ? [400, { error: { code: 190, message: 'Session has expired' } }] : undefined) });
@@ -189,7 +220,7 @@ module.exports = {
     },
     'Apps Script: producto fuera de la cola, y «guardarPermiso» obtiene el permiso de la página'() {
         const s = cargarGs({ props: { META_TOKEN: '' } });
-        assert.match(s.post({ accion: 'publicar', id: 1 }).error, /no está en la cola de la web principal/);
+        assert.match(s.post({ accion: 'publicar', id: 999999 }).error, /no está en la cola de la web principal/);
         s.propiedades.set('APP_ID', ' 123\n'); s.propiedades.set('APP_SECRET', 'secreto'); s.propiedades.set('TOKEN_TEMPORAL', 'corto ');
         // APP_ID equivocado: se explica cuál copiar
         const mal = cargarGs({ props: Object.fromEntries(s.propiedades), meta: () => [400, { error: { code: 101, message: 'Invalid Client ID' } }] });
@@ -209,6 +240,63 @@ module.exports = {
         assert.equal(t.llamadas[0].datos.client_id, '123');
         assert.equal(t.llamadas[1].datos.access_token, 'largo');
     },
+    'Apps Script: el informe semanal anota alcance e interacciones de cada publicación y avisa por correo'() {
+        let sinPermiso = false;
+        const s = cargarGs({ meta: (url, o) => {
+            if (o.method) return undefined;
+            const u = new URL(url);
+            const ruta = u.pathname.replace('/v27.0/', '');
+            const campos = u.searchParams.get('fields') || '';
+            const metricas = u.searchParams.get('metric') || '';
+            if (ruta.startsWith('media') && campos === 'like_count,comments_count') return [200, { like_count: 12, comments_count: 3 }];
+            if (ruta.startsWith('media') && ruta.endsWith('/insights')) {
+                if (sinPermiso) return [400, { error: { code: 10, message: 'Application does not have permission for this action' } }];
+                return [200, { data: [{ name: 'reach', values: [{ value: 200 }] }, { name: 'views', total_value: { value: 350 } },
+                    { name: 'saved', values: [{ value: 4 }] }, { name: 'shares', values: [{ value: 2 }] }] }];
+            }
+            if (campos.startsWith('reactions')) return [200, { reactions: { summary: { total_count: 7 } }, comments: { summary: { total_count: 1 } }, ...(/_/.test(ruta) ? { shares: { count: 2 } } : {}) }];
+            if (ruta.endsWith('/insights') && metricas.startsWith('post_')) return [200, { data: [
+                { name: 'post_total_media_view_unique', values: [{ value: 150 }] }, { name: 'post_media_view', values: [{ value: 300 }] }] }];
+            return undefined;
+        } });
+        s.post({ accion: 'publicar', id: 3002 });
+        s.post({ accion: 'publicar', id: 3005, tipo: 'reel' });
+        assert.equal(s.gs.informeSemanal(), 4, 'fotos y reel en Facebook e Instagram (las historias no: Meta las borra a las 24 h)');
+        const [cabecera, ...filas] = s.resultados;
+        assert.deepEqual(cabecera.slice(0, 6), ['Producto', 'Nombre', 'Tipo', 'Red', 'Publicado', 'Alcance']);
+        const fila = (id, tipo, red) => filas.find(f => f[0] === id && f[2] === tipo && f[3] === red);
+        const col = n => cabecera.indexOf(n);
+        const ig = fila(3002, 'fotos', 'instagram');
+        assert.deepEqual([ig[col('Alcance')], ig[col('Vistas')], ig[col('Me gusta')], ig[col('Comentarios')], ig[col('Guardados')], ig[col('Compartidos')], ig[col('Interacciones')]],
+            [200, 350, 12, 3, 4, 2, 21]);
+        const fb = fila(3002, 'fotos', 'facebook');
+        assert.deepEqual([fb[col('Alcance')], fb[col('Vistas')], fb[col('Me gusta')], fb[col('Comentarios')], fb[col('Compartidos')], fb[col('Interacciones')]],
+            [150, 300, 7, 1, 2, 10]);
+        assert.equal(fila(3005, 'reel', 'facebook')[col('Me gusta')], 7);
+        assert.ok(filas.every((f, i) => i === 0 || filas[i - 1][col('Interacciones')] >= f[col('Interacciones')]), 'ordenado de más a menos interacciones');
+        assert.equal(s.correos.at(-1)[1], 'S3D: resultados de tus publicaciones');
+        assert.match(s.correos.at(-1)[2], /Esta semana: 4 publicaciones/);
+        assert.match(s.correos.at(-1)[2], /docs\.google\.com\/spreadsheets/);
+        // Sin el permiso de estadísticas, el informe sale igual y lo explica
+        sinPermiso = true;
+        s.gs.informeSemanal();
+        assert.match(s.resultados.find(f => f[2] === 'fotos' && f[3] === 'instagram')[col('Nota')], /falta el permiso de estadísticas/);
+        assert.match(s.correos.at(-1)[2], /sin algunos datos/);
+    },
+    'Apps Script: una publicación anotada sin id de Meta se encuentra por su enlace'() {
+        const s = cargarGs({ meta: (url, o) => {
+            if (!o.method && url.includes('/IG/media?') && url.includes('fields=id%2Cpermalink')) {
+                return [200, { data: [{ id: 'media77', permalink: 'https://www.instagram.com/p/ABC/' }] }];
+            }
+            if (!o.method && url.includes('/media77?')) return [200, { like_count: 5, comments_count: 0 }];
+            return undefined;
+        } });
+        s.gs.instalar();
+        s.filas.push([new Date(), 3001, 'Snoopy', 'fotos', 'instagram', 'publicado', 'https://www.instagram.com/p/ABC/', '', '']);
+        s.gs.informeSemanal();
+        const fila = s.resultados.find(f => f[0] === 3001);
+        assert.equal(fila[7], 5);
+    },
     async 'página: con la clave, «Publicar ahora» (doble toque), «Aprobar» y los errores se muestran sin HTML'({ browser }) {
         const API = 'https://script.google.com/macros/s/PRUEBA/exec';
         const pedidos = [];
@@ -224,7 +312,10 @@ module.exports = {
                     pedidos.push(d);
                     if (d.clave !== CLAVE) return ruta.fulfill({ json: { ok: false, error: 'clave incorrecta' } });
                     const k = `${d.id}:${d.tipo}`;
+                    const historias = { historia_facebook: { estado: 'publicado', fecha: '2026-11-18T16:00:00Z', enlace: 'https://www.facebook.com/PAG' },
+                        historia_instagram: { estado: 'publicado', fecha: '2026-11-18T16:00:00Z', enlace: 'https://www.instagram.com/' } };
                     if (d.accion === 'publicar') estado[k] = {
+                        ...(d.tipo === 'fotos' ? historias : {}),
                         facebook: { estado: 'publicado', fecha: '2026-11-18T16:00:00Z', enlace: 'https://www.facebook.com/PAG_1' },
                         instagram: d.id === 3002 ? { estado: 'error', detalle: '<img src=x id=inyectado>' } : { estado: 'publicado', fecha: '2026-11-18T16:01:00Z', enlace: 'https://www.instagram.com/p/x/' }
                     };

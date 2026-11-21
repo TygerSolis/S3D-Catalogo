@@ -66,3 +66,7 @@ h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: cl
 .rd-proceso { color: var(--muted); font-style: italic; }
 .rd-marca { align-items: center; display: flex; font-weight: 700; gap: .45rem; margin-top: .6rem; }
 .rd-marca input { accent-color: var(--ok); height: 1.1rem; width: 1.1rem; }
+.rd-historia { margin: 0; }
+.rd-historia img { aspect-ratio: 9 / 16; border-radius: .75rem; height: auto; object-fit: cover; width: 100%; }
+.rd-historia figcaption { color: var(--muted); font-size: .85rem; margin-top: .3rem; }
+.rd-ocultar { color: var(--muted); font-size: .9rem; margin: 0 0 1rem; }

@@ -5,13 +5,11 @@ const path = require('path');
 const sharp = require('sharp');
 const { assert, abrir, RAIZ, leerJson } = require('./util.cjs');
 
-const py = codigo => JSON.parse(execFileSync('python3', ['-c', `import json, redes as r
+const py = codigo => JSON.parse(execFileSync('python3', ['-c', `import json, redes as r, hoja_catalogo as h
+from validar_productos import validar
 p = {q['id']: q for q in json.load(open('../productos.json'))}
 ${codigo}`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' }));
-const cola = () => {
-    const productos = leerJson('productos.json');
-    return leerJson('config.json').redes.cola.filter(id => productos.find(p => p.id === id)?.activo !== false);
-};
+const cola = () => py(`print(json.dumps([q['id'] for q in r.cola(list(p.values()))]))`);
 const leer = ruta => fs.readFileSync(path.join(RAIZ, ruta), 'utf8');
 
 module.exports = {
@@ -78,6 +76,51 @@ print(json.dumps({'fb': r.texto_facebook(a), 'ig': r.texto_instagram(a), 'mp': r
         assert.deepEqual(p.errores, []);
         assert.deepEqual(p.violaciones, []);
         await p.contexto.close();
+    },
+    'cola: la columna «redes» de la hoja decide el orden; vacío = los más nuevos primero; «no» = nunca'() {
+        const r = py(`import copy
+from datetime import date
+q = copy.deepcopy(list(p.values()))
+por = {x['id']: x for x in q}
+por[1]['redes'] = 2; por[14]['redes'] = 1          # Woody 2.º, Snoopy Peaky Blinders 1.º
+por[3001]['redes'] = False                         # nunca
+por[2]['disponibilidad'] = 'Agotado'              # agotado: fuera
+por[3]['activo'] = False                           # oculto: fuera
+c = [x['id'] for x in r.cola(q)]
+sin = [x for x in q if x.get('redes') is None and x['activo'] and x['disponibilidad'] != 'Agotado']
+fechas = [date.fromisoformat(por[i]['fechaAlta']) for i in c[2:]]
+# la hoja: «redes» acepta número, «no» o vacío, y es opcional (hojas sin la columna)
+filas = [h.a_fila(dict(por[14])), h.a_fila(dict(por[3001])), h.a_fila(dict(por[4]))]
+errores = []
+vuelta = [h.de_fila(f, n, errores) for n, f in enumerate(filas, 2)]
+sin_columna = h.de_fila({k: v for k, v in filas[0].items() if k != 'redes'}, 2, errores)
+malo = validar([dict(por[4], redes=0)], comprobar_archivos=False) + validar([dict(por[4], redes='x')], comprobar_archivos=False)
+print(json.dumps({'c': c[:2], 'excluidos': [i for i in (3001, 2, 3) if i in c], 'ordenadas': fechas == sorted(fechas, reverse=True),
+  'total': len(c), 'celdas': [f['redes'] for f in filas], 'vuelta': [v.get('redes', 'vacío') for v in vuelta],
+  'sin_columna': 'redes' in sin_columna, 'errores': errores, 'malo': len(malo)}))`);
+        assert.deepEqual(r.c, [14, 1]);
+        assert.deepEqual(r.excluidos, []);
+        assert.ok(r.ordenadas, 'sin número: de la fecha de alta más nueva a la más antigua');
+        assert.deepEqual(r.celdas, ['1', 'no', '']);
+        assert.deepEqual(r.vuelta, [1, false, 'vacío']);
+        assert.equal(r.sin_columna, false);
+        assert.deepEqual(r.errores, []);
+        assert.equal(r.malo, 2, '0 o texto en «redes» es un error');
+    },
+    async 'historias: una JPG 9:16 (1080×1920) por producto de la cola, sin sobrantes, y se ven en la página'() {
+        const html = leer('redes/index.html');
+        const enPagina = [...html.matchAll(/<img src="historias\/([^"]+)\.jpg"/g)].map(m => m[1]);
+        const archivos = fs.readdirSync(path.join(RAIZ, 'redes', 'historias')).map(f => f.replace(/\.jpg$/, ''));
+        assert.equal(enPagina.length, cola().length, 'cada producto de la cola tiene su historia');
+        assert.deepEqual([...archivos].sort(), [...enPagina].sort());
+        for (const nombre of archivos.slice(0, 10)) {
+            const m = await sharp(path.join(RAIZ, 'redes', 'historias', `${nombre}.jpg`)).metadata();
+            assert.deepEqual([m.format, m.width, m.height], ['jpeg', 1080, 1920], nombre);
+        }
+        // La huella del nombre cambia si cambia el precio (Meta y los navegadores no se quedan con la vieja)
+        const r = py(`a = dict(p[3001]); b2 = dict(a, precio=150)
+print(json.dumps([r.historia(a)['archivo'], r.historia(b2)['archivo']]))`);
+        assert.notEqual(r[0], r[1]);
     },
     'la página interna no está en el sitemap ni enlazada desde la web'() {
         assert.doesNotMatch(leer('sitemap.xml'), /\/redes\//);

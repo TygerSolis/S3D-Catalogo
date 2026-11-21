@@ -60,21 +60,27 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   `javascript:` ni `eval`**; enlaza eventos con `addEventListener` (o atributos `data-*` + delegación, como
   `data-video`). Un servicio externo nuevo (fetch, iframe, imagen) necesita su origen en `CSP`; si no, el
   navegador lo bloquea. `tests/seguridad.cjs` lo comprueba y `util.cjs` registra cada bloqueo en `pagina.violaciones`.
-- **Kit para redes** (`scripts/redes.py`, llamado por el generador): `config.json` → `redes.cola` (ids en el orden
-  de publicación) genera `redes/index.html`, página interna (sin enlace desde el sitio, noindex, sin analítica) con
+- **Kit para redes** (`scripts/redes.py`, llamado por el generador): la cola sale de la columna `redes` de la hoja
+  (número = turno; vacío = automático, de la `fechaAlta` más nueva a la más antigua; `no` = nunca; fuera ocultos y
+  agotados; no depende del día) y genera `redes/index.html`, página interna (sin enlace desde el sitio, noindex, sin analítica) con
   fotos limpias, texto para Facebook (enlace con `utm_source=facebook`), Instagram (sin enlace), anuncio de
   Marketplace (sin enlaces) y respuesta para «¿Está disponible?» (`utm_source=marketplace`); `utm_campaign` es el id
   de la temporada o `catalogo`. Las fotos son `redes/fotos/<nombre>.jpg` 1080×1350 con la foto completa sobre la
   misma foto desenfocada (`scripts/redes_fotos.cjs`, desde los originales; si faltan, la página muestra «pendiente» y el
-  generador lo avisa); las que salen de la cola se borran solas. Marketplace: marca «ya publicado» en localStorage.
+  generador lo avisa); las que salen de la cola se borran solas. Historias `redes/historias/<id>-<huella>.jpg` 1080×1920
+  (foto + nombre + precio + WhatsApp en DejaVu Sans; la huella cambia con el texto), `redes_fotos.cjs --historias`.
+  Marketplace: marca «ya publicado» en localStorage; los publicados en todo se ocultan.
 - **Publicación automática** (`scripts/apps-script/Redes.gs`, vinculado a la hoja del catálogo; guía
   `docs/guia-redes.md`): la página /redes/ llama al Apps Script (`config.json` → `redes.publicarUrl`) con la clave del
   dueño (localStorage); el script lee `redes/publicaciones.json` de la web PRINCIPAL y publica con la Graph API de Meta
   (v27.0, token de página en propiedades del script): Facebook = fotos sin publicar + `/feed` con `attached_media`, o
   `/videos`; Instagram = foto/carrusel o `REELS` (espera `status_code` FINISHED). Anota cada red en la pestaña
   «publicaciones» (la última fila manda; nunca repite una red ya publicada). «Aprobar» = fila «programado»; los
-  activadores de `instalar` publican uno a las 11:00 y otro a las 19:00 (Lima). Pruebas en `tests/publicar.cjs`
-  (Google y Meta simulados con `vm`).
+  activadores de `instalar` publican uno a las 11:00 y otro a las 19:00 (Lima). Con las fotos van historias
+  (`photo_stories` / `STORIES`); la columna `IdMeta` guarda el id de cada publicación. `informeSemanal` (lunes 8:00)
+  reescribe la pestaña «resultados» (IG: reach, views, saved, shares, like_count, comments_count; FB:
+  post_total_media_view_unique, post_media_view, reacciones, comentarios, compartidos) y manda un resumen; necesita
+  `instagram_manage_insights` y `read_insights`. Pruebas en `tests/publicar.cjs` (Google y Meta simulados con `vm`).
 - **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
   `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
   Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,

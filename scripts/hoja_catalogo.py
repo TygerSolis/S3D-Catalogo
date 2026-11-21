@@ -12,6 +12,7 @@ La hoja manda: «importar» reescribe productos.json entero. Si algún dato no e
 y lista los errores (fila y motivo). Las imágenes se escriben por su nombre, sin carpeta ni extensión
 (p. ej. «ts-woody-1»), separadas por comas; los colores, uno por línea o separados por «;», con el
 formato «Nombre #rrggbb imagen» y, si ese color cuesta distinto, su precio al final: «Nombre #rrggbb imagen 45».
+La columna «redes» (turno en la cola de publicaciones: número, «no» o vacío) es opcional: una hoja sin ella sigue valiendo.
 """
 import csv
 import io
@@ -52,11 +53,14 @@ COLUMNAS = [
     ("slug", "slug"),
     ("heroOrden", "heroOrden"),
     ("heroFoco", "heroFoco"),
+    ("redes", "redes"),
 ]
+# Columnas que la hoja puede no tener todavía (se agregaron después): si faltan, el campo queda vacío.
+OPCIONALES = {"redes"}
 # Orden canónico de las claves en productos.json (así exportar -> importar deja el archivo idéntico).
 ORDEN_JSON = ["id", "orden", "activo", "categoria", "coleccion", "badge", "nombre", "medida", "material", "tipo",
               "precio", "requiereCotizacion", "disponibilidad", "imagenes", "colores", "video", "descripcion",
-              "slug", "heroOrden", "heroFoco", "fechaAlta"]
+              "slug", "heroOrden", "heroFoco", "redes", "fechaAlta"]
 SI = {"si", "sí", "s", "x", "true", "verdadero", "1", "yes"}
 NO = {"no", "n", "false", "falso", "0", ""}
 
@@ -88,6 +92,8 @@ def a_fila(p: dict) -> dict:
                                   + (f" {numero(c['precio'])}" if c.get("precio") is not None else "") for c in v or [])
         elif campo == "video":
             fila[col] = re.sub(r"^assets/video/", "", v or "")
+        elif campo == "redes":
+            fila[col] = "no" if v is False else ("" if v is None else str(v))
         elif campo in ("precio", "orden", "heroOrden") and v is not None:
             fila[col] = numero(v)
         else:
@@ -113,7 +119,7 @@ def leer_csv(origen: str) -> list[dict]:
     else:
         texto = Path(origen).read_text(encoding="utf-8-sig")
     lector = csv.DictReader(io.StringIO(texto))
-    faltan = [c for c, _ in COLUMNAS if c not in (lector.fieldnames or [])]
+    faltan = [c for c, _ in COLUMNAS if c not in (lector.fieldnames or []) and c not in OPCIONALES]
     if faltan:
         raise SystemExit(f"La hoja no tiene las columnas: {', '.join(faltan)}. No se cambió nada.")
     # Las filas totalmente vacías (p. ej. al final de la hoja) se ignoran.
@@ -184,6 +190,13 @@ def de_fila(fila: dict, n: int, errores: list[str]) -> dict:
     hero = num("heroOrden", entero=True)
     if hero is not None:
         p["heroOrden"] = hero
+    # redes: número = turno en la cola de publicaciones; «no» = nunca; vacío = automático (los más nuevos primero).
+    if (fila.get("redes") or "").strip().lower() in {"no", "n"}:
+        p["redes"] = False
+    else:
+        turno = num("redes", entero=True)
+        if turno is not None:
+            p["redes"] = turno
     if p.get("id") is None:
         error("falta el id")
     return {k: p[k] for k in ORDEN_JSON if k in p}

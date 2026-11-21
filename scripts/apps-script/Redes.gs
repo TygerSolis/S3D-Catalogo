@@ -6,8 +6,11 @@
  *      otro contenido, solo elegir un producto de la cola;
  *   2. publica con la API de Meta (Graph API) en la página de Facebook y en el Instagram profesional vinculado:
  *      fotos (publicación con varias fotos / carrusel) o el video (Reel);
- *   3. anota cada resultado en la pestaña «publicaciones» de la hoja (fecha, producto, red, enlace o error);
- *   4. publica solos, 2 por día (HORAS), los productos que el dueño aprobó con «Aprobar».
+ *   3. con las fotos publica también una HISTORIA en Facebook e Instagram (imagen 9:16 con nombre, precio y WhatsApp);
+ *   4. anota cada resultado en la pestaña «publicaciones» de la hoja (fecha, producto, red, enlace o error, id de Meta);
+ *   5. publica solos, 2 por día (HORAS), los productos que el dueño aprobó con «Aprobar»;
+ *   6. cada lunes (informeSemanal) escribe en la pestaña «resultados» el alcance, vistas, me gusta, comentarios,
+ *      guardados y compartidos de cada publicación de los últimos DIAS_INFORME días y manda un resumen por correo.
  * Nunca publica dos veces lo mismo: si una red ya salió, la salta (un reintento solo completa la que falló).
  *
  * Propiedades del script (Configuración del proyecto → Propiedades del script):
@@ -21,10 +24,18 @@ const API = 'https://graph.facebook.com/v27.0/';
 const ZONA = 'America/Lima';
 const HORAS = [11, 19];            // publicaciones programadas: 2 por día
 const HOJA = 'publicaciones';
-const COLUMNAS = ['Fecha', 'Producto', 'Nombre', 'Tipo', 'Red', 'Estado', 'Enlace', 'Detalle'];
+const COLUMNAS = ['Fecha', 'Producto', 'Nombre', 'Tipo', 'Red', 'Estado', 'Enlace', 'Detalle', 'IdMeta'];
 const AVISO_CORREO = 'ventas.s3d@gmail.com';
 const MAX_FALLOS_CLAVE = 10;       // claves erradas por hora antes de bloquear
-const REDES = ['facebook', 'instagram'];
+const REDES = ['facebook', 'instagram'];   // publicaciones (las historias se agregan con redesDe_)
+const HISTORIAS = ['historia_facebook', 'historia_instagram'];
+const HOJA_RESULTADOS = 'resultados';
+const DIAS_INFORME = 60;
+
+/** Redes de una publicación: con las fotos van también las historias (si la web ya tiene la imagen 9:16). */
+function redesDe_(tipo, p) {
+  return tipo === 'fotos' && p && p.historia ? REDES.concat(HISTORIAS) : REDES;
+}
 
 function doGet() {
   return ContentService.createTextOutput('Publicación en redes S3D: activo');
@@ -183,17 +194,20 @@ function publicar_(id, tipo) {
     const actual = estado_()[id + ':' + tipo] || {};
     const cuentas = cuentas_();
     const resultado = {};
-    REDES.forEach(red => {
+    redesDe_(tipo, p).forEach(red => {
       if (actual[red] && actual[red].estado === 'publicado') { resultado[red] = actual[red]; return; }
       try {
-        if (red === 'instagram' && !cuentas.instagram) throw new Error('la página de Facebook no tiene un Instagram profesional vinculado');
-        const enlace = red === 'facebook'
-          ? (tipo === 'fotos' ? facebookFotos_(cuentas.pagina, p) : facebookVideo_(cuentas.pagina, p))
-          : (tipo === 'fotos' ? instagramFotos_(cuentas.instagram, p) : instagramReel_(cuentas.instagram, p));
-        anotar_(id, p.nombre, tipo, red, 'publicado', enlace, '');
-        resultado[red] = { estado: 'publicado', enlace: enlace };
+        if (/instagram/.test(red) && !cuentas.instagram) throw new Error('la página de Facebook no tiene un Instagram profesional vinculado');
+        const hecho = {
+          facebook: () => (tipo === 'fotos' ? facebookFotos_(cuentas.pagina, p) : facebookVideo_(cuentas.pagina, p)),
+          instagram: () => (tipo === 'fotos' ? instagramFotos_(cuentas.instagram, p) : instagramReel_(cuentas.instagram, p)),
+          historia_facebook: () => facebookHistoria_(cuentas.pagina, p),
+          historia_instagram: () => instagramHistoria_(cuentas.instagram, p)
+        }[red]();
+        anotar_(id, p.nombre, tipo, red, 'publicado', hecho.enlace, '', hecho.id);
+        resultado[red] = { estado: 'publicado', enlace: hecho.enlace };
       } catch (error) {
-        anotar_(id, p.nombre, tipo, red, 'error', '', error.message);
+        anotar_(id, p.nombre, tipo, red, 'error', '', error.message, '');
         resultado[red] = { estado: 'error', detalle: error.message };
       }
     });
@@ -211,12 +225,24 @@ function facebookFotos_(pagina, p) {
     params['attached_media[' + i + ']'] = JSON.stringify({ media_fbid: foto.id });
   });
   const post = post_(pagina + '/feed', params);
-  return 'https://www.facebook.com/' + post.id;
+  return { enlace: 'https://www.facebook.com/' + post.id, id: post.id };
 }
 
 function facebookVideo_(pagina, p) {
   const video = post_(pagina + '/videos', { file_url: p.video, description: p.facebook });
-  return 'https://www.facebook.com/' + pagina + '/videos/' + video.id;
+  return { enlace: 'https://www.facebook.com/' + pagina + '/videos/' + video.id, id: video.id };
+}
+
+function facebookHistoria_(pagina, p) {
+  const foto = post_(pagina + '/photos', { url: p.historia, published: 'false' });
+  const historia = post_(pagina + '/photo_stories', { photo_id: foto.id });
+  return { enlace: 'https://www.facebook.com/' + pagina, id: historia.post_id || historia.id || foto.id };
+}
+
+function instagramHistoria_(ig, p) {
+  const contenedor = post_(ig + '/media', { image_url: p.historia, media_type: 'STORIES' }).id;
+  esperarContenedor_(contenedor, 3000, 10);
+  return publicarInstagram_(ig, contenedor);
 }
 
 function instagramFotos_(ig, p) {
@@ -252,11 +278,11 @@ function esperarContenedor_(id, pausa, intentos) {
 
 function publicarInstagram_(ig, contenedor) {
   const media = post_(ig + '/media_publish', { creation_id: contenedor });
+  let enlace = 'https://www.instagram.com/';
   try {
-    return get_(media.id, { fields: 'permalink' }).permalink || 'https://www.instagram.com/';
-  } catch (e) {
-    return 'https://www.instagram.com/';
-  }
+    enlace = get_(media.id, { fields: 'permalink' }).permalink || enlace;
+  } catch (e) { /* el enlace es opcional */ }
+  return { enlace: enlace, id: media.id };
 }
 
 // ---------------------------------------------------------------- programación (2 por día)
@@ -270,9 +296,9 @@ function programar_(id, tipo, aprobar) {
       if (actual.programado) anotar_(id, actual.nombre || '', tipo, '', 'cancelado', '', '');
       return { programado: false };
     }
-    if (REDES.every(red => actual[red] && actual[red].estado === 'publicado')) throw new Error('ya está publicado en Facebook e Instagram');
-    if (actual.programado) return { programado: true };
     const p = contenido_(id, tipo);
+    if (redesDe_(tipo, p).every(red => actual[red] && actual[red].estado === 'publicado')) throw new Error('ya está publicado en Facebook e Instagram');
+    if (actual.programado) return { programado: true };
     anotar_(id, p.nombre, tipo, '', 'programado', '', '');
     return { programado: true };
   } finally {
@@ -286,7 +312,7 @@ function publicarProgramadas() {
   if (!cola.length) return;
   const siguiente = cola[0];
   const resultado = publicar_(siguiente.id, siguiente.tipo);
-  const errores = REDES.filter(red => resultado[red] && resultado[red].estado === 'error');
+  const errores = Object.keys(resultado).filter(red => resultado[red].estado === 'error');
   if (errores.length) {
     MailApp.sendEmail(AVISO_CORREO, 'S3D: falló una publicación programada',
       'Producto ' + siguiente.id + ' (' + siguiente.tipo + '):\n' + errores.map(red => red + ': ' + resultado[red].detalle).join('\n') +
@@ -301,7 +327,11 @@ function instalar() {
     .filter(t => t.getHandlerFunction() === 'publicarProgramadas')
     .forEach(t => ScriptApp.deleteTrigger(t));
   HORAS.forEach(h => ScriptApp.newTrigger('publicarProgramadas').timeBased().atHour(h).everyDays(1).inTimezone(ZONA).create());
-  console.log('Listo: publicaciones programadas a las ' + HORAS.join(':00 y ') + ':00 (hora de Lima).');
+  ScriptApp.getProjectTriggers()
+    .filter(t => t.getHandlerFunction() === 'informeSemanal')
+    .forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('informeSemanal').timeBased().onWeekDay(ScriptApp.WeekDay.MONDAY).atHour(8).inTimezone(ZONA).create();
+  console.log('Listo: publicaciones programadas a las ' + HORAS.join(':00 y ') + ':00 e informe cada lunes a las 8:00 (hora de Lima).');
 }
 
 // ---------------------------------------------------------------- registro en la hoja
@@ -315,12 +345,15 @@ function hoja_() {
     hoja.setFrozenRows(1);
     hoja.getRange(1, 1, 1, COLUMNAS.length).setFontWeight('bold').setBackground('#002244').setFontColor('#ffffff');
     hoja.getRange('A2:A').setNumberFormat('dd/mm/yyyy hh:mm');
+  } else if (hoja.getRange(1, COLUMNAS.length).getValue() !== COLUMNAS[COLUMNAS.length - 1]) {
+    // Pestaña creada con una versión anterior: se completa el encabezado (columnas nuevas al final).
+    hoja.getRange(1, 1, 1, COLUMNAS.length).setValues([COLUMNAS]).setFontWeight('bold').setBackground('#002244').setFontColor('#ffffff');
   }
   return hoja;
 }
 
-function anotar_(id, nombre, tipo, red, estado, enlace, detalle) {
-  hoja_().appendRow([new Date(), id, nombre, tipo, red, estado, enlace, String(detalle).slice(0, 500)]);
+function anotar_(id, nombre, tipo, red, estado, enlace, detalle, idMeta) {
+  hoja_().appendRow([new Date(), id, nombre, tipo, red, estado, enlace, String(detalle).slice(0, 500), idMeta ? String(idMeta) : '']);
 }
 
 /**
@@ -338,7 +371,7 @@ function estado_() {
     if (f[5] === 'programado') e.programado = fecha.toISOString();
     else if (f[5] === 'cancelado') e.programado = null;
     else if (f[4]) {
-      e[f[4]] = { estado: f[5], fecha: fecha.toISOString(), enlace: f[6] || '', detalle: f[7] || '' };
+      e[f[4]] = { estado: f[5], fecha: fecha.toISOString(), enlace: f[6] || '', detalle: f[7] || '', id: f[8] ? String(f[8]) : '' };
       e.programado = null;
     }
   });
@@ -369,4 +402,126 @@ function horarios_(n) {
     });
   }
   return salida;
+}
+
+// ---------------------------------------------------------------- informe semanal
+
+const COLUMNAS_RESULTADOS = ['Producto', 'Nombre', 'Tipo', 'Red', 'Publicado', 'Alcance', 'Vistas', 'Me gusta',
+  'Comentarios', 'Guardados', 'Compartidos', 'Interacciones', 'Enlace', 'Nota'];
+
+/**
+ * Lo ejecuta el activador de los lunes (o a mano): reescribe la pestaña «resultados» con las métricas de cada
+ * publicación (no historias: Meta las borra a las 24 h) de los últimos DIAS_INFORME días y manda un resumen.
+ * Métricas: Instagram /insights (reach, views, saved, shares) + like_count/comments_count; Facebook
+ * post_total_media_view_unique (alcance), post_media_view (vistas), reacciones, comentarios y compartidos.
+ * Necesita los permisos instagram_manage_insights y read_insights (guía, paso 6).
+ */
+function informeSemanal() {
+  const estado = estado_();
+  const desde = new Date(Date.now() - DIAS_INFORME * 86400000);
+  const cuentas = cuentas_();
+  const filas = [];
+  Object.keys(estado).forEach(clave => {
+    const [id, tipo] = clave.split(':');
+    REDES.forEach(red => {
+      const r = estado[clave][red];
+      if (!r || r.estado !== 'publicado' || new Date(r.fecha) < desde) return;
+      const m = metricas_(red, r, cuentas);
+      const interacciones = ['me_gusta', 'comentarios', 'guardados', 'compartidos'].reduce((s, k) => s + (Number(m[k]) || 0), 0);
+      filas.push([Number(id), estado[clave].nombre, tipo, red, new Date(r.fecha), m.alcance, m.vistas, m.me_gusta,
+        m.comentarios, m.guardados, m.compartidos, interacciones, r.enlace, m.nota || '']);
+    });
+  });
+  filas.sort((a, b) => b[11] - a[11]);
+  const libro = SpreadsheetApp.getActiveSpreadsheet();
+  const hoja = libro.getSheetByName(HOJA_RESULTADOS) || libro.insertSheet(HOJA_RESULTADOS);
+  hoja.clear();
+  hoja.getRange(1, 1, 1, COLUMNAS_RESULTADOS.length).setValues([COLUMNAS_RESULTADOS])
+    .setFontWeight('bold').setBackground('#002244').setFontColor('#ffffff');
+  hoja.setFrozenRows(1);
+  if (filas.length) {
+    hoja.getRange(2, 1, filas.length, COLUMNAS_RESULTADOS.length).setValues(filas);
+    hoja.getRange(2, 5, filas.length, 1).setNumberFormat('dd/mm/yyyy');
+  }
+  MailApp.sendEmail(AVISO_CORREO, 'S3D: resultados de tus publicaciones', resumen_(filas, libro.getUrl()));
+  return filas.length;
+}
+
+function resumen_(filas, url) {
+  const semana = filas.filter(f => f[4] >= new Date(Date.now() - 7 * 86400000));
+  const total = (lista, col) => lista.reduce((s, f) => s + (Number(f[col]) || 0), 0);
+  const lineas = ['Resumen de tus publicaciones en Facebook e Instagram.', ''];
+  lineas.push('Esta semana: ' + semana.length + ' publicaciones · alcance ' + total(semana, 5) + ' · interacciones ' + total(semana, 11) + '.');
+  REDES.forEach(red => {
+    const deRed = semana.filter(f => f[3] === red);
+    if (deRed.length) lineas.push('  ' + red + ': ' + deRed.length + ' publicaciones, alcance ' + total(deRed, 5) + ', interacciones ' + total(deRed, 11));
+  });
+  lineas.push('', 'Las que más gustaron (últimos ' + DIAS_INFORME + ' días):');
+  filas.slice(0, 5).forEach((f, i) => lineas.push('  ' + (i + 1) + '. ' + f[1] + ' (' + f[3] + '): ' + f[11] + ' interacciones, alcance ' + (f[5] === '' ? '—' : f[5]) + ' · ' + f[12]));
+  if (!filas.length) lineas.push('  Todavía no hay publicaciones con datos.');
+  const notas = filas.filter(f => f[13]).length;
+  if (notas) lineas.push('', notas + ' publicaciones sin algunos datos: revisa la columna «Nota» de la pestaña resultados.');
+  lineas.push('', 'Detalle completo en la pestaña «resultados»: ' + url,
+    'Las visitas a la web que llegaron desde cada red las ves en Umami (fuente: facebook, instagram, marketplace).');
+  return lineas.join('\n');
+}
+
+function valorInsight_(datos, nombre) {
+  const m = (datos || []).find(x => x.name === nombre);
+  if (!m) return '';
+  if (m.total_value && m.total_value.value !== undefined) return m.total_value.value;
+  return m.values && m.values.length ? m.values[m.values.length - 1].value : '';
+}
+
+function metricas_(red, r, cuentas) {
+  const m = { alcance: '', vistas: '', me_gusta: '', comentarios: '', guardados: '', compartidos: '', nota: '' };
+  const nota = e => { m.nota = m.nota || (/permiso/.test(e.message) ? 'falta el permiso de estadísticas (guía, paso 6)' : e.message.slice(0, 200)); };
+  if (red === 'instagram') {
+    const id = r.id || idInstagramDe_(r.enlace, cuentas.instagram);
+    if (!id) { m.nota = 'no se encontró la publicación en Instagram'; return m; }
+    try {
+      const b = get_(id, { fields: 'like_count,comments_count' });
+      m.me_gusta = b.like_count === undefined ? '' : b.like_count;
+      m.comentarios = b.comments_count === undefined ? '' : b.comments_count;
+    } catch (e) { nota(e); }
+    try {
+      const d = get_(id + '/insights', { metric: 'reach,views,saved,shares' }).data;
+      m.alcance = valorInsight_(d, 'reach');
+      m.vistas = valorInsight_(d, 'views');
+      m.guardados = valorInsight_(d, 'saved');
+      m.compartidos = valorInsight_(d, 'shares');
+    } catch (e) { nota(e); }
+  } else {
+    const id = r.id || (String(r.enlace).match(/facebook\.com\/(?:\d+\/videos\/)?([\d_]+)/) || [])[1];
+    if (!id) { m.nota = 'no se encontró la publicación en Facebook'; return m; }
+    try {
+      const b = get_(id, { fields: 'reactions.summary(total_count).limit(0),comments.summary(total_count).limit(0)' + (/_/.test(id) ? ',shares' : '') });
+      m.me_gusta = b.reactions && b.reactions.summary ? b.reactions.summary.total_count : '';
+      m.comentarios = b.comments && b.comments.summary ? b.comments.summary.total_count : '';
+      if (/_/.test(id)) m.compartidos = b.shares ? b.shares.count : 0;
+    } catch (e) { nota(e); }
+    if (/_/.test(id)) {   // los ids de publicaciones llevan «página_post»; los videos no tienen estas métricas
+      try {
+        const d = get_(id + '/insights', { metric: 'post_total_media_view_unique,post_media_view' }).data;
+        m.alcance = valorInsight_(d, 'post_total_media_view_unique');
+        m.vistas = valorInsight_(d, 'post_media_view');
+      } catch (e) { nota(e); }
+    }
+  }
+  return m;
+}
+
+/** Publicaciones anotadas antes de guardar el id de Meta: se buscan por su enlace entre las últimas del Instagram. */
+function idInstagramDe_(enlace, ig) {
+  if (!ig || !enlace) return '';
+  if (!idInstagramDe_.cache) {
+    try {
+      idInstagramDe_.cache = get_(ig + '/media', { fields: 'id,permalink', limit: 100 }).data || [];
+    } catch (e) {
+      idInstagramDe_.cache = [];
+    }
+  }
+  const limpio = String(enlace).split('?')[0].replace(/\/$/, '');
+  const m = idInstagramDe_.cache.find(x => String(x.permalink || '').split('?')[0].replace(/\/$/, '') === limpio);
+  return m ? m.id : '';
 }

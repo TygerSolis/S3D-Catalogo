@@ -11,7 +11,12 @@
  * Con --catalogo hace lo mismo en cuadrado (1080×1080) en meta/fotos/, para el catálogo de Meta / WhatsApp
  * (scripts/catalogo_meta.py).
  *
- * Uso:  node scripts/redes_fotos.cjs [--catalogo]                 genera las que faltan
+ * Con --historias genera las historias (redes/historias/<id>-<huella>.jpg, 1080×1920): la primera foto sobre su fondo
+ * desenfocado y abajo el nombre, el precio y «Pídelo por WhatsApp …» (la API de Instagram no permite el sticker de
+ * enlace). Los textos los da `python3 scripts/redes.py faltantes-historias`. Fuente: DejaVu Sans (instalada en
+ * Ubuntu y en los servidores de GitHub).
+ *
+ * Uso:  node scripts/redes_fotos.cjs [--catalogo | --historias]   genera las que faltan
  *       node scripts/redes_fotos.cjs [--catalogo] nombre1 nombre2  (re)genera esas fotos
  */
 const sharp = require('sharp');
@@ -22,6 +27,7 @@ const { execFileSync } = require('child_process');
 const RAIZ = path.resolve(__dirname, '..');
 const FUENTES = path.join(RAIZ, 'fuentes');
 const CATALOGO = process.argv.includes('--catalogo');
+const HISTORIAS = process.argv.includes('--historias');
 const SALIDA = path.join(RAIZ, ...(CATALOGO ? ['meta', 'fotos'] : ['redes', 'fotos']));
 const LISTA = path.join(RAIZ, 'scripts', CATALOGO ? 'catalogo_meta.py' : 'redes.py');
 const ANCHO = 1080;
@@ -72,7 +78,61 @@ async function generar(nombre) {
     console.log(`  ✓ ${path.relative(RAIZ, destino)} (${Math.round(fs.statSync(destino).size / 1024)} KB)`);
 }
 
+// ---------------------------------------------------------------- historias (9:16)
+
+const marcado = texto => texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const texto = (contenido, puntos, color = '#ffffff', negrita = true, ancho = 940) => sharp({
+    text: {
+        text: `<span foreground="${color}">${marcado(contenido)}</span>`,
+        font: `DejaVu Sans${negrita ? ' Bold' : ''} ${puntos}`,
+        width: ancho, align: 'centre', rgba: true, dpi: 72, wrap: 'word'
+    }
+}).png().toBuffer();
+
+async function generarHistoria(h) {
+    const ruta = original(h.foto);
+    if (!ruta) throw new Error(`no está el original de «${h.foto}» en fuentes/ ni en R2`);
+    const W = 1080;
+    const H = 1920;
+    const fondo = await sharp(ruta).rotate().resize(W, H, { fit: 'cover' }).blur(40)
+        .modulate({ brightness: 0.55, saturation: 0.9 }).removeAlpha().toBuffer();
+    // La foto arriba (deja libres los ~180 px superiores, donde Instagram pone el nombre de la cuenta).
+    const foto = await sharp(ruta).rotate().resize(960, 1180, { fit: 'inside' }).flatten({ background: '#ffffff' }).toBuffer();
+    const mf = await sharp(foto).metadata();
+    const capas = [{ input: foto, left: Math.round((W - mf.width) / 2), top: 200 + Math.round((1180 - mf.height) / 2) }];
+    // Textos abajo, por encima de la barra de respuesta de Instagram (~200 px inferiores).
+    let y = 1440;
+    for (const [contenido, puntos] of [[h.titulo, 66], [h.precio, 60]]) {
+        const capa = await texto(contenido, puntos);
+        const m = await sharp(capa).metadata();
+        capas.push({ input: capa, left: Math.round((W - m.width) / 2), top: y });
+        y += m.height + 22;
+    }
+    const wa = await texto(h.whatsapp, 40, '#ffffff', true, 1000);
+    const mw = await sharp(wa).metadata();
+    const pastilla = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${mw.width + 72}" height="${mw.height + 40}">
+        <rect width="100%" height="100%" rx="${(mw.height + 40) / 2}" fill="#1faa53"/></svg>`);
+    const yw = Math.max(y + 18, 1600);
+    capas.push({ input: pastilla, left: Math.round((W - mw.width - 72) / 2), top: yw });
+    capas.push({ input: wa, left: Math.round((W - mw.width) / 2), top: yw + 20 });
+    const salida = path.join(RAIZ, 'redes', 'historias');
+    fs.mkdirSync(salida, { recursive: true });
+    const destino = path.join(salida, `${h.archivo}.jpg`);
+    await sharp(fondo).composite(capas).jpeg({ quality: 84, mozjpeg: true }).toFile(destino);
+    console.log(`  ✓ ${path.relative(RAIZ, destino)} (${Math.round(fs.statSync(destino).size / 1024)} KB)`);
+}
+
 (async () => {
+    if (HISTORIAS) {
+        const lista = execFileSync('python3', [path.join(RAIZ, 'scripts', 'redes.py'), 'faltantes-historias'], { encoding: 'utf8' })
+            .split('\n').filter(Boolean).map(l => JSON.parse(l));
+        if (!lista.length) return console.log('No falta ninguna historia.');
+        let fallos = 0;
+        for (const h of lista) {
+            try { await generarHistoria(h); } catch (error) { fallos++; console.error(`  ✗ ${h.archivo}: ${error.message}`); }
+        }
+        process.exit(fallos ? 1 : 0);
+    }
     const argumentos = process.argv.slice(2).filter(a => a !== '--catalogo');
     const nombres = argumentos.length ? argumentos
         : execFileSync('python3', [LISTA, 'faltantes'], { encoding: 'utf8' }).split('\n').filter(Boolean);

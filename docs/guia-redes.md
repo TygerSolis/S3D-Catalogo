@@ -12,6 +12,25 @@ La página interna **https://tygersolis.github.io/S3D-Catalogo/redes/** tiene, e
 Cada publicación queda anotada en la pestaña **publicaciones** de la hoja del catálogo (fecha, producto, red, enlace o
 error). Si una red falla, «Publicar ahora» solo completa la que falló: nunca se publica dos veces lo mismo.
 
+## Qué se publica y en qué orden
+
+- **Orden (columna `redes` de la hoja):** primero los productos con número (1, 2, 3…), luego los que la dejan vacía,
+  del más nuevo al más antiguo. Escribe `no` para que un producto nunca salga. Los ocultos y agotados no aparecen.
+  Un producto nuevo entra solo a la cola (sin número, va antes que los más antiguos). Si la hoja todavía no tiene la
+  columna `redes`, agrégala al final (encabezado `redes`, en minúsculas).
+- **Con las fotos va también una historia** en Facebook e Instagram: la foto con el nombre, el precio y «Pídelo por
+  WhatsApp» (Meta no permite poner el sticker de enlace por programa). Se ve en la página bajo «Historia».
+- **Los ya publicados en todas partes** (Facebook, Instagram, historias y Marketplace marcado) se ocultan; la casilla
+  de arriba los vuelve a mostrar.
+
+## Informe semanal
+
+Cada **lunes a las 8:00** el programa escribe en la pestaña **resultados** de la hoja el alcance, las vistas, los me
+gusta, comentarios, guardados y compartidos de cada publicación de los últimos 60 días (de la que más gustó a la que
+menos) y te manda un resumen a ventas.s3d@gmail.com. Para probarlo cuando quieras: en Apps Script ejecuta
+**informeSemanal**. Las historias no entran (Meta borra sus datos a las 24 horas). Las visitas a la web que vinieron de
+cada red las ves en Umami.
+
 ## Cómo funciona (y por qué es seguro)
 
 ```
@@ -85,6 +104,15 @@ Tu Instagram debe ser **profesional** (Empresa o Creador) y estar **vinculado a 
 Abre **/redes/**, escribe tu clave en **Publicación automática → Tu clave** y pulsa **Guardar**. Queda guardada en ese
 celular (repite en cada dispositivo que uses). La primera publicación real la hacemos juntos con un producto que elijas.
 
+### Paso 6. Permisos de estadísticas (para el informe semanal)
+
+1. En la app de Meta (**developers.facebook.com → Mis apps → S3D Publicaciones**), en los casos de uso → **Permisos
+   y funciones**, agrega `instagram_manage_insights` y `read_insights`.
+2. Repite el **paso 3, puntos 4 a 6** (Explorador de la Graph API → marca también esos dos permisos → token →
+   `TOKEN_TEMPORAL` → **guardarPermiso**).
+3. Pega la versión nueva de `Redes.gs` (ver «Si cambias el programa») y ejecuta **instalar** otra vez (agrega el
+   informe de los lunes; no duplica los horarios).
+
 ## Si algo falla
 
 | Mensaje | Qué hacer |
@@ -93,6 +121,7 @@ celular (repite en cada dispositivo que uses). La primera publicación real la h
 | «falta un permiso en la app de Meta» | Revisa los permisos del paso 2.5 y genera el token otra vez (paso 3.4–3.6). |
 | «Meta no pudo descargar la foto o el video» | La web aún no tiene ese producto publicado; espera unos minutos tras el «aprobado». |
 | «no está en la cola de la web principal» | El producto todavía no pasó a la web principal. |
+| En «resultados» la nota «falta el permiso de estadísticas» | Haz el paso 6. |
 | «Meta pide esperar» | Demasiadas publicaciones seguidas: espera una hora. |
 | Una publicación programada falló | Te llega un correo a ventas.s3d@gmail.com; usa «Publicar ahora» para reintentar. |
 

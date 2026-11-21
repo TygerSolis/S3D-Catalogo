@@ -83,6 +83,9 @@ def validar(productos: list, comprobar_archivos: bool = True) -> list[str]:
                     error(f"no existe la imagen «{ruta}» (súbela a R2 fuentes/ o revisa el nombre)")
             if p.get("video") and not (ROOT / p["video"]).exists():
                 error(f"no existe el video «{p['video']}» (súbelo a R2 fuentes/ con ese mismo nombre)")
+        redes = p.get("redes")
+        if redes is not None and redes is not False and not (isinstance(redes, int) and not isinstance(redes, bool) and redes > 0):
+            error(f"«redes» debe ser un número entero mayor que 0, «no» o quedar vacío (está «{redes}»)")
         if p.get("video") and not re.fullmatch(r"assets/video/[^/]+\.(mp4|webm)", p["video"]):
             error(f"el video «{p['video']}» debe ser un archivo .mp4 o .webm")
     return errores

@@ -2,18 +2,22 @@
 """
 Kit para publicar productos en redes (Facebook, Instagram y Marketplace).
 
-A partir de la cola de config.json («redes» → «cola»: ids de productos en el orden en que se publicarán) arma, por
-cada producto, las fotos limpias (JPG 4:5 en redes/fotos/, las genera scripts/redes_fotos.cjs), el texto para
-Facebook, el de Instagram, el anuncio de Marketplace y una respuesta para «¿Está disponible?». Todo se muestra en
-redes/index.html: una página privada (sin enlace desde el sitio, noindex y sin analítica) para que el dueño revise,
-copie y publique a mano. build_product_pages.py la regenera junto con el resto del sitio.
+Cola de publicaciones (columna «redes» de la hoja): primero los productos con número, de menor a mayor; luego los que
+la dejan vacía, del más nuevo al más antiguo (fechaAlta; a igual fecha, los de temporada); «no» = nunca. Quedan
+fuera los ocultos y los agotados. Por cada producto arma las fotos limpias (JPG 4:5 en redes/fotos/), la historia
+(JPG 9:16 en redes/historias/ con nombre, precio y WhatsApp, porque la API no permite el sticker de enlace), el texto
+para Facebook, el de Instagram, el anuncio de Marketplace y una respuesta para «¿Está disponible?». Todo se muestra en
+redes/index.html (página privada: sin enlace desde el sitio, noindex y sin analítica) y en redes/publicaciones.json
+(lo que publica el Apps Script). Las JPG las genera scripts/redes_fotos.cjs. build_product_pages.py lo regenera todo.
 
-Uso:  python3 scripts/redes.py faltantes    imprime, una por línea, las fotos de la cola que aún no tienen JPG
+Uso:  python3 scripts/redes.py faltantes            fotos de la cola que aún no tienen JPG (una por línea)
+      python3 scripts/redes.py faltantes-historias  historias que faltan (una por línea, en JSON)
 """
 import hashlib
 import json
 import re
 import sys
+from datetime import date
 from urllib.parse import quote
 
 import build_product_pages as b
@@ -23,7 +27,7 @@ CARPETA = b.ROOT / "redes"
 FOTOS = CARPETA / "fotos"
 REDES = b.CONFIG.get("redes") or {}
 assert re.fullmatch(r"(https://script\.google\.com/macros/s/[\w-]+/exec)?", REDES.get("publicarUrl", "")), "redes.publicarUrl inválida en config.json"
-COLA = REDES.get("cola") or []
+HISTORIAS = CARPETA / "historias"
 MAX_FOTOS = 10   # máximo de un carrusel de Instagram y de Marketplace
 
 # Primer emoji del texto y hashtags según la categoría (los que no están en la lista usan solo los generales).
@@ -178,11 +182,28 @@ def respuesta_disponible(p: dict) -> str:
 
 
 def cola(productos: list[dict]) -> list[dict]:
-    por_id = {p["id"]: p for p in productos}
-    faltan = [i for i in COLA if i not in por_id]
-    if faltan:
-        raise SystemExit(f"config.json «redes.cola»: no existen los productos {faltan}")
-    return [por_id[i] for i in dict.fromkeys(COLA) if por_id[i].get("activo", True)]
+    """Orden de publicación según la columna «redes» de la hoja (ver arriba). No depende del día en que se genera."""
+    candidatos = [p for p in b.activos(productos)
+                  if p.get("redes") is not False and p.get("disponibilidad") != "Agotado" and fotos(p)]
+    def turno(p: dict):
+        if isinstance(p.get("redes"), int):
+            return (0, p["redes"], p["orden"])
+        dias = -date.fromisoformat(p.get("fechaAlta", "2000-01-01")).toordinal()
+        return (1, dias, 0 if b.es_de_temporada(p) else 1, p["orden"])
+    return sorted(candidatos, key=turno)
+
+
+def historia(p: dict) -> dict:
+    """Datos de la historia (JPG 9:16). El nombre del archivo cambia si cambia la foto, el nombre o el precio."""
+    precio = "Precio a cotizar" if p.get("requiereCotizacion") else b.precio_txt(p)
+    datos = {"foto": fotos(p)[0], "titulo": titulo(p["nombre"]), "precio": precio,
+             "whatsapp": f"Pídelo por WhatsApp {b.WHATSAPP_VISIBLE}"}
+    huella = hashlib.sha256(json.dumps(datos, ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:8]
+    return {"archivo": f"{p['id']}-{huella}", **datos}
+
+
+def faltantes_historias(productos: list[dict]) -> list[dict]:
+    return [h for h in (historia(p) for p in cola(productos)) if not (HISTORIAS / f"{h['archivo']}.jpg").exists()]
 
 
 def faltantes(productos: list[dict]) -> list[str]:
@@ -205,9 +226,9 @@ def foto_src(nombre: str) -> str | None:
     return f"fotos/{quote(nombre)}.jpg?v={hashlib.sha256(jpg.read_bytes()).hexdigest()[:8]}"
 
 
-def bloque_auto(tipo: str, titulo_: str) -> str:
+def bloque_auto(tipo: str, titulo_: str, redes: str = "facebook,instagram") -> str:
     """Botones de publicación automática (los muestra redes.js cuando hay conexión con el Apps Script)."""
-    return f"""            <section class="rd-auto" data-tipo="{tipo}" hidden>
+    return f"""            <section class="rd-auto" data-tipo="{tipo}" data-redes="{redes}" hidden>
                 <h3>{titulo_}</h3>
                 <ul class="rd-auto-estado" data-auto-estado></ul>
                 <div class="rd-auto-botones">
@@ -228,6 +249,10 @@ def articulo(n: int, p: dict) -> str:
                            f'<a class="rd-descargar" href="{src}" download>Descargar</a></figure>')
         else:
             figuras.append(f'                <figure class="rd-foto rd-pendiente"><span>Foto «{esc(nombre)}» pendiente</span></figure>')
+    if historia_url(p):
+        src = f"historias/{historia(p)['archivo']}.jpg"
+        figuras.append(f'                <figure class="rd-historia"><img src="{src}" alt="Historia: {esc(titulo(p["nombre"]))}" loading="lazy" decoding="async" width="1080" height="1920">'
+                       f'<figcaption>Historia</figcaption></figure>')
     video = ""
     if p.get("video"):
         src = b.url_ruta(p["video"], "../")
@@ -249,7 +274,7 @@ def articulo(n: int, p: dict) -> str:
             <div class="rd-fotos">
 {chr(10).join(figuras)}
             </div>
-{bloque_auto("fotos", "Facebook e Instagram: fotos")}
+{bloque_auto("fotos", "Facebook e Instagram: fotos" + (" e historias" if historia_url(p) else ""), "facebook,instagram" + (",historia_facebook,historia_instagram" if historia_url(p) else ""))}
             <button class="rd-compartir" type="button" data-compartir hidden>Enviar las fotos a otra app</button>{video}
             <details class="rd-red" open>
                 <summary>Facebook</summary>
@@ -287,7 +312,7 @@ def pagina(productos: list[dict]) -> str:
     <meta name="theme-color" content="#002244">
     <link rel="icon" href="../assets/logo-96.webp" type="image/webp">
     <link rel="stylesheet" href="../fonts.css?v=1">
-    <link rel="stylesheet" href="redes.css?v=2">
+    <link rel="stylesheet" href="redes.css?v=3">
 </head>
 <body>
     <main class="rd-main" data-api="{esc(api)}">
@@ -295,6 +320,7 @@ def pagina(productos: list[dict]) -> str:
         <h1>Publicaciones para redes</h1>
         <p class="rd-progreso" aria-live="polite">Facebook e Instagram: <strong data-progreso="redes">–</strong> de {len(lista)} ·
             Marketplace: <strong data-progreso="marketplace">0</strong> de {len(lista)}</p>
+        <label class="rd-marca rd-ocultar"><input type="checkbox" data-ocultar checked> Ocultar los ya publicados en todas partes</label>
         <section class="rd-conexion" data-conexion>
             <h2>Publicación automática</h2>
             <p class="rd-conexion-estado" data-conexion-estado>{'Conectando…' if api else 'Aún no está conectada con Facebook e Instagram (falta instalar el Apps Script: docs/guia-redes.md).'}</p>
@@ -320,10 +346,15 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=3" defer></script>
+    <script src="redes.js?v=4" defer></script>
 </body>
 </html>
 """
+
+
+def historia_url(p: dict) -> str | None:
+    jpg = HISTORIAS / f"{historia(p)['archivo']}.jpg"
+    return f"{b.BASE_URL}redes/historias/{jpg.name}" if jpg.exists() else None
 
 
 def publicaciones(productos: list[dict]) -> dict:
@@ -337,6 +368,7 @@ def publicaciones(productos: list[dict]) -> dict:
             "instagram": texto_instagram(p),
             "fotos": [f"{b.BASE_URL}redes/{s}" for s in srcs],
             "video": b.url_ruta(p["video"], b.BASE_URL) if p.get("video") else None,
+            "historia": historia_url(p),
         }
     return {"productos": datos}
 
@@ -350,13 +382,23 @@ def escribir(productos: list[dict]) -> None:
     for jpg in FOTOS.glob("*.jpg"):
         if jpg.stem not in usadas:
             jpg.unlink()
+    usadas = {historia(p)["archivo"] for p in cola(productos)}
+    for jpg in HISTORIAS.glob("*.jpg"):
+        if jpg.stem not in usadas:
+            jpg.unlink()
     pendientes = faltantes(productos)
     if pendientes:
         print(f"redes: faltan {len(pendientes)} fotos JPG (node scripts/redes_fotos.cjs): {', '.join(pendientes)}")
+    pendientes = faltantes_historias(productos)
+    if pendientes:
+        print(f"redes: faltan {len(pendientes)} historias JPG (node scripts/redes_fotos.cjs --historias)")
 
 
 if __name__ == "__main__":
+    todos = json.loads((b.ROOT / "productos.json").read_text(encoding="utf-8"))
     if sys.argv[1:] == ["faltantes"]:
-        print("\n".join(faltantes(json.loads((b.ROOT / "productos.json").read_text(encoding="utf-8")))))
+        print("\n".join(faltantes(todos)))
+    elif sys.argv[1:] == ["faltantes-historias"]:
+        print("\n".join(json.dumps(h, ensure_ascii=False) for h in faltantes_historias(todos)))
     else:
         print(__doc__)

@@ -7,7 +7,7 @@
     'use strict';
     const CLAVE_MARCAS = 's3d-redes-publicado';
     const CLAVE_ACCESO = 's3d-redes-clave';
-    const REDES = { facebook: 'Facebook', instagram: 'Instagram' };
+    const NOMBRES = { facebook: 'Facebook', instagram: 'Instagram', historia_facebook: 'Historia en Facebook', historia_instagram: 'Historia en Instagram' };
     const main = document.querySelector('main');
     const API = main ? main.dataset.api : '';
     let estado = null;   // respuesta del Apps Script: { 'id:tipo': { programado, salida, facebook, instagram } }
@@ -132,8 +132,10 @@
         const e = (estado && estado[`${id}:${seccion.dataset.tipo}`]) || {};
         const lista = seccion.querySelector('[data-auto-estado]');
         lista.replaceChildren();
+        const redes = (seccion.dataset.redes || 'facebook,instagram').split(',');
         let publicadas = 0;
-        for (const [red, nombre] of Object.entries(REDES)) {
+        for (const red of redes) {
+            const nombre = NOMBRES[red] || red;
             const r = e[red];
             if (r && r.estado === 'publicado') {
                 publicadas++;
@@ -145,7 +147,7 @@
             }
         }
         if (e.programado) filaEstado(lista, `Aprobado: saldrá solo el ${fecha(e.salida)}`, '', 'rd-espera');
-        const completo = publicadas === Object.keys(REDES).length;
+        const completo = publicadas === redes.length;
         seccion.querySelector('[data-accion="publicar"]').hidden = completo;
         seccion.querySelector('[data-accion="aprobar"]').hidden = completo || !!e.programado;
         seccion.querySelector('[data-accion="cancelar"]').hidden = !e.programado;
@@ -208,6 +210,14 @@
         if (p) p.textContent = String(enMarketplace);
         const r = document.querySelector('[data-progreso="redes"]');
         if (r) r.textContent = estado ? String(enRedes) : '–';
+        ocultarPublicados();
+    }
+
+    // Con muchos productos en la cola, los ya publicados en todas partes se ocultan (casilla de arriba).
+    function ocultarPublicados() {
+        const casilla = document.querySelector('[data-ocultar]');
+        const ocultar = !casilla || casilla.checked;
+        document.querySelectorAll('.rd-post').forEach(a => { a.hidden = ocultar && a.classList.contains('rd-completo'); });
     }
 
     // ------------------------------------------------------------ eventos
@@ -222,6 +232,10 @@
     });
 
     document.addEventListener('change', evento => {
+        if (evento.target.closest('[data-ocultar]')) {
+            ocultarPublicados();
+            return;
+        }
         const casilla = evento.target.closest('[data-red]');
         if (!casilla) return;
         const id = casilla.closest('.rd-post').dataset.id;

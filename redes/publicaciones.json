@@ -7,7 +7,8 @@
       "fotos": [
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-set-completo-1.jpg?v=16e449bf"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3001-8ba6e5f7.jpg"
     },
     "3002": {
       "nombre": "Snoopy Navideño Set 3 Piezas",
@@ -18,7 +19,8 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-set3-2.jpg?v=55e0bbe6",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-set3-3.jpg?v=41841f69"
       ],
-      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-snoopy-set3-video.mp4"
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-snoopy-set3-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3002-3fb1bd8e.jpg"
     },
     "3003": {
       "nombre": "Snoopy y Woodstock en Trineo con Árbol",
@@ -28,7 +30,8 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-trineo-arbol-1.jpg?v=1f4c7e4f",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-trineo-arbol-2.jpg?v=0a00c113"
       ],
-      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-snoopy-trineo-arbol-video.mp4"
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-snoopy-trineo-arbol-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3003-a6008743.jpg"
     },
     "3004": {
       "nombre": "Snoopy Papá Noel",
@@ -38,7 +41,8 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-papa-noel-1.jpg?v=4103bf3e",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-snoopy-papa-noel-2.jpg?v=ab67fe6a"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3004-d67fc008.jpg"
     },
     "3005": {
       "nombre": "Árbol Navideño",
@@ -50,7 +54,8 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-arbol-blanco-1.jpg?v=18e101b9",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-arbol-blanco-2.jpg?v=75f17fc0"
       ],
-      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-arboles-video.mp4"
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/nav-arboles-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3005-e5f09d10.jpg"
     },
     "3006": {
       "nombre": "Angelito con Árbol",
@@ -59,7 +64,8 @@
       "fotos": [
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-angelito-arbol-1.jpg?v=a2704d5b"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3006-80958442.jpg"
     },
     "3007": {
       "nombre": "Angelito",
@@ -69,7 +75,8 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-angelito-1.jpg?v=a9a3b499",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-angelito-2.jpg?v=b439bcc1"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3007-ea43a2b0.jpg"
     },
     "3008": {
       "nombre": "Servilletero Papá Noel",
@@ -78,7 +85,8 @@
       "fotos": [
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-servilletero-papa-noel-1.jpg?v=0a4a86fe"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3008-f58ba942.jpg"
     },
     "3009": {
       "nombre": "Adorno de Bastones",
@@ -87,7 +95,8 @@
       "fotos": [
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/nav-bastones-1.jpg?v=fe240cf3"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3009-43aa6873.jpg"
     },
     "214": {
       "nombre": "Árbol Portavasos",
@@ -97,7 +106,930 @@
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/arbol-portavasos-1.jpg?v=bdb7c6f9",
         "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/arbol-portavasos-2.jpg?v=592c8b52"
       ],
-      "video": null
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/214-bd6f5493.jpg"
+    },
+    "14": {
+      "nombre": "Snoopy Peaky Blinders Set",
+      "facebook": "✨ Snoopy Peaky Blinders Set\n\nSet de Snoopy Peaky Blinders: la figura con gorra plana y abrigo largo, que incluye su base con placa. Impreso en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 100.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-peaky-blinders-set/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Peaky Blinders Set\n\nSet de Snoopy Peaky Blinders: la figura con gorra plana y abrigo largo, que incluye su base con placa. Impreso en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 100.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-peaky-set-1.jpg?v=606ebe39",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-peaky-set-2.jpg?v=30028361"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/14-f6b34e5f.jpg"
+    },
+    "212": {
+      "nombre": "Torre Eiffel",
+      "facebook": "✨ Torre Eiffel\n\nRéplica de la Torre Eiffel con su estructura calada y detallada, en tono marfil: un recuerdo de París para el escritorio o la repisa. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25 CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/torre-eiffel/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Torre Eiffel\n\nRéplica de la Torre Eiffel con su estructura calada y detallada, en tono marfil: un recuerdo de París para el escritorio o la repisa. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25 CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/TORRE%20EIFFEL-1.jpg?v=d5889dd3"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/212-35b0a0d0.jpg"
+    },
+    "213": {
+      "nombre": "Calendario Perpetuo",
+      "facebook": "✨ Calendario Perpetuo\n\nCalendario perpetuo de escritorio con engranajes y anillos giratorios para marcar el día, la fecha y el mes, con detalles amarillos sobre fondo negro y el lema Tempus Fugit. Mide 20 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 20 CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/calendario-perpetuo/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Calendario Perpetuo\n\nCalendario perpetuo de escritorio con engranajes y anillos giratorios para marcar el día, la fecha y el mes, con detalles amarillos sobre fondo negro y el lema Tempus Fugit. Mide 20 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 20 CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CALENDARIO%20PERPETUO-1.jpg?v=97c52a55",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CALENDARIO%20PERPETUO-2.jpg?v=7443c416"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/213-828ff5f8.jpg"
+    },
+    "308": {
+      "nombre": "Bart Barbero",
+      "facebook": "💈 Bart Barbero\n\nBart Simpson como barbero: sentado en un sillón de barbería, con lentes oscuros y tijeras en la mano, listo para atender. Figura de 25 cm impresa en 3D en PLA Premium, ideal para tu barbería o para coleccionar.\n\n📏 Medida: 25 CM\n💰 Precio: S/ 135.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/bart-barbero/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Bart Barbero\n\nBart Simpson como barbero: sentado en un sillón de barbería, con lentes oscuros y tijeras en la mano, listo para atender. Figura de 25 cm impresa en 3D en PLA Premium, ideal para tu barbería o para coleccionar.\n\n📏 Medida: 25 CM\n💰 Precio: S/ 135.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-bart-1.jpg?v=fafef85b",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-bart-2.jpg?v=7eda01c3"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/barber-bart-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/308-039c1f5d.jpg"
+    },
+    "510": {
+      "nombre": "Cochera Toyota",
+      "facebook": "🔑 Cochera Toyota\n\nPortallaves de pared con forma de cochera, con el logo de Toyota y un gancho para colgar las llaves: un detalle para los amantes de los autos.\n\n📏 Medida: Estándar\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/cochera-toyota/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Cochera Toyota\n\nPortallaves de pared con forma de cochera, con el logo de Toyota y un gancho para colgar las llaves: un detalle para los amantes de los autos.\n\n📏 Medida: Estándar\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-toyota-1.jpg?v=c0f84f74",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-toyota-2.jpg?v=a5f81a1e"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/510-b26331e3.jpg"
+    },
+    "512": {
+      "nombre": "Cochera Audi",
+      "facebook": "🔑 Cochera Audi\n\nPortallaves de pared con forma de cochera, con los cuatro aros de Audi, un pequeño auto en su interior y un gancho para colgar las llaves.\n\n📏 Medida: Estándar\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/cochera-audi/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Cochera Audi\n\nPortallaves de pared con forma de cochera, con los cuatro aros de Audi, un pequeño auto en su interior y un gancho para colgar las llaves.\n\n📏 Medida: Estándar\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-audi-1.jpg?v=f15f0424",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-audi-2.jpg?v=8d846853"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/ll-audi-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/512-6fc0c490.jpg"
+    },
+    "805": {
+      "nombre": "Box Light Grande",
+      "facebook": "💡 Box Light Grande\n\nCaja de luz iluminada de 25 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, John Wick).\n\n📏 Medida: 25CM\n💰 Precio: S/ 95.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/box-light-grande/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Box Light Grande\n\nCaja de luz iluminada de 25 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, John Wick).\n\n📏 Medida: 25CM\n💰 Precio: S/ 95.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-box1-1.jpg?v=c706aaca",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-box1-2.jpg?v=cf8b460f"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/805-c842542b.jpg"
+    },
+    "806": {
+      "nombre": "Box Light Mediano",
+      "facebook": "💡 Box Light Mediano\n\nCaja de luz iluminada de 15 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, Manchester City).\n\n📏 Medida: 15CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/box-light-mediano/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Box Light Mediano\n\nCaja de luz iluminada de 15 cm con las caras delanteras totalmente personalizables: tu actor favorito, jugador, club de fútbol o el diseño que desees (en la foto, Manchester City).\n\n📏 Medida: 15CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-box2-1.jpg?v=6b28b745",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-box2-2.jpg?v=ebe75ec8"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/806-6bbf6614.jpg"
+    },
+    "401": {
+      "nombre": "Hueso Xa Naranja",
+      "facebook": "🐾 Hueso Xa Naranja\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hueso-xa-naranja/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Hueso Xa Naranja\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-hueso-xan-1.jpg?v=4bd9bb19"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/401-5864dcb5.jpg"
+    },
+    "402": {
+      "nombre": "Hueso Xa Lila",
+      "facebook": "🐾 Hueso Xa Lila\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hueso-xa-lila/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Hueso Xa Lila\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-hueso-xal-1.jpg?v=425cf5ed"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/402-8afa14e4.jpg"
+    },
+    "403": {
+      "nombre": "Hueso Xa Celeste",
+      "facebook": "🐾 Hueso Xa Celeste\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hueso-xa-celeste/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Hueso Xa Celeste\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-hueso-xac-1.jpg?v=21f258b9"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/403-fd34383c.jpg"
+    },
+    "404": {
+      "nombre": "Hueso Xa Blanco",
+      "facebook": "🐾 Hueso Xa Blanco\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hueso-xa-blanco/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Hueso Xa Blanco\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-hueso-xab-1.jpg?v=9de30d7e"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/404-57bc28ff.jpg"
+    },
+    "405": {
+      "nombre": "Hueso Xa Verde",
+      "facebook": "🐾 Hueso Xa Verde\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hueso-xa-verde/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Hueso Xa Verde\n\nPlaca de identificación para mascota con forma de hueso: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Hueso XA, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XA\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-hueso-xav-1.jpg?v=14247ffe"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/405-97d38849.jpg"
+    },
+    "406": {
+      "nombre": "Huella Xc Naranja",
+      "facebook": "🐾 Huella Xc Naranja\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xc-naranja/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xc Naranja\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xcn-1.jpg?v=39973f1f"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/406-6bdc9c56.jpg"
+    },
+    "407": {
+      "nombre": "Huella Xc Lila",
+      "facebook": "🐾 Huella Xc Lila\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xc-lila/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xc Lila\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xcl-1.jpg?v=eb3d1da6"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/407-6c907f3c.jpg"
+    },
+    "408": {
+      "nombre": "Huella Xc Celeste",
+      "facebook": "🐾 Huella Xc Celeste\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xc-celeste/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xc Celeste\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xcc-1.jpg?v=4f585bd2"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/408-83f15077.jpg"
+    },
+    "409": {
+      "nombre": "Huella Xc Blanco",
+      "facebook": "🐾 Huella Xc Blanco\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xc-blanco/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xc Blanco\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xcb-1.jpg?v=c861d661"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/409-2820998d.jpg"
+    },
+    "410": {
+      "nombre": "Huella Xc Verde",
+      "facebook": "🐾 Huella Xc Verde\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xc-verde/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xc Verde\n\nPlaca de identificación para mascota con una huella dentro de un marco circular: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XC, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XC\n💰 Precio: S/ 23.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xcv-1.jpg?v=81fa8b12"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/410-f7b069b9.jpg"
+    },
+    "208": {
+      "nombre": "Jarrón Texturizados",
+      "facebook": "✨ Jarrón Texturizados\n\nJarrón de una pieza con textura geométrica en relieve, de patrón de rombos, que se ve muy bien con flores secas; en la foto, en blanco y negro, y se puede pedir en otros colores. Mide 25 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jarron-texturizados/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Jarrón Texturizados\n\nJarrón de una pieza con textura geométrica en relieve, de patrón de rombos, que se ve muy bien con flores secas; en la foto, en blanco y negro, y se puede pedir en otros colores. Mide 25 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JARRON%20TEZTURIZADO.jpg?v=15cc5789"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/208-816e2606.jpg"
+    },
+    "301": {
+      "nombre": "Octolux",
+      "facebook": "💈 Octolux\n\nEspejo infinito octogonal con luces LED que crean un túnel de profundidad infinita alrededor del logo de tu barbería. Un letrero luminoso que llama la atención desde la puerta del local. Mide 25 cm.\n\n📏 Medida: 25cm\n💰 Precio: S/ 289.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/octolux/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Octolux\n\nEspejo infinito octogonal con luces LED que crean un túnel de profundidad infinita alrededor del logo de tu barbería. Un letrero luminoso que llama la atención desde la puerta del local. Mide 25 cm.\n\n📏 Medida: 25cm\n💰 Precio: S/ 289.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-rotulo-1.jpg?v=720ba53b"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/barber-rotulo-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/301-f1088834.jpg"
+    },
+    "302": {
+      "nombre": "Frameluz",
+      "facebook": "💈 Frameluz\n\nCuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño compacto de 15 × 11 cm, ideal para el mostrador.\n\n📏 Medida: 15CMX11CM\n💰 Precio: S/ 74.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/frameluz-302/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Frameluz\n\nCuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño compacto de 15 × 11 cm, ideal para el mostrador.\n\n📏 Medida: 15CMX11CM\n💰 Precio: S/ 74.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-frames3d-1.jpg?v=5819f0b5",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-frames3d-2.jpg?v=ecf7396c"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/barber-frames3d-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/302-916fd895.jpg"
+    },
+    "303": {
+      "nombre": "Frameluz",
+      "facebook": "💈 Frameluz\n\nCuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño grande de 25 × 18 cm, ideal para destacar en la pared o el mostrador.\n\n📏 Medida: 25CMX18CM\n💰 Precio: S/ 129.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/frameluz-303/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Frameluz\n\nCuadro luminoso con luz LED para exhibir el diseño o la promoción de tu barbería: en la foto, con logo, datos de contacto y descuento. Tamaño grande de 25 × 18 cm, ideal para destacar en la pared o el mostrador.\n\n📏 Medida: 25CMX18CM\n💰 Precio: S/ 129.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-frame3d-1.jpg?v=3178551b",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-frame3d-2.jpg?v=70da61c5"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/barber-frame3d-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/303-7337ff95.jpg"
+    },
+    "307": {
+      "nombre": "Porta Guias",
+      "facebook": "💈 Porta Guias\n\nOrganizador alargado para las guías de corte de tus máquinas, con ranuras que las mantienen ordenadas y a la vista; en negro y con el nombre de tu barbería en relieve (en la foto, S3D). Mide 23 × 7,5 × 6 cm.\n\n📏 Medida: 23X7,5X6CM\n💰 Precio: S/ 39.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/porta-guias/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Porta Guias\n\nOrganizador alargado para las guías de corte de tus máquinas, con ranuras que las mantienen ordenadas y a la vista; en negro y con el nombre de tu barbería en relieve (en la foto, S3D). Mide 23 × 7,5 × 6 cm.\n\n📏 Medida: 23X7,5X6CM\n💰 Precio: S/ 39.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-porta-1.jpg?v=3d39b27a"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/307-cfb3a5b6.jpg"
+    },
+    "515": {
+      "nombre": "Nike",
+      "facebook": "🔑 Nike\n\nLlavero calado con la silueta de un osito y el logo de Nike, en negro con detalles blancos.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/nike/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Nike\n\nLlavero calado con la silueta de un osito y el logo de Nike, en negro con detalles blancos.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-nike-1.jpg?v=41a6aabf"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/515-a0113a5d.jpg"
+    },
+    "802": {
+      "nombre": "Lampara LED Cars Personalizadas",
+      "facebook": "💡 Lampara LED Cars Personalizadas\n\nLámpara de pared inspirada en el logo de Cars, con luz LED blanca en el contorno y el nombre que elijas en el centro (en la foto, Lucca). Mide 50 × 60 × 5 cm.\n\n📏 Medida: 50X60X5CM\n💰 Precio: S/ 220.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/lampara-led-cars-personalizadas/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Lampara LED Cars Personalizadas\n\nLámpara de pared inspirada en el logo de Cars, con luz LED blanca en el contorno y el nombre que elijas en el centro (en la foto, Lucca). Mide 50 × 60 × 5 cm.\n\n📏 Medida: 50X60X5CM\n💰 Precio: S/ 220.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-cars-1.jpg?v=a0a86d6f",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-cars-2.jpg?v=d6249187"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/802-3b55f1c0.jpg"
+    },
+    "804": {
+      "nombre": "Lampara LED Qr",
+      "facebook": "💡 Lampara LED Qr\n\nLámpara LED circular para negocios, con luz cálida y códigos QR integrados para que tus clientes te encuentren o te sigan (en la foto, para una barbería). Mide 25 × 23 × 5 cm.\n\n📏 Medida: 25X23X5CM\n💰 Precio: S/ 90.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/lampara-led-qr/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Lampara LED Qr\n\nLámpara LED circular para negocios, con luz cálida y códigos QR integrados para que tus clientes te encuentren o te sigan (en la foto, para una barbería). Mide 25 × 23 × 5 cm.\n\n📏 Medida: 25X23X5CM\n💰 Precio: S/ 90.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-gr-1.jpg?v=85557bae",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-gr-2.jpg?v=10d2b9ad"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/804-cbf70d04.jpg"
+    },
+    "901": {
+      "nombre": "Dummy Moto",
+      "facebook": "✨ Dummy Moto\n\nFigura articulada Dummy montada sobre una moto de diseño futurista, lista para posar en distintas posiciones. Mide 29 × 14 × 5 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 29X14X5CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/dummy-moto/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Dummy Moto\n\nFigura articulada Dummy montada sobre una moto de diseño futurista, lista para posar en distintas posiciones. Mide 29 × 14 × 5 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 29X14X5CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-moto-1.jpg?v=0d7f8f9e",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-moto-2.jpg?v=44ddc192"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/901-dad96e65.jpg"
+    },
+    "6": {
+      "nombre": "Snoopy Saludos",
+      "facebook": "✨ Snoopy Saludos\n\nSnoopy sonriente que saluda haciendo la señal de paz, con su collar rojo. Una figura alegre para tu escritorio, impresa en 3D en PLA Premium; mide 18 cm.\n\n📏 Medida: 18CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-saludos/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Saludos\n\nSnoopy sonriente que saluda haciendo la señal de paz, con su collar rojo. Una figura alegre para tu escritorio, impresa en 3D en PLA Premium; mide 18 cm.\n\n📏 Medida: 18CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-saludo-1.jpg?v=b33b4fe9",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-saludo-2.jpg?v=b5d4dc54"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/6-afdc2037.jpg"
+    },
+    "204": {
+      "nombre": "Oso con Corazón",
+      "facebook": "✨ Oso con Corazón\n\nOsito marrón con textura que imita el tejido, abrazando un corazón rojo. Un detalle tierno para regalar o decorar. Mide 15,6 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15,6CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/oso-con-corazon/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Oso con Corazón\n\nOsito marrón con textura que imita el tejido, abrazando un corazón rojo. Un detalle tierno para regalar o decorar. Mide 15,6 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15,6CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/OSO%20CON%20CORAZON.jpg?v=c83f1fe2"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/204-ae454e50.jpg"
+    },
+    "1005": {
+      "nombre": "Holder Cienciano",
+      "facebook": "✨ Holder Cienciano\n\nOrganizador de escritorio con forma de polera con capucha, en rojo y con el escudo de Cienciano, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-cienciano/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Cienciano\n\nOrganizador de escritorio con forma de polera con capucha, en rojo y con el escudo de Cienciano, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CIE-M1.jpg?v=bf4a6488",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CIE-M2.jpg?v=86104446"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1005-97a31628.jpg"
+    },
+    "1006": {
+      "nombre": "Holder Real Madrid",
+      "facebook": "✨ Holder Real Madrid\n\nOrganizador de escritorio con forma de polera con capucha, en blanco y con el escudo del Real Madrid, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-real-madrid/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Real Madrid\n\nOrganizador de escritorio con forma de polera con capucha, en blanco y con el escudo del Real Madrid, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/RM-M1.jpg?v=3a6369f8",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/RM-M2.jpg?v=22fcbf1f"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1006-8a1cab79.jpg"
+    },
+    "1007": {
+      "nombre": "Holder Barcelona",
+      "facebook": "✨ Holder Barcelona\n\nOrganizador de escritorio con forma de polera con capucha, en blanco y con el escudo del FC Barcelona, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-barcelona/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Barcelona\n\nOrganizador de escritorio con forma de polera con capucha, en blanco y con el escudo del FC Barcelona, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/BAR-M1.jpg?v=f2545e1c"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1007-6f217fb1.jpg"
+    },
+    "1008": {
+      "nombre": "Holder Psg",
+      "facebook": "✨ Holder Psg\n\nOrganizador de escritorio con forma de polera con capucha, en azul marino y con el escudo del Paris Saint-Germain, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-psg/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Psg\n\nOrganizador de escritorio con forma de polera con capucha, en azul marino y con el escudo del Paris Saint-Germain, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/PSG-M1.jpg?v=71203bad"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1008-4f5709e4.jpg"
+    },
+    "1009": {
+      "nombre": "Holder Knicks Basquetbol",
+      "facebook": "✨ Holder Knicks Basquetbol\n\nOrganizador de escritorio con forma de polera con capucha, en naranja y con el logo de los New York Knicks, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-knicks-basquetbol/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Knicks Basquetbol\n\nOrganizador de escritorio con forma de polera con capucha, en naranja y con el logo de los New York Knicks, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/KNI-M1.jpg?v=aee8be04",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/KNI-M2.jpg?v=e849d192"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1009-070e0edc.jpg"
+    },
+    "1010": {
+      "nombre": "Holder Jiu Jitsu",
+      "facebook": "✨ Holder Jiu Jitsu\n\nOrganizador de escritorio con forma de kimono de jiu jitsu, en blanco y con cinturón marrón, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 50.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-jiu-jitsu/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Jiu Jitsu\n\nOrganizador de escritorio con forma de kimono de jiu jitsu, en blanco y con cinturón marrón, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 50.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JIU-M1.jpg?v=d6764421",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JIU-M2.jpg?v=3ed0c9ed"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1010-cec74551.jpg"
+    },
+    "304": {
+      "nombre": "Barber Lamp",
+      "facebook": "💈 Barber Lamp\n\nLámpara LED circular con el letrero Barber y un diseño de tijeras, peine y máquina, que ilumina con luz cálida el mostrador de tu barbería. Mide 23 × 23 × 4 cm.\n\n📏 Medida: 23X23X4CM\n💰 Precio: S/ 114.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/barber-lamp/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Barber Lamp\n\nLámpara LED circular con el letrero Barber y un diseño de tijeras, peine y máquina, que ilumina con luz cálida el mostrador de tu barbería. Mide 23 × 23 × 4 cm.\n\n📏 Medida: 23X23X4CM\n💰 Precio: S/ 114.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-lamp-1.jpg?v=ed97f756",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-lamp-2.jpg?v=b2227867"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/barber-lamp-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/304-7cbc0104.jpg"
+    },
+    "305": {
+      "nombre": "Line Art",
+      "facebook": "💈 Line Art\n\nRetrato en arte lineal de un hombre con barba y lentes, con acabado facetado en negro, para decorar la pared de tu barbería. Diseño y precio a medida.\n\n📏 Medida: Personalizado\n💰 Precio: a cotizar según medida y diseño\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/line-art/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Line Art\n\nRetrato en arte lineal de un hombre con barba y lentes, con acabado facetado en negro, para decorar la pared de tu barbería. Diseño y precio a medida.\n\n📏 Medida: Personalizado\n💰 Precio: a cotizar según medida y diseño\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-lineart-1.jpg?v=44cade97",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-lineart-2.jpg?v=6ae14313"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/305-5d6a602c.jpg"
+    },
+    "306": {
+      "nombre": "Scissors Card",
+      "facebook": "💈 Scissors Card\n\nPortatarjetas con forma de tijeras abiertas sobre una base negra: presenta tus tarjetas de presentación con estilo en el mostrador de tu barbería. Mide 13 × 17 × 9 cm.\n\n📏 Medida: 13X17X9CM\n💰 Precio: S/ 35.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/scissors-card/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "instagram": "💈 Scissors Card\n\nPortatarjetas con forma de tijeras abiertas sobre una base negra: presenta tus tarjetas de presentación con estilo en el mostrador de tu barbería. Mide 13 × 17 × 9 cm.\n\n📏 Medida: 13X17X9CM\n💰 Precio: S/ 35.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#barberia #barbershop #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-scissors-1.jpg?v=ac18c6bc",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/barber-scissors-2.jpg?v=1b261783"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/306-1bf2bc4f.jpg"
+    },
+    "411": {
+      "nombre": "Huella Xs Naranja",
+      "facebook": "🐾 Huella Xs Naranja\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xs-naranja/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xs Naranja\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color naranja resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xsn-1.jpg?v=a0657c1a"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/411-26bf2579.jpg"
+    },
+    "412": {
+      "nombre": "Huella Xs Lila",
+      "facebook": "🐾 Huella Xs Lila\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xs-lila/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xs Lila\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color lila resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xsl-1.jpg?v=a5a30b0c"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/412-bebc9b4c.jpg"
+    },
+    "413": {
+      "nombre": "Huella Xs Celeste",
+      "facebook": "🐾 Huella Xs Celeste\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xs-celeste/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xs Celeste\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color celeste resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xsc-1.jpg?v=292e728b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/413-2f42f999.jpg"
+    },
+    "414": {
+      "nombre": "Huella Xs Blanco",
+      "facebook": "🐾 Huella Xs Blanco\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xs-blanco/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xs Blanco\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color blanco resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xsb-1.jpg?v=fd7bdc68"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/414-c276db9b.jpg"
+    },
+    "415": {
+      "nombre": "Huella Xs Verde",
+      "facebook": "🐾 Huella Xs Verde\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/huella-xs-verde/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "instagram": "🐾 Huella Xs Verde\n\nPlaca de identificación para mascota con el contorno en forma de huella: el relieve en color verde resalta sobre su base oscura y lleva argolla para colgarla del collar. Modelo Huella XS, impreso en 3D en PLA Premium; disponible en naranja, lila, celeste, blanco y verde.\n\n📏 Medida: XS\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#mascotas #petlovers #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/pet-huella-xsv-1.jpg?v=4d711230"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/415-d2075e6b.jpg"
+    },
+    "501": {
+      "nombre": "Antisocial",
+      "facebook": "🔑 Antisocial\n\nLlavero con el logo Anti Social Social Club en letras blancas con contorno negro, con estilo streetwear.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/antisocial/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Antisocial\n\nLlavero con el logo Anti Social Social Club en letras blancas con contorno negro, con estilo streetwear.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-antisocial-1.jpg?v=d7f11a85"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/501-84aa373d.jpg"
+    },
+    "503": {
+      "nombre": "Debi Tirar Más Fotos",
+      "facebook": "🔑 Debi Tirar Más Fotos\n\nLlavero cuadrado naranja con la frase Debí tirar más fotos en letras blancas, inspirado en el álbum de Bad Bunny.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/debi-tirar-mas-fotos/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Debi Tirar Más Fotos\n\nLlavero cuadrado naranja con la frase Debí tirar más fotos en letras blancas, inspirado en el álbum de Bad Bunny.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-debi-1.jpg?v=08a09a0c",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-debi-2.jpg?v=d759cf75"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/503-a1f93252.jpg"
+    },
+    "504": {
+      "nombre": "Off White",
+      "facebook": "🔑 Off White\n\nLlavero con el logo de flechas cruzadas de Off-White, en negro y blanco con efecto de relieve.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/off-white/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Off White\n\nLlavero con el logo de flechas cruzadas de Off-White, en negro y blanco con efecto de relieve.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-offwhite-1.jpg?v=c2cc7962"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/504-d6768d86.jpg"
+    },
+    "505": {
+      "nombre": "Jordan",
+      "facebook": "🔑 Jordan\n\nLlavero Jordan en dos versiones: con el logo Jumpman en blanco y negro, o con una mini zapatilla roja y negra y una chapita con tu nombre, como en la foto.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jordan/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "instagram": "🔑 Jordan\n\nLlavero Jordan en dos versiones: con el logo Jumpman en blanco y negro, o con una mini zapatilla roja y negra y una chapita con tu nombre, como en la foto.\n\n📏 Medida: Estándar\n💰 Precio: S/ 8.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#llaveros #llaveropersonalizado #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-jordan-1.jpg?v=299d2acd",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ll-jordan-2.jpg?v=9e7f680f"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/505-a0d57b63.jpg"
+    },
+    "601": {
+      "nombre": "Big Three",
+      "facebook": "✨ Big Three\n\nDecoración de pared en arte lineal con tres siluetas de tenistas en acción, inspirada en los Big Three del tenis. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/big-three/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "instagram": "✨ Big Three\n\nDecoración de pared en arte lineal con tres siluetas de tenistas en acción, inspirada en los Big Three del tenis. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-bigthree-1.jpg?v=81a30c7b",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-bigthree-2.jpg?v=3af4efaf"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/601-1828d56e.jpg"
+    },
+    "602": {
+      "nombre": "Hermanas W",
+      "facebook": "✨ Hermanas W\n\nDecoración de pared en arte lineal con dos siluetas de tenistas en acción, inspirada en las hermanas Williams. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hermanas-w/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "instagram": "✨ Hermanas W\n\nDecoración de pared en arte lineal con dos siluetas de tenistas en acción, inspirada en las hermanas Williams. Mide 25 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 25.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-hermanas-1.jpg?v=764a0ab2",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-hermanas-2.jpg?v=2caa4cf4"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/602-0158561b.jpg"
+    },
+    "603": {
+      "nombre": "Rayo Mc Queen",
+      "facebook": "✨ Rayo Mc Queen\n\nRayo McQueen de Cars en arte lineal de gran formato, con contornos rojos y amarillos, el número 95 y sus ojos azules. Mide 75 cm: perfecto para el cuarto de un fan.\n\n📏 Medida: 75CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/rayo-mc-queen/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "instagram": "✨ Rayo Mc Queen\n\nRayo McQueen de Cars en arte lineal de gran formato, con contornos rojos y amarillos, el número 95 y sus ojos azules. Mide 75 cm: perfecto para el cuarto de un fan.\n\n📏 Medida: 75CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-rayo-1.jpg?v=bf083a9c",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-rayo-2.jpg?v=bdafa200"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/603-598bfb44.jpg"
+    },
+    "604": {
+      "nombre": "Doc Hudson",
+      "facebook": "✨ Doc Hudson\n\nDoc Hudson de Cars en arte lineal de gran formato, con su silueta clásica en negro y detalles en gris. Mide 75 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 75CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/doc-hudson/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "instagram": "✨ Doc Hudson\n\nDoc Hudson de Cars en arte lineal de gran formato, con su silueta clásica en negro y detalles en gris. Mide 75 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 75CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-doc-1.jpg?v=5cd85539",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-doc-2.jpg?v=4875829b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/604-3571f54e.jpg"
+    },
+    "605": {
+      "nombre": "Mate",
+      "facebook": "✨ Mate\n\nMate, la grúa de Cars, en arte lineal en tonos naranja, con su sonrisa y sus ojos verdes. Mide 50 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 50CM\n💰 Precio: S/ 65.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/mate/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "instagram": "✨ Mate\n\nMate, la grúa de Cars, en arte lineal en tonos naranja, con su sonrisa y sus ojos verdes. Mide 50 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 50CM\n💰 Precio: S/ 65.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lineart #decoracion #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-mate-1.jpg?v=2f03abed",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/la-mate-2.jpg?v=3d1ac4f2"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/605-f11cc0af.jpg"
+    },
+    "701": {
+      "nombre": "Espejo Infinito",
+      "facebook": "💡 Espejo Infinito\n\nEspejo infinito octogonal con luces LED azules que crean un túnel de profundidad infinita alrededor de tu logo o texto en relieve (en la foto, S3D). Mide 25 cm.\n\n📏 Medida: 25CM\n💰 Precio: S/ 289.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/espejo-infinito/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Espejo Infinito\n\nEspejo infinito octogonal con luces LED azules que crean un túnel de profundidad infinita alrededor de tu logo o texto en relieve (en la foto, S3D). Mide 25 cm.\n\n📏 Medida: 25CM\n💰 Precio: S/ 289.90 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ei-espejo-1.jpg?v=b367dc8a",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ei-espejo-2.jpg?v=7c388da5"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/701-721f46c9.jpg"
+    },
+    "801": {
+      "nombre": "Letrero LED",
+      "facebook": "💡 Letrero LED\n\nLetrero luminoso con retroiluminación cálida y letras en relieve, hecho a la medida con el nombre o el diseño de tu negocio (en la foto, The Bunker Barber Studio). Diseño y precio a medida.\n\n📏 Medida: 30CM\n💰 Precio: a cotizar según medida y diseño\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/letrero-led/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Letrero LED\n\nLetrero luminoso con retroiluminación cálida y letras en relieve, hecho a la medida con el nombre o el diseño de tu negocio (en la foto, The Bunker Barber Studio). Diseño y precio a medida.\n\n📏 Medida: 30CM\n💰 Precio: a cotizar según medida y diseño\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-letrero-1.jpg?v=ae8d8372",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-letrero-2.jpg?v=ed5980a3"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/801-7b4e377c.jpg"
+    },
+    "803": {
+      "nombre": "Light Box Rayo",
+      "facebook": "💡 Light Box Rayo\n\nCaja de luz con la silueta de Rayo McQueen en rojo, iluminada desde atrás, que incluye control remoto. Mide 25 × 18 × 4 cm.\n\n📏 Medida: 25X18X4CM\n💰 Precio: S/ 95.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/light-box-rayo/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Light Box Rayo\n\nCaja de luz con la silueta de Rayo McQueen en rojo, iluminada desde atrás, que incluye control remoto. Mide 25 × 18 × 4 cm.\n\n📏 Medida: 25X18X4CM\n💰 Precio: S/ 95.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-boxrayo-1.jpg?v=db2fe1a7",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-boxrayo-2.jpg?v=edb7c49b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/803-c812910f.jpg"
+    },
+    "807": {
+      "nombre": "Luna LED",
+      "facebook": "💡 Luna LED\n\nLámpara redonda con la superficie de la luna en relieve, retroiluminada y con marco oscuro, que da una luz suave al dormitorio o la sala. Mide 25 cm.\n\n📏 Medida: 25CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/luna-led/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "instagram": "💡 Luna LED\n\nLámpara redonda con la superficie de la luna en relieve, retroiluminada y con marco oscuro, que da una luz suave al dormitorio o la sala. Mide 25 cm.\n\n📏 Medida: 25CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA / LED. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#lamparas #iluminacionled #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-luna-1.jpg?v=80d8586a",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/led-luna-2.jpg?v=0809bec7"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/807-be8c990e.jpg"
+    },
+    "902": {
+      "nombre": "Dummy",
+      "facebook": "✨ Dummy\n\nFigura articulada Dummy de 25 cm, con articulaciones que permiten armar distintas poses. En la foto es amarilla y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/dummy-902/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Dummy\n\nFigura articulada Dummy de 25 cm, con articulaciones que permiten armar distintas poses. En la foto es amarilla y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy25-1.jpg?v=9df0bc75",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy25-2.jpg?v=e5a4ec0d"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/902-c871c037.jpg"
+    },
+    "903": {
+      "nombre": "Dummy",
+      "facebook": "✨ Dummy\n\nFigura articulada Dummy de 20 cm, con articulaciones que permiten armar distintas poses. En la foto es celeste y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 20CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/dummy-903/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Dummy\n\nFigura articulada Dummy de 20 cm, con articulaciones que permiten armar distintas poses. En la foto es celeste y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 20CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy20-1.jpg?v=37dabcb4",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy20-2.jpg?v=30e84891"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/903-672b66ea.jpg"
+    },
+    "904": {
+      "nombre": "Dummy",
+      "facebook": "✨ Dummy\n\nFigura articulada Dummy de 15 cm, la más compacta de la familia, con articulaciones para distintas poses. En la foto es roja y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 20.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/dummy-904/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Dummy\n\nFigura articulada Dummy de 15 cm, la más compacta de la familia, con articulaciones para distintas poses. En la foto es roja y se puede pedir en cualquier color. Impresa en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 20.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy15-1.jpg?v=9c803261",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-dummy15-2.jpg?v=73bd593c"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/904-c5821ab2.jpg"
+    },
+    "905": {
+      "nombre": "Mochila Dummy Personalizada",
+      "facebook": "✨ Mochila Dummy Personalizada\n\nMini mochila de 6,5 cm para tu figura Dummy, personalizable con el texto o el nombre que quieras y en el color que prefieras (en la foto, con letras en relieve).\n\n📏 Medida: 6,5CM\n💰 Precio: S/ 10.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/mochila-dummy-personalizada/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Mochila Dummy Personalizada\n\nMini mochila de 6,5 cm para tu figura Dummy, personalizable con el texto o el nombre que quieras y en el color que prefieras (en la foto, con letras en relieve).\n\n📏 Medida: 6,5CM\n💰 Precio: S/ 10.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-mochila-1.jpg?v=4ab323e1",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/du-mochila-2.jpg?v=7c159fc8"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/905-9f3a62c3.jpg"
+    },
+    "1": {
+      "nombre": "Woody",
+      "facebook": "✨ Woody\n\nFigura de Woody, el vaquero de Toy Story, con su camisa amarilla, chaleco de vaca, sombrero y botas, impresa en 3D con todo el detalle en PLA Premium. Mide 23 cm: una pieza para coleccionistas y fans de la saga.\n\n📏 Medida: 23CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/woody/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Woody\n\nFigura de Woody, el vaquero de Toy Story, con su camisa amarilla, chaleco de vaca, sombrero y botas, impresa en 3D con todo el detalle en PLA Premium. Mide 23 cm: una pieza para coleccionistas y fans de la saga.\n\n📏 Medida: 23CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ts-woody-1.jpg?v=fbbb8412"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1-7f6b116d.jpg"
+    },
+    "2": {
+      "nombre": "Jessie",
+      "facebook": "✨ Jessie\n\nFigura de Jessie, la vaquerita de Toy Story, con su melena roja, sombrero y pantalón de vaca, e incluye su base circular. Impresa en 3D en PLA Premium, mide 24 cm.\n\n📏 Medida: 24CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ En stock, listo para entregar. Impreso en 3D en PLA Premium.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jessie/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Jessie\n\nFigura de Jessie, la vaquerita de Toy Story, con su melena roja, sombrero y pantalón de vaca, e incluye su base circular. Impresa en 3D en PLA Premium, mide 24 cm.\n\n📏 Medida: 24CM\n💰 Precio: S/ 75.00 (incluye IGV)\n🛠️ En stock, listo para entregar. Impreso en 3D en PLA Premium.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ts-jessie-1.jpg?v=639b0a11",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ts-jessie-2.jpg?v=11d02229"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/2-f06c57ac.jpg"
+    },
+    "3": {
+      "nombre": "Buzz",
+      "facebook": "✨ Buzz\n\nFigura de Buzz Lightyear, el guardián espacial de Toy Story, con su traje blanco, verde y morado y las alas desplegadas. Impresa en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/buzz/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Buzz\n\nFigura de Buzz Lightyear, el guardián espacial de Toy Story, con su traje blanco, verde y morado y las alas desplegadas. Impresa en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 80.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#toystory #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ts-buzz-1.jpg?v=9839d628",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ts-buzz-2.jpg?v=66be3718"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/3-61840cae.jpg"
+    },
+    "4": {
+      "nombre": "Hello Kitty Urbana",
+      "facebook": "✨ Hello Kitty Urbana\n\nHello Kitty con look urbano: sudadera con capucha, gorra y zapatillas. Disponible en rosa, gris, negro y amarillo; elige tu color en la ficha. Impresa en 3D en PLA Premium, mide 20 cm.\n\n📏 Medida: 20CM\n🎨 Colores: Rosa, Gris, Negro, Amarillo\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hello-kitty-urbana/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#hellokitty #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Hello Kitty Urbana\n\nHello Kitty con look urbano: sudadera con capucha, gorra y zapatillas. Disponible en rosa, gris, negro y amarillo; elige tu color en la ficha. Impresa en 3D en PLA Premium, mide 20 cm.\n\n📏 Medida: 20CM\n🎨 Colores: Rosa, Gris, Negro, Amarillo\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#hellokitty #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/hk-urbana-1.jpg?v=565f87c4",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/hk-urbana-gris-1.jpg?v=a09b52c6",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/hk-urbana-negro-1.jpg?v=b5c5639a",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/hk-urbana-amarillo-1.jpg?v=095f0129"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/4-b69ea2ac.jpg"
+    },
+    "5": {
+      "nombre": "Hello Kitty Fashion",
+      "facebook": "✨ Hello Kitty Fashion\n\nHello Kitty en versión fashion: gorro rosa con lazo rojo, overol rosa sobre polera blanca, zapatillas lilas y una cartera azul. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/hello-kitty-fashion/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#hellokitty #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Hello Kitty Fashion\n\nHello Kitty en versión fashion: gorro rosa con lazo rojo, overol rosa sobre polera blanca, zapatillas lilas y una cartera azul. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#hellokitty #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/hk-fashion-1.jpg?v=ac83f59e"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/5-c2f9e708.jpg"
+    },
+    "7": {
+      "nombre": "Snoopy",
+      "facebook": "✨ Snoopy\n\nEl Snoopy de siempre, sentado, con su collar rojo y sus orejas negras. Figura compacta de 12 cm impresa en 3D en PLA Premium, fácil de ubicar en cualquier repisa.\n\n📏 Medida: 12CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy\n\nEl Snoopy de siempre, sentado, con su collar rojo y sus orejas negras. Figura compacta de 12 cm impresa en 3D en PLA Premium, fácil de ubicar en cualquier repisa.\n\n📏 Medida: 12CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-base-1.jpg?v=e5b795c8"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/7-0fe7573b.jpg"
+    },
+    "8": {
+      "nombre": "Snoopy Aviador",
+      "facebook": "✨ Snoopy Aviador\n\nSnoopy como el As de la Aviación: gorro y gafas de piloto y bufanda roja, sobre el techo de su casita roja, que viene incluida. Impresa en 3D en PLA Premium; mide 17 cm.\n\n📏 Medida: 17CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-aviador/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Aviador\n\nSnoopy como el As de la Aviación: gorro y gafas de piloto y bufanda roja, sobre el techo de su casita roja, que viene incluida. Impresa en 3D en PLA Premium; mide 17 cm.\n\n📏 Medida: 17CM\n💰 Precio: S/ 60.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-aviador-1.jpg?v=2a620f79",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-aviador-2.jpg?v=daf3ea7b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/8-f32015fd.jpg"
+    },
+    "9": {
+      "nombre": "Snoopy Zzz",
+      "facebook": "✨ Snoopy Zzz\n\nSnoopy durmiendo plácidamente sobre su casita roja, con una base que imita el césped; casita y base vienen incluidas. Impresa en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-zzz/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Zzz\n\nSnoopy durmiendo plácidamente sobre su casita roja, con una base que imita el césped; casita y base vienen incluidas. Impresa en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-zzz-1.jpg?v=fad83537",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-zzz-2.jpg?v=896b3d5b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/9-76e35ce0.jpg"
+    },
+    "10": {
+      "nombre": "Snoopy Peaky Blinders",
+      "facebook": "✨ Snoopy Peaky Blinders\n\nSnoopy con gorra plana, saco y abrigo al más puro estilo Peaky Blinders, con una mirada seria y de época. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-peaky-blinders/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Peaky Blinders\n\nSnoopy con gorra plana, saco y abrigo al más puro estilo Peaky Blinders, con una mirada seria y de época. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-peaky-1.jpg?v=a4dac90a",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-peaky-2.jpg?v=c43eb263"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/sn-peaky-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/10-ce2b3271.jpg"
+    },
+    "11": {
+      "nombre": "Snoopy Tenista",
+      "facebook": "✨ Snoopy Tenista\n\nSnoopy listo para el partido, con gorra azul, raqueta y pelota de tenis en la mano. Figura de 13 cm impresa en 3D en PLA Premium.\n\n📏 Medida: 13CM\n💰 Precio: S/ 50.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-tenista/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Tenista\n\nSnoopy listo para el partido, con gorra azul, raqueta y pelota de tenis en la mano. Figura de 13 cm impresa en 3D en PLA Premium.\n\n📏 Medida: 13CM\n💰 Precio: S/ 50.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-tenista-1.jpg?v=be5019ec",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-tenista-2.jpg?v=49bfbc0b"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/11-5287676f.jpg"
+    },
+    "12": {
+      "nombre": "Snoopy Smooth Criminal Set",
+      "facebook": "✨ Snoopy Smooth Criminal Set\n\nSet de Snoopy inspirado en el videoclip Smooth Criminal: traje y sombrero blancos, corbata celeste y pose inclinada, e incluye su base con placa Club 30's. Impreso en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 100.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-smooth-criminal-set/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Smooth Criminal Set\n\nSet de Snoopy inspirado en el videoclip Smooth Criminal: traje y sombrero blancos, corbata celeste y pose inclinada, e incluye su base con placa Club 30's. Impreso en 3D en PLA Premium; mide 22 cm.\n\n📏 Medida: 22CM\n💰 Precio: S/ 100.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-criminal-set-1.jpg?v=f9869cd4",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-criminal-set-2.jpg?v=ca6bbd43"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/sn-criminal-set-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/12-7cdd369c.jpg"
+    },
+    "13": {
+      "nombre": "Snoopy Smooth Criminal",
+      "facebook": "✨ Snoopy Smooth Criminal\n\nVersión individual de Snoopy estilo Smooth Criminal: traje blanco, camisa celeste y sombrero fedora blanco con cinta negra. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/snoopy-smooth-criminal/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "instagram": "✨ Snoopy Smooth Criminal\n\nVersión individual de Snoopy estilo Smooth Criminal: traje blanco, camisa celeste y sombrero fedora blanco con cinta negra. Impresa en 3D en PLA Premium; mide 20 cm.\n\n📏 Medida: 20CM\n💰 Precio: S/ 70.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#snoopy #coleccionables #figuras3d #impresion3d #lima",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-criminal-ind-1.jpg?v=93ed7069",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/sn-criminal-ind-2.jpg?v=bb81adcc"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/13-7b62c1a4.jpg"
+    },
+    "201": {
+      "nombre": "Madre e Hijo",
+      "facebook": "✨ Madre e Hijo\n\nEscultura minimalista en blanco mate de una madre que abraza a su hijo, de líneas suaves y delicadas. Un regalo muy emotivo, ideal para el Día de la Madre. Mide 14,6 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 14,6CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/madre-e-hijo/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Madre e Hijo\n\nEscultura minimalista en blanco mate de una madre que abraza a su hijo, de líneas suaves y delicadas. Un regalo muy emotivo, ideal para el Día de la Madre. Mide 14,6 cm, impresa en 3D en PLA Premium.\n\n📏 Medida: 14,6CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/MADRE%20E%20HIJO.jpg?v=3f8c248c"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/201-c2ad316e.jpg"
+    },
+    "202": {
+      "nombre": "Corazón en Corazón",
+      "facebook": "✨ Corazón en Corazón\n\nDos corazones concéntricos que se entrelazan sobre una base circular, en blanco. Un detalle romántico para aniversarios o San Valentín. Mide 15 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/corazon-en-corazon/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Corazón en Corazón\n\nDos corazones concéntricos que se entrelazan sobre una base circular, en blanco. Un detalle romántico para aniversarios o San Valentín. Mide 15 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CORAZON%20EN%20CORAZON.jpg?v=b0fbabb1"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/202-28c9ffdf.jpg"
+    },
+    "203": {
+      "nombre": "Corazón con Rosa",
+      "facebook": "✨ Corazón con Rosa\n\nCorazón rojo que sostiene una rosa de tallo verde, un regalo romántico que no se marchita. Medidas: 12,3 cm y 20 cm. Impreso en 3D en PLA Premium.\n\n📏 Medida: 12,3/20CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/corazon-con-rosa/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Corazón con Rosa\n\nCorazón rojo que sostiene una rosa de tallo verde, un regalo romántico que no se marchita. Medidas: 12,3 cm y 20 cm. Impreso en 3D en PLA Premium.\n\n📏 Medida: 12,3/20CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/CORAZON%20CON%20ROSA.jpg?v=99c8f410"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/203-cad91e8c.jpg"
+    },
+    "205": {
+      "nombre": "Tulipán",
+      "facebook": "✨ Tulipán\n\nTulipán estilizado en blanco, con hojas que envuelven el tallo y una fina textura: una flor decorativa que nunca se marchita. Mide 24,2 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,2CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/tulipan/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Tulipán\n\nTulipán estilizado en blanco, con hojas que envuelven el tallo y una fina textura: una flor decorativa que nunca se marchita. Mide 24,2 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,2CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/TULIPAN.jpg?v=2a43e046"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/205-5bad2ddf.jpg"
+    },
+    "206": {
+      "nombre": "Jarrón Luna",
+      "facebook": "✨ Jarrón Luna\n\nJarrón en forma de luna creciente, en negro mate, con espacio para acomodar flores secas o pequeñas plantas. Mide 24,5 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jarron-luna/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Jarrón Luna\n\nJarrón en forma de luna creciente, en negro mate, con espacio para acomodar flores secas o pequeñas plantas. Mide 24,5 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JARRON%20LUNA.jpg?v=d944ea78"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/206-fea66b97.jpg"
+    },
+    "207": {
+      "nombre": "Jarrón Twisting Eleg",
+      "facebook": "✨ Jarrón Twisting Eleg\n\nJarrón de silueta retorcida en espiral, de líneas fluidas y elegantes, en negro. Mide 25 cm y luce muy bien con flores secas. Impreso en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jarron-twisting-eleg/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Jarrón Twisting Eleg\n\nJarrón de silueta retorcida en espiral, de líneas fluidas y elegantes, en negro. Mide 25 cm y luce muy bien con flores secas. Impreso en 3D en PLA Premium.\n\n📏 Medida: 25CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JARRON%20TWISTING.jpg?v=357f537a"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/207-63726e17.jpg"
+    },
+    "209": {
+      "nombre": "Jarrón Espiral B",
+      "facebook": "✨ Jarrón Espiral B\n\nJarrón de cuerpo facetado con giro en espiral y base ancha, en blanco. Una pieza decorativa de 24,5 cm impresa en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jarron-espiral-b/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Jarrón Espiral B\n\nJarrón de cuerpo facetado con giro en espiral y base ancha, en blanco. Una pieza decorativa de 24,5 cm impresa en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JARRON%20ESPIRAL%20B.jpg?v=88d4932f"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/209-cb419141.jpg"
+    },
+    "210": {
+      "nombre": "Jarrón Espiral D",
+      "facebook": "✨ Jarrón Espiral D\n\nJarrón en espiral con boca de bordes ondulados, en blanco, que recuerda a una flor abierta. Mide 24,5 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/jarron-espiral-d/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Jarrón Espiral D\n\nJarrón en espiral con boca de bordes ondulados, en blanco, que recuerda a una flor abierta. Mide 24,5 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 24,5CM\n💰 Precio: S/ 45.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/JARRON%20ESPIRAL%20D.jpg?v=58663b12"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/210-361008fb.jpg"
+    },
+    "211": {
+      "nombre": "Elefantito",
+      "facebook": "✨ Elefantito\n\nElefante gris con textura que imita el tejido, sosteniendo con la trompa un corazón rojo. Un adorno tierno para regalar. Mide 15 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/elefantito/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "instagram": "✨ Elefantito\n\nElefante gris con textura que imita el tejido, sosteniendo con la trompa un corazón rojo. Un adorno tierno para regalar. Mide 15 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 15CM\n💰 Precio: S/ 35.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#decoracion #decoraciondehogar #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ELEFANTITO.jpg?v=932e2a7d"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/211-79a7535c.jpg"
+    },
+    "1001": {
+      "nombre": "Holder Universitario",
+      "facebook": "✨ Holder Universitario\n\nOrganizador de escritorio con forma de polera con capucha, en crema y con el escudo de Universitario, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-universitario/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Universitario\n\nOrganizador de escritorio con forma de polera con capucha, en crema y con el escudo de Universitario, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/U-M1.jpg?v=8a2fd481",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/U-M2.jpg?v=1421804a",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/U-M3.jpg?v=bfaee57d"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1001-0343a6a1.jpg"
+    },
+    "1002": {
+      "nombre": "Holder Alianza Lima",
+      "facebook": "✨ Holder Alianza Lima\n\nOrganizador de escritorio con forma de polera con capucha, en azul marino y con el escudo de Alianza Lima, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-alianza-lima/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Alianza Lima\n\nOrganizador de escritorio con forma de polera con capucha, en azul marino y con el escudo de Alianza Lima, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/AL-M1.jpg?v=11d557b2",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/AL-M2.jpg?v=358fa35e"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1002-0b314eac.jpg"
+    },
+    "1003": {
+      "nombre": "Holder Sporting Cristal",
+      "facebook": "✨ Holder Sporting Cristal\n\nOrganizador de escritorio con forma de polera con capucha, en celeste y negro y con el escudo de Sporting Cristal, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-sporting-cristal/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Sporting Cristal\n\nOrganizador de escritorio con forma de polera con capucha, en celeste y negro y con el escudo de Sporting Cristal, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/SC-M1.jpg?v=ccecd0e6",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/SC-M2.jpg?v=ef4221a4"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1003-aa2db049.jpg"
+    },
+    "1004": {
+      "nombre": "Holder Sport Boys",
+      "facebook": "✨ Holder Sport Boys\n\nOrganizador de escritorio con forma de polera con capucha, en rosado y negro y con el escudo de Sport Boys, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/holder-sport-boys/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#gamer #setup #impresion3d #lima #regalos",
+      "instagram": "✨ Holder Sport Boys\n\nOrganizador de escritorio con forma de polera con capucha, en rosado y negro y con el escudo de Sport Boys, y abertura para guardar lapiceros y pequeños útiles. Se puede añadir tu nombre o número en la espalda. Mide 10 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 10CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#gamer #setup #impresion3d #lima #regalos",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/SBA-M1.jpg?v=15a4a010",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/SBA-M2.jpg?v=b9fce8d7"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/1004-aa518efc.jpg"
+    },
+    "2001": {
+      "nombre": "Organizador Corazón",
+      "facebook": "✨ Organizador Corazón\n\nOrganizador con forma de corazón y compartimentos, en rosa, ideal para brochas de maquillaje, labiales y otros accesorios del tocador. Mide 13 × 14 × 11 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 13x14x11 CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/organizador-corazon/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Organizador Corazón\n\nOrganizador con forma de corazón y compartimentos, en rosa, ideal para brochas de maquillaje, labiales y otros accesorios del tocador. Mide 13 × 14 × 11 cm, impreso en 3D en PLA Premium.\n\n📏 Medida: 13x14x11 CM\n💰 Precio: S/ 40.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/ORGANIZADOR%20CORAZON.jpg?v=c3311303"
+      ],
+      "video": null,
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/2001-01b245e9.jpg"
+    },
+    "2002": {
+      "nombre": "Llavero Soporte para Celular",
+      "facebook": "✨ Llavero Soporte para Celular\n\nLlavero que se convierte en soporte para tu celular, ideal para ver videos o hacer videollamadas sin sostenerlo. Con tu nombre en relieve y el color que elijas (en la foto, Judith en celeste).\n\n📏 Medida: Llavero\n💰 Precio: S/ 12.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n👉 Más fotos y pedido aquí: https://tygersolis.github.io/S3D-Catalogo/producto/llavero-soporte-para-celular/?utm_source=facebook&utm_medium=social&utm_campaign=catalogo\n💬 WhatsApp: +51 955 107 609\n\n#impresion3d #lima #regalos #hechoenperu",
+      "instagram": "✨ Llavero Soporte para Celular\n\nLlavero que se convierte en soporte para tu celular, ideal para ver videos o hacer videollamadas sin sostenerlo. Con tu nombre en relieve y el color que elijas (en la foto, Judith en celeste).\n\n📏 Medida: Llavero\n💰 Precio: S/ 12.00 (incluye IGV)\n🛠️ Hecho a pedido, impreso en 3D en PLA Premium. Medidas y colores personalizables.\n\n💬 Pídelo por WhatsApp al +51 955 107 609\n🔗 Más fotos y precios en el enlace de nuestro perfil.\n\n#impresion3d #lima #regalos #hechoenperu",
+      "fotos": [
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/acc-llavero-1.jpg?v=307a5aec",
+        "https://tygersolis.github.io/S3D-Catalogo/redes/fotos/acc-llavero-2.jpg?v=22c4f427"
+      ],
+      "video": "https://tygersolis.github.io/S3D-Catalogo/assets/video/acc-llavero-video.mp4",
+      "historia": "https://tygersolis.github.io/S3D-Catalogo/redes/historias/2002-d1ec1ff3.jpg"
     }
   }
 }
