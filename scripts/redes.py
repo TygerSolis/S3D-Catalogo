@@ -157,6 +157,38 @@ def texto_instagram(p: dict) -> str:
     ])
 
 
+# TikTok: no se puede poner música por programa; se sugiere qué sonido buscar en la app (Sonidos → Recomendados).
+SONIDO = {
+    "Navidad": "navideño y alegre: busca «navidad», «christmas» o «villancico»",
+    "Mascota": "tierno o divertido: busca «perrito», «cute» o «mascotas»",
+    "Barbería": "hip hop o trap en tendencia: busca «barber»",
+    "Adornos": "suave tipo lo-fi: busca «aesthetic» o «lofi»",
+    "Line Art": "suave tipo lo-fi: busca «aesthetic» o «lofi»",
+    "Iluminación LED 3D": "relajante o electrónico: busca «aesthetic» o «night»",
+}
+
+
+def sonido_tiktok(p: dict) -> str:
+    if p["categoria"] in SONIDO:
+        return SONIDO[p["categoria"]]
+    if p.get("coleccion"):
+        return f"pop en tendencia o el tema del personaje: busca «{p['coleccion']}»"
+    return "pop o electrónico en tendencia: elige uno de «Recomendados»"
+
+
+def titulo_tiktok(p: dict) -> str:
+    return cabecera(p)[:90]
+
+
+def texto_tiktok(p: dict) -> str:
+    # En TikTok los enlaces del texto tampoco se pueden pulsar.
+    return "\n".join([
+        p["descripcion"].strip(), "", *detalles(p), "",
+        f"💬 Pídelo por WhatsApp al {b.WHATSAPP_VISIBLE}", "",
+        hashtags(p),
+    ])[:4000]
+
+
 def marketplace(p: dict) -> dict:
     """Campos del formulario de Marketplace. Sin enlaces: Marketplace suele limitar anuncios con enlaces externos."""
     lista = b.precios(p)
@@ -239,6 +271,19 @@ def bloque_auto(tipo: str, titulo_: str, redes: str = "facebook,instagram") -> s
             </section>"""
 
 
+def bloque_tiktok(tipo: str, titulo_: str, p: dict) -> str:
+    """Envío a la bandeja de TikTok: el dueño elige la música y publica en la app."""
+    return f"""            <section class="rd-auto rd-tiktok" data-tipo="{tipo}" data-redes="tiktok" hidden>
+                <h3>{titulo_}</h3>
+                <ul class="rd-auto-estado" data-auto-estado></ul>
+                <p class="rd-nota">Llega a tu bandeja de TikTok: ábrela, toca <strong>Sonidos → Recomendados</strong> y publica.
+                    Sonido sugerido: {esc(sonido_tiktok(p))}.</p>
+                <div class="rd-auto-botones">
+                    <button class="rd-btn" type="button" data-accion="tiktok">Enviar a TikTok</button>
+                </div>
+            </section>"""
+
+
 def articulo(n: int, p: dict) -> str:
     pid = p["id"]
     figuras = []
@@ -261,7 +306,8 @@ def articulo(n: int, p: dict) -> str:
                 <video src="{esc(src)}" controls preload="none" playsinline></video>
                 <a class="rd-descargar" href="{esc(src)}" download>Descargar video</a>
             </div>
-{bloque_auto("reel", "Facebook e Instagram: video (Reel)")}"""
+{bloque_auto("reel", "Facebook e Instagram: video (Reel)")}
+{bloque_tiktok("reel", "TikTok: video", p)}"""
     mp = marketplace(p)
     return f"""        <article class="rd-post" id="p-{pid}" data-id="{pid}">
             <header class="rd-post-cab">
@@ -275,6 +321,7 @@ def articulo(n: int, p: dict) -> str:
 {chr(10).join(figuras)}
             </div>
 {bloque_auto("fotos", "Facebook e Instagram: fotos" + (" e historias" if historia_url(p) else ""), "facebook,instagram" + (",historia_facebook,historia_instagram" if historia_url(p) else ""))}
+{bloque_tiktok("fotos", "TikTok: fotos (carrusel)", p)}
             <button class="rd-compartir" type="button" data-compartir hidden>Enviar las fotos a otra app</button>{video}
             <details class="rd-red" open>
                 <summary>Facebook</summary>
@@ -312,7 +359,7 @@ def pagina(productos: list[dict]) -> str:
     <meta name="theme-color" content="#002244">
     <link rel="icon" href="../assets/logo-96.webp" type="image/webp">
     <link rel="stylesheet" href="../fonts.css?v=1">
-    <link rel="stylesheet" href="redes.css?v=3">
+    <link rel="stylesheet" href="redes.css?v=4">
 </head>
 <body>
     <main class="rd-main" data-api="{esc(api)}">
@@ -346,7 +393,7 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=4" defer></script>
+    <script src="redes.js?v=5" defer></script>
 </body>
 </html>
 """
@@ -369,6 +416,8 @@ def publicaciones(productos: list[dict]) -> dict:
             "fotos": [f"{b.BASE_URL}redes/{s}" for s in srcs],
             "video": b.url_ruta(p["video"], b.BASE_URL) if p.get("video") else None,
             "historia": historia_url(p),
+            "tiktokTitulo": titulo_tiktok(p),
+            "tiktok": texto_tiktok(p),
         }
     return {"productos": datos}
 

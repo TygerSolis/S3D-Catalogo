@@ -70,3 +70,5 @@ h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: cl
 .rd-historia img { aspect-ratio: 9 / 16; border-radius: .75rem; height: auto; object-fit: cover; width: 100%; }
 .rd-historia figcaption { color: var(--muted); font-size: .85rem; margin-top: .3rem; }
 .rd-ocultar { color: var(--muted); font-size: .9rem; margin: 0 0 1rem; }
+.rd-tiktok { background: #fbf7ff; border-color: #e9d5ff; }
+.rd-tiktok .rd-nota { margin: 0 0 .6rem; }

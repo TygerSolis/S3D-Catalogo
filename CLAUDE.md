@@ -82,6 +82,14 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   post_total_media_view_unique, post_media_view, reacciones, comentarios, compartidos) y manda un resumen; necesita
   `instagram_manage_insights`, `read_insights` y `pages_read_user_content` (`revisarPermisos` lista los que faltan con
   `debug_token`). Pruebas en `tests/publicar.cjs` (Google y Meta simulados con `vm`).
+- **TikTok** (`Redes.gs`, guía `docs/guia-tiktok.md`): «Enviar a TikTok» manda fotos (`content/init`, `PULL_FROM_URL`,
+  `MEDIA_UPLOAD`, requiere verificar el prefijo `…/redes/` en TikTok) o el video (`inbox/video/init`, `FILE_UPLOAD` en un
+  trozo) a la bandeja del dueño, que elige la música y publica (sin auditoría de TikTok no se puede publicar directo en
+  cuentas públicas ni poner música por API). OAuth: `conectarTikTok` → `doGet` con `code`/`state`; permiso de 2 h que
+  se renueva con el de renovación (180 días, rota en cada uso; el informe de los lunes lo mantiene vivo). Fila
+  `tiktok` = «enviado» (no cancela lo aprobado). La página sugiere el sonido por categoría. Pruebas en `tests/publicar.cjs`.
+- **Términos y condiciones** (`pagina_terminos`, `/terminos/`, enlazada en el pie): los exige TikTok; base a revisar con
+  asesoría legal (como la privacidad).
 - **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
   `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
   Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,
@@ -120,6 +128,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D8 | Colección navideña (17/11/2026) | Productos marcados con categoría `Navidad` en la hoja; ambientación moderada activa del 17/11/2026 al 06/01/2027 (sola por fechas). |
 | D9 | Redes sociales (18/11/2026) | Kit para publicar cada producto en Marketplace (perfil personal, a mano: Meta no tiene API para vendedores), Facebook e Instagram; el dueño aprueba cada publicación; foto limpia (datos solo en el texto) y completa, con relleno de la misma foto desenfocada; orden: Navidad y luego los más vendidos (lista del dueño). Botones «Publicar ahora» y «Aprobar» (2 por día: 11:00 y 19:00); videos como Reel aparte; Instagram vinculado a la página de Facebook (confirmado). |
 | D10 | WhatsApp Business (18/11/2026) | Mismo número de la web (+51 955 107 609) en WhatsApp Business en el celular del dueño; atención 24 h (sin mensaje de ausencia); perfil y respuestas rápidas a mano (la app no tiene API); catálogo desde un catálogo de Meta que se llena solo desde la web. |
+| D11 | TikTok (21/11/2026) | Cuenta personal/creador (para usar música viral). Etapa 1: «Enviar a TikTok» a la bandeja (el dueño elige la música y publica); publicación directa solo tras la auditoría de TikTok. Página de términos creada. |
 
 Implementado (octubre de 2026):
 

@@ -17,6 +17,10 @@
  *   CLAVE          la clave del dueño (la crea «generarClave»)
  *   APP_ID, APP_SECRET, TOKEN_TEMPORAL   para «guardarPermiso» (que deja META_TOKEN y borra TOKEN_TEMPORAL)
  *   META_TOKEN     permiso de publicación de la página (no vence; se invalida si cambias la contraseña de Facebook)
+ * TikTok (docs/guia-tiktok.md): «Enviar a TikTok» manda las fotos (carrusel) o el video a la BANDEJA de TikTok del
+ * dueño (modo MEDIA_UPLOAD, permitido sin la auditoría de TikTok); él elige la música y publica en la app. Propiedades:
+ * TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET y URL_APP (la URL /exec); «conectarTikTok» da el enlace para autorizar y
+ * doGet recibe el código. El permiso dura 2 h y se renueva solo con el de renovación (180 días, cambia en cada uso).
  * Instalación paso a paso: docs/guia-redes.md
  */
 const SITIO = 'https://tygersolis.github.io/S3D-Catalogo/';
@@ -37,7 +41,9 @@ function redesDe_(tipo, p) {
   return tipo === 'fotos' && p && p.historia ? REDES.concat(HISTORIAS) : REDES;
 }
 
-function doGet() {
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.code || p.error) return ContentService.createTextOutput(terminarConexionTikTok_(p));
   return ContentService.createTextOutput('Publicación en redes S3D: activo');
 }
 
@@ -52,6 +58,7 @@ function doPost(e) {
       case 'publicar': return respuesta_({ ok: true, resultado: publicar_(id, tipo), estado: estado_() });
       case 'aprobar': return respuesta_({ ok: true, resultado: programar_(id, tipo, true), estado: estado_() });
       case 'cancelar': return respuesta_({ ok: true, resultado: programar_(id, tipo, false), estado: estado_() });
+      case 'tiktok': return respuesta_({ ok: true, resultado: enviarTikTok_(id, tipo), estado: estado_() });
       default: throw new Error('acción desconocida');
     }
   } catch (error) {
@@ -392,7 +399,7 @@ function estado_() {
     else if (f[5] === 'cancelado') e.programado = null;
     else if (f[4]) {
       e[f[4]] = { estado: f[5], fecha: fecha.toISOString(), enlace: f[6] || '', detalle: f[7] || '', id: f[8] ? String(f[8]) : '' };
-      e.programado = null;
+      if (f[4] !== 'tiktok') e.programado = null;   // enviar a TikTok no cuenta como publicar lo programado
     }
   });
   const cola = programadas_(estado);
@@ -464,6 +471,7 @@ function informeSemanal() {
     hoja.getRange(2, 1, filas.length, COLUMNAS_RESULTADOS.length).setValues(filas);
     hoja.getRange(2, 5, filas.length, 1).setNumberFormat('dd/mm/yyyy');
   }
+  try { renovarTikTok(); } catch (e) { /* si TikTok pide reconectar, se avisa al enviar */ }
   MailApp.sendEmail(AVISO_CORREO, 'S3D: resultados de tus publicaciones', resumen_(filas, libro.getUrl()));
   return filas.length;
 }
@@ -553,4 +561,168 @@ function idInstagramDe_(enlace, ig) {
   const limpio = String(enlace).split('?')[0].replace(/\/$/, '');
   const m = idInstagramDe_.cache.find(x => String(x.permalink || '').split('?')[0].replace(/\/$/, '') === limpio);
   return m ? m.id : '';
+}
+
+// ---------------------------------------------------------------- TikTok (enviar a la bandeja)
+
+const TIKTOK_API = 'https://open.tiktokapis.com/v2/';
+const TIKTOK_ALCANCES = 'user.info.basic,video.upload';
+
+/**
+ * Ejecutar a mano (una vez, y otra vez si TikTok pide reconectar): muestra el enlace para autorizar a la app de
+ * TikTok. Ábrelo con la sesión de TikTok de S3D y acepta; TikTok vuelve a URL_APP y doGet guarda el permiso.
+ */
+function conectarTikTok() {
+  const props = PropertiesService.getScriptProperties();
+  const [clave, url] = ['TIKTOK_CLIENT_KEY', 'URL_APP'].map(k => (props.getProperty(k) || '').trim());
+  if (!clave || !url) throw new Error('faltan TIKTOK_CLIENT_KEY o URL_APP en las propiedades (guía de TikTok, paso 3)');
+  const estado = Utilities.getUuid().replace(/-/g, '');
+  CacheService.getScriptCache().put('tiktok-estado', estado, 900);
+  const enlace = 'https://www.tiktok.com/v2/auth/authorize/?client_key=' + encodeURIComponent(clave) +
+    '&response_type=code&scope=' + encodeURIComponent(TIKTOK_ALCANCES) + '&redirect_uri=' + encodeURIComponent(url) +
+    '&state=' + estado;
+  console.log('Abre este enlace (vale 15 minutos) con tu sesión de TikTok de S3D y acepta:\n' + enlace);
+  return enlace;
+}
+
+function terminarConexionTikTok_(p) {
+  if (p.error) return 'TikTok no autorizó la conexión: ' + p.error + ' ' + (p.error_description || '') + '. Vuelve a ejecutar conectarTikTok.';
+  const cache = CacheService.getScriptCache();
+  const esperado = cache.get('tiktok-estado');
+  if (!esperado || !igualSeguro_(String(p.state || ''), esperado)) return 'El enlace venció o no es válido: vuelve a ejecutar conectarTikTok y abre el enlace nuevo.';
+  cache.put('tiktok-estado', '', 1);
+  const props = PropertiesService.getScriptProperties();
+  try {
+    guardarTokenTikTok_(tokenTikTok_({ grant_type: 'authorization_code', code: p.code, redirect_uri: (props.getProperty('URL_APP') || '').trim() }));
+    return 'Listo: TikTok quedó conectado. Ya puedes cerrar esta pestaña y usar «Enviar a TikTok».';
+  } catch (error) {
+    return 'No se pudo conectar TikTok: ' + error.message;
+  }
+}
+
+function tokenTikTok_(params) {
+  const props = PropertiesService.getScriptProperties();
+  const datos = Object.assign({
+    client_key: (props.getProperty('TIKTOK_CLIENT_KEY') || '').trim(),
+    client_secret: (props.getProperty('TIKTOK_CLIENT_SECRET') || '').trim()
+  }, params);
+  const r = UrlFetchApp.fetch(TIKTOK_API + 'oauth/token/', { method: 'post', payload: datos, muteHttpExceptions: true });
+  let cuerpo;
+  try { cuerpo = JSON.parse(r.getContentText()); } catch (e) { cuerpo = {}; }
+  if (!cuerpo.access_token) throw new Error('TikTok no entregó el permiso (' + (cuerpo.error || r.getResponseCode()) + ': ' + (cuerpo.error_description || 'sin detalle') + ')');
+  return cuerpo;
+}
+
+function guardarTokenTikTok_(t) {
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty('TIKTOK_ACCESS', t.access_token);
+  props.setProperty('TIKTOK_VENCE', String(Date.now() + (Number(t.expires_in) || 7200) * 1000));
+  // El de renovación cambia cada vez: hay que guardar siempre el nuevo (con el viejo, TikTok pide reconectar).
+  if (t.refresh_token) props.setProperty('TIKTOK_REFRESH', t.refresh_token);
+}
+
+/** Permiso vigente de TikTok (lo renueva si le quedan menos de 5 minutos). */
+function accesoTikTok_() {
+  const props = PropertiesService.getScriptProperties();
+  const acceso = props.getProperty('TIKTOK_ACCESS');
+  if (acceso && Number(props.getProperty('TIKTOK_VENCE') || 0) > Date.now() + 300000) return acceso;
+  const renovar = props.getProperty('TIKTOK_REFRESH');
+  if (!renovar) throw new Error('TikTok no está conectado: ejecuta conectarTikTok (guía de TikTok, paso 4)');
+  try {
+    guardarTokenTikTok_(tokenTikTok_({ grant_type: 'refresh_token', refresh_token: renovar }));
+  } catch (error) {
+    throw new Error('el permiso de TikTok venció: ejecuta conectarTikTok otra vez (' + error.message + ')');
+  }
+  return props.getProperty('TIKTOK_ACCESS');
+}
+
+/** Ejecutar a mano o desde el informe de los lunes: mantiene vivo el permiso de TikTok (vence a los 180 días sin uso). */
+function renovarTikTok() {
+  if (!PropertiesService.getScriptProperties().getProperty('TIKTOK_REFRESH')) return false;
+  PropertiesService.getScriptProperties().setProperty('TIKTOK_VENCE', '0');
+  accesoTikTok_();
+  return true;
+}
+
+function tiktok_(ruta, cuerpo) {
+  const r = UrlFetchApp.fetch(TIKTOK_API + ruta, {
+    method: 'post', contentType: 'application/json; charset=UTF-8', payload: JSON.stringify(cuerpo),
+    headers: { Authorization: 'Bearer ' + accesoTikTok_() }, muteHttpExceptions: true
+  });
+  let datos;
+  try { datos = JSON.parse(r.getContentText()); } catch (e) { datos = {}; }
+  const error = datos.error || {};
+  if (r.getResponseCode() >= 400 || (error.code && error.code !== 'ok')) throw new Error(errorTikTok_(error, r.getResponseCode()));
+  return datos.data || {};
+}
+
+/** Mensajes de TikTok en palabras simples (el código original va entre paréntesis). */
+function errorTikTok_(error, http) {
+  const original = ' (TikTok ' + (error.code || http) + ': ' + (error.message || 'sin detalle') + ')';
+  const textos = {
+    access_token_invalid: 'el permiso de TikTok no es válido: ejecuta conectarTikTok',
+    scope_not_authorized: 'falta el permiso «video.upload» en la app de TikTok o al conectar (guía de TikTok)',
+    url_ownership_unverified: 'TikTok aún no verificó que la web es tuya (guía de TikTok, paso 2)',
+    spam_risk_too_many_pending_share: 'tienes 5 envíos esperando en tu bandeja de TikTok: publícalos o descártalos y vuelve a intentar',
+    spam_risk_user_banned_from_posting: 'TikTok no permite publicar desde esta cuenta por ahora',
+    rate_limit_exceeded: 'TikTok pide esperar un minuto: demasiados envíos seguidos',
+    app_version_check_failed: 'actualiza la app de TikTok en tu celular (se necesita la versión 31.8 o superior)'
+  };
+  return (textos[error.code] || 'TikTok rechazó el envío') + original;
+}
+
+/** Espera a que TikTok termine de procesar el envío y lo deje en la bandeja (o lo publique). */
+function esperarTikTok_(publicacion) {
+  for (let i = 0; i < 20; i++) {
+    const d = tiktok_('post/publish/status/fetch/', { publish_id: publicacion });
+    if (d.status === 'SEND_TO_USER_INBOX' || d.status === 'PUBLISH_COMPLETE') return d.status;
+    if (d.status === 'FAILED') throw new Error('TikTok no pudo procesar el envío (' + (d.fail_reason || 'sin detalle') + ')');
+    Utilities.sleep(i < 5 ? 3000 : 10000);
+  }
+  return 'PROCESSING';   // sigue procesando: igual llega a la bandeja
+}
+
+function tiktokFotos_(p) {
+  const d = tiktok_('post/publish/content/init/', {
+    post_info: { title: p.tiktokTitulo, description: p.tiktok },
+    source_info: { source: 'PULL_FROM_URL', photo_cover_index: 0, photo_images: p.fotos.slice(0, 35) },
+    post_mode: 'MEDIA_UPLOAD',
+    media_type: 'PHOTO'
+  });
+  esperarTikTok_(d.publish_id);
+  return d.publish_id;
+}
+
+function tiktokVideo_(p) {
+  // El video se sube desde aquí (FILE_UPLOAD, en un solo trozo: pesan menos de 64 MB) y no necesita la verificación.
+  const bytes = UrlFetchApp.fetch(p.video).getBlob().getBytes();
+  const n = bytes.length;
+  const d = tiktok_('post/publish/inbox/video/init/', { source_info: { source: 'FILE_UPLOAD', video_size: n, chunk_size: n, total_chunk_count: 1 } });
+  const r = UrlFetchApp.fetch(d.upload_url, {
+    method: 'put', contentType: 'video/mp4', payload: bytes, muteHttpExceptions: true,
+    headers: { 'Content-Range': 'bytes 0-' + (n - 1) + '/' + n }
+  });
+  if (r.getResponseCode() >= 300) throw new Error('TikTok no recibió el video (' + r.getResponseCode() + ')');
+  esperarTikTok_(d.publish_id);
+  return d.publish_id;
+}
+
+function enviarTikTok_(id, tipo) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(30000)) throw new Error('hay otro envío en curso; espera un momento y vuelve a intentar');
+  try {
+    const p = contenido_(id, tipo);
+    const actual = (estado_()[id + ':' + tipo] || {}).tiktok;
+    if (actual && actual.estado === 'enviado') return { tiktok: actual };
+    try {
+      const publicacion = tipo === 'reel' ? tiktokVideo_(p) : tiktokFotos_(p);
+      anotar_(id, p.nombre, tipo, 'tiktok', 'enviado', 'https://www.tiktok.com/', '', publicacion);
+      return { tiktok: { estado: 'enviado' } };
+    } catch (error) {
+      anotar_(id, p.nombre, tipo, 'tiktok', 'error', '', error.message, '');
+      return { tiktok: { estado: 'error', detalle: error.message } };
+    }
+  } finally {
+    lock.releaseLock();
+  }
 }

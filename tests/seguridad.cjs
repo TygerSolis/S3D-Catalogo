@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { assert, RAIZ, abrir } = require('./util.cjs');
 
-const paginas = () => ['index.html', '404.html', 'privacidad/index.html', 'redes/index.html',
+const paginas = () => ['index.html', '404.html', 'privacidad/index.html', 'terminos/index.html', 'redes/index.html',
     ...fs.readdirSync(path.join(RAIZ, 'producto')).map(slug => `producto/${slug}/index.html`)];
 const leer = archivo => fs.readFileSync(path.join(RAIZ, archivo), 'utf8');
 const sinBloqueos = p => assert.deepEqual(p.violaciones, [], `la CSP bloqueó: ${p.violaciones.join(' | ')}`);

@@ -550,7 +550,8 @@ def actualizar_itemlist(todos: list[dict]) -> None:
 
 
 # Fecha de la política de privacidad: actualizarla a mano cuando cambie el texto (así la generación es reproducible).
-FECHA_PRIVACIDAD = "15/10/2026"
+FECHA_PRIVACIDAD = "21/11/2026"
+FECHA_TERMINOS = "21/11/2026"
 
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
 
@@ -626,10 +627,59 @@ def pagina_privacidad() -> str:
             <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>{tercero_google}
         </ul>
 
+        <h2>Nuestras redes sociales</h2>
+        <p>S3D publica sus productos en sus propias cuentas de Facebook, Instagram y TikTok mediante las herramientas oficiales de cada plataforma. Esas conexiones solo sirven para publicar nuestro contenido en nuestras cuentas: no leen ni guardan datos de quienes visitan este sitio ni de sus cuentas.</p>
+
         <h2>Tus derechos y contacto</h2>
         <p>Si quieres consultar, corregir o pedir que eliminemos datos que nos hayas compartido por WhatsApp o correo, escríbenos a <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a> o por <a href="https://api.whatsapp.com/send?phone={WHATSAPP}" target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p>
         <p class="pg-aviso">Este texto es informativo y puede actualizarse. Si el negocio crece o empieza a recopilar más datos, conviene revisarlo con asesoría legal.</p>"""
     return pagina_estatica("Política de privacidad | S3D", "Qué mide S3D en este sitio (estadísticas anónimas, sin cookies), qué se guarda en tu dispositivo y cómo usamos los datos que compartes por WhatsApp.", "../", f"{BASE_URL}privacidad/", cuerpo)
+
+
+def pagina_terminos() -> str:
+    """Términos y condiciones (los exige TikTok para aprobar la app de publicación). Base a revisar con asesoría legal."""
+    wa = f"https://api.whatsapp.com/send?phone={WHATSAPP}"
+    cuerpo = f"""        <p class="pg-kicker">Condiciones de compra</p>
+        <h1>Términos y condiciones</h1>
+        <p class="pg-actualizado">Última actualización: {FECHA_TERMINOS}</p>
+        <p>Estos términos explican cómo funcionan los pedidos en <strong>S3D</strong>, taller de impresión 3D en Lima, Perú. Al hacer un pedido aceptas estas condiciones. Si tienes dudas, escríbenos antes de comprar.</p>
+
+        <h2>Este sitio</h2>
+        <p>Este sitio es un catálogo: muestra nuestros productos, precios y medidas. Los pedidos se hacen y se confirman por <a href="{wa}" target="_blank" rel="noopener noreferrer">WhatsApp</a> ({esc(WHATSAPP_VISIBLE)}) o por correo a <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a>. Un pedido queda confirmado cuando acordamos contigo el producto, el precio, la entrega y el pago.</p>
+
+        <h2>Productos a pedido y personalización</h2>
+        <ul>
+            <li>Elaboramos cada pieza a pedido en nuestro taller. Las fotos son referenciales: por el proceso de impresión 3D, los colores, texturas y acabados pueden variar ligeramente.</li>
+            <li>Las medidas publicadas corresponden al precio indicado. Otras medidas, colores, nombres o diseños se cotizan aparte.</li>
+            <li>Antes de fabricar un pedido personalizado te confirmamos los detalles por WhatsApp.</li>
+        </ul>
+
+        <h2>Precios y pagos</h2>
+        <ul>
+            <li>Los precios están en soles (S/) e incluyen IGV. El costo de envío no está incluido y se cotiza según tu distrito o provincia.</li>
+            <li>Aceptamos Yape, Plin, transferencia bancaria y efectivo. Las condiciones de pago (por ejemplo, si se requiere un adelanto) se acuerdan al confirmar el pedido.</li>
+            <li>Los precios pueden cambiar; el que vale es el que acordamos al confirmar tu pedido.</li>
+        </ul>
+
+        <h2>Tiempos y entregas</h2>
+        <ul>
+            <li>El tiempo habitual de elaboración es de un día para otro, según el modelo y la carga de trabajo. Te confirmamos la fecha al hacer el pedido.</li>
+            <li>Enviamos a todo el Perú mediante agencias de transporte o coordinamos la entrega en Lima.</li>
+        </ul>
+
+        <h2>Cambios, defectos y reclamos</h2>
+        <p>Si tu pedido llega dañado o con un defecto de fabricación, escríbenos lo antes posible con fotos del producto. Lo revisamos y, si corresponde, lo reparamos, lo reponemos o te devolvemos el importe. Esto no limita los derechos que te reconoce el Código de Protección y Defensa del Consumidor (Ley 29571). Para cualquier reclamo, escríbenos a <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a> o por WhatsApp.</p>
+
+        <h2>Marcas y contenido</h2>
+        <p>Las fotos y textos de este sitio son de S3D. Los nombres de marcas, personajes o equipos mencionados pertenecen a sus respectivos titulares y se usan solo para describir el producto.</p>
+
+        <h2>Redes sociales</h2>
+        <p>Publicamos nuestros productos en nuestras cuentas de Facebook, Instagram y TikTok con las herramientas oficiales de cada plataforma. Al usar esas plataformas también aplican sus propias condiciones. Más detalles en nuestra <a href="../privacidad/">política de privacidad</a>.</p>
+
+        <h2>Cambios a estos términos</h2>
+        <p>Podemos actualizar estos términos; la fecha de arriba indica la última versión. Se rigen por las leyes del Perú.</p>
+        <p class="pg-aviso">Este texto es informativo y conviene revisarlo con asesoría legal.</p>"""
+    return pagina_estatica("Términos y condiciones | S3D", "Cómo funcionan los pedidos en S3D: productos a pedido, precios con IGV, pagos, envíos a todo el Perú y reclamos.", "../", f"{BASE_URL}terminos/", cuerpo)
 
 
 def pagina_404(todos: list[dict]) -> str:
@@ -671,6 +721,7 @@ def escribir_sitemap(todos: list[dict]) -> None:
     """Sitemap sin <lastmod>: es opcional y una fecha inexacta es peor que no ponerla; así la generación es reproducible."""
     filas = [f"  <url>\n    <loc>{BASE_URL}</loc>\n    <priority>1.0</priority>\n  </url>"]
     filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <priority>0.3</priority>\n  </url>")
+    filas.append(f"  <url>\n    <loc>{BASE_URL}terminos/</loc>\n    <priority>0.3</priority>\n  </url>")
     filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <priority>0.7</priority>\n  </url>" for p in todos]
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(filas) + "\n</urlset>\n",
@@ -704,6 +755,8 @@ def main() -> None:
 
     (ROOT / "privacidad").mkdir(exist_ok=True)
     (ROOT / "privacidad" / "index.html").write_text(pagina_privacidad(), encoding="utf-8")
+    (ROOT / "terminos").mkdir(exist_ok=True)
+    (ROOT / "terminos" / "index.html").write_text(pagina_terminos(), encoding="utf-8")
     (ROOT / "404.html").write_text(pagina_404(productos), encoding="utf-8")
 
     actualizar_itemlist(productos)

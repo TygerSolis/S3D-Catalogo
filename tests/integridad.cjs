@@ -70,7 +70,7 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
         }
         // Todo lo generado usa el número de config.json.
         const fichas = fs.readdirSync(path.join(RAIZ, 'producto')).map(slug => `producto/${slug}/index.html`);
-        for (const ruta of ['index.html', '404.html', 'privacidad/index.html', 'redes/index.html', 'tienda.js', ...fichas]) {
+        for (const ruta of ['index.html', '404.html', 'privacidad/index.html', 'terminos/index.html', 'redes/index.html', 'tienda.js', ...fichas]) {
             const texto = leer(ruta);
             for (const m of texto.matchAll(/phone=(\d+)/g)) assert.equal(m[1], whatsapp, `${ruta}: enlace a otro número`);
             for (const m of texto.matchAll(/\+\d{2} \d{3} \d{3} \d{3}/g)) assert.equal(m[0], whatsappVisible, `${ruta}: número visible distinto`);
@@ -126,7 +126,7 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
             titulos.add(titulo);
             assert.ok(html.includes(`data-id="${p.id}"`) && html.includes('id="pp-cotizador"') && html.includes('Formas de pago'));
         }
-        assert.ok(existe('404.html') && existe('privacidad/index.html'));
+        assert.ok(existe('404.html') && existe('privacidad/index.html') && existe('terminos/index.html'));
         const indice = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
         for (const m of indice.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) JSON.parse(m[1]);
     },
@@ -145,11 +145,14 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
         };
         revisar('index.html');
         revisar('privacidad/index.html');
+        revisar('terminos/index.html');
+        revisar('redes/index.html');
         productos().forEach(p => revisar(`producto/${p.slug}/index.html`));
         assert.deepEqual(rotas.slice(0, 5), [], `${rotas.length} referencias rotas`);
     },
-    'el sitemap lista la portada, la privacidad y todas las fichas'() {
+    'el sitemap lista la portada, la privacidad, los términos y todas las fichas'() {
         const xml = fs.readFileSync(path.join(RAIZ, 'sitemap.xml'), 'utf8');
-        assert.equal((xml.match(/<loc>/g) || []).length, productos().length + 2);
+        assert.equal((xml.match(/<loc>/g) || []).length, productos().length + 3);
+        assert.ok(xml.includes('/terminos/</loc>'));
     }
 };

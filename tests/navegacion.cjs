@@ -78,5 +78,15 @@ module.exports = {
         const texto = await p.locator('main').innerText();
         for (const frase of ['Política de privacidad', 'no usa cookies', 'WhatsApp', 'almacenamiento local']) assert.ok(texto.includes(frase), `falta «${frase}»`);
         await p.contexto.close();
+    },
+    async 'la página de términos existe, está enlazada en el pie y explica pedidos, pagos y envíos'({ browser }) {
+        const p = await abrir(browser);
+        assert.equal(await p.locator('.site-footer a[href$="terminos/"]').count(), 1);
+        await p.goto(`${BASE}terminos/`, { waitUntil: 'networkidle' });
+        const texto = await p.locator('main').innerText();
+        for (const frase of ['Términos y condiciones', 'incluyen IGV', 'Yape', 'todo el Perú', 'Ley 29571', 'TikTok']) assert.ok(texto.includes(frase), `falta «${frase}»`);
+        assert.deepEqual(p.errores, []);
+        assert.deepEqual(p.violaciones, []);
+        await p.contexto.close();
     }
 };

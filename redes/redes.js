@@ -7,7 +7,7 @@
     'use strict';
     const CLAVE_MARCAS = 's3d-redes-publicado';
     const CLAVE_ACCESO = 's3d-redes-clave';
-    const NOMBRES = { facebook: 'Facebook', instagram: 'Instagram', historia_facebook: 'Historia en Facebook', historia_instagram: 'Historia en Instagram' };
+    const NOMBRES = { facebook: 'Facebook', instagram: 'Instagram', historia_facebook: 'Historia en Facebook', historia_instagram: 'Historia en Instagram', tiktok: 'TikTok' };
     const main = document.querySelector('main');
     const API = main ? main.dataset.api : '';
     let estado = null;   // respuesta del Apps Script: { 'id:tipo': { programado, salida, facebook, instagram } }
@@ -140,6 +140,9 @@
             if (r && r.estado === 'publicado') {
                 publicadas++;
                 filaEstado(lista, `${nombre}: publicado el ${fecha(r.fecha)}`, r.enlace, 'rd-bien');
+            } else if (r && r.estado === 'enviado') {
+                publicadas++;
+                filaEstado(lista, `${nombre}: enviado a tu bandeja el ${fecha(r.fecha)} (elige la música y publica en la app)`, '', 'rd-bien');
             } else if (r && r.estado === 'error') {
                 filaEstado(lista, `${nombre}: falló (${r.detalle})`, '', 'rd-mal');
             } else {
@@ -148,9 +151,11 @@
         }
         if (e.programado) filaEstado(lista, `Aprobado: saldrá solo el ${fecha(e.salida)}`, '', 'rd-espera');
         const completo = publicadas === redes.length;
-        seccion.querySelector('[data-accion="publicar"]').hidden = completo;
-        seccion.querySelector('[data-accion="aprobar"]').hidden = completo || !!e.programado;
-        seccion.querySelector('[data-accion="cancelar"]').hidden = !e.programado;
+        const boton = que => seccion.querySelector(`[data-accion="${que}"]`) || {};
+        boton('publicar').hidden = completo;
+        boton('tiktok').hidden = completo;
+        boton('aprobar').hidden = completo || !!e.programado;
+        boton('cancelar').hidden = !e.programado;
         seccion.classList.toggle('rd-completo', completo);
         return completo;
     }
@@ -160,10 +165,10 @@
         const id = Number(boton.closest('.rd-post').dataset.id);
         const tipo = seccion.dataset.tipo;
         const que = boton.dataset.accion;
-        // «Publicar ahora» pide un segundo toque para confirmar (evita publicar por accidente).
-        if (que === 'publicar' && boton.dataset.confirmar !== '1') {
+        // «Publicar ahora» y «Enviar a TikTok» piden un segundo toque para confirmar (evita envíos por accidente).
+        if ((que === 'publicar' || que === 'tiktok') && boton.dataset.confirmar !== '1') {
             boton.dataset.confirmar = '1';
-            avisoBoton(boton, 'Toca otra vez para publicar', false, 4000);
+            avisoBoton(boton, que === 'tiktok' ? 'Toca otra vez para enviar' : 'Toca otra vez para publicar', false, 4000);
             setTimeout(() => { delete boton.dataset.confirmar; }, 4000);
             return;
         }
@@ -176,7 +181,7 @@
         aviso.replaceChildren();
         filaEstado(aviso, que === 'publicar'
             ? (tipo === 'reel' ? 'Publicando el video… Instagram puede tardar hasta 4 minutos en procesarlo.' : 'Publicando…')
-            : 'Guardando…', '', 'rd-proceso');
+            : (que === 'tiktok' ? 'Enviando a TikTok…' : 'Guardando…'), '', 'rd-proceso');
         try {
             await llamar(que, { id, tipo });
         } catch (e) {
@@ -200,11 +205,13 @@
             const mp = !!(marcas[id] && marcas[id].marketplace);
             if (casilla) casilla.checked = mp;
             if (mp) enMarketplace++;
-            const fotos = articulo.querySelector('.rd-auto[data-tipo="fotos"]');
-            const redes = estado && fotos ? pintarBloque(fotos, id) : false;
-            articulo.querySelectorAll('.rd-auto[data-tipo="reel"]').forEach(s => { if (estado) pintarBloque(s, id); });
+            // Cada bloque (Facebook/Instagram, TikTok; fotos y video) se pinta con su estado.
+            const completos = estado ? [...articulo.querySelectorAll('.rd-auto')].map(s => [s, pintarBloque(s, id)]) : [];
+            const fotos = completos.filter(([s]) => s.dataset.tipo === 'fotos');
+            const redes = fotos.some(([s, ok]) => !s.classList.contains('rd-tiktok') && ok);
             if (redes) enRedes++;
-            articulo.classList.toggle('rd-completo', mp && redes);
+            // «Publicado en todas partes»: fotos en Facebook/Instagram y TikTok, y Marketplace marcado.
+            articulo.classList.toggle('rd-completo', mp && fotos.length > 0 && fotos.every(([, ok]) => ok));
         });
         const p = document.querySelector('[data-progreso="marketplace"]');
         if (p) p.textContent = String(enMarketplace);
