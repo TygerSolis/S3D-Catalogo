@@ -101,8 +101,10 @@ Tu Instagram debe ser **profesional** (Empresa o Creador) y estar **vinculado a 
 
 ### Paso 5. Tu celular
 
-Abre **/redes/**, escribe tu clave en **Publicación automática → Tu clave** y pulsa **Guardar**. Queda guardada en ese
-celular (repite en cada dispositivo que uses). La primera publicación real la hacemos juntos con un producto que elijas.
+Abre **/redes/**, escribe tu clave en **Publicación automática → Tu clave** y pulsa **Guardar**. Por seguridad la
+clave se recuerda **solo mientras esa pestaña esté abierta** (no queda guardada en el navegador, que comparte datos con
+otras webs de `tygersolis.github.io`): cuando el navegador o el celular ofrezcan **guardar la contraseña**, acepta, y la
+próxima vez la completará solo. La primera publicación real la hacemos juntos con un producto que elijas.
 
 ### Paso 6. Permisos de estadísticas (para el informe semanal)
 

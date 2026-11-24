@@ -30,7 +30,9 @@ const HORAS = [11, 19];            // publicaciones programadas: 2 por día
 const HOJA = 'publicaciones';
 const COLUMNAS = ['Fecha', 'Producto', 'Nombre', 'Tipo', 'Red', 'Estado', 'Enlace', 'Detalle', 'IdMeta'];
 const AVISO_CORREO = 'ventas.s3d@gmail.com';
-const MAX_FALLOS_CLAVE = 10;       // claves erradas por hora antes de bloquear
+// Claves erradas por hora antes de bloquear. Alto a propósito: la clave (32 caracteres al azar) no se puede adivinar,
+// y como el bloqueo es para todos, un límite bajo permitiría que cualquiera dejara al dueño fuera (la URL es pública).
+const MAX_FALLOS_CLAVE = 200;
 const REDES = ['facebook', 'instagram'];   // publicaciones (las historias se agregan con redesDe_)
 const HISTORIAS = ['historia_facebook', 'historia_instagram'];
 const HOJA_RESULTADOS = 'resultados';

@@ -1,10 +1,18 @@
 // Página interna de publicaciones para redes.
 //  - Facebook e Instagram: «Publicar ahora» / «Aprobar» llaman al Apps Script (data-api del <main>) con la clave del
-//    dueño, guardada solo en este navegador. El script publica con la API de Meta y anota todo en la hoja.
+//    dueño. La clave vive solo en ESTA pestaña (sessionStorage): localStorage lo comparten todas las webs de
+//    tygersolis.github.io (p. ej. VetFast) y el código de terceros que cargan; el gestor de contraseñas la completa.
+//    El script publica con la API de Meta y anota todo en la hoja.
+//  - Si la página está dentro de un marco de otra web (clickjacking), se oculta y no hace nada.
 //  - Marketplace (a mano): copiar textos, enviar las fotos a otra app y marcar «Ya lo publiqué» (localStorage).
 // Los datos del servidor se insertan con textContent / createElement (nunca como HTML).
 (function () {
     'use strict';
+    // Dentro de un marco (otra web podría esconderla y hacerte pulsar «Publicar»): no se muestra ni se activa.
+    if (window.top !== window.self) {
+        document.documentElement.hidden = true;
+        return;
+    }
     const CLAVE_MARCAS = 's3d-redes-publicado';
     const CLAVE_ACCESO = 's3d-redes-clave';
     const NOMBRES = { facebook: 'Facebook', instagram: 'Instagram', historia_facebook: 'Historia en Facebook', historia_instagram: 'Historia en Instagram', tiktok: 'TikTok' };
@@ -17,6 +25,13 @@
         guardar(clave, valor) { try { localStorage.setItem(clave, JSON.stringify(valor)); } catch (e) { /* sin almacenamiento */ } },
         borrar(clave) { try { localStorage.removeItem(clave); } catch (e) { /* sin almacenamiento */ } }
     };
+    // La clave, solo en esta pestaña. La guardada por versiones anteriores en localStorage se borra.
+    const sesion = {
+        leer() { try { return sessionStorage.getItem(CLAVE_ACCESO) || ''; } catch (e) { return ''; } },
+        guardar(valor) { try { sessionStorage.setItem(CLAVE_ACCESO, valor); } catch (e) { /* sin almacenamiento */ } },
+        borrar() { try { sessionStorage.removeItem(CLAVE_ACCESO); } catch (e) { /* sin almacenamiento */ } }
+    };
+    almacen.borrar(CLAVE_ACCESO);
 
     const fecha = iso => new Date(iso).toLocaleString('es-PE', { timeZone: 'America/Lima', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
@@ -74,7 +89,7 @@
     // ------------------------------------------------------------ Apps Script
 
     async function llamar(accion, datos = {}) {
-        const clave = almacen.leer(CLAVE_ACCESO, '');
+        const clave = sesion.leer();
         if (!API || !clave) throw new Error('falta la clave');
         // text/plain: el navegador no hace consulta previa (CORS) y el Apps Script lo recibe igual.
         const r = await fetch(API, { method: 'POST', body: JSON.stringify(Object.assign({ accion, clave }, datos)), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
@@ -94,7 +109,7 @@
     async function conectar() {
         const form = document.querySelector('[data-clave-form]');
         if (!API) return;
-        if (!almacen.leer(CLAVE_ACCESO, '')) {
+        if (!sesion.leer()) {
             textoConexion('Escribe tu clave para activar los botones de publicación.', '');
             if (form) form.hidden = false;
             return;
@@ -107,7 +122,7 @@
             document.querySelectorAll('.rd-auto').forEach(s => { s.hidden = false; });
             pintar();
         } catch (e) {
-            if (/clave/i.test(e.message)) almacen.borrar(CLAVE_ACCESO);
+            if (/clave/i.test(e.message)) sesion.borrar();
             textoConexion('No se pudo conectar: ' + e.message, 'rd-mal');
             if (form) form.hidden = false;
         }
@@ -373,8 +388,8 @@
     if (form) {
         form.addEventListener('submit', evento => {
             evento.preventDefault();
-            const campo = form.querySelector('input');
-            almacen.guardar(CLAVE_ACCESO, campo.value.trim());
+            const campo = form.querySelector('input[type="password"]');
+            sesion.guardar(campo.value.trim());
             campo.value = '';
             conectar();
         });

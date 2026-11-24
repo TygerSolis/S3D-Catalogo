@@ -1,4 +1,7 @@
 // Cabecera y pie compartidos: año del copyright y menú móvil.
+// Si otra web muestra la página dentro de un marco (clickjacking), se oculta: GitHub Pages no permite la cabecera
+// X-Frame-Options y la CSP en <meta> no admite frame-ancestors.
+if (window.top !== window.self) document.documentElement.hidden = true;
 (function () {
     const anio = document.getElementById('current-year');
     if (anio) anio.textContent = new Date().getFullYear();

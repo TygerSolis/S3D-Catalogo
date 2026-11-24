@@ -470,7 +470,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
 
 {sangrar(chrome_pie("../../"))}
 
-    <script src="../../chrome.js?v=1" defer></script>
+    <script src="../../chrome.js?v=2" defer></script>
     <script src="../../tienda.js?v=3" defer></script>
     <script src="../../analytics.js?v=5" defer></script>
     <script src="../../producto.js?v=12" defer></script>
@@ -585,7 +585,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     </main>
 
 {sangrar(chrome_pie(base))}
-    <script src="{base}chrome.js?v=1" defer></script>
+    <script src="{base}chrome.js?v=2" defer></script>
     <script src="{base}analytics.js?v=5" defer></script>
 </body>
 </html>

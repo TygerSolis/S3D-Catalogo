@@ -96,7 +96,7 @@ jobs:
             { echo "### Fotos que faltan en R2 (fuentes/)"; for n in $sin_foto; do echo "- $n"; done; } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-          npm install --no-save --no-package-lock sharp@0.34.5
+          npm install --no-save --no-package-lock sharp@0.35.5
           node scripts/optimize_images.cjs --fuentes fuentes
 
       - name: Importar y validar los datos
@@ -119,7 +119,7 @@ jobs:
         run: |
           # Solo si algún producto nuevo o cambiado aún no tiene su JPG (los originales se traen de R2).
           if [ -n "$(python3 scripts/redes.py faltantes)$(python3 scripts/redes.py faltantes-historias)$(python3 scripts/catalogo_meta.py faltantes)" ]; then
-            [ -d node_modules/sharp ] || npm install --no-save --no-package-lock sharp@0.34.5
+            [ -d node_modules/sharp ] || npm install --no-save --no-package-lock sharp@0.35.5
             # Sin fallar: si falta un original, ese producto queda «pendiente» en /redes/ y fuera del catálogo de Meta.
             node scripts/redes_fotos.cjs || echo "::warning::Faltan fotos para redes (ver el registro)"
             node scripts/redes_fotos.cjs --catalogo || echo "::warning::Faltan fotos para el catálogo de Meta (ver el registro)"

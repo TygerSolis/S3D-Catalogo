@@ -110,10 +110,12 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
 }
 
 module.exports = {
-    'Apps Script: sin la clave correcta no hace nada y bloquea tras 10 intentos'() {
+    'Apps Script: sin la clave correcta no hace nada y bloquea tras 200 intentos (nadie puede dejar fuera al dueño con pocos)'() {
         const s = cargarGs();
         assert.deepEqual(s.post({ accion: 'estado', clave: 'otra' }), { ok: false, error: 'clave incorrecta' });
-        for (let i = 0; i < 9; i++) s.post({ accion: 'publicar', id: 3001, clave: 'x' });
+        for (let i = 0; i < 20; i++) s.post({ accion: 'publicar', id: 3001, clave: 'x' });
+        assert.ok(s.post({ accion: 'estado' }).ok, '20 intentos fallidos no bloquean al dueño');
+        for (let i = 0; i < 179; i++) s.post({ accion: 'publicar', id: 3001, clave: 'x' });
         assert.match(s.post({ accion: 'estado' }).error, /demasiados intentos/);
         assert.equal(s.llamadas.length, 0, 'no debe llamar a Meta ni a la web');
         const sinClave = cargarGs({ props: { CLAVE: 'corta' } });
@@ -461,6 +463,43 @@ module.exports = {
         estado = 'SEND_TO_USER_INBOX';
         assert.equal(t2.post({ accion: 'tiktok-revisar', id: 3005, tipo: 'reel' }).estado['3005:reel'].tiktok.estado, 'enviado');
     },
+    async 'página: la clave vive solo en la pestaña (no en localStorage) y la página no funciona dentro de un marco'({ browser }) {
+        const API = 'https://script.google.com/macros/s/PRUEBA/exec';
+        const p = await abrir(browser, 'redes/', {
+            preparar: async pagina => {
+                await pagina.route(/\/redes\/$/, async ruta => {
+                    const html = (await (await ruta.fetch()).text()).replace(/data-api="[^"]*"/, `data-api="${API}"`);
+                    await ruta.fulfill({ body: html, contentType: 'text/html; charset=utf-8' });
+                });
+                await pagina.route(API, ruta => ruta.fulfill({ json: { ok: true, estado: {} } }));
+                // Una versión anterior la dejaba en localStorage: debe borrarse
+                await pagina.addInitScript(() => { if (!sessionStorage.getItem('marca')) { localStorage.setItem('s3d-redes-clave', '"vieja"'); sessionStorage.setItem('marca', '1'); } });
+            }
+        });
+        await p.locator('[data-conexion-estado]', { hasText: 'Escribe tu clave' }).waitFor();
+        assert.equal(await p.evaluate(() => localStorage.getItem('s3d-redes-clave')), null, 'la clave antigua se borra');
+        assert.equal(await p.locator('input[autocomplete="username"]').count(), 1, 'el gestor de contraseñas puede guardarla');
+        await p.fill('#rd-clave', CLAVE);
+        await p.click('[data-clave-form] button');
+        await p.locator('[data-conexion-estado].rd-bien').waitFor();
+        assert.equal(await p.evaluate(() => localStorage.getItem('s3d-redes-clave')), null, 'nunca en localStorage');
+        assert.equal(await p.evaluate(() => sessionStorage.getItem('s3d-redes-clave')), CLAVE);
+        // Otra pestaña (otra sesión) no la tiene
+        const otra = await p.contexto.newPage();
+        await otra.goto(p.url(), { waitUntil: 'networkidle' });
+        assert.equal(await otra.evaluate(() => sessionStorage.getItem('s3d-redes-clave')), null);
+        await p.contexto.close();
+        // Dentro de un marco de otra web: la página se oculta y no conecta
+        const m = await abrir(browser, '', {
+            preparar: pagina => pagina.route(/localhost:\d+\/$/, ruta => ruta.fulfill({ contentType: 'text/html',
+                body: '<!doctype html><title>x</title><iframe src="/redes/" width="400" height="600"></iframe><iframe src="/producto/woody/" width="400" height="600"></iframe>' }))
+        });
+        for (const marco of m.frames().slice(1)) {
+            await marco.waitForLoadState('load');
+            await marco.waitForFunction(() => document.documentElement.hidden === true);
+        }
+        await m.contexto.close();
+    },
     async 'página: el panel directo de TikTok cumple las normas (cuenta, sin valores por defecto, contenido comercial)'({ browser }) {
         const API = 'https://script.google.com/macros/s/PRUEBA/exec';
         const pedidos = [];
@@ -479,7 +518,7 @@ module.exports = {
                         estado: { [`${d.id}:${d.tipo}`]: { tiktok: { estado: 'publicado', fecha: '2026-11-21T16:00:00Z', enlace: 'https://www.tiktok.com/@s3d.pe' } } } } });
                     return ruta.fulfill({ json: { ok: true, estado: {} } });
                 });
-                await pagina.addInitScript(c => localStorage.setItem('s3d-redes-clave', JSON.stringify(c)), CLAVE);
+                await pagina.addInitScript(c => sessionStorage.setItem('s3d-redes-clave', c), CLAVE);
             }
         });
         await p.locator('[data-conexion-estado].rd-bien').waitFor();
@@ -565,7 +604,7 @@ module.exports = {
         await p.click('[data-clave-form] button');
         await p.locator('[data-conexion-estado].rd-mal').waitFor();
         assert.match(await p.locator('[data-conexion-estado]').textContent(), /clave incorrecta/);
-        assert.equal(await p.evaluate(() => localStorage.getItem('s3d-redes-clave')), null);
+        assert.equal(await p.evaluate(() => sessionStorage.getItem('s3d-redes-clave')), null);
         // Clave correcta: aparecen los botones
         await p.fill('#rd-clave', CLAVE);
         await p.click('[data-clave-form] button');

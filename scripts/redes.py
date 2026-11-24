@@ -427,10 +427,13 @@ def pagina(productos: list[dict]) -> str:
             <h2>Publicación automática</h2>
             <p class="rd-conexion-estado" data-conexion-estado>{'Conectando…' if api else 'Aún no está conectada con Facebook e Instagram (falta instalar el Apps Script: docs/guia-redes.md).'}</p>
             <form class="rd-clave" data-clave-form{'' if api else ' hidden'}>
+                <input type="text" name="usuario" value="S3D publicaciones" autocomplete="username" readonly hidden>
                 <label for="rd-clave">Tu clave</label>
-                <input id="rd-clave" type="password" autocomplete="current-password" required minlength="20">
+                <input id="rd-clave" name="clave" type="password" autocomplete="current-password" required minlength="20">
                 <button class="rd-btn" type="submit">Guardar</button>
             </form>
+            <p class="rd-nota">Por seguridad, la clave se recuerda solo mientras esta pestaña esté abierta: guárdala en el gestor
+                de contraseñas del navegador o del celular para que la complete solo.</p>
             <p class="rd-nota">Horarios automáticos: 11:00 y 19:00 (hora de Lima), un producto aprobado en cada uno.</p>
         </section>
         <details class="rd-ayuda">
@@ -448,7 +451,7 @@ def pagina(productos: list[dict]) -> str:
         </details>
 {articulos}
     </main>
-    <script src="redes.js?v=7" defer></script>
+    <script src="redes.js?v=8" defer></script>
 </body>
 </html>
 """

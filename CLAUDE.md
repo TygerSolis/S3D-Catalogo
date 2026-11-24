@@ -95,6 +95,12 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   No se programa por horario (TikTok exige elegir las opciones en cada publicación). Pruebas en `tests/publicar.cjs`.
 - **Términos y condiciones** (`pagina_terminos`, `/terminos/`, enlazada en el pie): los exige TikTok; base a revisar con
   asesoría legal (como la privacidad).
+- **Seguridad de /redes/ y del Apps Script** (revisión del 23/11/2026): la clave del dueño vive solo en
+  `sessionStorage` (localStorage lo comparten todas las webs de `tygersolis.github.io`, p. ej. VetFast, que carga JS de
+  terceros sin versión fija); la página y `chrome.js` se ocultan si están dentro de un marco (clickjacking: GitHub Pages no
+  permite `X-Frame-Options` ni `frame-ancestors` en `<meta>`); `MAX_FALLOS_CLAVE` = 200/hora (la clave es de 128 bits; un
+  límite bajo dejaría al dueño fuera). La hoja del catálogo es «Lector» con el enlace (necesario para el CSV): sus
+  editores podrían leer los permisos de Meta/TikTok del Apps Script vinculado. Recomendado a futuro: dominio propio.
 - **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en
   `assets/pagos/` (96 px WebP; Yape = ícono de su app en el App Store, publicado por el BCP; Plin = ícono de plin.pe),
   servidos desde el sitio por la CSP; Transferencia y Efectivo con íconos del sprite.
