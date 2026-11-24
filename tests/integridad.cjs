@@ -127,6 +127,12 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
             assert.ok(html.includes(`data-id="${p.id}"`) && html.includes('id="pp-cotizador"') && html.includes('Formas de pago'));
         }
         assert.ok(existe('404.html') && existe('privacidad/index.html') && existe('terminos/index.html'));
+        // Formas de pago: Yape y Plin con su logo oficial (assets/pagos/) en la portada, las fichas y las páginas informativas
+        for (const archivo of ['index.html', 'producto/woody/index.html', 'privacidad/index.html', 'terminos/index.html']) {
+            const html = fs.readFileSync(path.join(RAIZ, archivo), 'utf8');
+            for (const marca of ['yape', 'plin']) assert.ok(html.includes(`assets/pagos/${marca}.webp`), `${archivo}: falta el logo de ${marca}`);
+        }
+        assert.ok(existe('assets/pagos/yape.webp') && existe('assets/pagos/plin.webp'));
         const indice = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
         for (const m of indice.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)) JSON.parse(m[1]);
     },

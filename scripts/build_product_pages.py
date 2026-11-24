@@ -416,7 +416,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
-    <link rel="stylesheet" href="../../chrome.css?v=7">
+    <link rel="stylesheet" href="../../chrome.css?v=8">
     <link rel="stylesheet" href="../../producto.css?v=11">
 {json_ld_producto(p, url)}
 </head>
@@ -575,7 +575,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     <link rel="preload" href="{base}assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{base}fonts.css?v=1">
-    <link rel="stylesheet" href="{base}chrome.css?v=7">
+    <link rel="stylesheet" href="{base}chrome.css?v=8">
     <link rel="stylesheet" href="{base}paginas.css?v=1">
 </head>
 <body>

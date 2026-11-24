@@ -95,6 +95,9 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   No se programa por horario (TikTok exige elegir las opciones en cada publicación). Pruebas en `tests/publicar.cjs`.
 - **Términos y condiciones** (`pagina_terminos`, `/terminos/`, enlazada en el pie): los exige TikTok; base a revisar con
   asesoría legal (como la privacidad).
+- **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en
+  `assets/pagos/` (96 px WebP; Yape = ícono de su app en el App Store, publicado por el BCP; Plin = ícono de plin.pe),
+  servidos desde el sitio por la CSP; Transferencia y Efectivo con íconos del sprite.
 - **Catálogo de Meta / WhatsApp** (`scripts/catalogo_meta.py`, llamado por el generador; guía `docs/guia-whatsapp.md`):
   `meta/catalogo.csv` (lista de datos programada en el Administrador de ventas, conectada al catálogo de WhatsApp
   Business): un artículo por producto activo con precio (sin «Cotizar»), una variante por color (`item_group_id`,

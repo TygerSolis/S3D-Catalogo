@@ -109,6 +109,9 @@
 .pagos-lista { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0; padding: 0; }
 .pagos-lista li { align-items: center; background: #fff; border: 1px solid #dbe5ef; border-radius: 999px; color: #1e3a5f; display: inline-flex; font-size: .8rem; font-weight: 700; gap: .4rem; padding: .4rem .85rem; }
 .pagos-lista .ico { color: #0066cc; height: .95rem; width: .95rem; }
+/* Yape y Plin con su logo oficial (el ícono de Yape es cuadrado: se redondea como en la app) */
+.pagos-lista .pagos-marca { padding-left: .35rem; }
+.pagos-lista .pagos-marca img { border-radius: 28%; flex: none; height: 1.375rem; width: 1.375rem; }
 .pagos-nota { color: #64748b; font-size: .78rem; line-height: 1.5; margin: .6rem 0 0; }
 .pagos-oscuro .pagos-titulo { color: #7fb2e8; }
 .pagos-oscuro .pagos-lista li { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: #e2e8f0; }
