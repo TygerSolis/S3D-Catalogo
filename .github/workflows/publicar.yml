@@ -26,13 +26,13 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+# Dos trabajos (como las plantillas oficiales de GitHub Pages): «armar» sube el sitio y «publicar» lo despliega.
+# Si se hacía todo en uno, deploy-pages a veces buscaba el paquete antes de que GitHub lo registrara («No artifacts
+# named "github-pages" were found», noviembre de 2026) y reintentar no siempre servía.
 jobs:
-  publicar:
+  armar:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment:
-      name: github-pages
-      url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       - name: Traer main
         uses: actions/checkout@v4
@@ -87,6 +87,15 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  publicar:
+    needs: armar
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
       - name: Desplegar
         id: despliegue
         uses: actions/deploy-pages@v4
