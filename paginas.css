@@ -32,3 +32,14 @@ img, picture { display: block; max-width: 100%; }
 .pg-card span { color: var(--muted); font-size: .88rem; font-weight: 700; padding: .2rem .9rem 0; }
 .pg-aviso { background: #eef6ff; border: 1px solid #cfe3f8; border-radius: 1rem; color: #1e3a5f; font-size: .92rem; margin-top: 2rem; padding: .9rem 1.1rem; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+/* Guía de regalos */
+.pg-main .promesa { margin: 1.5rem 0; padding: 0; }
+.pg-main .promesa li { color: #475569; font-size: .8rem; margin: 0; }
+@media (min-width: 760px) { .pg-main .promesa { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pg-chip small { color: var(--muted); font-weight: 600; }
+.pg-rango { scroll-margin-top: 5rem; }
+.pg-rango-cab { align-items: baseline; display: flex; flex-wrap: wrap; gap: .25rem 1rem; justify-content: space-between; margin: 2.5rem 0 .9rem; }
+.pg-rango-cab h2 { margin: 0 !important; }
+.pg-rango-cab a { font-size: .9rem; }
+.pg-card { position: relative; }
+.pg-card-temporada { background: #b91c1c; border-radius: 999px; color: #fff; font-size: .68rem; font-style: normal; font-weight: 800; left: .6rem; letter-spacing: .04em; padding: .2rem .6rem; position: absolute; top: .6rem; }

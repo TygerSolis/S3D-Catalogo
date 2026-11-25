@@ -73,6 +73,21 @@
         let debounceAnalitica;
         const filtersContainer = document.getElementById('category-filters');
         const sortSelect = document.getElementById('sort-select');
+        // Filtro de precio: los rangos vienen de config.json («rangosPrecio»), escritos por el generador en el <select>.
+        const priceSelect = document.getElementById('price-select');
+        let rangoActual = "";
+        const rangoDe = id => {
+            const opcion = priceSelect && [...priceSelect.options].find(o => o.value === id && id);
+            return opcion ? { min: Number(opcion.dataset.min), max: Number(opcion.dataset.max) } : null;
+        };
+        // Un producto entra en el rango por su precio más bajo; los «a cotizar» no tienen precio publicado.
+        const cumpleRango = p => {
+            const rango = rangoDe(rangoActual);
+            if (!rango) return true;
+            if (p.requiereCotizacion || !p.precio) return false;
+            const minimo = precioMinimo(p);
+            return minimo >= rango.min && minimo <= rango.max;
+        };
         const resultsCount = document.getElementById('results-count');
 
         function actualizarURL() {
@@ -80,6 +95,7 @@
             if (categoriaActual !== "Todas") params.set("categoria", categoriaActual);
             if (terminoBusqueda) params.set("buscar", terminoBusqueda);
             if (ordenActual !== "default") params.set("orden", ordenActual);
+            if (rangoActual) params.set("precio", rangoActual);
             const query = params.toString();
             // Se conserva el #ancla (p. ej. al llegar desde una ficha con /#faq).
             history.replaceState(null, "", (query ? `${window.location.pathname}?${query}` : window.location.pathname) + window.location.hash);
@@ -317,7 +333,7 @@
                     normalizar(p.descripcion).includes(normalizar(terminoBusqueda)) ||
                     (p.coleccion && normalizar(p.coleccion).includes(normalizar(terminoBusqueda)));
                 
-                return cumpleCategoria && cumpleBusqueda;
+                return cumpleCategoria && cumpleBusqueda && cumpleRango(p);
             });
             const productosOrdenados = [...productosFiltrados];
             // Los productos "a cotizar" no tienen precio publicado: siempre van al final del orden por precio.
@@ -432,7 +448,7 @@
                         <svg class="ico w-10 h-10" aria-hidden="true"><use href="#i-search-x"/></svg>
                     </div>
                     <h3 class="font-title text-2xl font-bold text-gray-900 mb-3">No encontramos resultados</h3>
-                    <p class="text-gray-500 text-lg">Intenta buscar con otros términos o cambia de categoría.</p>
+                    <p class="text-gray-500 text-lg">Intenta buscar con otros términos, cambia de categoría o de rango de precio.</p>
                 </div>
             `;
 
@@ -639,6 +655,12 @@
         sortSelect.addEventListener('change', function(e) {
             ordenActual = e.target.value;
             track('orden', { orden: ordenActual });
+            renderizarProductos();
+        });
+
+        priceSelect?.addEventListener('change', function(e) {
+            rangoActual = rangoDe(e.target.value) ? e.target.value : "";
+            if (rangoActual) track('filtro_precio', { rango: rangoActual });
             renderizarProductos();
         });
 
@@ -1032,6 +1054,8 @@
             ordenActual = ["recent", "price-asc", "price-desc", "name"].includes(params.get("orden")) ? params.get("orden") : "default";
             document.getElementById("search-input").value = terminoBusqueda;
             sortSelect.value = ordenActual;
+            rangoActual = rangoDe(params.get("precio") || "") ? params.get("precio") : "";
+            if (priceSelect) priceSelect.value = rangoActual;
             renderFeaturedProducts();
             renderizarProductos();
             if (window.location.hash.length > 1) {

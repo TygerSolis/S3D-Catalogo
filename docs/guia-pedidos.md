@@ -34,6 +34,17 @@ Si en la hoja aparece un pedido que nunca llegó por WhatsApp, el cliente no com
 - Columna **Notas**: libre (nombre del cliente, fecha de entrega, etc.). El programa nunca toca filas ya escritas.
 - Para buscar un pedido que llega por WhatsApp: Ctrl+F con el código (`S3D-7K4Q2`).
 
+## Correo diario de pedidos por retomar
+
+Cada mañana a las **9:00** (hora de Lima) llega a `ventas.s3d@gmail.com` la lista de pedidos que siguen en **Nuevo**
+desde hace más de 24 horas: código, fecha, tipo, total y primer producto. Busca el código en WhatsApp y retoma la
+conversación; si el código no aparece en WhatsApp, el cliente no llegó a enviar el mensaje y no hay forma de
+contactarlo. Al atenderlo, cambia su **Estado** (Confirmado, Sin respuesta, Cancelado…) y deja de salir en el correo.
+Si no hay pendientes, no llega nada. Los «Nuevo» de más de 7 días solo se cuentan al final del correo.
+
+Para activarlo (una vez): pega la versión nueva de `Pedidos.gs`, haz **Nueva versión** de la implementación (abajo) y
+ejecuta **instalarResumen** desde el editor (menú de funciones → `instalarResumen` → Ejecutar).
+
 ## Si cambias el programa
 
 Tras editar `Pedidos.gs` en Apps Script: **Implementar → Gestionar implementaciones → editar (lápiz) →

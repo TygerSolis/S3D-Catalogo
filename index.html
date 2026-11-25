@@ -67,9 +67,9 @@
     
     
 
-    <link rel="stylesheet" href="chrome.css?v=8">
+    <link rel="stylesheet" href="chrome.css?v=9">
     <link rel="stylesheet" href="styles.css?v=tienda-6">
-    <link rel="stylesheet" href="tailwind.css?v=1">
+    <link rel="stylesheet" href="tailwind.css?v=2">
 </head>
 <body class="text-gray-800 antialiased selection:bg-brand-accent selection:text-white">
 
@@ -219,6 +219,17 @@
         </div>
     </header>
 
+    <!-- CHROME-PROMESA:START -->
+    <div class="promesa-portada no-print">
+        <ul class="promesa" aria-label="Por qué comprar en S3D">
+            <li><svg class="ico" aria-hidden="true"><use href="#i-printer"/></svg><span><strong>Hecho en Lima</strong> en nuestro propio taller</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-package-check"/></svg><span><strong>Listo en 24–48 h</strong> elaborado a pedido</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span><strong>Envíos a todo el Perú</strong> o recojo gratis</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-smartphone"/></svg><span><strong>Paga con Yape o Plin</strong> transferencia o efectivo</span></li>
+        </ul>
+    </div>
+    <!-- CHROME-PROMESA:END -->
+
     <!-- DISEÑO DE CATEGORÍAS (Elegante y sin sticky) -->
     <div id="catalogo" class="bg-white border-y border-gray-100 py-10 no-print shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] relative z-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -250,6 +261,8 @@
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
                     <span id="results-count" class="text-sm font-semibold text-gray-500" aria-live="polite"></span>
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+                    <a href="regalos/" class="inline-flex items-center gap-1.5 text-sm font-bold text-brand-accent hover:underline" data-evento="guia_regalos" data-producto="catalogo"><svg class="ico w-4 h-4" aria-hidden="true"><use href="#i-gift"/></svg>Guía de regalos</a>
                     <label class="flex items-center gap-2 text-sm font-semibold text-gray-500">
                         Ordenar por
                         <select id="sort-select" class="minimal-select rounded-lg border-0 bg-transparent px-1 py-1 text-sm font-bold text-brand-900 focus:outline-none focus:ring-2 focus:ring-brand-accent/20">
@@ -260,6 +273,19 @@
                             <option value="name">Nombre</option>
                         </select>
                     </label>
+                    <label class="flex items-center gap-2 text-sm font-semibold text-gray-500">
+                        Precio
+                        <select id="price-select" class="minimal-select rounded-lg border-0 bg-transparent px-1 py-1 text-sm font-bold text-brand-900 focus:outline-none focus:ring-2 focus:ring-brand-accent/20">
+                            <option value="">Todos</option>
+                            <!-- RANGOS:START -->
+                            <option value="menos-30" data-min="0" data-max="29.99">Menos de S/ 30</option>
+                            <option value="30-60" data-min="30" data-max="60">S/ 30 a S/ 60</option>
+                            <option value="60-100" data-min="60.01" data-max="100">S/ 60 a S/ 100</option>
+                            <option value="mas-100" data-min="100.01" data-max="100000">Más de S/ 100</option>
+    <!-- RANGOS:END -->
+                        </select>
+                    </label>
+                    </div>
                 </div>
 
                 <div class="catalog-notice" role="note">
@@ -322,6 +348,21 @@
                 <p class="pagos-nota">Los datos de pago se coordinan por WhatsApp al confirmar tu pedido.</p>
             </div>
     <!-- CHROME-PAGOS:END -->
+            <!-- CHROME-ENVIOS:START -->
+            <div class="envios" id="envios">
+                <h3 class="envios-titulo"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg>Costos de envío</h3>
+                <table class="envios-tabla">
+                    <thead><tr><th scope="col">Entrega</th><th scope="col">Costo</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row"><strong>Recojo en nuestro taller</strong><span>Coordinando por WhatsApp. Puedes venir tú o enviar a tu motorizado o app de delivery.</span></th><td>Gratis</td></tr>
+                        <tr><th scope="row"><strong>Lima Centro y distritos cercanos</strong><span>Delivery hasta tu puerta.</span></th><td>desde S/ 10.00</td></tr>
+                        <tr><th scope="row"><strong>Lima periferia y Callao</strong><span>Delivery hasta tu puerta.</span></th><td>desde S/ 15.00</td></tr>
+                        <tr><th scope="row"><strong>Provincias</strong><span>Por Shalom o la agencia que prefieras; recoges en la agencia de tu ciudad.</span></th><td>desde S/ 12.00</td></tr>
+                    </tbody>
+                </table>
+                <p class="envios-nota">Montos referenciales: el costo exacto se confirma por WhatsApp según tu distrito o ciudad y el tamaño del paquete.</p>
+            </div>
+    <!-- CHROME-ENVIOS:END -->
         </div>
     </section>
 
@@ -355,7 +396,7 @@
                 </details>
                 <details class="group py-5">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-title text-lg font-bold text-brand-900">¿Los productos se elaboran bajo pedido?<span class="text-brand-accent transition-transform group-open:rotate-45">+</span></summary>
-                    <p class="mt-4 max-w-3xl leading-relaxed text-gray-600">Sí. Trabajamos bajo pedido para cuidar la impresión y el postprocesado. El tiempo habitual es de un día para otro, según el modelo y la carga de trabajo.</p>
+                    <p class="mt-4 max-w-3xl leading-relaxed text-gray-600">Sí. Trabajamos bajo pedido para cuidar la impresión y el postprocesado. El tiempo habitual es de 24 a 48 horas, según el modelo y la carga de trabajo.</p>
                 </details>
                 <details class="group py-5">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-title text-lg font-bold text-brand-900">¿Puedo personalizar un producto?<span class="text-brand-accent transition-transform group-open:rotate-45">+</span></summary>
@@ -371,7 +412,7 @@
                 </details>
                 <details class="group py-5">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-title text-lg font-bold text-brand-900">¿Realizan envíos a todo el Perú?<span class="text-brand-accent transition-transform group-open:rotate-45">+</span></summary>
-                    <p class="mt-4 max-w-3xl leading-relaxed text-gray-600">Sí. Coordinamos envíos a todo el Perú y calculamos el costo según tu ubicación.</p>
+                    <p class="mt-4 max-w-3xl leading-relaxed text-gray-600">Sí. Hacemos delivery en Lima y enviamos a provincias por Shalom o la agencia que prefieras; también puedes recoger tu pedido gratis en nuestro taller, en persona o con tu motorizado. <a href="#envios" class="font-bold text-brand-accent underline">Ver costos de envío</a>.</p>
                 </details>
                 <details class="group py-5">
                     <summary class="flex cursor-pointer list-none items-center justify-between gap-6 font-title text-lg font-bold text-brand-900">¿Cómo puedo realizar un pedido?<span class="text-brand-accent transition-transform group-open:rotate-45">+</span></summary>
@@ -447,6 +488,8 @@
                         <a href="#nosotros">Nosotros</a>
                         <a href="#ubicacion">Ubicación</a>
                         <a href="#faq">Preguntas frecuentes</a>
+                        <a href="regalos/">Guía de regalos</a>
+                        <a href="#envios">Costos de envío</a>
                     </div>
                     <h3 class="site-footer-sub">Síguenos</h3>
                     <div class="site-footer-social">
@@ -461,7 +504,7 @@
 
             <div class="site-footer-legal">
                 <p>&copy; <span id="current-year"></span> S3D. Todos los derechos reservados. <span id="analytics-note" hidden>Estadísticas anónimas, sin cookies.</span></p>
-                <p><a href="privacidad/">Privacidad</a> · <a href="terminos/">Términos</a> · Diseñado con <svg class="ico ico-sm" aria-hidden="true"><use href="#i-heart"/></svg> en Perú</p>
+                <p><a href="privacidad/">Privacidad</a> · <a href="terminos/">Términos</a> <span data-cookies-pie hidden>· <button type="button" class="site-footer-cookies" data-cookies>Preferencias de cookies</button></span> · Diseñado con <svg class="ico ico-sm" aria-hidden="true"><use href="#i-heart"/></svg> en Perú</p>
             </div>
         </div>
     </footer>
@@ -517,7 +560,7 @@
 
     <script src="chrome.js?v=2" defer></script>
     <script src="tienda.js?v=3" defer></script>
-    <script src="analytics.js?v=5" defer></script>
-    <script src="catalogo.js?v=tienda-12" defer></script>
+    <script src="analytics.js?v=6" defer></script>
+    <script src="catalogo.js?v=tienda-13" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // Fichas de producto: cabecera/pie compartidos, visor, fotos por tamaño, colores, cotizador y avisos.
-const { assert, abrir } = require('./util.cjs');
+const { assert, abrir, leerJson } = require('./util.cjs');
 
 const textoNormalizado = async (pagina, selector) => (await pagina.locator(selector).first().innerText()).replace(/\s+/g, ' ').trim();
 
@@ -110,5 +110,89 @@ module.exports = {
         p = await abrir(browser, 'producto/woody/');
         assert.ok(await p.locator('.pp-ribbon').isHidden());
         await p.contexto.close();
-    }
+    },
+
+    async 'la ficha muestra la franja de confianza, los costos de envío de config.json y el tamaño junto a un celular'({ browser }) {
+        const { envios, promesa } = leerJson('config.json');
+        const p = await abrir(browser, 'producto/woody/');
+        const franja = (await p.locator('.pp-info .promesa').innerText()).replace(/\s+/g, ' ');
+        for (const texto of ['Hecho en Lima', promesa.plazo, 'Envíos a todo el Perú', 'Yape o Plin']) assert.ok(franja.includes(texto), `falta «${texto}»`);
+        const desplegable = p.locator('.pp-envios');
+        assert.ok(await desplegable.locator('table').isHidden(), 'los costos empiezan plegados');
+        await desplegable.locator('summary').click();
+        const filas = await desplegable.locator('tbody tr').allInnerTexts();
+        assert.equal(filas.length, envios.zonas.length);
+        envios.zonas.forEach((z, i) => assert.ok(filas[i].includes(z.zona) && filas[i].includes(z.precio ? `S/ ${z.precio.toFixed(2)}` : 'Gratis'), filas[i]));
+        // WOODY mide 23 cm: el dibujo lo dice y su pieza es más alta que el celular de 15 cm.
+        const dibujo = p.locator('.pp-tamano svg');
+        assert.match(await dibujo.getAttribute('aria-label'), /23 cm/);
+        const [celular, pieza] = await Promise.all(['.pp-tamano-celular', '.pp-tamano-pieza'].map(s => p.locator(s).evaluate(r => r.getBBox().height)));
+        assert.ok(Math.abs(pieza / celular - 23 / 15) < 0.01, `${pieza} / ${celular}`);
+        await p.contexto.close();
+    },
+    async 'el dibujo de tamaño solo aparece si la medida está en cm'({ browser }) {
+        const sinCm = leerJson('productos.json').find(x => x.medida && !/cm/i.test(x.medida));
+        const p = await abrir(browser, `producto/${sinCm.slug}/`);
+        assert.equal(await p.locator('.pp-tamano').count(), 0, sinCm.medida);
+        await p.contexto.close();
+    },
+    async 'en el celular, la barra fija pide por WhatsApp con el mismo enlace y precio del color elegido'({ browser }) {
+        const p = await abrir(browser, 'producto/arbol-navideno/', { vp: { width: 390, height: 844 }, touch: true });
+        const barra = p.locator('#pp-barra');
+        await barra.waitFor({ state: 'visible' });
+        assert.ok(await p.evaluate(() => document.body.classList.contains('pp-con-barra')));
+        // Al cambiar a un color con precio propio, la barra muestra ese precio.
+        const colores = p.locator('.pp-swatch');
+        const ultimo = colores.nth(await colores.count() - 1);
+        await ultimo.click();
+        assert.equal(await p.locator('#pp-barra-precio').innerText(), `S/ ${Number(await ultimo.getAttribute('data-precio')).toFixed(2)}`);
+        // Pulsar la barra equivale a pulsar «Comprar por WhatsApp» (mismo enlace, con el color elegido).
+        await p.evaluate(() => document.getElementById('pp-buy').addEventListener('click', e => { window.__abierto = e.currentTarget.href; e.preventDefault(); }, { once: true }));
+        await p.click('#pp-barra-btn');
+        const texto = new URL(await p.evaluate(() => window.__abierto)).searchParams.get('text');
+        assert.ok(texto.includes(`Color: ${await ultimo.getAttribute('data-pp-color')}`), texto);
+        assert.deepEqual(p.eventos.filter(e => e.nombre === 'barra_comprar').length, 1);
+        // Cuando el botón principal está a la vista, la barra se oculta.
+        await p.locator('#pp-buy').scrollIntoViewIfNeeded();
+        await barra.waitFor({ state: 'hidden' });
+        await p.contexto.close();
+        const escritorio = await abrir(browser, 'producto/arbol-navideno/');
+        await escritorio.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+        await escritorio.waitForTimeout(200);
+        assert.ok(await escritorio.locator('#pp-barra').isHidden(), 'en escritorio no hay barra');
+        await escritorio.contexto.close();
+    },
+    async '«Vistos recientemente» muestra lo abierto antes, sin repetir los sugeridos ni pintar datos manipulados'({ browser }) {
+        const p = await abrir(browser, 'producto/angelito/');
+        assert.ok(await p.locator('#pp-vistos').isHidden(), 'la primera ficha no tiene vistos');
+        // Una web del mismo dominio podría escribir en localStorage: lo inválido se descarta.
+        await p.evaluate(() => {
+            const lista = JSON.parse(localStorage.getItem('s3d-vistos'));
+            lista.push({ slug: 'x"><img src=x onerror=alert(1)>', nombre: 'MALO', precio: 'S/ 1', imagen: 'assets/sm/a.webp' });
+            lista.push({ slug: 'malo', nombre: '<b>MALO</b>', precio: 'S/ 1', imagen: 'javascript:alert(1)' });
+            localStorage.setItem('s3d-vistos', JSON.stringify(lista));
+        });
+        await p.goto(p.url().replace('angelito', 'woody'));
+        const vistos = p.locator('#pp-vistos');
+        await vistos.waitFor({ state: 'visible' });
+        assert.deepEqual(await vistos.locator('.pp-related-card strong').allInnerTexts(), ['ANGELITO']);
+        assert.equal(await vistos.locator('.pp-related-card').getAttribute('href'), '../angelito/');
+        assert.ok(await vistos.locator('img').evaluate(img => img.complete && img.naturalWidth > 0), 'la foto carga');
+        const guardados = await p.evaluate(() => JSON.parse(localStorage.getItem('s3d-vistos')).map(v => v.slug));
+        assert.deepEqual(guardados, ['woody', 'angelito']);
+        // BUZZ ya sale en «También te puede gustar» de WOODY: no se repite en vistos.
+        await p.goto(p.url().replace('woody', 'buzz'));
+        await p.goto(p.url().replace('buzz', 'woody'));
+        assert.deepEqual(await p.locator('#pp-vistos .pp-related-card strong').allInnerTexts(), ['ANGELITO']);
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+    },
+    async '«También te puede gustar» completa con precios parecidos si la categoría tiene pocos productos'({ browser }) {
+        const lista = leerJson('productos.json').filter(x => x.activo !== false);
+        const porCategoria = lista.reduce((m, x) => m.set(x.categoria, (m.get(x.categoria) || 0) + 1), new Map());
+        const solo = lista.find(x => porCategoria.get(x.categoria) <= 3);
+        const p = await abrir(browser, `producto/${solo.slug}/`);
+        assert.equal(await p.locator('.pp-related:not(.pp-vistos) .pp-related-card').count(), 4);
+        await p.contexto.close();
+    },
 };

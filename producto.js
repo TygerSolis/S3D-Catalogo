@@ -326,3 +326,84 @@
         track('cotizar_personalizado', { producto: nombre });
     });
 })();
+
+// ---- Barra fija para pedir en el celular ----
+// Aparece mientras el botón principal («Comprar por WhatsApp») no está a la vista; al pulsarla se usa ese mismo
+// botón, así el pedido lleva su código S3D, el color elegido y cuenta en la analítica igual que siempre.
+(function () {
+    const barra = document.getElementById('pp-barra');
+    const boton = document.getElementById('pp-barra-btn');
+    const comprar = document.getElementById('pp-buy');
+    if (!barra || !boton || !comprar || !('IntersectionObserver' in window)) return;
+    const mostrar = visible => {
+        barra.hidden = !visible;
+        document.body.classList.toggle('pp-con-barra', visible);
+    };
+    new IntersectionObserver(([entrada]) => mostrar(!entrada.isIntersecting)).observe(comprar);
+    boton.addEventListener('click', () => {
+        if (window.s3dTrack) window.s3dTrack('barra_comprar', { producto: comprar.dataset.producto });
+        comprar.click();
+    });
+    // El precio de la barra sigue al de la ficha (cambia con el color elegido).
+    const precioFicha = document.getElementById('pp-price-value');
+    const precioBarra = document.getElementById('pp-barra-precio');
+    if (precioFicha && precioBarra) {
+        new MutationObserver(() => { precioBarra.textContent = `S/ ${precioFicha.textContent.trim()}`; })
+            .observe(precioFicha, { childList: true, characterData: true, subtree: true });
+    }
+})();
+
+// ---- Vistos recientemente ----
+// Los últimos productos abiertos se guardan solo en este navegador (sin datos personales) y se muestran al pie de
+// la ficha. Lo leído se valida y se pinta con textContent: localStorage lo comparten todas las webs de este dominio.
+(function () {
+    const articulo = document.querySelector('.pp-product');
+    const seccion = document.getElementById('pp-vistos');
+    if (!articulo || !seccion) return;
+    const CLAVE = 's3d-vistos';
+    const MAXIMO = 8;
+    const MOSTRAR = 4;
+    const valido = v => v && typeof v === 'object' && /^[a-z0-9-]{1,120}$/.test(v.slug) && typeof v.nombre === 'string' &&
+        v.nombre.length <= 120 && typeof v.precio === 'string' && v.precio.length <= 40 &&
+        typeof v.imagen === 'string' && /^assets\/sm\/[^"'<>\\]{1,200}\.(webp|png|jpe?g)$/i.test(v.imagen) && !v.imagen.includes('..');
+    let lista = [];
+    try { lista = JSON.parse(localStorage.getItem(CLAVE) || '[]'); } catch (error) { lista = []; }
+    lista = Array.isArray(lista) ? lista.filter(valido) : [];
+
+    const actual = { slug: articulo.dataset.slug, nombre: articulo.dataset.producto, precio: articulo.dataset.precioTxt || '', imagen: articulo.dataset.imagen };
+    const relacionados = new Set([...document.querySelectorAll('.pp-related-card')].map(a => (a.getAttribute('href') || '').replace(/^\.\.\/|\/$/g, '')));
+    const otros = lista.filter(v => v.slug !== actual.slug);
+    const visibles = otros.filter(v => !relacionados.has(v.slug)).slice(0, MOSTRAR);
+
+    if (visibles.length) {
+        const grilla = seccion.querySelector('.pp-related-grid');
+        visibles.forEach(v => {
+            const enlace = document.createElement('a');
+            enlace.className = 'pp-related-card';
+            enlace.href = `../${v.slug}/`;
+            enlace.dataset.evento = 'ficha_vista';
+            enlace.dataset.producto = v.nombre;
+            const imagen = document.createElement('picture');
+            const fuente = document.createElement('source');
+            const ruta = '../../' + encodeURI(v.imagen);
+            fuente.type = 'image/avif';
+            fuente.srcset = ruta.replace(/\.(webp|png|jpe?g)$/i, '.avif');
+            const img = document.createElement('img');
+            img.src = ruta;
+            img.alt = v.nombre;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            imagen.append(fuente, img);
+            const nombre = document.createElement('strong');
+            nombre.textContent = v.nombre;
+            const precio = document.createElement('span');
+            precio.textContent = v.precio;
+            enlace.append(imagen, nombre, precio);
+            grilla.append(enlace);
+        });
+        seccion.hidden = false;
+    }
+    if (valido(actual)) {
+        try { localStorage.setItem(CLAVE, JSON.stringify([actual, ...otros].slice(0, MAXIMO))); } catch (error) { /* sin almacenamiento */ }
+    }
+})();

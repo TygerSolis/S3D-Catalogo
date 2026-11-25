@@ -206,3 +206,44 @@ img, picture { display: block; max-width: 100%; }
 .pp-temporada-tag .ico { color: #ffe7a8; }
 .temporada-navidad .pp-temporada .pp-kicker { color: #b4232c; }
 .temporada-navidad .pp-temporada .pp-stage { box-shadow: 0 0 0 1px #ebbcc0; }
+
+/* Franja de confianza bajo el precio */
+.pp-info .promesa { border-bottom: 1px solid var(--line); margin: 0 0 1.25rem; padding-bottom: 1.25rem; }
+
+/* Referencia de tamaño (SVG generado desde la «medida») */
+.pp-tamano { align-items: center; background: #f7faff; border: 1px solid var(--line); border-radius: 1rem; display: flex; gap: 1rem; margin: -.5rem 0 1.5rem; padding: .75rem 1rem; }
+.pp-tamano svg { flex: none; height: 7.5rem; width: auto; }
+.pp-tamano figcaption { color: var(--muted); font-size: .85rem; line-height: 1.45; }
+.pp-tamano figcaption strong { color: var(--navy); }
+.pp-tamano-suelo { stroke: #cbd5e1; stroke-width: 1.5; }
+.pp-tamano-celular { fill: #334155; }
+.pp-tamano-pantalla { fill: #94a3b8; }
+.pp-tamano-pieza { fill: #dbeafe; stroke: var(--blue); stroke-dasharray: 5 3; stroke-width: 1.5; }
+.pp-tamano-cifra { fill: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; }
+.pp-tamano-nombre { fill: var(--muted); font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 700; }
+
+/* Costos de envío desplegables */
+.pp-envios { background: #fff; border: 1px solid var(--line); border-radius: 1rem; margin-top: 1.25rem; }
+.pp-envios summary { align-items: center; color: var(--navy); cursor: pointer; display: flex; font-weight: 800; gap: .6rem; list-style: none; padding: .9rem 1.1rem; }
+.pp-envios summary::-webkit-details-marker { display: none; }
+.pp-envios summary .ico { color: var(--blue); }
+.pp-envios summary span { flex: 1; }
+.pp-envios summary small { color: var(--muted); display: block; font-size: .8rem; font-weight: 700; }
+.pp-envios[open] .pp-flecha { transform: rotate(180deg); }
+.pp-envios .envios-tabla { border-left: 0; border-radius: 0; border-right: 0; }
+.pp-envios .envios-nota { padding: 0 1.1rem 1rem; }
+
+/* Barra fija para pedir en el celular (producto.js la muestra cuando el botón principal no está a la vista) */
+.pp-barra { align-items: center; background: rgba(255, 255, 255, .97); border-top: 1px solid var(--line); bottom: 0; box-shadow: 0 -12px 30px -18px rgba(0, 34, 68, .45); display: flex; gap: .75rem; left: 0; padding: .65rem 1rem calc(.65rem + env(safe-area-inset-bottom, 0px)); position: fixed; right: 0; z-index: 80; }
+.pp-barra-info { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.pp-barra-info strong { color: var(--navy); font-size: .82rem; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pp-barra-info span { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; }
+.pp-barra-btn { align-items: center; background: #16a34a; border: 0; border-radius: 999px; color: #fff; cursor: pointer; display: inline-flex; flex: none; font: inherit; font-size: .9rem; font-weight: 800; gap: .45rem; padding: .75rem 1.1rem; }
+.pp-barra-btn:hover { background: #15803d; }
+.pp-barra-btn .ico { height: 1.1rem; width: 1.1rem; }
+@media (min-width: 860px) { .pp-barra { display: none !important; } }
+body.pp-con-barra { padding-bottom: 4.5rem; }
+body.pp-con-barra .s3d-fab { bottom: 5.25rem; }
+body.pp-con-barra .s3d-aviso { bottom: 9rem; }
+@media (min-width: 860px) { body.pp-con-barra { padding-bottom: 0; } body.pp-con-barra .s3d-fab { bottom: 1.25rem; } body.pp-con-barra .s3d-aviso { bottom: 5rem; } }
+@media print { .pp-barra { display: none !important; } }

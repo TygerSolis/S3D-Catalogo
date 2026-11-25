@@ -156,9 +156,10 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
         productos().forEach(p => revisar(`producto/${p.slug}/index.html`));
         assert.deepEqual(rotas.slice(0, 5), [], `${rotas.length} referencias rotas`);
     },
-    'el sitemap lista la portada, la privacidad, los términos y todas las fichas'() {
+    'el sitemap lista la portada, la privacidad, los términos, la guía de regalos y todas las fichas'() {
         const xml = fs.readFileSync(path.join(RAIZ, 'sitemap.xml'), 'utf8');
-        assert.equal((xml.match(/<loc>/g) || []).length, productos().length + 3);
+        assert.equal((xml.match(/<loc>/g) || []).length, productos().length + 4);
         assert.ok(xml.includes('/terminos/</loc>'));
+        assert.ok(xml.includes('/regalos/</loc>'));
     }
 };

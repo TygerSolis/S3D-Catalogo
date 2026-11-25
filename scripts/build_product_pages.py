@@ -39,14 +39,26 @@ if TEMPORADA:
     assert date.fromisoformat(TEMPORADA["desde"]) <= date.fromisoformat(TEMPORADA["hasta"]), "temporada: «desde» es posterior a «hasta»"
     assert TEMPORADA["titulo"].strip() and TEMPORADA["categoria"].strip() and TEMPORADA["aviso"].strip(), "temporada: faltan titulo, categoria o aviso"
 HAY_PRODUCTOS_TEMPORADA = False   # lo fija main(): el enlace «Ver colección» solo aparece si la categoría tiene productos
+# Promesa visible en la portada y las fichas, costos de envío referenciales y rangos de la guía de regalos.
+PLAZO = CONFIG["promesa"]["plazo"]
+ENVIOS = CONFIG["envios"]
+assert ENVIOS["zonas"] and all(z["zona"].strip() and isinstance(z["precio"], (int, float)) and z["precio"] >= 0 for z in ENVIOS["zonas"]), "envios.zonas inválidas en config.json"
+RANGOS = CONFIG["rangosPrecio"]
+assert all(re.fullmatch(r"[a-z0-9-]+", r["id"]) and r["min"] <= r["max"] for r in RANGOS), "rangosPrecio inválidos en config.json"
+assert all(a["max"] < b["min"] for a, b in zip(RANGOS, RANGOS[1:])), "rangosPrecio: los rangos se superponen o no van en orden"
+# Píxel de Meta (anuncios): vacío = apagado (sin aviso de cookies ni orígenes de Facebook en la CSP).
+META_PIXEL = CONFIG.get("metaPixel", "")
+assert re.fullmatch(r"(\d{10,20})?", META_PIXEL), "metaPixel inválido en config.json (solo el número del píxel)"
 OUT_DIR = ROOT / "producto"
 # Política de seguridad (CSP) de todas las páginas: solo se ejecuta JavaScript de archivos propios y de Umami
 # (sin código en línea ni atributos onclick). Si se añade un servicio externo, hay que permitir aquí su origen.
+# Con el píxel de Meta encendido se permite además Facebook (solo se carga si el visitante acepta las cookies).
+FACEBOOK = " https://connect.facebook.net https://www.facebook.com" if META_PIXEL else ""
 CSP = "; ".join([
     "default-src 'self'",
-    "script-src 'self' https://cloud.umami.is",
-    "connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://script.google.com https://script.googleusercontent.com",
-    "img-src 'self' data:",
+    "script-src 'self' https://cloud.umami.is" + (" https://connect.facebook.net" if META_PIXEL else ""),
+    "connect-src 'self' https://cloud.umami.is https://gateway.umami.is https://script.google.com https://script.googleusercontent.com" + FACEBOOK,
+    "img-src 'self' data:" + (" https://www.facebook.com" if META_PIXEL else ""),
     "media-src 'self'",
     "font-src 'self'",
     "style-src 'self' 'unsafe-inline'",   # hay atributos style y estilos que pone el JavaScript
@@ -66,6 +78,9 @@ CHROME_MARCAS = {
     "top": ("<!-- CHROME-TOP:START -->", "<!-- CHROME-TOP:END -->"),
     "pie": ("<!-- CHROME-FOOTER:START -->", "<!-- CHROME-FOOTER:END -->"),
     "pagos": ("<!-- CHROME-PAGOS:START -->", "<!-- CHROME-PAGOS:END -->"),
+    "promesa": ("<!-- CHROME-PROMESA:START -->", "<!-- CHROME-PROMESA:END -->"),
+    "envios": ("<!-- CHROME-ENVIOS:START -->", "<!-- CHROME-ENVIOS:END -->"),
+    "rangos": ("<!-- RANGOS:START -->", "<!-- RANGOS:END -->"),
 }
 
 
@@ -110,6 +125,105 @@ def chrome_superior(base: str) -> str:
 
 def chrome_pie(base: str) -> str:
     return plantilla("footer", base)
+
+
+def bloque_promesa(base: str) -> str:
+    """Franja de confianza (portada y fichas): taller propio, plazo, envíos y formas de pago."""
+    return f"""<ul class="promesa" aria-label="Por qué comprar en S3D">
+    <li><svg class="ico" aria-hidden="true"><use href="#i-printer"/></svg><span><strong>Hecho en Lima</strong> en nuestro propio taller</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-package-check"/></svg><span><strong>{esc(PLAZO)}</strong> elaborado a pedido</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span><strong>Envíos a todo el Perú</strong> o recojo gratis</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-smartphone"/></svg><span><strong>Paga con Yape o Plin</strong> transferencia o efectivo</span></li>
+</ul>
+"""
+
+
+def precio_envio(zona: dict) -> str:
+    return "Gratis" if zona["precio"] == 0 else f"desde S/ {zona['precio']:.2f}"
+
+
+def tabla_envios() -> str:
+    filas = "\n".join(
+        f"""        <tr><th scope="row"><strong>{esc(z['zona'])}</strong>{f'<span>{esc(z["detalle"])}</span>' if z.get('detalle') else ''}</th><td>{precio_envio(z)}</td></tr>"""
+        for z in ENVIOS["zonas"]
+    )
+    return f"""<table class="envios-tabla">
+    <thead><tr><th scope="col">Entrega</th><th scope="col">Costo</th></tr></thead>
+    <tbody>
+{filas}
+    </tbody>
+</table>
+<p class="envios-nota">{esc(ENVIOS['nota'])}</p>
+"""
+
+
+def resumen_envios() -> str:
+    """«Envío desde S/ 10 · recojo gratis» para el título desplegable de la ficha."""
+    pagados = [z["precio"] for z in ENVIOS["zonas"] if z["precio"] > 0]
+    partes = [f"desde S/ {min(pagados):.2f}"] if pagados else []
+    if any(z["precio"] == 0 for z in ENVIOS["zonas"]):
+        partes.append("recojo gratis")
+    return " · ".join(partes)
+
+
+def bloque_envios_portada() -> str:
+    return f"""<div class="envios" id="envios">
+    <h3 class="envios-titulo"><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg>Costos de envío</h3>
+{sangrar(tabla_envios())}</div>
+"""
+
+
+def opciones_rangos() -> str:
+    """Opciones del filtro de precio del catálogo (catalogo.js lee data-min/data-max)."""
+    return "\n".join(f'<option value="{esc(r["id"])}" data-min="{r["min"]}" data-max="{r["max"]}">{esc(r["titulo"])}</option>' for r in RANGOS) + "\n"
+
+
+def rango_de(p: dict) -> dict | None:
+    """Rango de precio del producto según su precio más bajo (los «a cotizar» no tienen rango)."""
+    if p.get("requiereCotizacion") or not p.get("precio"):
+        return None
+    minimo = precios(p)[0]
+    return next((r for r in RANGOS if r["min"] <= minimo <= r["max"]), None)
+
+
+def medida_cm(medida: str | None) -> float | None:
+    """Lado más largo en cm de textos como «25CM», «24,5 cm», «23X23X4CM» o «20/28/16CM» (None si no hay cm)."""
+    if not medida or not re.search(r"cm", medida, re.I):
+        return None
+    numeros = [float(n.replace(",", ".")) for n in re.findall(r"\d+(?:[.,]\d+)?", medida)]
+    return max(numeros) if numeros else None
+
+
+CELULAR_CM = 15
+
+
+def dibujo_tamano(medida: str | None) -> str:
+    """Comparación de tamaño (SVG, sin JavaScript): la pieza junto a un celular de ~15 cm, a la misma escala."""
+    cm = medida_cm(medida)
+    if not cm or cm > 200:
+        return ""
+    alto = 120                          # alto del dibujo para la mayor de las dos medidas
+    escala = alto / max(cm, CELULAR_CM)
+    cel_alto, cel_ancho = CELULAR_CM * escala, 7.2 * escala
+    pieza_alto, pieza_ancho = cm * escala, max(min(cm * escala * .7, 90), 14)
+    base_y = alto + 22
+    x_cel, x_pieza = 30, 30 + cel_ancho + 34
+    ancho_total = x_pieza + pieza_ancho + 30
+    radio = max(min(cel_ancho * .14, 6), 1.5)
+    txt = lambda v: f"{v:g}".replace(".", ",")
+    etiqueta = f"{txt(cm)} cm"
+    return f"""                <figure class="pp-tamano">
+                    <svg viewBox="0 0 {ancho_total:.0f} {base_y + 26:.0f}" role="img" aria-label="Referencia de tamaño: la pieza mide {etiqueta} en su lado más largo y un celular mide unos {CELULAR_CM} cm">
+                        <line x1="10" y1="{base_y:.1f}" x2="{ancho_total - 10:.0f}" y2="{base_y:.1f}" class="pp-tamano-suelo"/>
+                        <rect x="{x_cel}" y="{base_y - cel_alto:.1f}" width="{cel_ancho:.1f}" height="{cel_alto:.1f}" rx="{radio:.1f}" class="pp-tamano-celular"/>
+                        <rect x="{x_cel + cel_ancho * .1:.1f}" y="{base_y - cel_alto * .93:.1f}" width="{cel_ancho * .8:.1f}" height="{cel_alto * .86:.1f}" rx="{radio * .5:.1f}" class="pp-tamano-pantalla"/>
+                        <rect x="{x_pieza:.1f}" y="{base_y - pieza_alto:.1f}" width="{pieza_ancho:.1f}" height="{pieza_alto:.1f}" rx="{min(6, pieza_ancho / 4):.1f}" class="pp-tamano-pieza"/>
+                        <text x="{x_pieza + pieza_ancho / 2:.1f}" y="{base_y - pieza_alto - 6:.1f}" text-anchor="middle" class="pp-tamano-cifra">{etiqueta}</text>
+                        <text x="{x_cel + cel_ancho / 2:.1f}" y="{base_y + 17:.1f}" text-anchor="middle" class="pp-tamano-nombre">Celular</text>
+                        <text x="{x_pieza + pieza_ancho / 2:.1f}" y="{base_y + 17:.1f}" text-anchor="middle" class="pp-tamano-nombre">Tu pieza</text>
+                    </svg>
+                    <figcaption>Tamaño real comparado con un celular (~{CELULAR_CM} cm). La pieza mide <strong>{etiqueta}</strong> en su lado más largo.</figcaption>
+                </figure>"""
 
 
 def sangrar(texto: str, espacios: int = 4) -> str:
@@ -273,13 +387,18 @@ def tarjeta_relacionada(p: dict) -> str:
 
 
 def relacionados(p: dict, todos: list[dict], n: int = 4) -> list[dict]:
+    """«También te puede gustar»: los siguientes de la misma categoría (dando la vuelta al final del catálogo) y, si
+    no alcanzan, los de otras categorías con el precio más parecido."""
     mismos = [q for q in activos(todos) if q["categoria"] == p["categoria"] and q["id"] != p["id"]]
-    if not mismos:
-        return []
-    # Los siguientes del catálogo en la misma categoría, dando la vuelta al final.
     idx = next((i for i, q in enumerate(todos) if q["id"] == p["id"]), 0)
-    orden = sorted(mismos, key=lambda q: (todos.index(q) - idx) % len(todos))
-    return orden[:n]
+    orden = sorted(mismos, key=lambda q: (todos.index(q) - idx) % len(todos))[:n]
+    if len(orden) < n:
+        ref = precios(p)[0] if p.get("precio") and not p.get("requiereCotizacion") else None
+        otros = [q for q in activos(todos) if q["categoria"] != p["categoria"] and q["id"] != p["id"]]
+        if ref is not None:
+            otros.sort(key=lambda q: abs(precios(q)[0] - ref) if q.get("precio") and not q.get("requiereCotizacion") else float("inf"))
+        orden += otros[: n - len(orden)]
+    return orden
 
 
 def pagina(p: dict, todos: list[dict]) -> str:
@@ -344,7 +463,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     rel = relacionados(p, todos)
     bloque_rel = (
         f"""        <section class="pp-related" aria-labelledby="pp-related-title">
-            <h2 id="pp-related-title">Más de {esc(p['categoria'])}</h2>
+            <h2 id="pp-related-title">También te puede gustar</h2>
             <div class="pp-related-grid">
 {chr(10).join(tarjeta_relacionada(q) for q in rel)}
             </div>
@@ -381,6 +500,9 @@ def pagina(p: dict, todos: list[dict]) -> str:
         if es_de_temporada(p) else ""
     )
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
+    tamano = dibujo_tamano(p.get("medida"))
+    tamano = tamano + "\n" if tamano else ""
+    precio_barra = "A cotizar" if p.get("requiereCotizacion") else f"S/ {precio_de(p, color0):.2f}"
     etiqueta = DISPONIBILIDAD[p.get("disponibilidad", "A pedido")][1]
     clase_disp = "pp-disp-stock" if etiqueta == "En stock" else "pp-disp-agotado"
     etiqueta_disp = f'\n                <p class="pp-disp {clase_disp}">{esc(etiqueta)}</p>' if etiqueta else ""
@@ -416,8 +538,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
-    <link rel="stylesheet" href="../../chrome.css?v=8">
-    <link rel="stylesheet" href="../../producto.css?v=11">
+    <link rel="stylesheet" href="../../chrome.css?v=9">
+    <link rel="stylesheet" href="../../producto.css?v=12">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -430,7 +552,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
             <span aria-current="page">{esc(p['nombre'])}</span>
         </nav>
 
-        <article class="pp-product{' pp-temporada' if es_de_temporada(p) else ''}" data-producto="{esc(p['nombre'])}" data-id="{p['id']}" data-slug="{esc(p['slug'])}" data-precio="{'' if p.get('requiereCotizacion') or not p.get('precio') else precio_de(p, color0)}" data-cotizar="{'1' if p.get('requiereCotizacion') or not p.get('precio') else ''}" data-medida="{esc(p.get('medida') or '')}" data-imagen="{esc(miniatura(imagen_principal(p)))}"{fecha_attr}>
+        <article class="pp-product{' pp-temporada' if es_de_temporada(p) else ''}" data-producto="{esc(p['nombre'])}" data-id="{p['id']}" data-slug="{esc(p['slug'])}" data-precio="{'' if p.get('requiereCotizacion') or not p.get('precio') else precio_de(p, color0)}" data-cotizar="{'1' if p.get('requiereCotizacion') or not p.get('precio') else ''}" data-medida="{esc(p.get('medida') or '')}" data-imagen="{esc(miniatura(imagen_principal(p)))}" data-precio-txt="{esc(precio_txt(p))}" data-meta-tipo="{'product_group' if tiene_colores else 'product'}"{fecha_attr}>
             <div class="pp-gallery">
                 <div class="pp-stage" id="pp-stage" role="button" tabindex="0" aria-label="Ampliar imagen en alta resolución">
                     <span class="pp-ribbon" data-new hidden aria-hidden="true"><span>Nuevo</span></span>
@@ -445,11 +567,11 @@ def pagina(p: dict, todos: list[dict]) -> str:
                 <p class="pp-kicker">{esc(p.get('coleccion') or p['categoria'])}</p>
                 <h1>{esc(p['nombre'])}</h1>
                 <div class="pp-price">{precio_html}</div>{etiqueta_disp}{aviso_pausa}
-                <p class="pp-desc">{esc(p['descripcion'].strip())}</p>
+{sangrar(bloque_promesa("../../"), 16)}                <p class="pp-desc">{esc(p['descripcion'].strip())}</p>
                 <dl class="pp-facts">
 {ficha}
                 </dl>
-                <a id="pp-buy" class="pp-buy" data-producto="{esc(p['nombre'])}" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
+{tamano}                <a id="pp-buy" class="pp-buy" data-producto="{esc(p['nombre'])}" href="{esc(url_whatsapp(p, color0, url))}" target="_blank" rel="noopener noreferrer">{boton}</a>
                 <div class="pp-acciones">
                     <button type="button" class="pp-add" id="pp-add"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg><span>Añadir al pedido</span></button>
                     <button type="button" class="pp-icono" id="pp-fav" aria-pressed="false" aria-label="Guardar en favoritos" title="Guardar en favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></button>
@@ -459,21 +581,32 @@ def pagina(p: dict, todos: list[dict]) -> str:
                     <li>Todos los productos se elaboran a pedido en nuestro taller</li>
                     <li>El precio corresponde a la medida publicada; si lo quieres más grande o más pequeño, el costo varía</li>
                     <li>Personalizable: medidas, colores y detalles. Escríbenos y lo evaluamos</li>
-                    <li>Envíos a todo el Perú, costo según tu ubicación</li>
                 </ul>
+                <details class="pp-envios">
+                    <summary><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span>Costos de envío <small>{esc(resumen_envios())}</small></span><svg class="ico pp-flecha" aria-hidden="true"><use href="#i-chevron-down"/></svg></summary>
+{sangrar(tabla_envios(), 20)}                </details>
 {cotizador}
             </div>
         </article>
 
 {bloque_rel}
+        <section class="pp-related pp-vistos" id="pp-vistos" aria-labelledby="pp-vistos-title" hidden>
+            <h2 id="pp-vistos-title">Vistos recientemente</h2>
+            <div class="pp-related-grid"></div>
+        </section>
     </main>
+
+    <div class="pp-barra no-print" id="pp-barra" hidden>
+        <div class="pp-barra-info"><strong>{esc(p['nombre'])}</strong><span id="pp-barra-precio">{esc(precio_barra)}</span></div>
+        <button type="button" class="pp-barra-btn" id="pp-barra-btn"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>{"Cotizar" if p.get("requiereCotizacion") else "Pedir"} por WhatsApp</button>
+    </div>
 
 {sangrar(chrome_pie("../../"))}
 
     <script src="../../chrome.js?v=2" defer></script>
     <script src="../../tienda.js?v=3" defer></script>
-    <script src="../../analytics.js?v=5" defer></script>
-    <script src="../../producto.js?v=12" defer></script>
+    <script src="../../analytics.js?v=6" defer></script>
+    <script src="../../producto.js?v=13" defer></script>
 </body>
 </html>
 """
@@ -483,12 +616,14 @@ def actualizar_chrome_indice() -> None:
     """Mantiene la cabecera y el pie de index.html idénticos a los de las fichas (misma plantilla)."""
     indice = ROOT / "index.html"
     contenido = indice.read_text(encoding="utf-8")
-    bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie("")), "pagos": sangrar(plantilla("pagos", ""), 12)}
+    bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie("")), "pagos": sangrar(plantilla("pagos", ""), 12),
+               "promesa": sangrar(f'<div class="promesa-portada no-print">\n{sangrar(bloque_promesa(""))}</div>\n'),
+               "envios": sangrar(bloque_envios_portada(), 12), "rangos": sangrar(opciones_rangos(), 28)}
     for clave, (inicio, fin) in CHROME_MARCAS.items():
         nuevo = f"    {inicio}\n{bloques[clave]}    {fin}"
         if inicio in contenido:
             contenido = re.sub(re.escape(inicio) + r".*?" + re.escape(fin), lambda _: nuevo.strip(), contenido, flags=re.S)
-        elif clave == "pagos":
+        elif clave not in ("top", "pie"):
             continue  # las marcas se colocan una vez a mano en index.html
         else:
             if clave == "top":
@@ -531,6 +666,8 @@ def sincronizar_contacto() -> None:
     texto = re.sub(r"const WHATSAPP = '\d+';", f"const WHATSAPP = '{WHATSAPP}';", tienda.read_text(encoding="utf-8"))
     texto = re.sub(r"const PEDIDOS_URL = '[^'\n]*';", lambda _: f"const PEDIDOS_URL = '{PEDIDOS_URL}';", texto)
     tienda.write_text(texto, encoding="utf-8")
+    analitica = ROOT / "analytics.js"
+    analitica.write_text(re.sub(r"pixelId: '\d*'", f"pixelId: '{META_PIXEL}'", analitica.read_text(encoding="utf-8")), encoding="utf-8")
 
 
 def actualizar_itemlist(todos: list[dict]) -> None:
@@ -550,7 +687,7 @@ def actualizar_itemlist(todos: list[dict]) -> None:
 
 
 # Fecha de la política de privacidad: actualizarla a mano cuando cambie el texto (así la generación es reproducible).
-FECHA_PRIVACIDAD = "21/11/2026"
+FECHA_PRIVACIDAD = "24/11/2026"
 FECHA_TERMINOS = "21/11/2026"
 
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
@@ -575,8 +712,8 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     <link rel="preload" href="{base}assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{base}fonts.css?v=1">
-    <link rel="stylesheet" href="{base}chrome.css?v=8">
-    <link rel="stylesheet" href="{base}paginas.css?v=1">
+    <link rel="stylesheet" href="{base}chrome.css?v=9">
+    <link rel="stylesheet" href="{base}paginas.css?v=2">
 </head>
 <body>
 {sangrar(chrome_superior(base))}
@@ -586,7 +723,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 
 {sangrar(chrome_pie(base))}
     <script src="{base}chrome.js?v=2" defer></script>
-    <script src="{base}analytics.js?v=5" defer></script>
+    <script src="{base}analytics.js?v=6" defer></script>
 </body>
 </html>
 """
@@ -599,6 +736,13 @@ def pagina_privacidad() -> str:
 
         <h2>Registro de tus pedidos</h2>
         <p>Cuando pulsas &laquo;Comprar&raquo;, envías tu lista de pedido o pides una cotización, guardamos en una hoja de cálculo de S3D (Google) un <strong>código de pedido</strong> (por ejemplo, S3D-7K4Q2), los productos, cantidades, colores o medidas elegidos, el total referencial, la página desde la que pediste y la fecha. Ese mismo código aparece al inicio de tu mensaje de WhatsApp para que podamos darte seguimiento. <strong>No guardamos tu nombre ni tu teléfono</strong> en ese registro.</p>""" if PEDIDOS_URL else ""
+    # Solo con el píxel de Meta encendido (config.json «metaPixel»): se carga únicamente si el visitante acepta.
+    pixel = """
+
+        <h2>Cookies de Meta para nuestros anuncios</h2>
+        <p>Anunciamos S3D en Facebook e Instagram. Para saber si esos anuncios funcionan y mostrarlos a personas a quienes puedan interesar, usamos el <strong>píxel de Meta</strong>, que guarda cookies en tu navegador y envía a Meta qué páginas y productos ves y cuándo pulsas &laquo;Comprar&raquo;, &laquo;Añadir al pedido&raquo; o escribes por WhatsApp. <strong>Solo se activa si pulsas &laquo;Aceptar&raquo;</strong> en el aviso de cookies; si lo rechazas, el sitio funciona igual. Puedes cambiar tu decisión cuando quieras con &laquo;Preferencias de cookies&raquo; al pie de cada página. Meta trata esos datos según su propia <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</p>""" if META_PIXEL else ""
+    tercero_meta = """
+            <li><strong>Meta (Facebook e Instagram)</strong>: el píxel de anuncios, solo si lo aceptas.</li>""" if META_PIXEL else ""
     tercero_google = """
             <li><strong>Google (Apps Script y Hojas de cálculo)</strong>: guarda el registro de pedidos descrito arriba.</li>""" if PEDIDOS_URL else ""
     cuerpo = f"""        <p class="pg-kicker">Transparencia</p>
@@ -615,16 +759,16 @@ def pagina_privacidad() -> str:
         </ul>
 
         <h2>Qué se guarda solo en tu dispositivo</h2>
-        <p>Tu lista de pedido y tus productos favoritos se guardan únicamente en tu navegador (almacenamiento local). No se envían a ningún servidor nuestro y puedes borrarlos cuando quieras limpiando los datos del sitio.</p>
+        <p>Tu lista de pedido, tus productos favoritos, los últimos productos que viste{" y tu decisión sobre las cookies" if META_PIXEL else ""} se guardan únicamente en tu navegador (almacenamiento local). No se envían a ningún servidor nuestro y puedes borrarlos cuando quieras limpiando los datos del sitio.</p>
 
         <h2>Cuando nos escribes por WhatsApp o correo</h2>
-        <p>Al pulsar &laquo;Comprar&raquo;, &laquo;Pedir por WhatsApp&raquo; o enviar tu lista de pedido, se abre WhatsApp con un mensaje ya redactado. Desde ese momento la conversación se rige por las condiciones de WhatsApp. Usamos los datos que nos compartas (por ejemplo, tu nombre, tu número y tu dirección de entrega) <strong>solo para atender tu pedido</strong> y no los cedemos a terceros.</p>{registro}
+        <p>Al pulsar &laquo;Comprar&raquo;, &laquo;Pedir por WhatsApp&raquo; o enviar tu lista de pedido, se abre WhatsApp con un mensaje ya redactado. Desde ese momento la conversación se rige por las condiciones de WhatsApp. Usamos los datos que nos compartas (por ejemplo, tu nombre, tu número y tu dirección de entrega) <strong>solo para atender tu pedido</strong> y no los cedemos a terceros.</p>{registro}{pixel}
 
         <h2>Servicios de terceros</h2>
         <ul>
             <li><strong>GitHub Pages</strong>: aloja este sitio.</li>
             <li><strong>Google Maps</strong>: el mapa de nuestra ubicación solo se carga si pulsas «Ver el mapa del taller»; a partir de ese momento Google puede recibir datos técnicos de tu visita.</li>
-            <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>{tercero_google}
+            <li><strong>Umami</strong>: estadísticas anónimas, como se explica arriba.</li>{tercero_google}{tercero_meta}
         </ul>
 
         <h2>Nuestras redes sociales</h2>
@@ -633,7 +777,7 @@ def pagina_privacidad() -> str:
         <h2>Tus derechos y contacto</h2>
         <p>Si quieres consultar, corregir o pedir que eliminemos datos que nos hayas compartido por WhatsApp o correo, escríbenos a <a href="mailto:ventas.s3d@gmail.com">ventas.s3d@gmail.com</a> o por <a href="https://api.whatsapp.com/send?phone={WHATSAPP}" target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p>
         <p class="pg-aviso">Este texto es informativo y puede actualizarse. Si el negocio crece o empieza a recopilar más datos, conviene revisarlo con asesoría legal.</p>"""
-    return pagina_estatica("Política de privacidad | S3D", "Qué mide S3D en este sitio (estadísticas anónimas, sin cookies), qué se guarda en tu dispositivo y cómo usamos los datos que compartes por WhatsApp.", "../", f"{BASE_URL}privacidad/", cuerpo)
+    return pagina_estatica("Política de privacidad | S3D", "Qué mide S3D en este sitio (estadísticas anónimas" + (" y, si lo aceptas, el píxel de Meta" if META_PIXEL else ", sin cookies") + "), qué se guarda en tu dispositivo y cómo usamos los datos que compartes por WhatsApp.", "../", f"{BASE_URL}privacidad/", cuerpo)
 
 
 def pagina_terminos() -> str:
@@ -682,6 +826,48 @@ def pagina_terminos() -> str:
     return pagina_estatica("Términos y condiciones | S3D", "Cómo funcionan los pedidos en S3D: productos a pedido, precios con IGV, pagos, envíos a todo el Perú y reclamos.", "../", f"{BASE_URL}terminos/", cuerpo)
 
 
+def tarjeta_pagina(p: dict, base: str) -> str:
+    img = miniatura(imagen_principal(p))
+    marca = '<em class="pg-card-temporada con-temporada">' + esc(TEMPORADA["titulo"]) + "</em>" if es_de_temporada(p) else ""
+    return f"""            <a class="pg-card" href="{base}producto/{esc(p['slug'])}/" data-evento="ficha_regalos" data-producto="{esc(p['nombre'])}">
+                <picture><source srcset="{esc(url_ruta(avif(img), base))}" type="image/avif"><img src="{esc(url_ruta(img, base))}" alt="" loading="lazy" decoding="async"></picture>
+                {marca}<strong>{esc(p['nombre'])}</strong>
+                <span>{esc(precio_txt(p))}</span>
+            </a>"""
+
+
+def pagina_regalos(todos: list[dict]) -> str:
+    """Guía de regalos por rango de precio (destino de anuncios). Dentro de cada rango, de menor a mayor precio;
+    durante la temporada sus productos llevan la marca (temporada.js decide si se ve)."""
+    grupos = [(r, sorted((p for p in activos(todos) if rango_de(p) is r), key=lambda p: (precios(p)[0], p["orden"]))) for r in RANGOS]
+    grupos = [(r, ps) for r, ps in grupos if ps]
+    chips = "\n".join(f'            <a class="pg-chip" href="#{esc(r["id"])}">{esc(r["titulo"])} <small>({len(ps)})</small></a>' for r, ps in grupos)
+    secciones = "\n\n".join(
+        f"""        <section class="pg-rango" id="{esc(r['id'])}" aria-labelledby="t-{esc(r['id'])}">
+            <div class="pg-rango-cab">
+                <h2 id="t-{esc(r['id'])}">{esc(r['titulo'])}</h2>
+                <a href="../?precio={quote(r['id'])}#catalogo">Ver en el catálogo</a>
+            </div>
+            <div class="pg-grid">
+{chr(10).join(tarjeta_pagina(p, "../") for p in ps)}
+            </div>
+        </section>"""
+        for r, ps in grupos
+    )
+    wa = f"https://api.whatsapp.com/send?phone={WHATSAPP}&text={quote('Hola, estoy buscando un regalo impreso en 3D y quisiera una recomendación.', safe='')}"
+    cuerpo = f"""        <p class="pg-kicker">Guía de regalos</p>
+        <h1>Regalos impresos en 3D por precio</h1>
+        <p>Elige tu presupuesto y encuentra el regalo ideal. Todo se fabrica a pedido en nuestro taller de Lima; muchos modelos se pueden personalizar con nombres, colores o medidas.</p>
+{sangrar(bloque_promesa("../"), 8)}        <nav class="pg-chips" aria-label="Rangos de precio">
+{chips}
+        </nav>
+
+{secciones}
+
+        <p class="pg-aviso">¿No sabes qué regalar? <a href="{esc(wa)}" target="_blank" rel="noopener noreferrer">Escríbenos por WhatsApp</a>: te recomendamos según la persona y tu presupuesto. Los precios incluyen IGV; el envío se cotiza aparte (<a href="../#envios">ver costos de envío</a>).</p>"""
+    return pagina_estatica("Regalos impresos en 3D por precio | S3D", "Guía de regalos de S3D: figuras, adornos, llaveros y más, impresos en 3D en Lima y ordenados por precio. Envíos a todo el Perú.", "../", f"{BASE_URL}regalos/", cuerpo)
+
+
 def pagina_404(todos: list[dict]) -> str:
     destacados = sorted([p for p in activos(todos) if p.get("badge") == "Top Ventas"], key=lambda p: p.get("heroOrden", 10**6))[:4]
     cats = "\n".join(f'            <a class="pg-chip" href="./?categoria={quote(c)}#catalogo">{esc(c)}</a>' for c in ORDEN_CATEGORIAS)
@@ -722,6 +908,7 @@ def escribir_sitemap(todos: list[dict]) -> None:
     filas = [f"  <url>\n    <loc>{BASE_URL}</loc>\n    <priority>1.0</priority>\n  </url>"]
     filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <priority>0.3</priority>\n  </url>")
     filas.append(f"  <url>\n    <loc>{BASE_URL}terminos/</loc>\n    <priority>0.3</priority>\n  </url>")
+    filas.append(f"  <url>\n    <loc>{BASE_URL}regalos/</loc>\n    <priority>0.8</priority>\n  </url>")
     filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <priority>0.7</priority>\n  </url>" for p in todos]
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(filas) + "\n</urlset>\n",
@@ -757,6 +944,8 @@ def main() -> None:
     (ROOT / "privacidad" / "index.html").write_text(pagina_privacidad(), encoding="utf-8")
     (ROOT / "terminos").mkdir(exist_ok=True)
     (ROOT / "terminos" / "index.html").write_text(pagina_terminos(), encoding="utf-8")
+    (ROOT / "regalos").mkdir(exist_ok=True)
+    (ROOT / "regalos" / "index.html").write_text(pagina_regalos(productos), encoding="utf-8")
     (ROOT / "404.html").write_text(pagina_404(productos), encoding="utf-8")
 
     actualizar_itemlist(productos)

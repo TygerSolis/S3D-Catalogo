@@ -1,5 +1,5 @@
 // Menús, anclas, 404 y privacidad.
-const { assert, abrir, ruta, BASE, nombresEventos } = require('./util.cjs');
+const { assert, abrir, ruta, BASE, nombresEventos, leerJson } = require('./util.cjs');
 
 module.exports = {
     async 'el mapa de Google solo se carga al pulsar «Ver el mapa del taller»'({ browser }) {
@@ -88,5 +88,33 @@ module.exports = {
         assert.deepEqual(p.errores, []);
         assert.deepEqual(p.violaciones, []);
         await p.contexto.close();
-    }
+    },
+
+    async 'la guía de regalos agrupa cada producto con precio en su rango y lleva a las fichas'({ browser }) {
+        const { rangosPrecio } = leerJson('config.json');
+        const lista = leerJson('productos.json').filter(x => x.activo !== false && !x.requiereCotizacion && x.precio);
+        const p = await abrir(browser, 'regalos/');
+        assert.equal(await p.locator('h1').innerText(), 'Regalos impresos en 3D por precio');
+        const tarjetas = await p.locator('.pg-rango .pg-card').evaluateAll(cs => cs.map(c => c.getAttribute('href')));
+        assert.equal(tarjetas.length, lista.length, 'cada producto con precio aparece una vez');
+        assert.equal(new Set(tarjetas).size, tarjetas.length);
+        for (const r of rangosPrecio) {
+            const precios = await p.locator(`[id="${r.id}"] .pg-card span`).allInnerTexts();
+            for (const texto of precios) {
+                const valor = Number(texto.match(/[\d.]+/)[0]);
+                assert.ok(valor >= r.min && valor <= r.max, `${texto} fuera de ${r.titulo}`);
+            }
+            assert.equal(await p.locator(`[id="${r.id}"] a[href="../?precio=${r.id}#catalogo"]`).count(), 1);
+        }
+        await p.locator('.pg-card').first().click();
+        await p.waitForURL(/\/producto\/[^/]+\/$/);
+        assert.deepEqual(p.eventos.filter(e => e.nombre === 'ficha_regalos').length, 1);
+        assert.deepEqual(p.errores, []);
+        assert.deepEqual(p.violaciones, []);
+        await p.contexto.close();
+        const portada = await abrir(browser);
+        assert.equal(await portada.locator('.site-footer a[href="regalos/"]').count(), 1);
+        assert.equal(await portada.locator('#catalogo a[href="regalos/"]').count(), 1);
+        await portada.contexto.close();
+    },
 };

@@ -14,5 +14,60 @@
   "redes": {
     "publicarUrl": "https://script.google.com/macros/s/AKfycbzgR23tFPH6hjksTBhKh6p227fV5WUQAdKiYuq3rB4Zs85nLyeeQBPoGW5kuq7E58wI/exec",
     "tiktokDirecto": false
-  }
+  },
+  "promesa": {
+    "plazo": "Listo en 24–48 h"
+  },
+  "envios": {
+    "nota": "Montos referenciales: el costo exacto se confirma por WhatsApp según tu distrito o ciudad y el tamaño del paquete.",
+    "zonas": [
+      {
+        "zona": "Recojo en nuestro taller",
+        "detalle": "Coordinando por WhatsApp. Puedes venir tú o enviar a tu motorizado o app de delivery.",
+        "precio": 0
+      },
+      {
+        "zona": "Lima Centro y distritos cercanos",
+        "detalle": "Delivery hasta tu puerta.",
+        "precio": 10
+      },
+      {
+        "zona": "Lima periferia y Callao",
+        "detalle": "Delivery hasta tu puerta.",
+        "precio": 15
+      },
+      {
+        "zona": "Provincias",
+        "detalle": "Por Shalom o la agencia que prefieras; recoges en la agencia de tu ciudad.",
+        "precio": 12
+      }
+    ]
+  },
+  "rangosPrecio": [
+    {
+      "id": "menos-30",
+      "titulo": "Menos de S/ 30",
+      "min": 0,
+      "max": 29.99
+    },
+    {
+      "id": "30-60",
+      "titulo": "S/ 30 a S/ 60",
+      "min": 30,
+      "max": 60
+    },
+    {
+      "id": "60-100",
+      "titulo": "S/ 60 a S/ 100",
+      "min": 60.01,
+      "max": 100
+    },
+    {
+      "id": "mas-100",
+      "titulo": "Más de S/ 100",
+      "min": 100.01,
+      "max": 100000
+    }
+  ],
+  "metaPixel": ""
 }

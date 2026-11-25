@@ -192,5 +192,41 @@ module.exports = {
         assert.ok(nueva.url().endsWith('/producto/jessie/'));
         assert.ok(ruta(p).startsWith('/?'));
         await p.contexto.close();
-    }
+    },
+
+    async 'el filtro de precio usa los rangos de config.json, el precio más bajo de cada producto y queda en la URL'({ browser }) {
+        const { rangosPrecio } = leerJson('config.json');
+        const lista = leerJson('productos.json').filter(x => x.activo !== false);
+        const minimo = x => Math.min(...(x.colores?.length ? x.colores.map(c => c.precio ?? x.precio) : [x.precio]));
+        const enRango = r => lista.filter(x => !x.requiereCotizacion && x.precio && minimo(x) >= r.min && minimo(x) <= r.max);
+        // Cada producto con precio cae en exactamente un rango.
+        assert.equal(rangosPrecio.reduce((n, r) => n + enRango(r).length, 0), lista.filter(x => !x.requiereCotizacion && x.precio).length);
+        const p = await abrir(browser);
+        assert.deepEqual(await p.locator('#price-select option').allInnerTexts(), ['Todos', ...rangosPrecio.map(r => r.titulo)]);
+        await p.selectOption('#price-select', rangosPrecio[0].id);
+        await p.waitForTimeout(100);
+        const contados = await p.locator('#results-count').innerText();
+        assert.match(contados, new RegExp(`^${enRango(rangosPrecio[0]).length} `));
+        assert.ok(ruta(p).includes(`precio=${rangosPrecio[0].id}`));
+        assert.deepEqual(p.eventos.filter(e => e.nombre === 'filtro_precio').map(e => e.datos), [{ rango: rangosPrecio[0].id }]);
+        // Desde un enlace (guía de regalos) llega ya filtrado.
+        const ultimo = rangosPrecio[rangosPrecio.length - 1];
+        const q = await abrir(browser, `?precio=${ultimo.id}#catalogo`);
+        assert.equal(await q.locator('#price-select').inputValue(), ultimo.id);
+        assert.match(await q.locator('#results-count').innerText(), new RegExp(`^${enRango(ultimo).length} `));
+        await q.selectOption('#price-select', '');
+        assert.match(await q.locator('#results-count').innerText(), new RegExp(`^${lista.length} `));
+        assert.ok(!ruta(q).includes('precio='));
+        await p.contexto.close();
+        await q.contexto.close();
+    },
+    async 'la portada muestra la franja de confianza y la tabla de envíos con ancla #envios'({ browser }) {
+        const { envios } = leerJson('config.json');
+        const p = await abrir(browser, '#envios');
+        assert.equal(await p.locator('.promesa-portada .promesa li').count(), 4);
+        assert.equal(await p.locator('#envios tbody tr').count(), envios.zonas.length);
+        assert.ok(await p.locator('#envios').isVisible());
+        assert.ok(await p.locator('#faq a[href="#envios"]').count() === 1, 'la pregunta de envíos enlaza la tabla');
+        await p.contexto.close();
+    },
 };

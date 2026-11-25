@@ -1,5 +1,5 @@
 // Eventos de analítica (con Umami simulado).
-const { assert, abrir, nombresEventos } = require('./util.cjs');
+const { assert, abrir, nombresEventos, leerJson, BASE } = require('./util.cjs');
 
 const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const propiedades = (p, nombre) => p.eventos.filter(e => e.nombre === nombre).map(e => e.datos);
@@ -80,5 +80,69 @@ module.exports = {
         await p.click('.catalog-notice a');
         assert.deepEqual(propiedades(p, 'clic_whatsapp'), [{ zona: 'cabecera' }, { zona: 'aviso-catalogo' }]);
         await p.contexto.close();
-    }
+    },
+
+    async 'sin número de píxel (config.json «metaPixel» vacío) no hay aviso de cookies ni nada de Facebook'({ browser }) {
+        assert.equal(leerJson('config.json').metaPixel, '', 'esta prueba describe el estado sin píxel');
+        const pedidos = [];
+        const p = await abrir(browser, 'producto/woody/', { preparar: pagina => pagina.context().on('request', r => pedidos.push(r.url())) });
+        assert.equal(await p.locator('.s3d-cookies').count(), 0);
+        assert.ok(await p.locator('[data-cookies-pie]').isHidden());
+        assert.ok(!pedidos.some(u => /facebook/.test(u)), 'no debe contactar a Facebook');
+        const csp = await p.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+        assert.ok(!/facebook/.test(csp), 'la CSP no permite Facebook si el píxel está apagado');
+        await p.contexto.close();
+    },
+    async 'con píxel: nada se carga hasta «Aceptar»; luego PageView, ViewContent y Lead; «Rechazar» se recuerda'({ browser }) {
+        const PIXEL = '123456789012345';
+        // La CSP real solo permite Facebook con el número configurado: aquí se omite para simular ese caso.
+        const contexto = await browser.newContext({ bypassCSP: true, viewport: { width: 1366, height: 900 } });
+        const pedidosFb = [];
+        await contexto.route('https://cloud.umami.is/**', r => r.fulfill({ contentType: 'text/javascript', body: 'window.umami={track(){}};' }));
+        await contexto.route('https://script.google.com/**', r => r.abort());
+        await contexto.route(/analytics\.js/, async r => {
+            const cuerpo = (await (await r.fetch()).text()).replace("pixelId: ''", `pixelId: '${PIXEL}'`).replace("pixelDominio: 'tygersolis.github.io'", "pixelDominio: 'localhost'");
+            await r.fulfill({ contentType: 'text/javascript', body: cuerpo });
+        });
+        // fbevents.js simulado: guarda en window.__fb lo que la página le pide a Meta.
+        await contexto.route('https://connect.facebook.net/**', r => {
+            pedidosFb.push(r.request().url());
+            r.fulfill({ contentType: 'text/javascript', body: 'window.__fb=window.fbq.queue.map(a=>[...a]);window.fbq.callMethod=function(){window.__fb.push([...arguments]);};' });
+        });
+        const p = await contexto.newPage();
+        await p.goto(`${BASE}producto/woody/`, { waitUntil: 'networkidle' });
+        const aviso = p.locator('.s3d-cookies');
+        assert.ok(await aviso.isVisible(), 'aparece el aviso');
+        assert.ok(await p.locator('[data-cookies-pie]').isVisible(), 'el pie ofrece cambiar la decisión');
+        assert.match(await aviso.locator('a').getAttribute('href'), /\/privacidad\/$/);
+        assert.equal(pedidosFb.length, 0, 'sin aceptar no se carga nada de Meta');
+        await aviso.locator('.s3d-cookies-no').click();
+        assert.equal(await aviso.count(), 0);
+        await p.reload({ waitUntil: 'networkidle' });
+        assert.equal(await p.locator('.s3d-cookies').count(), 0, 'el rechazo se recuerda');
+        assert.equal(pedidosFb.length, 0);
+        // «Preferencias de cookies» vuelve a preguntar; ahora acepta.
+        await p.click('[data-cookies]');
+        await p.locator('.s3d-cookies .s3d-cookies-si').click();
+        await p.waitForFunction(() => Array.isArray(window.__fb));
+        const id = String(leerJson('productos.json').find(x => x.slug === 'woody').id);
+        let llamadas = await p.evaluate(() => window.__fb);
+        assert.deepEqual(llamadas[0], ['init', PIXEL]);
+        assert.deepEqual(llamadas[1], ['track', 'PageView']);
+        assert.equal(llamadas[2][1], 'ViewContent');
+        assert.deepEqual(llamadas[2][2].content_ids, [`S3D-${id}`]);
+        assert.equal(llamadas[2][2].currency, 'PEN');
+        await p.evaluate(() => document.getElementById('pp-buy').addEventListener('click', e => e.preventDefault(), { once: true }));
+        await p.click('#pp-buy');
+        llamadas = await p.evaluate(() => window.__fb);
+        const lead = llamadas.find(l => l[1] === 'Lead');
+        assert.ok(lead, JSON.stringify(llamadas));
+        assert.equal(lead[2].content_name, 'WOODY');
+        assert.deepEqual(lead[2].content_ids, [`S3D-${id}`]);
+        // En la siguiente página ya no pregunta y el píxel se carga solo.
+        await p.goto(`${BASE}regalos/`, { waitUntil: 'networkidle' });
+        assert.equal(await p.locator('.s3d-cookies').count(), 0);
+        await p.waitForFunction(() => Array.isArray(window.__fb) && window.__fb.some(l => l[1] === 'PageView'));
+        await contexto.close();
+    },
 };

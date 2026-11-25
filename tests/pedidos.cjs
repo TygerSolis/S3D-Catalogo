@@ -100,4 +100,66 @@ module.exports = {
         assert.deepEqual(envios, []);
         await p.contexto.close();
     },
+
+    'resumenDiario: correo solo si hay pedidos «Nuevo» de más de 24 h, con código, total y resumen del día'() {
+        const fs = require('fs');
+        const path = require('path');
+        const vm = require('vm');
+        const AHORA = new Date('2026-11-24T14:00:00Z');   // 9:00 en Lima
+        const horas = h => new Date(AHORA.getTime() - h * 3600e3);
+        const filaDe = (n, fecha, codigo, tipo, productos, total, estado) => [n, fecha, codigo, tipo, productos, 1, total, '', '', estado, ''];
+        const cargar = filas => {
+            const correos = [];
+            const activadores = [];
+            const hoja = {
+                getLastRow: () => filas.length + 1,
+                getRange: (f, c, nf, nc) => ({ getValues: () => filas.slice(f - 2, f - 2 + nf).map(x => x.slice(c - 1, c - 1 + nc)) }),
+                appendRow() {}
+            };
+            class FechaFija extends Date { constructor(...a) { super(...(a.length ? a : [AHORA.getTime()])); } }
+            const contexto = {
+                Date: FechaFija, Math, Number, String, Object, Array, JSON, isNaN, isFinite,
+                SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: () => hoja, getUrl: () => 'https://docs.google.com/spreadsheets/d/PEDIDOS' }) },
+                MailApp: { getRemainingDailyQuota: () => 100, sendEmail: (...a) => correos.push(a) },
+                Utilities: { formatDate: (d, zona, formato) => { assert.equal(zona, 'America/Lima'); assert.equal(formato, 'dd/MM HH:mm'); const l = new Date(d.getTime() - 5 * 3600e3); return `${String(l.getUTCDate()).padStart(2, '0')}/${String(l.getUTCMonth() + 1).padStart(2, '0')} ${String(l.getUTCHours()).padStart(2, '0')}:${String(l.getUTCMinutes()).padStart(2, '0')}`; } },
+                ScriptApp: {
+                    getProjectTriggers: () => [{ getHandlerFunction: () => 'resumenDiario' }, { getHandlerFunction: () => 'otra' }],
+                    deleteTrigger: t => activadores.push(['borrado', t.getHandlerFunction()]),
+                    newTrigger: f => { const t = { f, timeBased: () => t, atHour: h => { t.h = h; return t; }, everyDays: d => { t.d = d; return t; }, inTimezone: z => { t.z = z; return t; }, create: () => activadores.push(t) }; return t; }
+                },
+                Logger: { log() {} }
+            };
+            vm.createContext(contexto);
+            vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'scripts', 'apps-script', 'Pedidos.gs'), 'utf8'), contexto);
+            return { gs: contexto, correos, activadores };
+        };
+        // Sin pendientes (el nuevo tiene menos de 24 h y el viejo ya está confirmado): no hay correo.
+        let s = cargar([filaDe(1, horas(30), 'S3D-AAAAA', 'Comprar', '1 × WOODY — S/ 70.00', 70, 'Confirmado'), filaDe(2, horas(2), 'S3D-BBBBB', 'Mi pedido', '1 × BUZZ', 80, 'Nuevo')]);
+        s.gs.resumenDiario();
+        assert.equal(s.correos.length, 0);
+        // Con pendientes: lista los de los últimos 7 días (el más reciente primero) y cuenta los más antiguos aparte.
+        s = cargar([
+            filaDe(1, horas(24 * 10), 'S3D-VIEJO', 'Comprar', '1 × X', 10, 'Nuevo'),
+            filaDe(2, horas(50), 'S3D-CCCCC', 'Cotizar', '1 × LLAVERO', '', 'Nuevo'),
+            filaDe(3, horas(26), 'S3D-DDDDD', 'Mi pedido', '2 × WOODY — S/ 70.00\n1 × BUZZ — S/ 80.00', 220, ' Nuevo '),
+            filaDe(4, horas(3), 'S3D-EEEEE', 'Comprar', '1 × JESSIE', 75, 'Nuevo'),
+            filaDe(5, 'sin fecha', 'S3D-FFFFF', 'Comprar', '1 × Y', 5, 'Nuevo')
+        ]);
+        s.gs.resumenDiario();
+        assert.equal(s.correos.length, 1);
+        const [para, asunto, cuerpo] = s.correos[0];
+        assert.equal(para, 'ventas.s3d@gmail.com');
+        assert.equal(asunto, 'S3D: 3 pedidos por retomar');
+        assert.ok(cuerpo.indexOf('S3D-DDDDD') < cuerpo.indexOf('S3D-CCCCC'), cuerpo);
+        assert.match(cuerpo, /S3D-DDDDD · 23\/11 07:00 · Mi pedido · S\/ 220\.00\n   2 × WOODY — S\/ 70\.00 \(\+1 más\)/);
+        assert.match(cuerpo, /S3D-CCCCC · .* · Cotizar · por cotizar/);
+        assert.ok(!cuerpo.includes('S3D-VIEJO') && !cuerpo.includes('S3D-EEEEE'), 'ni los antiguos ni los de menos de 24 h van en la lista');
+        assert.match(cuerpo, /Además hay 1 en «Nuevo» de hace más de 7 días/);
+        assert.match(cuerpo, /Últimas 24 h: 1 registro \(1 Comprar\)/);
+        // instalarResumen reemplaza su propio activador (9:00, hora de Lima) sin tocar los demás.
+        s.gs.instalarResumen();
+        assert.deepEqual(s.activadores[0], ['borrado', 'resumenDiario']);
+        assert.equal(s.activadores.length, 2);
+        assert.deepEqual([s.activadores[1].f, s.activadores[1].h, s.activadores[1].d, s.activadores[1].z], ['resumenDiario', 9, 1, 'America/Lima']);
+    },
 };
