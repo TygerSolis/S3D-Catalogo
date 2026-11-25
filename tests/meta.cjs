@@ -11,6 +11,28 @@ const leerCsv = () => JSON.parse(execFileSync('python3', ['-c',
     path.join(RAIZ, 'meta', 'catalogo.csv')], { encoding: 'utf8' }));
 
 module.exports = {
+    'Google Shopping: google/productos.txt usa los artículos de Meta, sin marcas ajenas y con utm_source=google'() {
+        const meta = leerCsv();
+        const [cabecera, ...lineas] = fs.readFileSync(path.join(RAIZ, 'google', 'productos.txt'), 'utf8').trimEnd().split('\n');
+        const campos = cabecera.split('\t');
+        const filas = lineas.map(l => { const v = l.split('\t'); assert.equal(v.length, campos.length, l.slice(0, 40)); return Object.fromEntries(campos.map((c, i) => [c, v[i]])); });
+        for (const c of ['id', 'title', 'description', 'link', 'image_link', 'availability', 'price', 'brand', 'condition', 'identifier_exists', 'product_type']) assert.ok(campos.includes(c), `falta ${c}`);
+        const { google } = leerJson('config.json');
+        const marcas = new RegExp(`\\b(${google.excluirMarcas.join('|')})\\b`, 'i');
+        assert.ok(filas.length > 20 && filas.length < meta.length, 'deja fuera los productos con marcas ajenas');
+        for (const f of filas) {
+            const m = meta.find(x => x.id === f.id);
+            assert.ok(m, `${f.id} no está en el catálogo de Meta`);
+            assert.deepEqual([f.price, f.image_link, f.availability], [m.price, m.image_link, m.availability]);
+            assert.equal(f.link, m.link.replace('utm_source=meta&utm_medium=catalogo', 'utm_source=google&utm_medium=shopping'));
+            assert.equal(f.identifier_exists, 'no');
+            assert.doesNotMatch(`${f.title} ${f.description}`, marcas, f.id);
+        }
+        for (const nombre of ['WOODY', 'SNOOPY', 'HOLDER REAL MADRID', 'NIKE']) {
+            const p = leerJson('productos.json').find(x => x.nombre === nombre);
+            assert.ok(!filas.some(f => f.id === `S3D-${p.id}` || f.item_group_id === `S3D-${p.id}`), `${nombre} no debe ir a Google`);
+        }
+    },
     'catálogo de Meta: todos los productos activos con precio, variantes por color y campos que Meta exige'() {
         const filas = leerCsv();
         const { urlBase } = leerJson('config.json');

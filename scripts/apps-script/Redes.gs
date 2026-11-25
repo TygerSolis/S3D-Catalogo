@@ -10,7 +10,10 @@
  *   4. anota cada resultado en la pestaña «publicaciones» de la hoja (fecha, producto, red, enlace o error, id de Meta);
  *   5. publica solos, 2 por día (HORAS), los productos que el dueño aprobó con «Aprobar»;
  *   6. cada lunes (informeSemanal) escribe en la pestaña «resultados» el alcance, vistas, me gusta, comentarios,
- *      guardados y compartidos de cada publicación de los últimos DIAS_INFORME días y manda un resumen por correo.
+ *      guardados y compartidos de cada publicación de los últimos DIAS_INFORME días y manda un resumen por correo;
+ *   7. cada 15 min (responderComentarios, se activa con «instalarComentarios») responde EN PÚBLICO los comentarios que
+ *      piden precio o información («te escribimos por privado»); el mensaje privado lo manda la automatización de
+ *      Meta Business Suite con las mismas palabras clave (docs/guia-redes.md).
  * Nunca publica dos veces lo mismo: si una red ya salió, la salta (un reintento solo completa la que falló).
  *
  * Propiedades del script (Configuración del proyecto → Propiedades del script):
@@ -129,7 +132,8 @@ function guardarPermiso() {
 }
 
 const PERMISOS = ['pages_show_list', 'pages_read_engagement', 'pages_read_user_content', 'pages_manage_posts',
-  'business_management', 'read_insights', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights'];
+  'business_management', 'read_insights', 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights',
+  'pages_manage_engagement', 'instagram_manage_comments'];   // los dos últimos: responder comentarios
 
 /**
  * Ejecutar a mano: pregunta a Meta qué permisos tiene de verdad el token guardado (debug_token, con APP_ID y
@@ -434,6 +438,91 @@ function horarios_(n) {
     });
   }
   return salida;
+}
+
+// ---------------------------------------------------------------- respuestas a comentarios
+
+// Palabras (sin tildes ni mayúsculas) que delatan a alguien que pide precio o información. Son las mismas que se ponen
+// en la automatización «comentario a mensaje» de Meta Business Suite, que le escribe por privado.
+const PALABRAS_CLAVE = ['precio', 'info', 'cuanto', 'costo', 'disponible'];
+const RESPUESTAS = [
+  '¡Hola! 😊 Te enviamos la información por mensaje privado. Revisa tus mensajes 📩',
+  '¡Gracias por escribirnos! 🙌 Te mandamos los detalles por privado 📩',
+  '¡Hola! Ya te escribimos por mensaje privado con el precio y los detalles 😊'
+];
+const COMENTARIOS_DIAS = 7;        // Meta solo permite el mensaje privado en comentarios de hasta 7 días
+const MAX_RESPUESTAS = 20;         // por ejecución (cada 15 min)
+
+function sinTildes_(texto) {
+  return String(texto || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function pideInformacion_(texto) {
+  const t = sinTildes_(texto);
+  return PALABRAS_CLAVE.some(p => new RegExp('(^|[^a-z])' + p).test(t));
+}
+
+/** Siempre la misma respuesta para el mismo comentario, pero variada entre comentarios (Meta frena textos idénticos). */
+function respuestaPara_(id) {
+  let h = 0;
+  String(id).split('').forEach(c => { h = (h * 31 + c.charCodeAt(0)) % 1000003; });
+  return RESPUESTAS[h % RESPUESTAS.length];
+}
+
+/**
+ * Lo ejecuta el activador cada 15 min (o a mano): revisa los comentarios de las últimas publicaciones de Facebook e
+ * Instagram y responde en público los que piden precio o información, si son de los últimos COMENTARIOS_DIAS días,
+ * no son de la propia cuenta y nadie de la cuenta les respondió ya (así no pisa al dueño ni repite). No guarda datos de
+ * quien comenta. Necesita pages_manage_engagement e instagram_manage_comments («revisarPermisos»).
+ */
+function responderComentarios() {
+  const cuentas = cuentas_();
+  const desde = Date.now() - COMENTARIOS_DIAS * 86400000;
+  const pendientes = [];
+  if (cuentas.instagram) {
+    const props = PropertiesService.getScriptProperties();
+    let usuario = props.getProperty('INSTAGRAM_USUARIO');
+    if (!usuario) {
+      usuario = get_(cuentas.instagram, { fields: 'username' }).username || '';
+      props.setProperty('INSTAGRAM_USUARIO', usuario);
+    }
+    const medios = get_(cuentas.instagram + '/media', { fields: 'id,comments.limit(50){id,text,username,timestamp,replies{username}}', limit: 25 }).data || [];
+    medios.forEach(m => ((m.comments && m.comments.data) || []).forEach(c => {
+      const propia = r => r.username === usuario;
+      if (c.username === usuario || ((c.replies && c.replies.data) || []).some(propia)) return;
+      if (new Date(c.timestamp).getTime() < desde || !pideInformacion_(c.text)) return;
+      pendientes.push({ red: 'instagram', id: c.id, ruta: c.id + '/replies' });
+    }));
+  }
+  const posts = get_(cuentas.pagina + '/published_posts', { fields: 'id,comments.limit(50){id,message,created_time,from{id},comments{from{id}}}', limit: 25 }).data || [];
+  posts.forEach(p => ((p.comments && p.comments.data) || []).forEach(c => {
+    const propia = r => r.from && r.from.id === cuentas.pagina;
+    if (propia(c) || ((c.comments && c.comments.data) || []).some(propia)) return;
+    if (new Date(c.created_time).getTime() < desde || !pideInformacion_(c.message)) return;
+    pendientes.push({ red: 'facebook', id: c.id, ruta: c.id + '/comments' });
+  }));
+  const errores = [];
+  let respondidos = 0;
+  pendientes.slice(0, MAX_RESPUESTAS).forEach(c => {
+    try {
+      post_(c.ruta, { message: respuestaPara_(c.id) });
+      respondidos++;
+    } catch (e) {
+      errores.push(c.red + ': ' + e.message);
+    }
+  });
+  console.log('Comentarios respondidos: ' + respondidos + (errores.length ? ' · errores: ' + errores.join(' | ') : ''));
+  if (errores.length && !respondidos) throw new Error('no se pudo responder ningún comentario: ' + errores[0]);
+  return respondidos;
+}
+
+/** Ejecutar UNA vez a mano: revisa los comentarios cada 15 minutos. */
+function instalarComentarios() {
+  ScriptApp.getProjectTriggers()
+    .filter(t => t.getHandlerFunction() === 'responderComentarios')
+    .forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('responderComentarios').timeBased().everyMinutes(15).create();
+  console.log('Listo: cada 15 minutos se responden en público los comentarios que piden precio o información.');
 }
 
 // ---------------------------------------------------------------- informe semanal

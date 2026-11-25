@@ -61,6 +61,28 @@ print(b.pagina(x, p))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' });
         assert.ok(html.includes('"availability": "https://schema.org/InStock"'));
         assert.ok(decodeURIComponent(html.match(/id="pp-buy"[^>]*href="([^"]+)"/)[1]).includes('Figura en stock'));
     },
+    '«Lo más pedido»: nombres del registro → ids (sin ambiguos), etiqueta, sección de la portada y cola de redes'() {
+        const { execFileSync } = require('child_process');
+        const salida = JSON.parse(execFileSync('python3', ['-c', `import json, build_product_pages as b, mas_pedidos as m, redes
+p = json.load(open('../productos.json'))
+for x in p: x.setdefault('slug', b.slugify(x['nombre']))
+ids = m.ids_de(['dummy', 'Jessie', 'NO EXISTE', 'WOODY', 'JESSIE'], p)
+elegidos = [x for x in p if x['id'] in ids]
+elegidos.sort(key=lambda x: ids.index(x['id']))
+b.MAS_PEDIDOS = elegidos
+b.leer_mas_pedidos = lambda todos: elegidos
+print(json.dumps({'ids': ids, 'jessie': next(x['id'] for x in p if x['nombre'] == 'JESSIE'), 'woody': next(x['id'] for x in p if x['nombre'] == 'WOODY'),
+  'bloque': b.bloque_mas_pedidos(), 'ficha': b.pagina(elegidos[0], p), 'otra': b.pagina(next(x for x in p if x['id'] not in ids), p),
+  'automaticos': [x['id'] for x in redes.cola(p) if not isinstance(x.get('redes'), int)]}))`], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' }));
+        assert.deepEqual(salida.ids, [salida.jessie, salida.woody], 'DUMMY es ambiguo y «NO EXISTE» no está: se omiten; sin repetidos');
+        assert.match(salida.bloque, new RegExp(`id="mas-pedidos"[^>]*data-ids="${salida.jessie},${salida.woody}"`));
+        assert.ok(salida.bloque.indexOf('producto/jessie/') < salida.bloque.indexOf('producto/woody/'));
+        assert.ok(salida.ficha.includes('class="pp-mas-pedido"') && !salida.otra.includes('class="pp-mas-pedido"'));
+        assert.deepEqual(salida.automaticos.slice(0, 2), salida.ids, 'en la cola automática van primero los más pedidos, en su orden');
+        // Sin lista, la portada no tiene sección (mas-pedidos.json vacío).
+        const vacio = execFileSync('python3', ['-c', 'import build_product_pages as b; print(repr(b.bloque_mas_pedidos()))'], { cwd: path.join(RAIZ, 'scripts'), encoding: 'utf8' }).trim();
+        assert.equal(vacio, "''");
+    },
     'el número de WhatsApp sale solo de config.json'() {
         const { whatsapp, whatsappVisible } = leerJson('config.json');
         const leer = ruta => fs.readFileSync(path.join(RAIZ, ruta), 'utf8');

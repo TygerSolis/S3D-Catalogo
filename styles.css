@@ -765,3 +765,6 @@
 }
 @media (prefers-reduced-motion: reduce) { .nieve { animation: none; } }
 @media print { .temporada-banner, .catalog-temporada-tag, .hero-cta-temporada { display: none !important; } }
+
+/* «Lo más pedido» (lista de mas-pedidos.json) */
+.catalog-mas-pedido { background: linear-gradient(90deg, #e8340f, #f06a00); }

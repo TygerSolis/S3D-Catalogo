@@ -247,3 +247,7 @@ body.pp-con-barra .s3d-fab { bottom: 5.25rem; }
 body.pp-con-barra .s3d-aviso { bottom: 9rem; }
 @media (min-width: 860px) { body.pp-con-barra { padding-bottom: 0; } body.pp-con-barra .s3d-fab { bottom: 1.25rem; } body.pp-con-barra .s3d-aviso { bottom: 5rem; } }
 @media print { .pp-barra { display: none !important; } }
+
+/* «Lo más pedido» */
+.pp-mas-pedido { align-items: center; background: linear-gradient(90deg, #e8340f, #f06a00); border-radius: 999px; color: #fff; display: inline-flex; font-size: .75rem; font-weight: 800; gap: .4rem; letter-spacing: .12em; margin: 0 .4rem .75rem 0; padding: .35rem .9rem; text-transform: uppercase; }
+.pp-mas-pedido .ico { height: .9rem; width: .9rem; }

@@ -20,6 +20,7 @@ npm run build:css                               # recompila tailwind.css (luego 
 node scripts/optimize_images.cjs                # genera AVIF/WebP en 4 tamaños desde fuentes/ (git-ignored)
 python3 scripts/hoja_catalogo.py --help         # exportar/importar/faltantes/videos/limpiar (hoja ↔ JSON)
 node scripts/redes_fotos.cjs [--catalogo]       # JPG 4:5 para redes / 1:1 para el catálogo de Meta (originales de fuentes/ o R2)
+python3 scripts/mas_pedidos.py                  # «Lo más pedido»: trae del registro de pedidos los más pedidos → mas-pedidos.json
 ```
 
 La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están al día: tras tocar
@@ -124,6 +125,23 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
     «coincidencias avanzadas automáticas» ni configuración automática de eventos).
   - **Correo diario de pendientes** (`Pedidos.gs` → `resumenDiario`, activador de `instalarResumen` a las 9:00 de Lima):
     pedidos en «Nuevo» con más de 24 h (lista de los últimos 7 días); sin pendientes no envía nada. Prueba en `tests/pedidos.cjs`.
+- **Fase 2 de conversión (24/11/2026, D13)**:
+  - **«Lo más pedido»**: `Pedidos.gs` → `doGet(?ver=mas-pedidos)` devuelve solo NOMBRES (pedidos distintos de 30 días,
+    mínimo 2, todos los estados, máx. 12; caché 1 h). `scripts/mas_pedidos.py` (paso del workflow de la hoja) los pasa a
+    ids en `mas-pedidos.json` (omite nombres repetidos como DUMMY; si el registro falla, deja el archivo). El generador
+    (`leer_mas_pedidos`, `MAS_PEDIDOS`): etiqueta `pp-mas-pedido` en los 6 primeros, sección `#mas-pedidos` en la portada
+    (marcas `MAS-PEDIDOS`, `data-ids` que `catalogo.js` usa para la etiqueta de las tarjetas) y primeros en la cola
+    automática de redes (`redes.cola`). Vacía = sin sección ni etiquetas.
+  - **Comentarios**: `Redes.gs` → `responderComentarios` (activador de `instalarComentarios`, cada 15 min) responde EN
+    PÚBLICO (3 textos que rotan) a comentarios de ≤ 7 días con `PALABRAS_CLAVE`, salvo propios o ya respondidos por la
+    cuenta; el privado lo manda la automatización de Meta Business Suite (sin API: mensajes a no-roles piden revisión de
+    Meta). Permisos `pages_manage_engagement` e `instagram_manage_comments` (guía de redes, paso 7).
+  - **Google Shopping** (`docs/guia-google.md`): `catalogo_meta.py` escribe también `google/productos.txt` (TSV, mismos
+    artículos, `utm_source=google`, `identifier_exists=no`) SIN los productos con marcas/personajes ajenos
+    (`config.json` → `google.excluirMarcas`; Google los suspende como falsificación). La verificación de
+    `tygersolis.github.io` necesita un repo `TygerSolis.github.io` con el archivo de Google (pendiente del código).
+  - **Reseñas**: `config.json` → `resenasGoogle` (`g.page/r/…/review`); `/resena/` (noindex, fuera del sitemap) redirige
+    al formulario; enlace «Déjanos tu reseña» en el pie; textos `/gracias` y `/resena` en `docs/guia-whatsapp.md`.
 - **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en
   `assets/pagos/` (96 px WebP; Yape = ícono de su app en el App Store, publicado por el BCP; Plin = ícono de plin.pe),
   servidos desde el sitio por la CSP; Transferencia y Efectivo con íconos del sprite.
@@ -167,6 +185,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D10 | WhatsApp Business (18/11/2026) | Mismo número de la web (+51 955 107 609) en WhatsApp Business en el celular del dueño; atención 24 h (sin mensaje de ausencia); perfil y respuestas rápidas a mano (la app no tiene API); catálogo desde un catálogo de Meta que se llena solo desde la web. |
 | D11 | TikTok (21/11/2026) | Cuenta personal/creador (para usar música viral). Etapa 1: «Enviar a TikTok» a la bandeja (el dueño elige la música y publica). En paralelo, publicación directa «un toque por producto» con música automática en fotos, lista para la auditoría (demo con la cuenta de S3D en privado un rato). Página de términos creada. |
 | D12 | Conversión antes de los anuncios (24/11/2026) | Tras comparar con tiendas 3D de Lima: franja de confianza («Listo en 24–48 h»), barra fija en el celular, envíos «desde» (recojo gratis S/ 0, Lima S/ 10, periferia/Callao S/ 15, provincias por Shalom o la agencia del cliente S/ 12, montos referenciales), guía de regalos (<30, 30–60, 60–100, >100) + filtro de precio, dibujo de tamaño, relacionados + vistos, píxel de Meta con aviso de cookies (el dueño lo eligió frente a «solo clic a WhatsApp») y correo diario de pedidos sin cerrar. Fase 2: «Lo más pedido» desde el registro de pedidos, respuestas automáticas a comentarios, Google Shopping, textos de WhatsApp y enlace de reseñas de Google. Fase 3: personalizador de llaveros. Pendiente: «Clientes felices». Descartado: «Precio especial». |
+| D13 | Fase 2 de conversión (24/11/2026) | «Lo más pedido» por pedidos distintos (30 días, mínimo 2; etiqueta en los 6 primeros, sección en la portada y orden de la cola de redes). Comentarios: mensaje privado con la automatización de Meta Business Suite + respuesta pública automática desde `Redes.gs`. Google Shopping: «probar ya» (repo `TygerSolis.github.io` solo para verificar), sin productos con marcas ajenas. Reseñas: enlace del perfil de Google, atajo `/resena/`. |
 
 Implementado (octubre de 2026):
 

@@ -98,7 +98,7 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
         ScriptApp: {
             getProjectTriggers: () => [],
             deleteTrigger() {},
-            newTrigger: f => { const t = { f, timeBased: () => t, atHour: h => { t.h = h; return t; }, everyDays: () => t, onWeekDay: d => { t.dia = d; return t; }, inTimezone: z => { t.z = z; return t; }, create: () => activadores.push(t) }; return t; },
+            newTrigger: f => { const t = { f, timeBased: () => t, atHour: h => { t.h = h; return t; }, everyDays: () => t, everyMinutes: m => { t.min = m; return t; }, onWeekDay: d => { t.dia = d; return t; }, inTimezone: z => { t.z = z; return t; }, create: () => activadores.push(t) }; return t; },
             WeekDay: { MONDAY: 'MONDAY' }
         }
     };
@@ -110,6 +110,45 @@ function cargarGs({ meta = () => undefined, props = {} } = {}) {
 }
 
 module.exports = {
+    'Apps Script: responde en público los comentarios que piden precio (FB e IG), sin repetir ni pisar al dueño'() {
+        const hace = horas => new Date(AHORA.getTime() - horas * 3600e3).toISOString();
+        const igMedia = { data: [{ id: 'M1', comments: { data: [
+            { id: 'c1', text: '¿Cuánto cuesta?', username: 'ana', timestamp: hace(2) },
+            { id: 'c2', text: 'Precio x favor', username: 'luis', timestamp: hace(3), replies: { data: [{ username: 's3d' }] } },
+            { id: 'c3', text: 'Qué lindo 😍', username: 'eva', timestamp: hace(1) },
+            { id: 'c4', text: 'info', username: 'leo', timestamp: hace(24 * 8) },
+            { id: 'c5', text: 'precio?', username: 's3d', timestamp: hace(1) }
+        ] } }] };
+        const fbPosts = { data: [{ id: 'PAG_1', comments: { data: [
+            { id: 'f1', message: 'Más INFORMACIÓN por favor', created_time: hace(5), from: { id: 'u9' } },
+            { id: 'f2', message: '¿Está disponible?', created_time: hace(4), from: { id: 'u8' }, comments: { data: [{ from: { id: 'PAG' } }] } },
+            { id: 'f3', message: 'Me encanta', created_time: hace(4) }
+        ] } }] };
+        const s = cargarGs({ props: { PAGINA_ID: 'PAG', INSTAGRAM_ID: 'IG' }, meta: (url, o) => {
+            const ruta = new URL(url).pathname.replace('/v27.0/', '');
+            if (ruta === 'IG' && !o.method) return [200, { username: 's3d' }];
+            if (ruta === 'IG/media' && !o.method) return [200, igMedia];
+            if (ruta === 'PAG/published_posts') return [200, fbPosts];
+            if (/^(c\d|f\d)\/(replies|comments)$/.test(ruta)) return [200, { id: 'r' }];
+            return undefined;
+        } });
+        assert.equal(s.gs.responderComentarios(), 2);
+        const respuestas = s.publicadas().map(l => [l.ruta, l.datos.message]);
+        assert.deepEqual(respuestas.map(r => r[0]), ['c1/replies', 'f1/comments']);
+        for (const [, texto] of respuestas) assert.match(texto, /privado/);
+        assert.ok(s.llamadas.every(l => l.datos.access_token === 'token-pagina'));
+        s.gs.instalarComentarios();
+        assert.deepEqual(s.activadores.map(t => [t.f, t.min]), [['responderComentarios', 15]]);
+        // Sin el permiso de Meta para responder, la ejecución falla (Google avisa al dueño) y no cuenta nada como hecho.
+        const sinPermiso = cargarGs({ props: { PAGINA_ID: 'PAG', INSTAGRAM_ID: 'IG', INSTAGRAM_USUARIO: 's3d' }, meta: (url, o) => {
+            const ruta = new URL(url).pathname.replace('/v27.0/', '');
+            if (ruta === 'IG/media' && !o.method) return [200, igMedia];
+            if (ruta === 'PAG/published_posts') return [200, { data: [] }];
+            if (o.method === 'post') return [403, { error: { code: 200, message: 'requires instagram_manage_comments' } }];
+            return undefined;
+        } });
+        assert.throws(() => sinPermiso.gs.responderComentarios(), /no se pudo responder/);
+    },
     'Apps Script: sin la clave correcta no hace nada y bloquea tras 200 intentos (nadie puede dejar fuera al dueño con pocos)'() {
         const s = cargarGs();
         assert.deepEqual(s.post({ accion: 'estado', clave: 'otra' }), { ok: false, error: 'clave incorrecta' });
@@ -297,7 +336,7 @@ module.exports = {
         const s = cargarGs({ props: { APP_ID: '123', APP_SECRET: 'secreto' }, meta: url => (url.includes('/debug_token?')
             ? [200, { data: { is_valid: true, scopes: ['pages_show_list', 'pages_read_engagement', 'pages_manage_posts', 'business_management',
                 'instagram_basic', 'instagram_content_publish', 'instagram_manage_insights'] } }] : undefined) });
-        assert.deepEqual([...s.gs.revisarPermisos()], ['pages_read_user_content', 'read_insights']);
+        assert.deepEqual([...s.gs.revisarPermisos()], ['pages_read_user_content', 'read_insights', 'pages_manage_engagement', 'instagram_manage_comments']);
         const consulta = s.llamadas.find(l => l.ruta === 'debug_token').datos;
         assert.deepEqual([consulta.input_token, consulta.access_token], ['token-pagina', '123|secreto']);
     },

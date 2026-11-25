@@ -3,7 +3,8 @@
 Kit para publicar productos en redes (Facebook, Instagram y Marketplace).
 
 Cola de publicaciones (columna «redes» de la hoja): primero los productos con número, de menor a mayor; luego los que
-la dejan vacía, del más nuevo al más antiguo (fechaAlta; a igual fecha, los de temporada); «no» = nunca. Quedan
+la dejan vacía: primero «lo más pedido» (mas-pedidos.json, en su orden) y después del más nuevo al más antiguo
+(fechaAlta; a igual fecha, los de temporada); «no» = nunca. Quedan
 fuera los ocultos y los agotados. Por cada producto arma las fotos limpias (JPG 4:5 en redes/fotos/), la historia
 (JPG 9:16 en redes/historias/ con nombre, precio y WhatsApp, porque la API no permite el sticker de enlace), el texto
 para Facebook, el de Instagram, el anuncio de Marketplace y una respuesta para «¿Está disponible?». Todo se muestra en
@@ -231,11 +232,12 @@ def cola(productos: list[dict]) -> list[dict]:
     """Orden de publicación según la columna «redes» de la hoja (ver arriba). No depende del día en que se genera."""
     candidatos = [p for p in b.activos(productos)
                   if p.get("redes") is not False and p.get("disponibilidad") != "Agotado" and fotos(p)]
+    pedidos = {q["id"]: i for i, q in enumerate(b.leer_mas_pedidos(productos))}
     def turno(p: dict):
         if isinstance(p.get("redes"), int):
-            return (0, p["redes"], p["orden"])
+            return (0, p["redes"], 0, p["orden"])
         dias = -date.fromisoformat(p.get("fechaAlta", "2000-01-01")).toordinal()
-        return (1, dias, 0 if b.es_de_temporada(p) else 1, p["orden"])
+        return (1, pedidos.get(p["id"], len(pedidos)), dias, 0 if b.es_de_temporada(p) else 1, p["orden"])
     return sorted(candidatos, key=turno)
 
 

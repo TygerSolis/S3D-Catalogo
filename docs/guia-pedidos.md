@@ -45,6 +45,15 @@ Si no hay pendientes, no llega nada. Los «Nuevo» de más de 7 días solo se cu
 Para activarlo (una vez): pega la versión nueva de `Pedidos.gs`, haz **Nueva versión** de la implementación (abajo) y
 ejecuta **instalarResumen** desde el editor (menú de funciones → `instalarResumen` → Ejecutar).
 
+## «Lo más pedido» (automático)
+
+Cada 30 minutos la web le pregunta a este programa cuáles fueron los productos **más pedidos de los últimos 30 días**
+(cuenta pedidos distintos registrados, en cualquier estado: un pedido de 10 unidades suma 1; hacen falta al menos
+2 pedidos). El programa solo responde los **nombres** en orden: nada de cantidades, códigos ni datos de clientes. Los
+6 primeros llevan la etiqueta «Lo más pedido» en el catálogo y en su ficha, salen en una sección de la portada y van
+primero en la cola automática de redes. Si dos productos se llaman igual (p. ej. DUMMY), no se puede saber cuál es y no
+se etiqueta. Necesita la versión de `Pedidos.gs` del 24/11/2026 o posterior (con **Nueva versión**).
+
 ## Si cambias el programa
 
 Tras editar `Pedidos.gs` en Apps Script: **Implementar → Gestionar implementaciones → editar (lápiz) →

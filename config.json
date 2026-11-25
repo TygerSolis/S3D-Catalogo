@@ -69,5 +69,10 @@
       "max": 100000
     }
   ],
-  "metaPixel": "2186135135325502"
+  "metaPixel": "2186135135325502",
+  "resenasGoogle": "https://g.page/r/CfhVBoIRE9meEAI/review",
+  "google": {
+    "nota": "Google Merchant Center suspende cuentas por productos con marcas o personajes ajenos (falsificación): los que coinciden con estas palabras (nombre o descripción) no van a google/productos.txt.",
+    "excluirMarcas": ["toy story", "disney", "pixar", "woody", "jessie", "buzz", "hello kitty", "sanrio", "snoopy", "woodstock", "peanuts", "cars", "rayo", "mc ?queen", "doc hudson", "simpson", "bart", "nike", "jordan", "off[ -]white", "toyota", "audi", "real madrid", "barcelona", "psg", "knicks", "nba", "alianza", "universitario", "sporting cristal", "sport boys", "cienciano", "marvel", "pok[eé]mon", "star wars", "big three", "hermanas w", "antisocial", "peaky blinders", "smooth criminal", "michael jackson", "debi tirar", "bad bunny"]
+  }
 }

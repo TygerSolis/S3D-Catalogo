@@ -162,4 +162,41 @@ module.exports = {
         assert.equal(s.activadores.length, 2);
         assert.deepEqual([s.activadores[1].f, s.activadores[1].h, s.activadores[1].d, s.activadores[1].z], ['resumenDiario', 9, 1, 'America/Lima']);
     },
+
+    '«Lo más pedido»: el registro devuelve solo nombres, por pedidos distintos de los últimos 30 días (mínimo 2)'() {
+        const fs = require('fs');
+        const path = require('path');
+        const vm = require('vm');
+        const AHORA = new Date('2026-11-24T14:00:00Z');
+        const dias = d => new Date(AHORA.getTime() - d * 86400e3);
+        const fila = (fecha, productos, estado = 'Nuevo') => [1, fecha, 'S3D-AAAAA', 'Mi pedido', productos, 1, 10, 'detalle con teléfono 999', 'https://x', estado, 'nota privada'];
+        const filas = [
+            fila(dias(1), '10 × LLAVERO NIKE (Negro) — S/ 15.00'),                       // 10 unidades = 1 pedido
+            fila(dias(2), '1 × LLAVERO NIKE — S/ 15.00\n2 × LLAVERO NIKE (Rojo) — S/ 15.00'),   // repetido en el pedido = 1
+            fila(dias(3), '1 × WOODY — S/ 70.00\n1 × BUZZ (Grande, 30 cm) — por cotizar', 'Cancelado'),
+            fila(dias(4), '1 × WOODY — S/ 70.00'),
+            fila(dias(5), '1 × BUZZ — S/ 80.00'),
+            fila(dias(6), "'1 × JESSIE — S/ 75.00"),                                       // un solo pedido: no entra
+            fila(dias(40), '1 × JESSIE — S/ 75.00\n1 × JESSIE — S/ 75.00'),                // fuera de los 30 días
+            fila('sin fecha', '1 × JESSIE — S/ 75.00')
+        ];
+        const cache = new Map();
+        const hoja = { getLastRow: () => filas.length + 1, getRange: (f, c, nf, nc) => ({ getValues: () => filas.slice(f - 2, f - 2 + nf).map(x => x.slice(c - 1, c - 1 + nc)) }), appendRow() {} };
+        class FechaFija extends Date { constructor(...a) { super(...(a.length ? a : [AHORA.getTime()])); } static now() { return AHORA.getTime(); } }
+        const contexto = {
+            Date: FechaFija, Math, Number, String, Object, Array, JSON, isNaN, isFinite,
+            SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: () => hoja }) },
+            CacheService: { getScriptCache: () => ({ get: k => cache.get(k) ?? null, put: (k, v) => cache.set(k, v) }) },
+            ContentService: { createTextOutput: texto => ({ texto, setMimeType() { return this; } }), MimeType: { JSON: 'json' } }
+        };
+        vm.createContext(contexto);
+        vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'scripts', 'apps-script', 'Pedidos.gs'), 'utf8'), contexto);
+        const respuesta = JSON.parse(contexto.doGet({ parameter: { ver: 'mas-pedidos' } }).texto);
+        // Los tres tienen 2 pedidos (el cancelado también cuenta): primero el de pedido más reciente (NIKE); a igual
+        // fecha, por nombre.
+        assert.deepEqual(respuesta, { dias: 30, productos: ['LLAVERO NIKE', 'BUZZ', 'WOODY'] });
+        assert.ok(!JSON.stringify(respuesta).match(/999|nota|S3D-/), 'no expone datos de pedidos');
+        assert.ok(cache.has('mas-pedidos'), 'se guarda en caché');
+        assert.equal(contexto.doGet({ parameter: {} }).texto, 'Registro de pedidos S3D: activo');
+    },
 };

@@ -51,6 +51,8 @@
             ? { id: raiz.dataset.temporada, categoria: raiz.dataset.temporadaCategoria, titulo: raiz.dataset.temporadaTitulo }
             : null;
         const esDeTemporada = producto => !!TEMPORADA && producto.categoria === TEMPORADA.categoria;
+        // «Lo más pedido»: la sección de la portada (la genera build_product_pages.py) lleva los ids en data-ids.
+        const MAS_PEDIDOS = new Set(((document.getElementById('mas-pedidos') || {}).dataset || {}).ids?.split(',').filter(Boolean).map(Number) || []);
         // Textos del banner que encabeza la categoría de temporada (solo temporadas con textos propios).
         const BANNER_TEMPORADA = {
             navidad: {
@@ -226,7 +228,7 @@
                 <div class="catalog-media">
                 <div data-lightbox-product="${producto.id}" class="catalog-carousel-image" role="button" tabindex="0">
                     ${esNuevo(producto) ? '<span class="catalog-new-ribbon" aria-hidden="true"><span>Nuevo</span></span><span class="sr-only">Producto nuevo</span>' : ''}
-                    ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : esDeTemporada(producto) ? `<span class="catalog-temporada-tag"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>${escaparHTML(TEMPORADA.categoria)}</span>` : ''}
+                    ${producto.badge ? `<span class="catalog-carousel-badge">${escaparHTML(producto.badge)}</span>` : MAS_PEDIDOS.has(producto.id) ? '<span class="catalog-carousel-badge catalog-mas-pedido">Lo más pedido</span>' : esDeTemporada(producto) ? `<span class="catalog-temporada-tag"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>${escaparHTML(TEMPORADA.categoria)}</span>` : ''}
                     <picture>
                         <source data-carousel-main-source srcset="${escaparHTML(rutaAvif(imgSm))}" type="image/avif">
                         <img data-carousel-main-image src="${escaparHTML(imgSm)}" loading="lazy" decoding="async" alt="${escaparHTML(producto.nombre)}">

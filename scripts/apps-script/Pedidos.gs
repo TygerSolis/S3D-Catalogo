@@ -8,6 +8,7 @@
  * No guarda nombres ni teléfonos: esos datos solo llegan por WhatsApp.
  * Además, cada mañana (RESUMEN_HORA, hora de Lima) «resumenDiario» avisa por correo de los pedidos que siguen en
  * «Nuevo» desde hace más de 24 h, para retomarlos por WhatsApp. Se activa ejecutando «instalarResumen» una vez.
+ * «?ver=mas-pedidos» devuelve los productos más pedidos del mes (solo nombres), para la etiqueta «Lo más pedido».
  *
  * Instalación: ver docs/guia-pedidos.md (Extensiones > Apps Script, pegar este archivo, ejecutar «preparar»
  * una vez e Implementar > Nueva implementación > Aplicación web, «Ejecutar como: yo», «Acceso: cualquier usuario»).
@@ -23,8 +24,52 @@ const RESUMEN_HORA = 9;       // hora del correo de pendientes
 const PENDIENTE_HORAS = 24;   // un pedido «Nuevo» cuenta como pendiente pasadas estas horas
 const PENDIENTE_DIAS = 7;     // los más antiguos solo se cuentan (para no alargar el correo cada día)
 
-function doGet() {
+const MAS_PEDIDOS_DIAS = 30;     // «Lo más pedido» cuenta los pedidos registrados en estos días
+const MAS_PEDIDOS_MINIMO = 2;    // un producto entra con al menos estos pedidos distintos
+const MAS_PEDIDOS_MAX = 12;      // largo de la lista (la web etiqueta los primeros)
+
+function doGet(e) {
+  if (e && e.parameter && e.parameter.ver === 'mas-pedidos') return respuesta_(masPedidos_());
   return ContentService.createTextOutput('Registro de pedidos S3D: activo');
+}
+
+/**
+ * «Lo más pedido» (?ver=mas-pedidos, lo lee el workflow del catálogo cada 30 min): nombres de los productos con más
+ * pedidos distintos en los últimos MAS_PEDIDOS_DIAS días (todos los registrados, sin importar el estado). Un pedido
+ * suma 1 a cada producto que trae, aunque pida varias unidades. Solo devuelve nombres en orden: ni cantidades ni
+ * datos de clientes. Se guarda 1 hora en caché.
+ */
+function masPedidos_() {
+  const cache = CacheService.getScriptCache();
+  const guardado = cache.get('mas-pedidos');
+  if (guardado) return JSON.parse(guardado);
+  const hoja = hoja_();
+  const ultima = hoja.getLastRow();
+  const filas = ultima > 1 ? hoja.getRange(2, 1, ultima - 1, COLUMNAS.length).getValues() : [];
+  const desde = Date.now() - MAS_PEDIDOS_DIAS * 24 * 3600 * 1000;
+  const cuenta = {};
+  const ultimo = {};
+  filas.forEach(function (f) {
+    const t = new Date(f[1]).getTime();
+    if (isNaN(t) || t < desde) return;
+    const nombres = {};
+    // Cada línea es «2 × NOMBRE (color, medida) — S/ 45.00» o «… — por cotizar» (ver validar_).
+    String(f[4]).split('\n').forEach(function (linea) {
+      const m = linea.replace(/^'/, '').match(/^\d+ × (.+?)(?: \([^()]*\))? — (?:S\/|por cotizar)/);
+      if (m) nombres[m[1].trim().toUpperCase()] = true;
+    });
+    Object.keys(nombres).forEach(function (n) {
+      cuenta[n] = (cuenta[n] || 0) + 1;
+      ultimo[n] = Math.max(ultimo[n] || 0, t);
+    });
+  });
+  const productos = Object.keys(cuenta)
+    .filter(function (n) { return cuenta[n] >= MAS_PEDIDOS_MINIMO; })
+    .sort(function (a, b) { return cuenta[b] - cuenta[a] || ultimo[b] - ultimo[a] || (a < b ? -1 : 1); })
+    .slice(0, MAS_PEDIDOS_MAX);
+  const resultado = { dias: MAS_PEDIDOS_DIAS, productos: productos };
+  cache.put('mas-pedidos', JSON.stringify(resultado), 3600);
+  return resultado;
 }
 
 function doPost(e) {

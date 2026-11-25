@@ -229,4 +229,22 @@ module.exports = {
         assert.ok(await p.locator('#faq a[href="#envios"]').count() === 1, 'la pregunta de envíos enlaza la tabla');
         await p.contexto.close();
     },
+    async '«Lo más pedido»: con la sección en la portada, sus productos llevan la etiqueta en el catálogo'({ browser }) {
+        const sinBadge = leerJson('productos.json').filter(x => x.activo !== false && !x.badge).slice(0, 2);
+        const ids = sinBadge.map(x => x.id).join(',');
+        const p = await abrir(browser, '', { preparar: pagina => pagina.route(/\/$|index\.html$/, async r => {
+            const cuerpo = (await (await r.fetch()).text()).replace('<!-- MAS-PEDIDOS:START -->', `<!-- MAS-PEDIDOS:START --><section id="mas-pedidos" data-ids="${ids}"></section>`);
+            await r.fulfill({ contentType: 'text/html', body: cuerpo });
+        }) });
+        await p.locator('.catalog-carousel-card').first().waitFor();
+        const conEtiqueta = await p.$$eval('.catalog-mas-pedido', es => es.map(e => e.closest('article').id));
+        assert.deepEqual(conEtiqueta.sort(), sinBadge.map(x => `producto-${x.id}`).sort());
+        assert.deepEqual(p.errores, []);
+        await p.contexto.close();
+        // Sin la sección (mas-pedidos.json vacío), nadie la lleva.
+        const q = await abrir(browser);
+        await q.locator('.catalog-carousel-card').first().waitFor();
+        assert.equal(await q.locator('.catalog-mas-pedido').count(), 0);
+        await q.contexto.close();
+    },
 };

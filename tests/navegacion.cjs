@@ -117,4 +117,17 @@ module.exports = {
         assert.equal(await portada.locator('#catalogo a[href="regalos/"]').count(), 1);
         await portada.contexto.close();
     },
+    async '/resena/ lleva al formulario de reseñas de Google y el pie lo enlaza'({ browser }) {
+        const { resenasGoogle } = leerJson('config.json');
+        const p = await abrir(browser, '', { preparar: pagina => pagina.route(/g\.page/, r => r.fulfill({ contentType: 'text/html', body: '<p>google</p>' })) });
+        assert.equal(await p.locator('.site-footer a[href="resena/"]').count(), 1);
+        await p.click('.site-footer a[href="resena/"]');
+        await p.waitForURL(url => String(url).startsWith(resenasGoogle), { timeout: 5000 });
+        await p.contexto.close();
+        const fs = require('fs');
+        const html = fs.readFileSync(require('path').join(__dirname, '..', 'resena', 'index.html'), 'utf8');
+        assert.ok(html.includes('<meta name="robots" content="noindex">'));
+        assert.ok(html.includes(`<a class="pg-btn" href="${resenasGoogle}"`));
+        assert.ok(!fs.readFileSync(require('path').join(__dirname, '..', 'sitemap.xml'), 'utf8').includes('/resena/'));
+    },
 };

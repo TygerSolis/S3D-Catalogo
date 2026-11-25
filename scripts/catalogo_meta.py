@@ -9,12 +9,17 @@ su foto). Los productos «Cotizar» no van: Meta exige un precio. Las fotos son 
 `node scripts/redes_fotos.cjs --catalogo`. Un artículo sin su JPG se omite (y se avisa) hasta que exista.
 build_product_pages.py lo regenera junto con el resto del sitio.
 
+Google Merchant Center (fichas gratuitas de Google Shopping; guía docs/guia-google.md) usa los mismos artículos y fotos
+en google/productos.txt (texto separado por tabulaciones, el formato básico de Google), con enlaces
+utm_source=google, product_type = categoría e identifier_exists = no (piezas propias, sin código de barras).
+
 Uso:  python3 scripts/catalogo_meta.py faltantes    imprime las fotos que aún no tienen JPG
 """
 import csv
 import hashlib
 import io
 import json
+import re
 import sys
 from urllib.parse import quote
 
@@ -101,9 +106,37 @@ def csv_texto(todos: list[dict]) -> str:
     return salida.getvalue()
 
 
+CAMPOS_GOOGLE = CAMPOS + ["product_type", "identifier_exists"]
+
+
+MARCAS_AJENAS = re.compile(r"\b(" + "|".join(b.CONFIG.get("google", {}).get("excluirMarcas", [])) + r")\b", re.I) if b.CONFIG.get("google", {}).get("excluirMarcas") else None
+
+
+def apto_google(p: dict) -> bool:
+    """Fuera los productos con marcas o personajes ajenos (config.json → google.excluirMarcas): Google los trata como
+    posibles falsificaciones y puede suspender la cuenta entera."""
+    return not (MARCAS_AJENAS and MARCAS_AJENAS.search(f"{p['nombre']} {p['descripcion']}"))
+
+
+def filas_google(todos: list[dict]) -> list[dict]:
+    salida = []
+    for f in filas([p for p in todos if apto_google(p)]):
+        g = dict(f, link=f["link"].replace("utm_source=meta&utm_medium=catalogo", "utm_source=google&utm_medium=shopping"),
+                 product_type=f["custom_label_0"], identifier_exists="no")
+        salida.append({k: " ".join(str(v).split()) for k, v in g.items()})   # sin tabulaciones ni saltos de línea
+    return salida
+
+
+def tsv_google(todos: list[dict]) -> str:
+    lineas = ["\t".join(CAMPOS_GOOGLE)] + ["\t".join(f[k] for k in CAMPOS_GOOGLE) for f in filas_google(todos)]
+    return "\n".join(lineas) + "\n"
+
+
 def escribir(todos: list[dict]) -> None:
     CARPETA.mkdir(exist_ok=True)
     (CARPETA / "catalogo.csv").write_text(csv_texto(todos), encoding="utf-8")
+    (b.ROOT / "google").mkdir(exist_ok=True)
+    (b.ROOT / "google" / "productos.txt").write_text(tsv_google(todos), encoding="utf-8")
     usadas = set(fotos_necesarias(todos))
     for jpg in FOTOS.glob("*.jpg"):
         if jpg.stem not in usadas:

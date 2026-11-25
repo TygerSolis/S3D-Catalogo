@@ -117,6 +117,42 @@ próxima vez la completará solo. La primera publicación real la hacemos juntos
 3. Pega la versión nueva de `Redes.gs` (ver «Si cambias el programa») y ejecuta **instalar** otra vez (agrega el
    informe de los lunes; no duplica los horarios).
 
+### Paso 7. Respuestas a comentarios (precio, información)
+
+Cuando alguien comenta pidiendo precio o información, recibe **dos** respuestas automáticas:
+
+- **En privado** (Meta Business Suite, sin programa): un mensaje con el enlace del producto.
+- **En público** (`Redes.gs`, cada 15 minutos): «¡Hola! 😊 Te enviamos la información por mensaje privado…», para que
+  quien vea la publicación sepa que se responde. No responde si tú ya contestaste ese comentario ni a tus propios
+  comentarios, y solo mira los de los últimos 7 días.
+
+Las dos usan las mismas **palabras clave**: `precio`, `info`, `cuánto`, `costo`, `disponible` (el programa también
+reconoce «PRECIO», «cuanto», «información», «precios»…).
+
+**A. Mensaje privado (Meta Business Suite, desde una computadora):**
+
+1. Entra a **business.facebook.com** → **Bandeja de entrada** → **Automatizaciones** (arriba).
+2. Busca **«Respuesta a comentarios»** / **«Comentario a mensaje»** y créala para **Facebook** y otra para **Instagram**.
+3. Palabras clave (hasta 5; Meta distingue mayúsculas: si puedes, crea una segunda con `Precio`, `Info`, `Cuánto`,
+   `Costo`, `Disponible`): `precio`, `info`, `cuánto`, `costo`, `disponible`.
+4. Mensaje:
+   ```
+   ¡Hola! 😊 Gracias por tu interés. Aquí ves el precio, las medidas y los colores de todos nuestros productos:
+   https://tygersolis.github.io/S3D-Catalogo/?utm_source=instagram&utm_medium=comentario
+   Envíos a todo el Perú o recojo gratis en nuestro taller, listo en 24–48 h. ¿Qué producto te interesa?
+   ```
+   (En la de Facebook cambia `utm_source=instagram` por `utm_source=facebook`.)
+5. Aplica a **todas las publicaciones** y guarda.
+
+**B. Respuesta pública (Apps Script, una sola vez):**
+
+1. En la app de Meta → casos de uso → **Permisos y funciones**, agrega `pages_manage_engagement` (responder en
+   Facebook) e `instagram_manage_comments` (responder en Instagram).
+2. Repite el **paso 3, puntos 4 a 6** (marca también esos dos permisos → token → `TOKEN_TEMPORAL` → **guardarPermiso**)
+   y ejecuta **revisarPermisos**: debe decir «Están todos los permisos necesarios».
+3. Pega la versión nueva de `Redes.gs`, haz **Nueva versión** (ver «Si cambias el programa») y ejecuta una vez
+   **instalarComentarios**. Para probar ya: comenta «precio?» desde otra cuenta y ejecuta **responderComentarios**.
+
 ## Si algo falla
 
 | Mensaje | Qué hacer |
@@ -127,6 +163,7 @@ próxima vez la completará solo. La primera publicación real la hacemos juntos
 | «no está en la cola de la web principal» | El producto todavía no pasó a la web principal. |
 | En «resultados» una nota «… falta un permiso …» | Ejecuta **revisarPermisos** y agrega lo que diga que falta (paso 6). |
 | «Meta pide esperar» | Demasiadas publicaciones seguidas: espera una hora. |
+| Google avisa «responderComentarios ha fallado» | Falta un permiso para responder: ejecuta **revisarPermisos** (paso 7.B). |
 | Una publicación programada falló | Te llega un correo a ventas.s3d@gmail.com; usa «Publicar ahora» para reintentar. |
 
 ## Si cambias el programa

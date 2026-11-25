@@ -37,7 +37,8 @@ Destinatarios: **Todos**.
 ```
 ¡Hola! 😊 Gracias por escribir a S3D, te atendemos las 24 horas.
 Aquí ves todos nuestros productos con precios: https://tygersolis.github.io/S3D-Catalogo/?utm_source=whatsapp&utm_medium=bienvenida
-Si ya elegiste, cuéntanos qué producto, color y cantidad quieres 🎁
+¿Buscas un regalo? Mira nuestra guía por precio 🎁 https://tygersolis.github.io/S3D-Catalogo/regalos/?utm_source=whatsapp&utm_medium=bienvenida
+Si ya elegiste, cuéntanos qué producto, color y cantidad quieres. Lo tenemos listo en 24–48 h ⏱️
 ```
 
 No hace falta «Mensaje de ausencia»: atiendes las 24 horas.
@@ -50,12 +51,15 @@ Escribes el atajo en un chat (por ejemplo `/envio`) y aparece el texto completo.
 |---|---|
 | `/catalogo` | Aquí tienes nuestro catálogo completo con fotos y precios 👉 https://tygersolis.github.io/S3D-Catalogo/?utm_source=whatsapp&utm_medium=respuesta |
 | `/navidad` | ¡Nuestra Colección Navideña 🎄! Snoopy, árboles con luz LED, angelitos y más: https://tygersolis.github.io/S3D-Catalogo/?categoria=Navidad&utm_source=whatsapp&utm_medium=respuesta#catalogo |
-| `/envio` | Hacemos envíos a todo el Perú 🚚 El costo depende de tu distrito o provincia: dime dónde estás y te lo calculo. En Lima también podemos coordinar la entrega. |
+| `/envio` | Hacemos envíos a todo el Perú 🚚 Referencial: Lima desde S/ 10, Lima periferia y Callao desde S/ 15, provincias desde S/ 12 (por Shalom o la agencia que prefieras). Dime tu distrito o ciudad y te confirmo el monto exacto. Tabla: https://tygersolis.github.io/S3D-Catalogo/#envios |
+| `/recojo` | También puedes recoger gratis en nuestro taller 📍 Coordinamos el día y la hora por aquí; puedes venir tú o enviar a tu motorizado o app de delivery. |
 | `/pago` | Puedes pagar con Yape, Plin, transferencia o efectivo 💳 Al confirmar tu pedido te paso los datos. |
-| `/tiempo` | Trabajamos a pedido: normalmente está listo de un día para otro, según el modelo y la cantidad de pedidos ⏱️ Te confirmo la fecha exacta al hacer tu pedido. |
+| `/tiempo` | Trabajamos a pedido: tu pieza está lista en 24 a 48 horas ⏱️ (los pedidos grandes o personalizados pueden tomar un poco más). Te confirmo la fecha exacta al hacer tu pedido. |
 | `/medidas` | Las medidas publicadas corresponden al precio indicado. Si lo quieres más grande o en otro color, también se puede: dime la medida y te lo cotizo 📏 |
 | `/disponible` | ¡Sí, está disponible! 😊 Lo elaboramos a pedido. ¿En qué color lo quieres y para cuándo lo necesitas? |
-| `/gracias` | ¡Gracias por tu compra! 🙌 Si te gustó, nos ayudaría mucho una foto o una reseña en Instagram o Facebook. |
+| `/regalos` | ¿Buscas un regalo? 🎁 Aquí los tienes ordenados por precio: https://tygersolis.github.io/S3D-Catalogo/regalos/?utm_source=whatsapp&utm_medium=respuesta |
+| `/gracias` | ¡Gracias por tu compra! 🙌 Si te gustó, nos ayudaría muchísimo tu reseña en Google (toma un minuto): https://tygersolis.github.io/S3D-Catalogo/resena/ ⭐ |
+| `/resena` | ¡Hola! 😊 ¿Qué tal te pareció tu pedido? Si te gustó, ¿nos dejarías una reseña en Google? Nos ayuda a que más personas nos encuentren: https://tygersolis.github.io/S3D-Catalogo/resena/ ⭐ |
 
 ## 4. Etiquetas (Chats → ⋮ → Etiquetas)
 

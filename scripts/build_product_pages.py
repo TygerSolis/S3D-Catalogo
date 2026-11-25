@@ -49,6 +49,13 @@ assert all(a["max"] < b["min"] for a, b in zip(RANGOS, RANGOS[1:])), "rangosPrec
 # Píxel de Meta (anuncios): vacío = apagado (sin aviso de cookies ni orígenes de Facebook en la CSP).
 META_PIXEL = CONFIG.get("metaPixel", "")
 assert re.fullmatch(r"(\d{10,20})?", META_PIXEL), "metaPixel inválido en config.json (solo el número del píxel)"
+# Enlace para dejar una reseña en el perfil de Google («Pedir reseñas»); /resena/ redirige a él.
+RESENAS = CONFIG.get("resenasGoogle", "")
+assert re.fullmatch(r"(https://g\.page/r/[\w-]+/review)?", RESENAS), "resenasGoogle inválido en config.json (https://g.page/r/…/review)"
+# «Lo más pedido» (mas-pedidos.json, lo escribe scripts/mas_pedidos.py desde el registro de pedidos): los primeros
+# MAS_PEDIDOS_ETIQUETA llevan la etiqueta y salen en la portada. main() lo fija (vacío al generar una ficha suelta).
+MAS_PEDIDOS_ETIQUETA = 6
+MAS_PEDIDOS: list[dict] = []
 OUT_DIR = ROOT / "producto"
 # Política de seguridad (CSP) de todas las páginas: solo se ejecuta JavaScript de archivos propios y de Umami
 # (sin código en línea ni atributos onclick). Si se añade un servicio externo, hay que permitir aquí su origen.
@@ -81,6 +88,7 @@ CHROME_MARCAS = {
     "promesa": ("<!-- CHROME-PROMESA:START -->", "<!-- CHROME-PROMESA:END -->"),
     "envios": ("<!-- CHROME-ENVIOS:START -->", "<!-- CHROME-ENVIOS:END -->"),
     "rangos": ("<!-- RANGOS:START -->", "<!-- RANGOS:END -->"),
+    "masPedidos": ("<!-- MAS-PEDIDOS:START -->", "<!-- MAS-PEDIDOS:END -->"),
 }
 
 
@@ -386,6 +394,45 @@ def tarjeta_relacionada(p: dict) -> str:
                 </a>"""
 
 
+def leer_mas_pedidos(todos: list[dict]) -> list[dict]:
+    """Productos de mas-pedidos.json en su orden, solo los visibles y no agotados (la cola de redes usa la lista entera)."""
+    ruta = ROOT / "mas-pedidos.json"
+    ids = json.loads(ruta.read_text(encoding="utf-8")).get("ids", []) if ruta.exists() else []
+    por_id = {p["id"]: p for p in activos(todos) if p.get("disponibilidad") != "Agotado"}
+    return [por_id[i] for i in ids if i in por_id]
+
+
+def es_mas_pedido(p: dict) -> bool:
+    return any(q["id"] == p["id"] for q in MAS_PEDIDOS[:MAS_PEDIDOS_ETIQUETA])
+
+
+def bloque_mas_pedidos() -> str:
+    """Sección «Lo más pedido» de la portada (vacía si nadie llega al mínimo de pedidos)."""
+    lista = MAS_PEDIDOS[:MAS_PEDIDOS_ETIQUETA]
+    if not lista:
+        return ""
+    tarjetas = "\n".join(
+        f"""        <a class="mas-pedidos-card" href="producto/{esc(p['slug'])}/" data-evento="ficha_mas_pedidos" data-producto="{esc(p['nombre'])}">
+            <picture><source srcset="{esc(url_ruta(avif(miniatura(imagen_principal(p)))))}" type="image/avif"><img src="{esc(url_ruta(miniatura(imagen_principal(p))))}" alt="" loading="lazy" decoding="async" width="160" height="200"></picture>
+            <span class="mas-pedidos-num">{i}</span>
+            <strong>{esc(p['nombre'])}</strong>
+            <span class="mas-pedidos-precio">{esc(precio_txt(p))}</span>
+        </a>"""
+        for i, p in enumerate(lista, 1)
+    )
+    ids = ",".join(str(p["id"]) for p in lista)
+    return f"""<section id="mas-pedidos" class="mas-pedidos no-print" aria-labelledby="mas-pedidos-titulo" data-ids="{ids}">
+    <div class="mas-pedidos-cab">
+        <h2 id="mas-pedidos-titulo"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg>Lo más pedido</h2>
+        <p>Lo que más nos pidieron en los últimos 30 días.</p>
+    </div>
+    <div class="mas-pedidos-lista">
+{tarjetas}
+    </div>
+</section>
+"""
+
+
 def relacionados(p: dict, todos: list[dict], n: int = 4) -> list[dict]:
     """«También te puede gustar»: los siguientes de la misma categoría (dando la vuelta al final del catálogo) y, si
     no alcanzan, los de otras categorías con el precio más parecido."""
@@ -499,6 +546,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
         f'\n                <p class="pp-temporada-tag con-temporada"><svg class="ico" aria-hidden="true"><use href="#i-tree"/></svg>{esc(TEMPORADA["titulo"])}</p>'
         if es_de_temporada(p) else ""
     )
+    if es_mas_pedido(p):
+        marca_temporada += '\n                <p class="pp-mas-pedido"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg>Lo más pedido</p>'
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
     tamano = dibujo_tamano(p.get("medida"))
     tamano = tamano + "\n" if tamano else ""
@@ -538,8 +587,8 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
-    <link rel="stylesheet" href="../../chrome.css?v=9">
-    <link rel="stylesheet" href="../../producto.css?v=12">
+    <link rel="stylesheet" href="../../chrome.css?v=10">
+    <link rel="stylesheet" href="../../producto.css?v=13">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -618,7 +667,8 @@ def actualizar_chrome_indice() -> None:
     contenido = indice.read_text(encoding="utf-8")
     bloques = {"top": sangrar(chrome_superior("")), "pie": sangrar(chrome_pie("")), "pagos": sangrar(plantilla("pagos", ""), 12),
                "promesa": sangrar(f'<div class="promesa-portada no-print">\n{sangrar(bloque_promesa(""))}</div>\n'),
-               "envios": sangrar(bloque_envios_portada(), 12), "rangos": sangrar(opciones_rangos(), 28)}
+               "envios": sangrar(bloque_envios_portada(), 12), "rangos": sangrar(opciones_rangos(), 28),
+               "masPedidos": sangrar(bloque_mas_pedidos())}
     for clave, (inicio, fin) in CHROME_MARCAS.items():
         nuevo = f"    {inicio}\n{bloques[clave]}    {fin}"
         if inicio in contenido:
@@ -693,7 +743,7 @@ FECHA_TERMINOS = "21/11/2026"
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
 
 
-def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | None, cuerpo: str, robots: str | None = None, base_href: str | None = None) -> str:
+def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | None, cuerpo: str, robots: str | None = None, base_href: str | None = None, cabeza: str = "") -> str:
     """Página informativa con la misma cabecera y pie que el resto del sitio."""
     etiqueta_base = f'    <base href="{esc(base_href)}">\n' if base_href else ""
     meta_robots = f'    <meta name="robots" content="{robots}">\n' if robots else ""
@@ -706,13 +756,13 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 {etiqueta_base}    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{esc(titulo)}</title>
     <meta name="description" content="{esc(descripcion)}">
-{meta_robots}{enlace_canonico}    <meta name="theme-color" content="#002244">
+{meta_robots}{enlace_canonico}{cabeza}    <meta name="theme-color" content="#002244">
     <link rel="icon" href="{base}assets/logo-96.webp" type="image/webp">
     <link rel="apple-touch-icon" href="{base}assets/logo-192.png">
     <link rel="preload" href="{base}assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{base}fonts.css?v=1">
-    <link rel="stylesheet" href="{base}chrome.css?v=9">
+    <link rel="stylesheet" href="{base}chrome.css?v=10">
     <link rel="stylesheet" href="{base}paginas.css?v=2">
 </head>
 <body>
@@ -868,6 +918,17 @@ def pagina_regalos(todos: list[dict]) -> str:
     return pagina_estatica("Regalos impresos en 3D por precio | S3D", "Guía de regalos de S3D: figuras, adornos, llaveros y más, impresos en 3D en Lima y ordenados por precio. Envíos a todo el Perú.", "../", f"{BASE_URL}regalos/", cuerpo)
 
 
+def pagina_resena() -> str:
+    """Atajo /resena/ (para WhatsApp y el pie): lleva al formulario de reseñas del perfil de Google."""
+    destino = esc(RESENAS)
+    cuerpo = f"""        <p class="pg-kicker">Tu opinión nos ayuda</p>
+        <h1>Gracias por elegir S3D</h1>
+        <p>Te llevamos a Google para que dejes tu reseña; solo toma un minuto y ayuda a que más personas nos encuentren.</p>
+        <p><a class="pg-btn" href="{destino}" rel="noopener noreferrer">Dejar mi reseña en Google</a></p>"""
+    return pagina_estatica("Déjanos tu reseña | S3D", "Cuéntanos qué te pareció tu pedido de S3D en Google.", "../", None, cuerpo,
+                           robots="noindex", cabeza=f'    <meta http-equiv="refresh" content="1; url={destino}">\n')
+
+
 def pagina_404(todos: list[dict]) -> str:
     destacados = sorted([p for p in activos(todos) if p.get("badge") == "Top Ventas"], key=lambda p: p.get("heroOrden", 10**6))[:4]
     cats = "\n".join(f'            <a class="pg-chip" href="./?categoria={quote(c)}#catalogo">{esc(c)}</a>' for c in ORDEN_CATEGORIAS)
@@ -931,6 +992,8 @@ def main() -> None:
     productos.sort(key=lambda p: p["orden"])   # sort estable: a igual orden, se respeta el orden del archivo
     global HAY_PRODUCTOS_TEMPORADA
     HAY_PRODUCTOS_TEMPORADA = any(es_de_temporada(p) for p in activos(productos))
+    global MAS_PEDIDOS
+    MAS_PEDIDOS = leer_mas_pedidos(productos)
     ruta_json.write_text(json.dumps(productos, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     if OUT_DIR.exists():
@@ -947,6 +1010,9 @@ def main() -> None:
     (ROOT / "regalos").mkdir(exist_ok=True)
     (ROOT / "regalos" / "index.html").write_text(pagina_regalos(productos), encoding="utf-8")
     (ROOT / "404.html").write_text(pagina_404(productos), encoding="utf-8")
+    if RESENAS:
+        (ROOT / "resena").mkdir(exist_ok=True)
+        (ROOT / "resena" / "index.html").write_text(pagina_resena(), encoding="utf-8")
 
     actualizar_itemlist(productos)
     actualizar_chrome_indice()

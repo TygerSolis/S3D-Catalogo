@@ -126,6 +126,10 @@ jobs:
             node scripts/redes_fotos.cjs --historias || echo "::warning::Faltan historias para redes (ver el registro)"
           fi
 
+      - name: «Lo más pedido» desde el registro de pedidos
+        # Solo nombres de productos (ni cantidades ni datos de clientes); si el registro no responde, se queda la lista anterior.
+        run: python3 scripts/mas_pedidos.py | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Regenerar páginas
         run: python3 scripts/build_product_pages.py
 
