@@ -55,6 +55,7 @@ assert re.fullmatch(r"(https://g\.page/r/[\w-]+/review)?", RESENAS), "resenasGoo
 # «Lo más pedido» (mas-pedidos.json, lo escribe scripts/mas_pedidos.py desde el registro de pedidos): los primeros
 # MAS_PEDIDOS_ETIQUETA llevan la etiqueta y salen en la portada. main() lo fija (vacío al generar una ficha suelta).
 MAS_PEDIDOS_ETIQUETA = 6
+LLAVERO = CONFIG.get("llavero")   # personalizador /llavero/ (D14); sin este bloque no se genera la página
 MAS_PEDIDOS: list[dict] = []
 OUT_DIR = ROOT / "producto"
 # Política de seguridad (CSP) de todas las páginas: solo se ejecuta JavaScript de archivos propios y de Umami
@@ -548,6 +549,12 @@ def pagina(p: dict, todos: list[dict]) -> str:
     )
     if es_mas_pedido(p):
         marca_temporada += '\n                <p class="pp-mas-pedido"><svg class="ico" aria-hidden="true"><use href="#i-sparkles"/></svg>Lo más pedido</p>'
+    # Productos que también se diseñan en el personalizador (/llavero/): enlace con su modelo ya elegido.
+    modelo_llavero = next((m["id"] for m in (LLAVERO or {}).get("modelos", []) if m.get("productoId") == p["id"]), None)
+    disena = (
+        f'                <a class="pp-disena" href="../../llavero/?modelo={esc(modelo_llavero)}" data-evento="llavero_desde_ficha" data-producto="{esc(p["nombre"])}"><svg class="ico" aria-hidden="true"><use href="#i-wand-sparkles"/></svg><span>Diseña el tuyo: mira cómo queda con tu nombre y el precio por cantidad</span></a>\n'
+        if modelo_llavero else ""
+    )
     fecha_attr = f' data-fecha-alta="{esc(p["fechaAlta"])}"' if p.get("fechaAlta") else ""
     tamano = dibujo_tamano(p.get("medida"))
     tamano = tamano + "\n" if tamano else ""
@@ -588,7 +595,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
     <link rel="preload" href="../../assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../../fonts.css?v=1">
     <link rel="stylesheet" href="../../chrome.css?v=10">
-    <link rel="stylesheet" href="../../producto.css?v=13">
+    <link rel="stylesheet" href="../../producto.css?v=14">
 {json_ld_producto(p, url)}
 </head>
 <body>
@@ -626,7 +633,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
                     <button type="button" class="pp-icono" id="pp-fav" aria-pressed="false" aria-label="Guardar en favoritos" title="Guardar en favoritos"><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg></button>
                     <button type="button" class="pp-icono" id="pp-share" aria-label="Compartir este producto" title="Compartir"><svg class="ico" aria-hidden="true"><use href="#i-share-2"/></svg></button>
                 </div>
-{sangrar(plantilla("pagos", "../../"), 16)}                <ul class="pp-perks">
+{disena}{sangrar(plantilla("pagos", "../../"), 16)}                <ul class="pp-perks">
                     <li>Todos los productos se elaboran a pedido en nuestro taller</li>
                     <li>El precio corresponde a la medida publicada; si lo quieres más grande o más pequeño, el costo varía</li>
                     <li>Personalizable: medidas, colores y detalles. Escríbenos y lo evaluamos</li>
@@ -654,7 +661,7 @@ def pagina(p: dict, todos: list[dict]) -> str:
 
     <script src="../../chrome.js?v=2" defer></script>
     <script src="../../tienda.js?v=3" defer></script>
-    <script src="../../analytics.js?v=6" defer></script>
+    <script src="../../analytics.js?v=7" defer></script>
     <script src="../../producto.js?v=13" defer></script>
 </body>
 </html>
@@ -743,7 +750,7 @@ FECHA_TERMINOS = "21/11/2026"
 ORDEN_CATEGORIAS = ["Muñecos Coleccionables", "Adornos", "Holders", "Barbería", "Mascota", "Llaveros", "Line Art", "Iluminación LED 3D", "Dummy", "Accesorios"]
 
 
-def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | None, cuerpo: str, robots: str | None = None, base_href: str | None = None, cabeza: str = "") -> str:
+def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | None, cuerpo: str, robots: str | None = None, base_href: str | None = None, cabeza: str = "", scripts: str = "") -> str:
     """Página informativa con la misma cabecera y pie que el resto del sitio."""
     etiqueta_base = f'    <base href="{esc(base_href)}">\n' if base_href else ""
     meta_robots = f'    <meta name="robots" content="{robots}">\n' if robots else ""
@@ -763,7 +770,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
     <link rel="preload" href="{base}assets/fonts/spacegrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{base}fonts.css?v=1">
     <link rel="stylesheet" href="{base}chrome.css?v=10">
-    <link rel="stylesheet" href="{base}paginas.css?v=2">
+    <link rel="stylesheet" href="{base}paginas.css?v=3">
 </head>
 <body>
 {sangrar(chrome_superior(base))}
@@ -773,7 +780,7 @@ def pagina_estatica(titulo: str, descripcion: str, base: str, canonical: str | N
 
 {sangrar(chrome_pie(base))}
     <script src="{base}chrome.js?v=2" defer></script>
-    <script src="{base}analytics.js?v=6" defer></script>
+{scripts}    <script src="{base}analytics.js?v=7" defer></script>
 </body>
 </html>
 """
@@ -905,10 +912,15 @@ def pagina_regalos(todos: list[dict]) -> str:
         for r, ps in grupos
     )
     wa = f"https://api.whatsapp.com/send?phone={WHATSAPP}&text={quote('Hola, estoy buscando un regalo impreso en 3D y quisiera una recomendación.', safe='')}"
+    llavero = """        <a class="pg-destacado" href="../llavero/" data-evento="llavero_desde_regalos">
+            <svg class="ico" aria-hidden="true"><use href="#i-wand-sparkles"/></svg>
+            <span><strong>¿Un regalo con su nombre?</strong> Diseña un llavero personalizado y mira cómo queda; por cantidad, ideal para recuerdos.</span>
+        </a>
+""" if LLAVERO else ""
     cuerpo = f"""        <p class="pg-kicker">Guía de regalos</p>
         <h1>Regalos impresos en 3D por precio</h1>
         <p>Elige tu presupuesto y encuentra el regalo ideal. Todo se fabrica a pedido en nuestro taller de Lima; muchos modelos se pueden personalizar con nombres, colores o medidas.</p>
-{sangrar(bloque_promesa("../"), 8)}        <nav class="pg-chips" aria-label="Rangos de precio">
+{sangrar(bloque_promesa("../"), 8)}{llavero}        <nav class="pg-chips" aria-label="Rangos de precio">
 {chips}
         </nav>
 
@@ -927,6 +939,164 @@ def pagina_resena() -> str:
         <p><a class="pg-btn" href="{destino}" rel="noopener noreferrer">Dejar mi reseña en Google</a></p>"""
     return pagina_estatica("Déjanos tu reseña | S3D", "Cuéntanos qué te pareció tu pedido de S3D en Google.", "../", None, cuerpo,
                            robots="noindex", cabeza=f'    <meta http-equiv="refresh" content="1; url={destino}">\n')
+
+
+def modelos_llavero(todos: list[dict]) -> list[dict]:
+    """Modelos del personalizador con su escala de precios [(desde, precio por unidad), ...]. Un modelo con
+    «productoId» toma nombre, ficha y precio de ese producto de la hoja (si está oculto, agotado o sin precio, no
+    se ofrece). Las escalas que no bajan el precio se ignoran con un aviso (la hoja nunca debe romper la web)."""
+    if not LLAVERO:
+        return []
+    por_id = {p["id"]: p for p in activos(todos)}
+    salida = []
+    for m in LLAVERO["modelos"]:
+        assert re.fullmatch(r"[a-z0-9-]+", m["id"]), f"id de modelo inválido: {m['id']}"
+        if "productoId" in m:
+            p = por_id.get(m["productoId"])
+            if not p or p.get("disponibilidad") == "Agotado" or p.get("requiereCotizacion") or not p.get("precio"):
+                print(f"Aviso: el modelo «{m['nombre']}» del personalizador no se ofrece (producto {m['productoId']} oculto, agotado o sin precio).")
+                continue
+            base, registro, slug = float(precios(p)[0]), p["nombre"], p["slug"]
+        else:
+            base, registro, slug = float(m["precio"]), m["registro"], None
+        escalas = [(1, base)]
+        for e in m.get("escalas", []):
+            desde, precio = int(e["desde"]), float(e["precio"])
+            if desde > escalas[-1][0] and precio < escalas[-1][1]:
+                escalas.append((desde, precio))
+            else:
+                print(f"Aviso: escala «desde {desde}» de «{m['nombre']}» ignorada (debe ser más cantidad y menor precio que la anterior).")
+        salida.append({**m, "registro": registro, "slug": slug, "escalas": escalas})
+    return salida
+
+
+def texto_escalas(escalas: list[tuple[int, float]]) -> list[str]:
+    """[(1, 10), (12, 8.5), (50, 7.5)] → ["1 a 11: S/ 10.00", "12 a 49: S/ 8.50", "50 o más: S/ 7.50"]."""
+    filas = []
+    for i, (desde, precio) in enumerate(escalas):
+        hasta = escalas[i + 1][0] - 1 if i + 1 < len(escalas) else None
+        rango = (f"{desde}" if hasta == desde else f"{desde} a {hasta}") if hasta else f"{desde} o más"
+        filas.append(f"{rango}: S/ {precio:.2f}")
+    return filas
+
+
+def estilos_letras_llavero() -> str:
+    """@font-face de las letras del personalizador (archivos propios, licencia OFL), dentro de <head>."""
+    reglas = []
+    for letra in LLAVERO["letras"]:
+        assert (ROOT / letra["archivo"]).is_file(), f"falta la tipografía {letra['archivo']}"
+        assert re.fullmatch(r"[A-Za-z0-9 ]+", letra["familia"]), f"familia inválida: {letra['familia']}"
+        reglas.append(f"@font-face {{ font-family: '{letra['familia']}'; font-display: swap; src: url('../{letra['archivo']}') format('woff2'); }}")
+    return "    <style>\n" + "\n".join(f"        {r}" for r in reglas) + "\n    </style>\n"
+
+
+def pagina_llavero(todos: list[dict]) -> str:
+    """Personalizador «Diseña tu llavero» (D14): el formulario sale completo en el HTML (sirve sin JavaScript);
+    llavero.js dibuja la vista previa, calcula el precio por cantidad y arma el pedido de WhatsApp con código S3D."""
+    modelos = modelos_llavero(todos)
+    colores = LLAVERO["colores"]
+    for c in colores:
+        assert re.fullmatch(r"#[0-9a-fA-F]{6}", c["hex"]), f"color inválido: {c}"
+    maximo = int(LLAVERO["maxLetras"])
+
+    def radio_modelo(i: int, m: dict) -> str:
+        escalas = json.dumps([[d, p] for d, p in m["escalas"]])
+        return f"""                    <label class="ll-opcion ll-modelo">
+                        <input type="radio" name="modelo" value="{esc(m['id'])}" data-nombre="{esc(m['nombre'])}" data-registro="{esc(m['registro'])}" data-escalas="{esc(escalas)}" data-formas="{'1' if m.get('formas') else ''}"{' checked' if i == 0 else ''}>
+                        <span><strong>{esc(m['nombre'])}</strong><small>{esc(m['texto'])}</small><em>Desde S/ {m['escalas'][-1][1]:.2f} c/u</em></span>
+                    </label>"""
+
+    def radios_color(nombre: str, elegido: str) -> str:
+        return "\n".join(
+            f"""                    <label class="ll-color" title="{esc(c['nombre'])}"><input type="radio" name="{nombre}" value="{esc(c['nombre'])}" data-hex="{esc(c['hex'])}"{' checked' if c['nombre'] == elegido else ''}><span class="ll-muestra" style="--c:{esc(c['hex'])}"></span><span class="ll-color-nombre">{esc(c['nombre'])}</span></label>"""
+            for c in colores
+        )
+
+    formas = next((m["formas"] for m in modelos if m.get("formas")), [])
+    radios_formas = "\n".join(
+        f"""                    <label class="ll-opcion ll-chip"><input type="radio" name="forma" value="{esc(f['id'])}" data-nombre="{esc(f['nombre'])}"{' checked' if i == 0 else ''}><span>{esc(f['nombre'])}</span></label>"""
+        for i, f in enumerate(formas)
+    )
+    radios_letras = "\n".join(
+        f"""                    <label class="ll-opcion ll-chip"><input type="radio" name="letra" value="{esc(l['id'])}" data-nombre="{esc(l['nombre'])}" data-familia="{esc(l['familia'])}"{' checked' if i == 0 else ''}><span style="font-family:'{esc(l['familia'])}',sans-serif">{esc(l['nombre'])}</span></label>"""
+        for i, l in enumerate(LLAVERO["letras"])
+    )
+    tablas = "\n".join(
+        f"""                <ul class="ll-escalas" data-modelo="{esc(m['id'])}"{'' if i == 0 else ' hidden'}>
+{chr(10).join(f'                    <li data-desde="{d}">{esc(t)}</li>' for (d, _), t in zip(m['escalas'], texto_escalas(m['escalas'])))}
+                </ul>"""
+        for i, m in enumerate(modelos)
+    )
+    ficha_soporte = next((m for m in modelos if m.get("slug")), None)
+    enlace_ficha = f'<p class="ll-ficha">Mira las fotos del <a href="../producto/{esc(ficha_soporte["slug"])}/">{esc(ficha_soporte["nombre"].lower())}</a> ya impreso.</p>' if ficha_soporte else ""
+    wa = f"https://api.whatsapp.com/send?phone={WHATSAPP}&text={quote('Hola, quiero un llavero personalizado con nombre.', safe='')}"
+    precio_inicial = modelos[0]["escalas"][0][1] if modelos else 0
+    cuerpo = f"""        <p class="pg-kicker">Personalizado</p>
+        <h1>Diseña tu llavero con nombre</h1>
+        <p>Escribe el nombre, elige la letra y los colores, y mira cómo queda. Lo fabricamos en nuestro taller de Lima; para recuerdos de cumpleaños, baby showers o eventos, el precio baja por cantidad.</p>
+        <div class="ll">
+            <div class="ll-vista">
+                <svg id="ll-svg" class="ll-svg" viewBox="0 0 400 160" role="img" aria-labelledby="ll-svg-titulo"><title id="ll-svg-titulo">Vista previa del llavero</title><g id="ll-dibujo"></g></svg>
+                <p class="ll-nota">Vista previa referencial: confirmamos el diseño por WhatsApp antes de imprimir.</p>
+                {enlace_ficha}
+            </div>
+            <form id="ll-form" class="ll-form" data-max="{maximo}" novalidate>
+                <fieldset>
+                    <legend>Modelo</legend>
+{chr(10).join(radio_modelo(i, m) for i, m in enumerate(modelos))}
+                </fieldset>
+                <fieldset id="ll-formas">
+                    <legend>Forma</legend>
+                    <div class="ll-fila">
+{radios_formas}
+                    </div>
+                </fieldset>
+                <div class="ll-campo">
+                    <label for="ll-nombre">Nombre <small id="ll-cuenta">0/{maximo}</small></label>
+                    <input id="ll-nombre" name="nombre" type="text" maxlength="{maximo}" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ej.: JUDITH" aria-describedby="ll-ayuda">
+                    <p id="ll-ayuda" class="ll-ayuda">Hasta {maximo} caracteres: letras (con tildes y ñ), números, espacios, &amp;, punto y guion.</p>
+                    <p id="ll-error" class="ll-error" role="alert" hidden></p>
+                </div>
+                <fieldset>
+                    <legend>Letra</legend>
+                    <div class="ll-fila">
+{radios_letras}
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Color de la base</legend>
+                    <div class="ll-colores">
+{radios_color("base", LLAVERO["colorBase"])}
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Color de las letras</legend>
+                    <div class="ll-colores">
+{radios_color("letras", LLAVERO["colorLetras"])}
+                    </div>
+                    <p id="ll-contraste" class="ll-ayuda" hidden>Con el mismo color en la base y las letras, el nombre casi no se lee.</p>
+                </fieldset>
+                <fieldset>
+                    <legend>Cantidad</legend>
+                    <div class="ll-cantidad">
+                        <button type="button" data-delta="-1" aria-label="Quitar uno"><svg class="ico" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                        <input id="ll-cantidad" name="cantidad" type="number" min="1" max="999" step="1" value="1" inputmode="numeric" aria-label="Cantidad">
+                        <button type="button" data-delta="1" aria-label="Agregar uno"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                    </div>
+{tablas}
+                </fieldset>
+                <div class="ll-total" aria-live="polite">
+                    <span>Total referencial</span>
+                    <strong id="ll-total">S/ {precio_inicial:.2f}</strong>
+                    <small id="ll-unitario">1 × S/ {precio_inicial:.2f}</small>
+                </div>
+                <a id="ll-pedir" class="pg-btn ll-pedir" href="{esc(wa)}" target="_blank" rel="noopener noreferrer"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>Pedir por WhatsApp</a>
+                <p class="ll-ayuda">Precios con IGV. {esc(PLAZO)}; el envío se cotiza aparte (<a href="../#envios">ver costos de envío</a>).</p>
+            </form>
+        </div>"""
+    return pagina_estatica("Diseña tu llavero con nombre | S3D", "Llaveros personalizados con nombre impresos en 3D en Lima: elige letra y colores, mira la vista previa y pide por WhatsApp. Precios por cantidad para recuerdos y eventos.", "../", f"{BASE_URL}llavero/", cuerpo,
+                           cabeza=estilos_letras_llavero() + '    <link rel="stylesheet" href="../llavero.css?v=1">\n',
+                           scripts='    <script src="../tienda.js?v=3" defer></script>\n    <script src="../llavero.js?v=1" defer></script>\n')
 
 
 def pagina_404(todos: list[dict]) -> str:
@@ -970,6 +1140,8 @@ def escribir_sitemap(todos: list[dict]) -> None:
     filas.append(f"  <url>\n    <loc>{BASE_URL}privacidad/</loc>\n    <priority>0.3</priority>\n  </url>")
     filas.append(f"  <url>\n    <loc>{BASE_URL}terminos/</loc>\n    <priority>0.3</priority>\n  </url>")
     filas.append(f"  <url>\n    <loc>{BASE_URL}regalos/</loc>\n    <priority>0.8</priority>\n  </url>")
+    if LLAVERO:
+        filas.append(f"  <url>\n    <loc>{BASE_URL}llavero/</loc>\n    <priority>0.8</priority>\n  </url>")
     filas += [f"  <url>\n    <loc>{BASE_URL}producto/{p['slug']}/</loc>\n    <priority>0.7</priority>\n  </url>" for p in todos]
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(filas) + "\n</urlset>\n",
@@ -1009,6 +1181,9 @@ def main() -> None:
     (ROOT / "terminos" / "index.html").write_text(pagina_terminos(), encoding="utf-8")
     (ROOT / "regalos").mkdir(exist_ok=True)
     (ROOT / "regalos" / "index.html").write_text(pagina_regalos(productos), encoding="utf-8")
+    if LLAVERO:
+        (ROOT / "llavero").mkdir(exist_ok=True)
+        (ROOT / "llavero" / "index.html").write_text(pagina_llavero(productos), encoding="utf-8")
     (ROOT / "404.html").write_text(pagina_404(productos), encoding="utf-8")
     if RESENAS:
         (ROOT / "resena").mkdir(exist_ok=True)

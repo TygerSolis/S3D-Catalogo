@@ -10,7 +10,7 @@ img, picture { display: block; max-width: 100%; }
 .pg-main h1 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin: 0 0 1rem; }
 .pg-main h2 { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; margin: 2.25rem 0 .75rem; }
 .pg-main p, .pg-main li { color: #475569; font-size: 1.02rem; }
-.pg-main a:not(.pg-btn):not(.pg-chip):not(.pg-card) { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: .2rem; }
+.pg-main a:not(.pg-btn):not(.pg-chip):not(.pg-card):not(.pg-destacado) { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: .2rem; }
 .pg-main ul { padding-left: 1.25rem; }
 .pg-main li + li { margin-top: .4rem; }
 .pg-actualizado { color: var(--muted); font-size: .85rem; }
@@ -43,3 +43,9 @@ img, picture { display: block; max-width: 100%; }
 .pg-rango-cab a { font-size: .9rem; }
 .pg-card { position: relative; }
 .pg-card-temporada { background: #b91c1c; border-radius: 999px; color: #fff; font-size: .68rem; font-style: normal; font-weight: 800; left: .6rem; letter-spacing: .04em; padding: .2rem .6rem; position: absolute; top: .6rem; }
+/* Enlace destacado al personalizador de llaveros (guía de regalos) */
+.pg-destacado { align-items: center; background: linear-gradient(120deg, #002244, #0066cc); border-radius: 1.25rem; color: #fff; display: flex; gap: .9rem; margin: 1.5rem 0; padding: 1rem 1.25rem; text-decoration: none; }
+.pg-destacado .ico { flex: none; height: 1.6rem; width: 1.6rem; }
+.pg-destacado span { color: #dbeafe; font-size: .95rem; }
+.pg-destacado strong { color: #fff; display: block; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; }
+.pg-destacado:hover { box-shadow: 0 16px 30px -18px rgba(0, 51, 102, .6); }

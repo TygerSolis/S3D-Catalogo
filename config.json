@@ -74,5 +74,29 @@
   "google": {
     "nota": "Google Merchant Center suspende cuentas por productos con marcas o personajes ajenos (falsificación): los que coinciden con estas palabras (nombre o descripción) no van a google/productos.txt.",
     "excluirMarcas": ["toy story", "disney", "pixar", "woody", "jessie", "buzz", "hello kitty", "sanrio", "snoopy", "woodstock", "peanuts", "cars", "rayo", "mc ?queen", "doc hudson", "simpson", "bart", "nike", "jordan", "off[ -]white", "toyota", "audi", "real madrid", "barcelona", "psg", "knicks", "nba", "alianza", "universitario", "sporting cristal", "sport boys", "cienciano", "marvel", "pok[eé]mon", "star wars", "big three", "hermanas w", "antisocial", "peaky blinders", "smooth criminal", "michael jackson", "debi tirar", "bad bunny"]
+  },
+  "llavero": {
+    "nota": "Personalizador /llavero/ (D14). «precio» = 1 unidad; «escalas» = precio por unidad desde esa cantidad. El soporte toma su precio de la hoja (producto «productoId»).",
+    "maxLetras": 12,
+    "modelos": [
+      {"id": "nombre", "nombre": "Llavero con nombre", "registro": "LLAVERO CON NOMBRE", "precio": 10, "texto": "Tu nombre en relieve, en dos colores.",
+       "formas": [{"id": "letras", "nombre": "Letras unidas"}, {"id": "placa", "nombre": "Placa rectangular"}],
+       "escalas": [{"desde": 12, "precio": 8.5}, {"desde": 50, "precio": 7.5}]},
+      {"id": "soporte", "productoId": 2002, "nombre": "Soporte para celular", "texto": "Llavero que se abre y sostiene tu celular, con tu nombre.",
+       "escalas": [{"desde": 12, "precio": 10}, {"desde": 50, "precio": 9}]}
+    ],
+    "letras": [
+      {"id": "redondeada", "nombre": "Redondeada", "familia": "Fredoka", "archivo": "assets/fonts/fredoka-700-latin.woff2"},
+      {"id": "bloque", "nombre": "Bloque", "familia": "Anton", "archivo": "assets/fonts/anton-latin.woff2"},
+      {"id": "manuscrita", "nombre": "Manuscrita", "familia": "Pacifico", "archivo": "assets/fonts/pacifico-latin.woff2"}
+    ],
+    "colores": [
+      {"nombre": "Blanco", "hex": "#f8fafc"}, {"nombre": "Negro", "hex": "#1f2937"}, {"nombre": "Rojo", "hex": "#dc2626"},
+      {"nombre": "Azul", "hex": "#1d4ed8"}, {"nombre": "Celeste", "hex": "#38bdf8"}, {"nombre": "Verde", "hex": "#16a34a"},
+      {"nombre": "Amarillo", "hex": "#facc15"}, {"nombre": "Naranja", "hex": "#f97316"}, {"nombre": "Rosado", "hex": "#f472b6"},
+      {"nombre": "Morado", "hex": "#7c3aed"}
+    ],
+    "colorBase": "Celeste",
+    "colorLetras": "Blanco"
   }
 }

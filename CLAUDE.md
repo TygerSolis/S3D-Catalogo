@@ -13,7 +13,7 @@ El dueño habla español: código, comentarios, commits y documentación van en 
 npm ci && npx playwright install chromium      # una vez
 npm test                                        # todas las pruebas (servidor propio + Chromium headless)
 node tests/run.cjs tienda                       # un solo módulo (integridad, catalogo, visor, fichas, tienda,
-                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, publicar, meta, seguridad)
+                                                #   pedidos, buscador, analitica, navegacion, temporada, precios, redes, publicar, meta, llavero, seguridad)
 python3 scripts/validar_productos.py            # valida productos.json (ids, slugs, precios, imágenes…)
 python3 scripts/build_product_pages.py          # regenera páginas, sitemap, ItemList y datos de config.json
 npm run build:css                               # recompila tailwind.css (luego subir ?v= en index.html)
@@ -144,6 +144,18 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
     borrar la etiqueta mientras exista la cuenta de Merchant Center. Los proyectos (`/S3D-Catalogo/`, VetFast) no cambian.
   - **Reseñas**: `config.json` → `resenasGoogle` (`g.page/r/…/review`); `/resena/` (noindex, fuera del sitemap) redirige
     al formulario; enlace «Déjanos tu reseña» en el pie; textos `/gracias` y `/resena` en `docs/guia-whatsapp.md`.
+- **Personalizador de llaveros (25/11/2026, D14)** — `/llavero/` (`pagina_llavero`, en el sitemap; datos en `config.json` →
+  `llavero`: modelos, escalas, letras, colores, `maxLetras`). Modelos: «Llavero con nombre» (precio propio, formas «letras
+  unidas» o «placa rectangular»; se registra como `LLAVERO CON NOMBRE`, no es producto de la hoja) y el soporte para celular
+  (`productoId`: nombre, ficha y precio salen de la hoja; oculto/agotado = no se ofrece). `modelos_llavero` arma las escalas
+  `[(desde, precio)]` e ignora con aviso las que no bajan el precio. El formulario sale completo en el HTML; `llavero.js`
+  dibuja la vista previa en SVG (nombre con textContent, solo letras/números/espacio/&/./-, máx. 12), calcula el total
+  (cantidad 1–999) y al pulsar «Pedir por WhatsApp» registra tipo `comprar` (item con colores en `color` y nombre/letra/forma en
+  `medida`; Pedidos.gs anota máx. 99 unidades por línea, el detalle lleva la cantidad real) y abre WhatsApp con código S3D;
+  evento `llavero_pedir` (Lead en el píxel). Letras propias OFL en `assets/fonts/` (Fredoka 700, Anton, Pacifico; licencias en
+  `assets/fonts/licencias/`, sacadas de `@fontsource` 5.3.0 sin añadir dependencias), `@font-face` en `<head>` de la página.
+  Accesos: tarjeta al inicio de la categoría Llaveros (`catalogo.js`), `pp-disena` en la ficha del soporte
+  (`?modelo=soporte`), `pg-destacado` en la guía de regalos y el pie. Pruebas en `tests/llavero.cjs`.
 - **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en
   `assets/pagos/` (96 px WebP; Yape = ícono de su app en el App Store, publicado por el BCP; Plin = ícono de plin.pe),
   servidos desde el sitio por la CSP; Transferencia y Efectivo con íconos del sprite.
@@ -188,6 +200,7 @@ Decisiones del dueño (auditoría del 14/10/2026; documento «Auditoría full st
 | D11 | TikTok (21/11/2026) | Cuenta personal/creador (para usar música viral). Etapa 1: «Enviar a TikTok» a la bandeja (el dueño elige la música y publica). En paralelo, publicación directa «un toque por producto» con música automática en fotos, lista para la auditoría (demo con la cuenta de S3D en privado un rato). Página de términos creada. |
 | D12 | Conversión antes de los anuncios (24/11/2026) | Tras comparar con tiendas 3D de Lima: franja de confianza («Listo en 24–48 h»), barra fija en el celular, envíos «desde» (recojo gratis S/ 0, Lima S/ 10, periferia/Callao S/ 15, provincias por Shalom o la agencia del cliente S/ 12, montos referenciales), guía de regalos (<30, 30–60, 60–100, >100) + filtro de precio, dibujo de tamaño, relacionados + vistos, píxel de Meta con aviso de cookies (el dueño lo eligió frente a «solo clic a WhatsApp») y correo diario de pedidos sin cerrar. Fase 2: «Lo más pedido» desde el registro de pedidos, respuestas automáticas a comentarios, Google Shopping, textos de WhatsApp y enlace de reseñas de Google. Fase 3: personalizador de llaveros. Pendiente: «Clientes felices». Descartado: «Precio especial». |
 | D13 | Fase 2 de conversión (24/11/2026) | «Lo más pedido» por pedidos distintos (30 días, mínimo 2; etiqueta en los 6 primeros, sección en la portada y orden de la cola de redes). Comentarios: mensaje privado con la automatización de Meta Business Suite + respuesta pública automática desde `Redes.gs`. Google Shopping: «probar ya» (repo `TygerSolis.github.io` solo para verificar), sin productos con marcas ajenas. Reseñas: enlace del perfil de Google, atajo `/resena/`. |
+| D14 | Personalizador de llaveros (25/11/2026) | Página `/llavero/` para el llavero NUEVO con nombre (S/ 10; el cliente elige «letras unidas» o «placa rectangular») y el soporte para celular (S/ 12, precio de la hoja). Por cantidad: 12+ −15 % y 50+ −25 % (nombre 10/8.50/7.50; soporte 12/10/9). Máx. 12 letras, paleta básica de 10 colores (el dueño quita los que no tenga), 3 letras. Sin fotos de muestra por ahora: la vista previa es referencial y se confirma por WhatsApp. Pedido directo a WhatsApp (no al carrito). |
 
 Implementado (octubre de 2026):
 

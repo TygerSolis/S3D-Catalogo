@@ -251,3 +251,7 @@ body.pp-con-barra .s3d-aviso { bottom: 9rem; }
 /* «Lo más pedido» */
 .pp-mas-pedido { align-items: center; background: linear-gradient(90deg, #e8340f, #f06a00); border-radius: 999px; color: #fff; display: inline-flex; font-size: .75rem; font-weight: 800; gap: .4rem; letter-spacing: .12em; margin: 0 .4rem .75rem 0; padding: .35rem .9rem; text-transform: uppercase; }
 .pp-mas-pedido .ico { height: .9rem; width: .9rem; }
+/* Enlace al personalizador de llaveros (solo en los productos que se diseñan ahí) */
+.pp-disena { align-items: center; background: #eef6ff; border: 1px dashed #93c5fd; border-radius: 1rem; color: var(--navy); display: flex; font-size: .92rem; font-weight: 700; gap: .6rem; margin-top: .9rem; padding: .75rem 1rem; text-decoration: none; }
+.pp-disena .ico { color: #0066cc; flex: none; }
+.pp-disena:hover { background: #dbeafe; border-style: solid; }

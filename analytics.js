@@ -41,7 +41,7 @@
  * Vacío = apagado. Con número, cada visitante ve un aviso de cookies y el píxel SOLO se carga si pulsa «Aceptar»
  * (la decisión queda en el navegador; «Preferencias de cookies», al pie, permite cambiarla). Nunca en la vista previa.
  * Eventos estándar que recibe Meta: PageView; ViewContent (ficha); AddToCart (pedido_agregar); Lead (clic_comprar,
- * pedido_enviar, cotizar_personalizado); Contact (clic_whatsapp); Search (busqueda).
+ * pedido_enviar, cotizar_personalizado, llavero_pedir); Contact (clic_whatsapp); Search (busqueda).
  */
 (function () {
     const CONFIG = {
@@ -67,7 +67,7 @@
         if (a.dataset.precio) { datos.value = Number(a.dataset.precio); datos.currency = 'PEN'; }
         return datos;
     };
-    const EVENTOS_PIXEL = { pedido_agregar: 'AddToCart', clic_comprar: 'Lead', pedido_enviar: 'Lead', cotizar_personalizado: 'Lead', clic_whatsapp: 'Contact', busqueda: 'Search' };
+    const EVENTOS_PIXEL = { pedido_agregar: 'AddToCart', clic_comprar: 'Lead', pedido_enviar: 'Lead', cotizar_personalizado: 'Lead', llavero_pedir: 'Lead', clic_whatsapp: 'Contact', busqueda: 'Search' };
     function enviarPixel(evento, datos) {
         const nombre = EVENTOS_PIXEL[evento];
         if (!pixelActivo || !nombre || typeof window.fbq !== 'function') return;
@@ -188,6 +188,7 @@
         if (enlace.closest('#personalizados')) return 'personalizados';
         if (enlace.closest('footer')) return 'pie';
         if (enlace.closest('#faq')) return 'faq';
+        if (enlace.closest('#ll-form')) return 'llavero';
         return 'otro';
     };
     document.addEventListener('click', evento => {

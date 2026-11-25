@@ -1,0 +1,56 @@
+/* Personalizador «Diseña tu llavero» (/llavero/, D14). Se apoya en paginas.css y chrome.css. */
+.ll { display: grid; gap: 1.5rem; margin-top: 1.5rem; }
+@media (min-width: 860px) { .ll { align-items: start; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+
+/* Vista previa: fija arriba mientras se eligen opciones (en el celular, compacta). */
+.ll-vista { background: #fff; border: 1px solid var(--line); border-radius: 1.25rem; box-shadow: 0 18px 40px -30px rgba(0, 34, 68, .45); padding: .75rem; position: sticky; top: 4.75rem; z-index: 5; }
+.ll-svg { aspect-ratio: 5 / 2; background: radial-gradient(circle at 50% 35%, #ffffff, #e8eef6); border-radius: .9rem; display: block; max-height: 30vh; width: 100%; }
+@media (min-width: 860px) { .ll-svg { max-height: none; } }
+.pg-main .ll-nota { color: var(--muted); font-size: .78rem; margin: .5rem .25rem 0; }
+.pg-main .ll-ficha { font-size: .85rem; margin: .25rem .25rem 0; }
+
+.ll-form { display: grid; gap: 1.1rem; }
+.ll-form fieldset { border: 0; margin: 0; min-width: 0; padding: 0; }
+.ll-form legend, .ll-campo label { color: var(--navy); display: block; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: .5rem; padding: 0; }
+.ll-campo label small { color: var(--muted); font-family: 'Manrope', sans-serif; font-size: .8rem; font-weight: 700; margin-left: .4rem; }
+.ll-campo input { background: #fff; border: 2px solid var(--line); border-radius: .9rem; box-sizing: border-box; font: inherit; font-size: 1.15rem; font-weight: 700; letter-spacing: .04em; padding: .75rem 1rem; width: 100%; }
+.ll-campo input:focus { border-color: var(--blue); outline: none; }
+.ll-campo input[aria-invalid="true"] { border-color: #dc2626; }
+.pg-main .ll-ayuda { color: var(--muted); font-size: .8rem; margin: .4rem 0 0; }
+.pg-main .ll-error { color: #b91c1c; font-size: .85rem; font-weight: 700; margin: .4rem 0 0; }
+
+/* Opciones: el input queda accesible (teclado y lector de pantalla) y la tarjeta muestra el estado. */
+.ll-opcion { cursor: pointer; display: block; position: relative; }
+.ll-opcion input, .ll-color input { height: 1px; opacity: 0; position: absolute; width: 1px; }
+.ll-modelo + .ll-modelo { margin-top: .5rem; }
+.ll-modelo > span { background: #fff; border: 2px solid var(--line); border-radius: 1rem; display: grid; gap: .1rem; padding: .7rem 1rem; transition: border-color .2s ease, background .2s ease; }
+.ll-modelo strong { color: var(--navy); }
+.ll-modelo small { color: #475569; font-size: .85rem; }
+.ll-modelo em { color: var(--blue); font-size: .8rem; font-style: normal; font-weight: 800; }
+.ll-fila { display: flex; flex-wrap: wrap; gap: .5rem; }
+.ll-chip > span { background: #fff; border: 2px solid var(--line); border-radius: 999px; color: var(--navy); display: inline-block; font-size: 1.05rem; padding: .45rem 1rem; transition: border-color .2s ease, background .2s ease; }
+.ll-opcion input:checked + span { background: #eef6ff; border-color: var(--blue); }
+.ll-opcion input:focus-visible + span, .ll-color input:focus-visible + .ll-muestra { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+.ll-colores { display: grid; gap: .5rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.ll-color { align-items: center; cursor: pointer; display: flex; flex-direction: column; gap: .2rem; position: relative; }
+.ll-muestra { background: var(--c); border: 2px solid rgba(15, 23, 42, .15); border-radius: 999px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12); display: block; height: 2.4rem; transition: transform .15s ease; width: 2.4rem; }
+.ll-color input:checked + .ll-muestra { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--blue); transform: scale(1.05); }
+.ll-color-nombre { color: #475569; font-size: .72rem; font-weight: 700; }
+.ll-color input:checked ~ .ll-color-nombre { color: var(--navy); }
+
+.ll-cantidad { align-items: center; display: inline-flex; gap: .35rem; }
+.ll-cantidad button { align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 999px; color: var(--navy); cursor: pointer; display: inline-flex; height: 2.6rem; justify-content: center; width: 2.6rem; }
+.ll-cantidad button:hover { border-color: var(--blue); color: var(--blue); }
+.ll-cantidad input { border: 2px solid var(--line); border-radius: .8rem; font: inherit; font-size: 1.1rem; font-weight: 800; padding: .45rem; text-align: center; width: 4.5rem; }
+.pg-main .ll-escalas { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; margin: .75rem 0 0; padding: 0; }
+.pg-main .ll-escalas li { background: #fff; border: 1px solid var(--line); border-radius: 999px; color: #475569; font-size: .8rem; font-weight: 700; margin: 0; padding: .3rem .75rem; }
+.pg-main .ll-escalas li.ll-activa { background: var(--navy); border-color: var(--navy); color: #fff; }
+
+.ll-total { align-items: baseline; background: #fff; border: 1px solid var(--line); border-radius: 1rem; display: flex; flex-wrap: wrap; gap: .25rem .75rem; padding: .8rem 1rem; }
+.ll-total span { color: var(--muted); font-size: .85rem; font-weight: 700; }
+.ll-total strong { color: var(--navy); font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; }
+.ll-total small { color: #475569; font-size: .85rem; font-weight: 700; }
+.pg-main .ll-pedir { align-items: center; background: #16a34a; display: flex; font-size: 1.05rem; gap: .6rem; justify-content: center; padding: .95rem 1.4rem; }
+.pg-main .ll-pedir:hover { background: #15803d; }
+@media (prefers-reduced-motion: reduce) { .ll-muestra { transition: none; } }

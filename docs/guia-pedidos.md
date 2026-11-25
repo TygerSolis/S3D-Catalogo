@@ -54,6 +54,14 @@ Cada 30 minutos la web le pregunta a este programa cuáles fueron los productos 
 primero en la cola automática de redes. Si dos productos se llaman igual (p. ej. DUMMY), no se puede saber cuál es y no
 se etiqueta. Necesita la versión de `Pedidos.gs` del 24/11/2026 o posterior (con **Nueva versión**).
 
+## Pedidos del personalizador de llaveros
+
+Los pedidos de https://tygersolis.github.io/S3D-Catalogo/llavero/ llegan como tipo **Comprar**. En **Productos** dice
+`LLAVERO CON NOMBRE` (o el nombre del soporte para celular) con los colores, el nombre, la letra y la forma entre
+paréntesis; el mensaje completo queda en **Detalle**. Si alguien pide más de 99 unidades, la columna de unidades
+anota 99, pero el detalle y el total llevan la cantidad real. Para cambiar precios, escalas, colores o letras del
+personalizador, pídemelo (están en `config.json` → `llavero`).
+
 ## Si cambias el programa
 
 Tras editar `Pedidos.gs` en Apps Script: **Implementar → Gestionar implementaciones → editar (lápiz) →

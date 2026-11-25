@@ -401,6 +401,14 @@
                         </div>
                         <a href="${escaparHTML(window.S3D.urlWhatsApp(banner.mensaje))}" target="_blank" rel="noopener noreferrer" class="temporada-banner-cta"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>Consultar por WhatsApp</a>
                     </div>`;
+                } else if (categoria === "Llaveros") {
+                    // Personalizador de llaveros con nombre (/llavero/, D14).
+                    categoryBanner = `
+                    <a class="llavero-banner" href="llavero/" data-evento="llavero_desde_catalogo" data-producto="Llaveros">
+                        <svg class="ico llavero-banner-ico" aria-hidden="true"><use href="#i-wand-sparkles"/></svg>
+                        <span class="llavero-banner-texto"><strong>Diseña tu llavero con nombre</strong>Elige la letra y los colores, mira cómo queda y pide por WhatsApp. Precio por cantidad para recuerdos.</span>
+                        <span class="llavero-banner-cta">Diseñar<svg class="ico" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+                    </a>`;
                 } else if (categoria === "Mascota") {
                     categoryBanner = `
                     <div class="bg-gradient-to-r from-[#003366] to-[#004d99] rounded-[2rem] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 mb-10 shadow-float text-white border border-white/10 relative overflow-hidden">
