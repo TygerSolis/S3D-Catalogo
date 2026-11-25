@@ -48,7 +48,7 @@
         websiteId: '2d8395c6-93e5-4d61-88c8-617770507c46',
         script: 'https://cloud.umami.is/script.js',
         dominios: 'tygersolis.github.io',
-        pixelId: '',
+        pixelId: '2186135135325502',
         pixelDominio: 'tygersolis.github.io'
     };
     const RAIZ = document.currentScript ? new URL('.', document.currentScript.src).href : '/';

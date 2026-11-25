@@ -120,6 +120,8 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
     «Preferencias de cookies» en el pie), nunca en `/vista-previa/` ni fuera de `tygersolis.github.io`; eventos PageView,
     ViewContent (`S3D-<id>`, como el catálogo de Meta), AddToCart, Lead, Contact y Search. La privacidad añade su sección
     solo con el píxel encendido.
+    Píxel en uso: conjunto de datos «S3D web» `2186135135325502` (creado por el dueño el 24/11/2026, código manual, sin
+    «coincidencias avanzadas automáticas» ni configuración automática de eventos).
   - **Correo diario de pendientes** (`Pedidos.gs` → `resumenDiario`, activador de `instalarResumen` a las 9:00 de Lima):
     pedidos en «Nuevo» con más de 24 h (lista de los últimos 7 días); sin pendientes no envía nada. Prueba en `tests/pedidos.cjs`.
 - **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en

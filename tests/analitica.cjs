@@ -1,5 +1,7 @@
 // Eventos de analítica (con Umami simulado).
-const { assert, abrir, nombresEventos, leerJson, BASE } = require('./util.cjs');
+const fs = require('fs');
+const path = require('path');
+const { assert, abrir, nombresEventos, leerJson, BASE, RAIZ } = require('./util.cjs');
 
 const CATEGORIA = '?categoria=Mu%C3%B1ecos%20Coleccionables';
 const propiedades = (p, nombre) => p.eventos.filter(e => e.nombre === nombre).map(e => e.datos);
@@ -82,15 +84,18 @@ module.exports = {
         await p.contexto.close();
     },
 
-    async 'sin número de píxel (config.json «metaPixel» vacío) no hay aviso de cookies ni nada de Facebook'({ browser }) {
-        assert.equal(leerJson('config.json').metaPixel, '', 'esta prueba describe el estado sin píxel');
+    async 'fuera de la web principal no hay aviso de cookies ni pedidos a Facebook; la CSP y analytics.js siguen a config.json'({ browser }) {
+        // Las pruebas corren en localhost: como en /vista-previa/, el píxel nunca se activa aunque haya número.
+        const { metaPixel } = leerJson('config.json');
         const pedidos = [];
         const p = await abrir(browser, 'producto/woody/', { preparar: pagina => pagina.context().on('request', r => pedidos.push(r.url())) });
         assert.equal(await p.locator('.s3d-cookies').count(), 0);
         assert.ok(await p.locator('[data-cookies-pie]').isHidden());
         assert.ok(!pedidos.some(u => /facebook/.test(u)), 'no debe contactar a Facebook');
         const csp = await p.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
-        assert.ok(!/facebook/.test(csp), 'la CSP no permite Facebook si el píxel está apagado');
+        assert.equal(/connect\.facebook\.net/.test(csp), Boolean(metaPixel), 'la CSP permite Facebook solo si hay número de píxel');
+        const analytics = fs.readFileSync(path.join(RAIZ, 'analytics.js'), 'utf8');
+        assert.ok(analytics.includes(`pixelId: '${metaPixel}'`), 'analytics.js lleva el número de config.json');
         await p.contexto.close();
     },
     async 'con píxel: nada se carga hasta «Aceptar»; luego PageView, ViewContent y Lead; «Rechazar» se recuerda'({ browser }) {
@@ -101,7 +106,7 @@ module.exports = {
         await contexto.route('https://cloud.umami.is/**', r => r.fulfill({ contentType: 'text/javascript', body: 'window.umami={track(){}};' }));
         await contexto.route('https://script.google.com/**', r => r.abort());
         await contexto.route(/analytics\.js/, async r => {
-            const cuerpo = (await (await r.fetch()).text()).replace("pixelId: ''", `pixelId: '${PIXEL}'`).replace("pixelDominio: 'tygersolis.github.io'", "pixelDominio: 'localhost'");
+            const cuerpo = (await (await r.fetch()).text()).replace(/pixelId: '\d*'/, `pixelId: '${PIXEL}'`).replace("pixelDominio: 'tygersolis.github.io'", "pixelDominio: 'localhost'");
             await r.fulfill({ contentType: 'text/javascript', body: cuerpo });
         });
         // fbevents.js simulado: guarda en window.__fb lo que la página le pide a Meta.
