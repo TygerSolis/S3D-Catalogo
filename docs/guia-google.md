@@ -26,6 +26,10 @@ sin Snoopy, etc.). Si agregas un producto con otra marca, avísame para sumarla 
      `google1a2b3c4d5e6f7a8b.html`) o la etiqueta `<meta name="google-site-verification" content="…">`. No son secretos.
    - Yo creo el repositorio `TygerSolis.github.io` (la raíz de tu dominio en GitHub) con ese archivo y te aviso; luego
      pulsas **Verificar** y **Reclamar**.
+   - **Hecho (25/11/2026):** se eligió la etiqueta HTML; está en `index.html` del repositorio
+     [`TygerSolis.github.io`](https://github.com/TygerSolis/TygerSolis.github.io), que publica
+     `https://tygersolis.github.io/` (una página simple con el botón «Ver el catálogo»). No borres ese repositorio ni la
+     etiqueta: Google la revisa de vez en cuando y, si falta, la cuenta pierde la verificación.
 3. **Envíos** (Configuración → Envío y devoluciones → Envío → Agregar servicio):
    - País: Perú · Moneda: PEN · Nombre: «Delivery y agencias».
    - Tiempo de preparación: **1 a 2 días**; tiempo de tránsito: **1 a 5 días**.

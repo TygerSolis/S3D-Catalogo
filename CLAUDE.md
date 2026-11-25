@@ -139,7 +139,9 @@ La CI (`pruebas.yml`) falla si los archivos generados o `tailwind.css` no están
   - **Google Shopping** (`docs/guia-google.md`): `catalogo_meta.py` escribe también `google/productos.txt` (TSV, mismos
     artículos, `utm_source=google`, `identifier_exists=no`) SIN los productos con marcas/personajes ajenos
     (`config.json` → `google.excluirMarcas`; Google los suspende como falsificación). La verificación de
-    `tygersolis.github.io` necesita un repo `TygerSolis.github.io` con el archivo de Google (pendiente del código).
+    `tygersolis.github.io` usa la etiqueta `google-site-verification` en `index.html` del repo aparte
+    `TygerSolis.github.io` (raíz del dominio, creado el 25/11/2026; página simple que enlaza al catálogo, sin JS). No
+    borrar la etiqueta mientras exista la cuenta de Merchant Center. Los proyectos (`/S3D-Catalogo/`, VetFast) no cambian.
   - **Reseñas**: `config.json` → `resenasGoogle` (`g.page/r/…/review`); `/resena/` (noindex, fuera del sitemap) redirige
     al formulario; enlace «Déjanos tu reseña» en el pie; textos `/gracias` y `/resena` en `docs/guia-whatsapp.md`.
 - **Formas de pago** (`scripts/chrome/pagos.html` y el pie en `footer.html`): Yape y Plin con su logo oficial en
